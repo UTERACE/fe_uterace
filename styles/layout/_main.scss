@@ -1,0 +1,40 @@
+@import 'variables';
+body {
+    font-family: $fontFamily;
+}
+.p-icon {
+    font-size: $primeIconFontSize;
+}
+#layout-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+main {
+    flex: 1;
+}
+.centered-content-layout {
+    width: 75%;
+    margin: 0 auto;
+}
+.centered-content-full {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+}
+.centered-content {
+    width: 75%;
+    margin: 0 auto;
+    padding-top: 4rem;
+    padding-bottom: 15rem;
+}
+@media (max-width: 1000px) {
+    .centered-content {
+        width: 90%;  /* Tăng giá trị từ 75% lên 85% */
+    }
+}
+@media (max-width: 800px) {
+    .centered-content {
+        width: 100%;  /* Tăng giá trị từ 75% lên 85% */
+    }
+}
