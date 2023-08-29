@@ -1,0 +1,63 @@
+#event-container {
+    background-color: white;
+    padding: 1rem;
+    margin: 0.3rem;
+    border-radius: 35px;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 0 0.5rem 0.1rem #d6d2c7
+}
+#imageproduct-container {
+    width: 100%;
+    height: 15rem;
+}
+#imageproduct-container img{
+    border-radius: 25px;
+    width: 100%;
+    height: 90%;
+    object-fit: cover; 
+}
+#info-event {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+}
+#info-event > * { 
+    margin-top: 10px;
+    margin-bottom: 10px; 
+}
+#info-event h4 {
+    font-size: 2rem;
+    margin-top: 1rem;
+    width: 10rem;
+}
+#info-event p {
+    font-size: 0.75rem;
+    width: 10rem;
+}
+#info-event h6 {
+    font-size: 1.5rem;
+    margin-top: 0rem;
+    width: 10rem;
+}
+
+#custom-carousel-product {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    background-color: $primary-color url(/bg.png) no-repeat center;
+}
+#custom-carousel-product .p-carousel-item-start {
+    transform: scale(0.85)translateX(15%);
+    z-index: -1;
+}
+#custom-carousel-product .p-carousel-item-end {
+    transform: scale(0.85)translateX(-15%);
+    z-index: -1;
+}
+
+
+

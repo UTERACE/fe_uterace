@@ -1,6 +1,6 @@
 #signin-container {
     width: 100%;
-    height: 40rem;
+    height: 45rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@
 }
 #signin-card {
     width: 35rem;
-    height: 55vh;
+    height: 42rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -85,6 +85,24 @@
     width:100%;
     height: 3rem;
     border-radius: 10px;
+}
+#border-login {
+    width: 100%;
+    height: 3rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin: 2rem 0 0 0;
+}
+#border-login >button {
+    width: 100%;
+    height: 3rem;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: bold;
 }
 
 #multi-color-border-login {

@@ -18,6 +18,12 @@ const Login = () => {
     handleSubmit,
   } = useForm()
   const onSubmit = (data) => console.log(data)
+  const handleClickLoginGoogle = () => {
+    console.log('login google')
+  }
+  const handleClickLoginFacebook = () => {
+    console.log('login facebook')
+  }
   return (
     <div className='centered-content-full'>
       <div id='signin-container'>
@@ -75,6 +81,7 @@ const Login = () => {
               <div className='grid'>
                 <div className='col-12' id='multi-color-border-login'>
                   <Button
+                    icon='pi pi-sign-in'
                     type='submit'
                     label='Sign in'
                     severity='secondary'
@@ -83,6 +90,45 @@ const Login = () => {
                   />
                 </div>
               </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  marginTop: '2rem',
+                }}
+              >
+                Or Using
+              </div>
+              <div className='grid'>
+                <div className='col-12' id='border-login'>
+                  <Button
+                    label='Countinue with Facebook'
+                    icon='pi pi-facebook'
+                    severity='secondary'
+                    raised
+                    id='button-dark'
+                    type='button'
+                    onClick={() => {
+                      handleClickLoginFacebook()
+                    }}
+                  />
+                </div>
+                <div className='col-12' id='border-login'>
+                  <Button
+                    label='Countinue with Google'
+                    icon='pi pi-google'
+                    severity='secondary'
+                    raised
+                    id='button-dark'
+                    type='button'
+                    onClick={() => {
+                      handleClickLoginGoogle()
+                    }}
+                  />
+                </div>
+              </div>
+
               <div className='grid' id='top-8'>
                 <div className='col-12' id='login-signup-title'>
                   Don't have an account?
