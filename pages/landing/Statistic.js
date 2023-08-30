@@ -1,8 +1,11 @@
 import React from 'react'
+import Title from './Title'
+import Detail from './Detail'
 
 const Statistic = ({statistic}) => {
   return (
     <div id='target-wrapper'>
+      <Title title='Statistic activities' />
       <div id='target-container'>
         <div id='target-item'>
           <img src='/statistic/run_member.png' alt='member' />
@@ -25,6 +28,7 @@ const Statistic = ({statistic}) => {
           <p>Total event</p>
         </div>
       </div>
+      <Detail link='/statistic' />
     </div>
   )
 }
