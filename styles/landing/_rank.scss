@@ -1,0 +1,16 @@
+#member-info {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 1rem;
+}
+#member-info a{
+    text-decoration: none;
+}
+#member-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $text-color;
+}

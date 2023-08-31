@@ -1,0 +1,103 @@
+//tabview primereact
+.p-tabview .p-tabview-nav {
+    background: transparent;
+    border: 1px solid transparent;
+    border-width: 0 0 2px 0;
+}
+// tabview nav link transparent
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: transparent;
+    color: $primary-color;
+    position: relative;
+    border-color: transparent;
+}
+// border bottom tabview
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;  
+    transform: translateX(-50%); 
+    width: 30%;
+    height: 3px;
+    background-color: $primary-color;
+}
+// tabview nav link hover transparent
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    background: transparent;
+    border-color: transparent;
+    color: #6c757d;
+}
+// tabview nav link active transparent
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    border: solid #dee2e6;
+    border-width: 0 0 2px 0;
+    border-color: transparent;
+    background: transparent;
+    color: $text-color;
+    padding: 1rem;
+    font-weight: 600;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    transition: box-shadow 0.2s;
+    margin: 0 0 -2px 0;
+}
+.p-tabview .p-tabview-panels {
+    background: transparent;
+    padding: 1rem;
+    border: 0 none;
+    color: #355c83;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+//datatable primereact
+.p-datatable .p-datatable-thead > tr > th {
+    // border: 1px solid #e9ecef;
+    //   border-top-width: 1px;
+    //   border-right-width: 1px;
+    //   border-bottom-width: 1px;
+    //   border-left-width: 1px;
+    font-weight: 600;
+    text-align: center;
+    color: $text-color;
+    background: $background-color;
+    border-radius: 15px;
+    transition: box-shadow 0.2s;
+}
+// text center column
+.p-datatable .p-column-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+// space column
+.p-datatable-table {
+    border-spacing: 0.5rem;
+}
+// custom row
+.p-datatable .p-datatable-tbody > tr {
+    background: transparent;
+    color: $text-color;
+    transition: box-shadow 0.2s;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    text-align: center;
+    border: 0px solid $background-color;
+    border-width: 0 0 0 0;
+    padding: 0.2rem 0.2rem ;
+  }
+.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
+    border-width: 0 0 0 0;
+}
+.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr:last-child > td {
+    border-width: 0 0 0 0;
+}
+.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td:last-child {
+    border-width: 0 0 0 0;
+  }
+// custom color row odd
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
+    background: $secondary-color;
+}
+// border row

@@ -1,34 +1,34 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import LocaleHelper from '@/components/locale/LocaleHelper'
-import DataTable from '@/components/datatable/DataTable'
 import { Avatar } from 'primereact/avatar'
+import DataTable from '@/components/datatable/DataTable'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 
-const RankClub = ({ value }) => {
+const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
   const formatRank = (rowData) => {
     return (
       <div className='customer-info-rank '>
-        {rowData.CLUB_RANKING === 1 ? (
+        {rowData.RANKING === 1 ? (
           <img
             src='https://mobirace.net//Images/no1.png'
             alt='rank1'
             className='customer-rank'
           />
-        ) : rowData.CLUB_RANKING === 2 ? (
+        ) : rowData.RANKING === 2 ? (
           <img
             src='https://mobirace.net//Images/no2.png'
             alt='rank2'
             className='customer-rank'
           />
-        ) : rowData.CLUB_RANKING === 3 ? (
+        ) : rowData.RANKING === 3 ? (
           <img
             src='https://mobirace.net//Images/no3.png'
             alt='rank3'
             className='customer-rank'
           />
         ) : (
-          <div>{rowData.CLUB_RANKING}</div>
+          <div>{rowData.RANKING}</div>
         )}
       </div>
     )
@@ -36,61 +36,62 @@ const RankClub = ({ value }) => {
   const fullnameWithImageTemplate = (rowData) => {
     return (
       <div id='member-info'>
-        <Avatar image={rowData.PICTURE_PATH} size='xlarge' shape='circle' />
-        <Link href={`club/detail-club/${rowData.CLUB_ID}`}>
-          <span id='member-name'>{rowData.CLUB_NAME}</span>
+        <Avatar image={rowData.image} size='xlarge' shape='circle' />
+        <Link href={`club/detail-club/${rowData.id}`}>
+          <span id='member-name'>{rowData.fullname}</span>
         </Link>
       </div>
     )
   }
   const formatNumber = (rowData) => {
     if (rowData) {
-      return LocaleHelper.formatNumber(rowData.CLUB_TOTAL_DISTANCE.toFixed(2))
+      return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
   const clubsColumns = [
     {
-      field: 'CLUB_RANKING',
+      field: 'ranking',
       header: 'Rank',
       body: formatRank,
       bodyClassName: 'text-center',
       className: 'text-rank',
     },
     {
-      header: 'Tên câu lạc bộ',
+      header: 'Thành viên',
       body: fullnameWithImageTemplate,
       className: 'text-name',
     },
     {
-      field: 'CLUB_TOTAL_DISTANCE',
+      field: 'total_distance',
       header: 'Km',
+      bodyClassName: 'text-center',
+      className: 'text-km',
+      body: formatNumber,
+    },
+    {
+      field: 'pace',
+      header: 'pace',
       body: formatNumber,
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
-      field: 'total_member',
-      header: 'Tổng thành viên',
+      field: 'organization',
+      header: 'Đơn vị',
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
-      field: 'admin_name',
-      header: 'Admin',
+      field: 'gender',
+      header: 'Gioi tinh',
       bodyClassName: 'text-center',
-      className: 'text-km',
+      className: '',
     },
   ]
 
   return (
-    <DataTable
-      data={value}
-      rows={4}
-      loading={loading}
-      columns={clubsColumns}
-      className='custom-datatable'
-    />
+    <DataTable data={value} rows={4} loading={loading} columns={clubsColumns} />
   )
 }
-export default RankClub
+export default RankMember

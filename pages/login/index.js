@@ -6,8 +6,14 @@ import Link from 'next/link'
 import { InputText } from 'primereact/inputtext'
 import { Password } from 'primereact/password'
 import { Button } from 'primereact/button'
+import apiInstance from '@/api/apiInstance'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '@/store/slices/authSlice'
+import { useRouter } from 'next/router'
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const defaultValues = {
     checked: false,
   }
@@ -17,7 +23,32 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => {
+    handleLogin(data)
+  }
+  const router = useRouter()
+  const handleLogin = async (data) => {
+    try {
+      console.log(data)
+      let { remember, ...rest } = data
+      console.log('rest', rest)
+      const response = await apiInstance.post('/auth/login', rest, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log('response', response)
+      if (response.status === 200) {
+        const { accessToken, refreshToken } = response.data
+        console.log('accessToken', accessToken)
+        console.log('refreshToken', refreshToken)
+        dispatch(login({ accessToken, refreshToken }))
+        router.push('/')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const handleClickLoginGoogle = () => {
     console.log('login google')
   }
@@ -33,7 +64,7 @@ const Login = () => {
           </div>
           <Form onSubmit={handleSubmit(onSubmit)} defaultValues={defaultValues}>
             <div id='form'>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
                   <Field
                     name='username'
@@ -46,7 +77,7 @@ const Login = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
                   <Field
                     name='password'
@@ -59,7 +90,7 @@ const Login = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid' id='remember-forgot-container'>
+              <div className='grid-form' id='remember-forgot-container'>
                 <div className='col-6' id='checkbox'>
                   <Field
                     name='remember'
@@ -78,7 +109,7 @@ const Login = () => {
                   <Link href='/landing'>Forgot password?</Link>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='multi-color-border-login'>
                   <Button
                     icon='pi pi-sign-in'
@@ -100,7 +131,7 @@ const Login = () => {
               >
                 Or Using
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='border-login'>
                   <Button
                     label='Countinue with Facebook'
@@ -129,7 +160,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className='grid' id='top-8'>
+              <div className='grid-form' id='top-8'>
                 <div className='col-12' id='login-signup-title'>
                   Don't have an account?
                   <Link href='/register'> Sign up now</Link>

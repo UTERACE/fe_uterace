@@ -1,0 +1,41 @@
+#club-card-container {
+  background-color: $white-color;
+  padding: 1rem;
+  margin: 3rem;
+  border-radius: 35px;
+  height: 25rem;
+  width: auto;
+  box-shadow: 0 0 0.5rem 0.1rem $border-color;
+  z-index: -1;
+  display: flex;
+  gap: 5rem;
+}
+#club-card-container img {
+  border-radius: 25px;
+  width: 50%;
+  height: 100%;
+  object-fit: cover; 
+}
+#content-container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#club-info-container {
+  width: 80%;
+  height: 20%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+
+
+.icon-large {
+  font-size: 1.5em;
+}
+

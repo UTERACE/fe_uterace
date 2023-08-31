@@ -72,21 +72,23 @@ const Topbar = () => {
     return model
   }
   return (
-    <div className='centered-content-layout'>
-      <div id='topbar-container'>
-        <div id='logo-container'>
-          <img src='/logohome.png' alt='logo' />
-        </div>
-        <div id='menubar'>
-          <TabMenu model={item(items)} />
-        </div>
-        <div id='login-container'>
-          <Link href='/login'>
-            <Button label='Sign in' severity='warning' text raised rounded />
-          </Link>
-          <Link href='/register'>
-            <Button label='Sign up' severity='warning' outlined rounded />{' '}
-          </Link>
+    <div id='topbar'>
+      <div className='centered-content-layout'>
+        <div id='topbar-container'>
+          <div id='logo-container'>
+            <img src='/logohome.png' alt='logo' />
+          </div>
+          <div id='menubar'>
+            <TabMenu model={item(items)} />
+          </div>
+          <div id='login-container'>
+            <Link href='/login'>
+              <Button label='Sign in' severity='warning' text raised rounded />
+            </Link>
+            <Link href='/register'>
+              <Button label='Sign up' severity='warning' outlined rounded />{' '}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ const Register = () => {
           </div>
           <Form onSubmit={handleSubmit(onSubmit)} defaultValues={defaultValues}>
             <div id='form'>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field
                     name='firstName'
@@ -51,7 +51,7 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
                   <Field
                     name='username'
@@ -64,7 +64,7 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field
                     name='password'
@@ -77,7 +77,7 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field
                     name='confirmPassword'
@@ -90,7 +90,7 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
                   <Field
                     name='email'
@@ -103,7 +103,7 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid' id='agree-container'>
+              <div className='grid-form' id='agree-container'>
                 <div className='col-6' id='checkbox'>
                   <Field
                     name='agree'
@@ -119,7 +119,7 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='multi-color-border-login'>
                   <Button
                     type='submit'
@@ -130,7 +130,7 @@ const Register = () => {
                   />
                 </div>
               </div>
-              <div className='grid'>
+              <div className='grid-form'>
                 <div className='col-12' id='register-signin-title'>
                   Already have an account?
                   <Link href='/login'> Sign in now</Link>
