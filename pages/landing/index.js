@@ -1,11 +1,9 @@
 import React from 'react'
 import Slideshow from './Slideshow'
 import Statistic from './Statistic'
-import Title from '@/components/landing/Title'
 import Event from './Event'
 import Club from './Club'
 import News from './News'
-import ScoreBoardClub from './RankClub'
 import Rank from './Rank'
 
 const Landing = () => {

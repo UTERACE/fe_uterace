@@ -1,5 +1,5 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 import Link from 'next/link'
@@ -27,6 +27,11 @@ const Login = () => {
     handleLogin(data)
   }
   const router = useRouter()
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/landing')
+    }
+  }, [isAuthenticated])
   const handleLogin = async (data) => {
     try {
       console.log(data)
@@ -39,11 +44,10 @@ const Login = () => {
       })
       console.log('response', response)
       if (response.status === 200) {
-        const { accessToken, refreshToken } = response.data
+        const { accessToken, refreshToken, fullName, image } = response.data
         console.log('accessToken', accessToken)
         console.log('refreshToken', refreshToken)
-        dispatch(login({ accessToken, refreshToken }))
-        router.push('/')
+        dispatch(login({ accessToken, refreshToken, image, fullName }))
       }
     } catch (error) {
       console.log(error)

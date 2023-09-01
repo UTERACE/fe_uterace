@@ -2,7 +2,7 @@ import LocaleHelper from '@/components/locale/LocaleHelper'
 import React, { useState } from 'react'
 import { DataView } from 'primereact/dataview'
 import { Paginator } from 'primereact/paginator'
-import Title from '../landing/Title'
+import Title from '../../components/landing/Title'
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 

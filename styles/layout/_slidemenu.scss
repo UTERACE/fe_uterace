@@ -1,0 +1,16 @@
+// custom css for slidemenu
+.p-slidemenu.p-slidemenu-overlay {
+    background: $white-color;
+    border: 0 none;
+    box-shadow: 0 2px 4px -1px $primary-color;
+    border-radius: 20px;
+    padding: 0; 
+    overflow: hidden;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+}
+// custom item menu
+.p-slidemenu .p-menuitem-link:not(.p-disabled):hover {
+    background: $primary-color;
+    border-radius: 25px;
+}

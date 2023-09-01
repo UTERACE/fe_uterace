@@ -39,3 +39,7 @@ main {
         width: 100%;  /* Tăng giá trị từ 75% lên 85% */
     }
 }
+.p-button:focus, .p-button:active, .p-button.p-focus {
+    outline: none !important;
+    box-shadow: none !important;
+}

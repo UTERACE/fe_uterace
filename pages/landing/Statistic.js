@@ -1,8 +1,8 @@
 import React from 'react'
-import Title from './Title'
-import Detail from './Detail'
+import Title from '../../components/landing/Title'
+import Detail from '@/components/landing/Detail'
 
-const Statistic = ({statistic}) => {
+const Statistic = ({ statistic }) => {
   return (
     <div id='target-wrapper'>
       <Title title='Statistic activities' />
@@ -12,7 +12,10 @@ const Statistic = ({statistic}) => {
           <span>{statistic.total_member}</span>
           <p>Total member</p>
         </div>
-        <div id='target-item' style={{backgroundColor:'#DB2D33', color:'white'}}>
+        <div
+          id='target-item'
+          style={{ backgroundColor: '#DB2D33', color: 'white' }}
+        >
           <img src='/statistic/running.png' alt='running' />
           <span>{statistic.total_distance} km</span>
           <p>Total distance</p>

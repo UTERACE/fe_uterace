@@ -2,8 +2,8 @@ import React from 'react'
 import { TabView, TabPanel } from 'primereact/tabview'
 import RankClub from './RankClub'
 import RankMember from './RankMember'
-import Title from './Title'
-import Detail from './Detail'
+import Title from '../../components/landing/Title'
+import Detail from '@/components/landing/Detail'
 const Rank = ({ value }) => {
   return (
     <div

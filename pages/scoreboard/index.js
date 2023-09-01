@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Title from '../landing/Title'
+import Title from '../../components/landing/Title'
 import { TabPanel, TabView } from 'primereact/tabview'
 import RankClub from '../landing/RankClub'
 import Detail from '../landing/Detail'

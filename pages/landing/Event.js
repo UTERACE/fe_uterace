@@ -2,8 +2,8 @@ import { Button } from 'primereact/button'
 import React, { useEffect, useState } from 'react'
 import { Carousel } from 'primereact/carousel'
 import Link from 'next/link'
-import Title from './Title'
-import Detail from './Detail'
+import Title from '../../components/landing/Title'
+import Detail from '@/components/landing/Detail'
 const Event = ({ event }) => {
   const [events, setEvents] = useState([])
   useEffect(() => {

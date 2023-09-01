@@ -1,5 +1,7 @@
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 
+const dispatch = useDispatch()
 const apiInstance = axios.create({
   baseURL: 'http://localhost:8080/api',
   timeout: 15000,
@@ -12,7 +14,7 @@ const apiInstance = axios.create({
 apiInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    const token = localStorage.getItem('accessToken')
+    const token = useSelector((state) => state.auth.accessToken)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -31,12 +33,12 @@ apiInstance.interceptors.response.use(
     const originalRequest = response.config
     if (response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
-      const refreshToken = localStorage.getItem('refreshToken')
+      const refreshToken = useSelector((state) => state.auth.refreshToken)
       return apiInstance
         .post('/auth/refresh-token', { refreshToken })
         .then((res) => {
           if (res.status === 200) {
-            localStorage.setItem('accessToken', res.data.accessToken)
+            dispatch(refreshToken(res.data.accessToken, refreshToken))
             console.log('Access token refreshed!')
             return apiInstance(originalRequest)
           }

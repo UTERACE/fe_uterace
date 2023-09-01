@@ -1,0 +1,214 @@
+#profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+#statistic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 20rem;
+    width: 80%;
+    margin-top: 1rem;
+    border-radius: 25px;
+    background-color: $background-color-2;
+    background-image: url(/bg1.png);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+#row-statistic {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40rem;
+    height: 30%;
+}
+#statistic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 30%;
+    border-radius: 25px;
+    background-color: $white-color;
+}
+#statistic-card h1{
+    margin: 0 auto;
+    color: $background-color-2;
+}
+#statistic-card h4{
+    margin: 0 auto;
+}
+
+// profile
+#profile-image-container {
+    display: flex;
+    justify-content: right;
+    width: 80%;
+}
+#profile-image-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:1rem;
+    position: absolute; 
+    top: 23rem;           
+    left: 23%;   
+    z-index: 1;       
+}
+#profile-image-overlay img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    border: 3px solid $white-color;
+}
+#info-profile-container div {
+    margin-top: 3rem;
+}
+#info-profile-container *{
+    margin: 0 auto;
+}
+#info-profile-container h4 {
+    font-weight: 500;
+}
+#name-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+#profile-menu {
+    padding-top: 1rem;
+}
+#profile-menu button {
+    background-color: $black-color;
+    border-radius: 15px;
+}
+// chart
+#profile-chart-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    height: 30rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+#chart-container {
+    width: 49%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background-color;
+    border-radius: 25px;
+    padding: 1rem;
+}
+// activity
+#profile-activities-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 100%;
+    background-color: $background-color;
+    border-radius: 25px;
+}
+#activities-container {
+    background-color: $white-color;
+    padding: 1rem;
+    margin-top: 0.3rem;
+    border-radius: 35px;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+#info-activities {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+}
+#info-activities h4 {
+    font-size: 1rem;
+    margin: 0.5rem 0 0.5rem 0; 
+    transition: color 0.3s ease;
+}
+#name-activities {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: auto;
+}
+#name-activities h4 {
+    font-size: 1rem;
+    width: 75%;
+    margin: 0.5rem 0 0.5rem 0; 
+    transition: color 0.3s ease;
+}
+#name-activities i{
+    margin-bottom: 0.5rem;
+}
+// button 
+#profile-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    height: 100%;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+}
+#button-profile {
+    background-color: $white-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $white-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: 24%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#button-profile:hover {
+    background-color: $black-color;
+    color: $primary-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: 24%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#button-profile-active {
+    background-color: $black-color;
+    color: $primary-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: 24%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+

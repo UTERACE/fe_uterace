@@ -1,12 +1,10 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
-import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
 
 const Club = ({ club }) => {
   return (
     <div className='centered-content-layout'>
-      <Title title='Club activities' />
       <div className='custom-carousel-content'>
         {club.map((item) => (
           <div id='club-container'>
