@@ -35,28 +35,32 @@ const Topbar = () => {
     {
       label: 'Home',
       icon: 'pi pi-fw pi-home',
+      to: '/',
       command: () => handleClick('/'),
     },
     {
       label: 'Scoreboard',
       icon: 'pi pi-fw pi-chart-bar',
+      to: '/scoreboard',
       command: () => handleClick('/scoreboard'),
     },
     {
       label: 'Event',
       icon: 'pi pi-fw pi-calendar',
-      command: () => handleClick('/event'),
+      to: '/events',
+      command: () => handleClick('/events'),
     },
     {
       label: 'Club',
       icon: 'pi pi-fw pi-users',
-      command: () => handleClick('/club'),
+      to: '/clubs',
+      command: () => handleClick('/clubs'),
     },
     {
-      label: 'Post',
+      label: 'News',
       icon: 'pi pi-fw pi-book',
-      command: () => handleClick('/post'),
-      to: '/post',
+      command: () => handleClick('/news'),
+      to: '/news',
     },
     { label: 'Settings', icon: 'pi pi-fw pi-cog', to: '/settings' },
   ]
@@ -69,6 +73,7 @@ const Topbar = () => {
         command: item.command,
         style: item.style,
         to: item.to,
+        active: item.to === router.pathname,
       }
       model[i] = menuitem
     })
@@ -173,7 +178,9 @@ const Topbar = () => {
       <div className='centered-content-layout'>
         <div id='topbar-container'>
           <div id='logo-container'>
-            <img src='/logohome.png' alt='logo' />
+            <Link href='/'>
+              <img src='/logohome.png' alt='logo' />
+            </Link>
           </div>
           <div id='menubar'>
             <TabMenu model={item(items)} />

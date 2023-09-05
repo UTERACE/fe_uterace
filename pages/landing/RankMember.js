@@ -52,32 +52,32 @@ const RankMember = ({ value }) => {
   const clubsColumns = [
     {
       field: 'RANKING',
-      header: 'Rank',
+      header: 'Hạng',
       body: formatRank,
       bodyClassName: 'text-center',
       className: 'text-rank',
     },
     {
-      header: 'Thành viên',
+      header: 'Tên thành viên',
       body: fullnameWithImageTemplate,
       className: 'text-name',
     },
     {
       field: 'pace',
-      header: 'pace',
+      header: 'Pace (km/phút)',
       body: formatNumber,
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
       field: 'organization',
-      header: 'Đơn vị',
+      header: 'Cơ quan, tổ chức',
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
       field: 'TOTAL_DISTANCE',
-      header: 'Km',
+      header: 'Tổng quảng đường',
       bodyClassName: 'text-center',
       className: 'text-km',
       body: formatNumber,

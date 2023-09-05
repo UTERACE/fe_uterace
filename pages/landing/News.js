@@ -10,17 +10,12 @@ const News = ({ data }) => {
   }, [])
   const responsiveOptions = [
     {
-      breakpoint: '1199px',
-      numVisible: 3,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '991px',
+      breakpoint: '1400px',
       numVisible: 2,
       numScroll: 1,
     },
     {
-      breakpoint: '767px',
+      breakpoint: '900px',
       numVisible: 1,
       numScroll: 1,
     },
@@ -45,26 +40,15 @@ const News = ({ data }) => {
   }
 
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#DB2D33',
-        backgroundImage: "url('/bg1.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <Title title='News' />
-      <div className='centered-content-layout'>
-        <Carousel
-          id='custom-carousel-product'
-          value={news}
-          numVisible={3}
-          numScroll={1}
-          responsiveOptions={responsiveOptions}
-          itemTemplate={newsTemplate}
-        />
-      </div>
+    <div className='centered-content-layout'>
+      <Carousel
+        id='custom-carousel-product'
+        value={news}
+        numVisible={3}
+        numScroll={1}
+        responsiveOptions={responsiveOptions}
+        itemTemplate={newsTemplate}
+      />
     </div>
   )
 }

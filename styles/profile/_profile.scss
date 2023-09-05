@@ -151,7 +151,7 @@
 }
 #name-activities h4 {
     font-size: 1rem;
-    width: 75%;
+    width: 65%;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
 }
@@ -210,5 +210,10 @@
     justify-content: center;
     align-items: center;
 }
-
+#link-activities {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+}
 

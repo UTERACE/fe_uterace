@@ -10,7 +10,7 @@ const Detail = ({ link }) => {
           <div id='button_detail-container'>
             <Button
               id='button-detail'
-              label='Detail information'
+              label='Xem thêm'
               severity='secondary'
               raised
               icon='pi pi-arrow-circle-right'

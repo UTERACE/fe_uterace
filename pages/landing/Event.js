@@ -36,11 +36,11 @@ const Event = ({ event }) => {
         <div id='info-event'>
           <h4>
             <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-            {event.member} members
+            {event.member} Thành viên
           </h4>
           <h4>
             <i className='pi pi-briefcase ml2-icon' aria-hidden='true'></i>
-            {event.club} clubs
+            {event.club} Câu lạc bộ
           </h4>
         </div>
         <div id='name-event'>
@@ -49,11 +49,11 @@ const Event = ({ event }) => {
             <h4>{event.name}</h4>
             <div id='share-register-content'>
               <Link id='link-event' href='/register'>
-                Register{' '}
+                Tham gia sự kiện{' '}
                 <i className='pi pi-arrow-right' aria-hidden='true'></i>
               </Link>
               <Link id='link-event' href='/share'>
-                Share <i className='pi pi-share-alt' aria-hidden='true'></i>
+              Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
               </Link>
             </div>
           </div>
@@ -63,26 +63,15 @@ const Event = ({ event }) => {
   }
 
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#FFE49E',
-        backgroundImage: "url('/bg.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <Title title='Event activities' />
-      <div className='centered-content-layout'>
-        <Carousel
-          id='custom-carousel-product'
-          value={events}
-          numVisible={3}
-          numScroll={1}
-          responsiveOptions={responsiveOptions}
-          itemTemplate={eventTemplate}
-        />
-      </div>
+    <div className='centered-content-layout'>
+      <Carousel
+        id='custom-carousel-product'
+        value={events}
+        numVisible={3}
+        numScroll={1}
+        responsiveOptions={responsiveOptions}
+        itemTemplate={eventTemplate}
+      />
       <Detail link='/event' />
     </div>
   )

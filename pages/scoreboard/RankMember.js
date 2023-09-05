@@ -8,27 +8,27 @@ const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
   const formatRank = (rowData) => {
     return (
-      <div className='customer-info-rank '>
-        {rowData.RANKING === 1 ? (
+      <div id='member-ranking'>
+        {rowData.ranking === 1 ? (
           <img
             src='https://mobirace.net//Images/no1.png'
             alt='rank1'
             className='customer-rank'
           />
-        ) : rowData.RANKING === 2 ? (
+        ) : rowData.ranking === 2 ? (
           <img
             src='https://mobirace.net//Images/no2.png'
             alt='rank2'
             className='customer-rank'
           />
-        ) : rowData.RANKING === 3 ? (
+        ) : rowData.ranking === 3 ? (
           <img
             src='https://mobirace.net//Images/no3.png'
             alt='rank3'
             className='customer-rank'
           />
         ) : (
-          <div>{rowData.RANKING}</div>
+          <div>{rowData.ranking}</div>
         )}
       </div>
     )

@@ -4,3 +4,73 @@
     border-radius: 60px;
 }
 
+
+
+
+
+//component DataView
+#dataview-container {
+    background-color: $border-color;
+    padding: 1rem;
+    margin-top: 0.3rem;
+    border-radius: 35px;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+#dataview-container:hover {
+    background-color: $primary-color;
+    border-radius: 35px;
+    transform: scale(1.05);
+}
+#image-container-dataview {
+    width: 100%;
+    height: 15rem;
+}
+#image-container-dataview img{
+    border-radius: 25px;
+    width: 100%;
+    height: 90%;
+    object-fit: cover; 
+}
+#info-dataview {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+}
+
+#info-dataview h4 {
+    font-size: 1rem;
+    margin: 0.5rem 0 0.5rem 0; 
+    transition: color 0.3s ease;
+}
+#name-dataview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: auto; 
+}
+
+#share-register-container {
+    font-size: 1rem;
+    width: 75%;
+    transition: color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+#share-register-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+}
+#link-dataview {
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    font-weight: 500;
+    color: $text-color;
+    text-decoration: none;
+}

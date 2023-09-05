@@ -22,87 +22,19 @@ const Profile = () => {
   const menu = useRef(null)
   const end_items = [
     {
-      label: 'Profile',
-      icon: 'pi pi-fw pi-user',
-      command: () => handleClick('/profile'),
+      label: 'Chỉnh sửa thông tin',
+      icon: 'pi pi-fw pi-user-edit',
+      command: () => handleClick('/edit-profile'),
     },
     {
-      label: 'Settings',
-      icon: 'pi pi-fw pi-cog',
-      items: [
-        {
-          label: 'Edit Profile',
-          icon: 'pi pi-fw pi-user-edit',
-        },
-        {
-          label: 'Change Password',
-          icon: 'pi pi-fw pi-key',
-        },
-        {
-          label: 'Search',
-          icon: 'pi pi-fw pi-users',
-          items: [
-            {
-              label: 'Filter',
-              icon: 'pi pi-fw pi-filter',
-              items: [
-                {
-                  label: 'Print',
-                  icon: 'pi pi-fw pi-print',
-                },
-              ],
-            },
-            {
-              icon: 'pi pi-fw pi-bars',
-              label: 'List',
-            },
-          ],
-        },
-      ],
+      label: 'Đổi hình đại diện',
+      icon: 'pi pi-fw pi-image',
+      command: () => handleClick('/change-avatar'),
     },
     {
-      label: 'Events',
-      icon: 'pi pi-fw pi-calendar',
-      items: [
-        {
-          label: 'New event',
-          icon: 'pi pi-fw pi-plus',
-          command: () => handleClick('/new-event'),
-        },
-        {
-          label: 'All event',
-          icon: 'pi pi-fw pi-trash',
-        },
-        {
-          separator: true,
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-fw pi-external-link',
-        },
-      ],
-    },
-    {
-      label: 'Club',
-      icon: 'pi pi-fw pi-users',
-      items: [
-        {
-          label: 'New club',
-          icon: 'pi pi-fw pi-plus',
-          command: () => handleClick('/new-club'),
-        },
-        {
-          label: 'All club',
-          icon: 'pi pi-fw pi-trash',
-        },
-        {
-          separator: true,
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-fw pi-external-link',
-        },
-      ],
+      label: 'Kết nối ứng dụng',
+      icon: 'pi pi-fw  pi-link',
+      command: () => handleClick('/connect-app'),
     },
     {
       separator: true,
@@ -114,42 +46,54 @@ const Profile = () => {
     },
   ]
   const data = {
-    club: [
+    activities: [
       {
-        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+        name: 'Morning Run',
         image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
+        day: '23:04, 14/10/2022',
+        distance: 2.49,
+        pace: 5.0,
+        time: '00:12:45',
       },
       {
-        name: 'Club 2',
+        name: 'Afternoon Run',
         image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
+        day: '23:04, 14/10/2022',
+        distance: 2.49,
+        pace: 5.0,
+        time: '00:12:45',
       },
       {
-        name: 'Club 3',
+        name: 'Afternoon Run',
         image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
+        day: '23:04, 14/10/2022',
+        distance: 2.49,
+        pace: 5.0,
+        time: '00:12:45',
       },
       {
-        name: 'Club 4',
+        name: 'Lunch Run',
         image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
+        day: '23:04, 14/10/2022',
+        distance: 2.49,
+        pace: 5.0,
+        time: '00:12:45',
       },
       {
-        name: 'Club 5',
+        name: 'Lunch Run',
         image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
+        day: '23:04, 14/10/2022',
+        distance: 2.49,
+        pace: 5.0,
+        time: '00:12:45',
       },
       {
-        name: 'Club 6',
+        name: 'Morning Run',
         image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
+        day: '23:04, 14/10/2022',
+        distance: 2.49,
+        pace: 5.0,
+        time: '00:12:45',
       },
     ],
     total_distance: 107.5,
@@ -226,7 +170,7 @@ const Profile = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(2)
   return (
     <div
       className='centered-content-full'
@@ -299,8 +243,8 @@ const Profile = () => {
                 ref={menu}
                 model={end_items}
                 popup
-                viewportHeight={320}
-                menuWidth={200}
+                viewportHeight={250}
+                menuWidth={250}
               ></SlideMenu>
 
               <Button
@@ -377,7 +321,7 @@ const Profile = () => {
             {activeIndex === 2 ? (
               <div>
                 <Title title='Hoạt động gần đây' />
-                <Activity activities={data.club} />
+                <Activity activities={data.activities} />
                 <Paginator
                   first={first}
                   rows={per_page}

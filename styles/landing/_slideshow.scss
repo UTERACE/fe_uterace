@@ -41,6 +41,8 @@
 }
 #overview-slide {
   display: flex;
+  justify-content: center;
+  align-content: center;
   margin-top: 6rem;
   gap: 4rem;
 }
@@ -84,42 +86,45 @@
   width: 100%;
   z-index: 1000; 
 }
-
-#multi-color-border {
-  position: relative; 
-  width: 200px; /* Ví dụ kích thước, bạn có thể thay đổi */
-  height: auto;
-  color: white; /* Màu chữ cho button */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px; /* Bạn cũng có thể thêm bo tròn cho button nếu muốn */
-  position: relative; /* hoặc absolute, fixed, hoặc sticky tùy theo ngữ cảnh của bạn */
-  z-index: 1;
-  margin-top: 1rem;
-}
-#multi-color-border >button {
-  width: 100%;
-  height: 3rem;
-  border-radius: 10px;
-  border: none;
-  font-size: 1rem;
-  font-weight: bold;
-  border-color: black ;
+#slide-detail {
+  margin-top: 2rem;
 }
 
-#multi-color-border::before {
-  content: "";
-  position: absolute;
-  top: -2px; /* Đặt giá trị âm bằng độ dày viền */
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border: 10px solid;
-  border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-  border-image-slice: 1;
-  z-index: -1; /* Đảm bảo bóng màu nằm dưới button */
+// #multi-color-border {
+//   position: relative; 
+//   width: 200px; /* Ví dụ kích thước, bạn có thể thay đổi */
+//   height: auto;
+//   color: white; /* Màu chữ cho button */
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 15px; /* Bạn cũng có thể thêm bo tròn cho button nếu muốn */
+//   position: relative; /* hoặc absolute, fixed, hoặc sticky tùy theo ngữ cảnh của bạn */
+//   z-index: 1;
+//   margin-top: 1rem;
+// }
+// #multi-color-border >button {
+//   width: 100%;
+//   height: 3rem;
+//   border-radius: 10px;
+//   border: none;
+//   font-size: 1rem;
+//   font-weight: bold;
+//   border-color: black ;
+// }
 
-  /* Tạo bóng màu */
-  filter: blur(20px); /* Giảm giá trị blur để bóng màu không lệch quá xa */
-}
+// #multi-color-border::before {
+//   content: "";
+//   position: absolute;
+//   top: -2px; /* Đặt giá trị âm bằng độ dày viền */
+//   left: -2px;
+//   right: -2px;
+//   bottom: -2px;
+//   border: 10px solid;
+//   border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+//   border-image-slice: 1;
+//   z-index: -1; /* Đảm bảo bóng màu nằm dưới button */
+
+//   /* Tạo bóng màu */
+//   filter: blur(20px); /* Giảm giá trị blur để bóng màu không lệch quá xa */
+// }

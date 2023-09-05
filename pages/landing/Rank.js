@@ -1,33 +1,57 @@
-import React from 'react'
-import { TabView, TabPanel } from 'primereact/tabview'
+import React, { useState } from 'react'
 import RankClub from './RankClub'
 import RankMember from './RankMember'
-import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
+import { Button } from 'primereact/button'
 const Rank = ({ value }) => {
+  const [activeIndex, setActiveIndex] = useState(2)
+
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-        backgroundImage: "url('/bg1.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <Title title='Ranking club' />
-      <div className='centered-content-layout'>
-        <TabView style={{ width: '100%' }}>
-          <TabPanel header='Bảng xếp hạng CLB' style={{ background: 'none' }}>
-            <RankClub value={value.rankclub}></RankClub>
-            <Detail link='/club' />
-          </TabPanel>
-          <TabPanel header='Bảng xếp hạng cá nhân'>
-            <RankMember value={value.rankuser}></RankMember>
-            <Detail link='/member' />
-          </TabPanel>
-        </TabView>
+    <div className='centered-content-layout'>
+      <div id='statistic-club' style={{width:'100%'}}>
+        <Button
+          id={
+            activeIndex === 1
+              ? 'button-statistic-club-active'
+              : 'button-statistic-club'
+          }
+          icon='pi pi-users'
+          label='Câu lạc bộ'
+          onClick={() => {
+            setActiveIndex(1)
+          }}
+        />
+        <Button
+          id={
+            activeIndex === 2
+              ? 'button-statistic-club-active'
+              : 'button-statistic-club'
+          }
+          icon='pi pi-user'
+          label='Cá nhân'
+          onClick={() => {
+            setActiveIndex(2)
+          }}
+        />
       </div>
+      {activeIndex === 1 ? (
+        <div>
+          <RankClub value={value.rankclub}></RankClub>
+          <Detail link='/club' />
+        </div>
+      ) : (
+        <div>
+          <RankMember value={value.rankuser}></RankMember>
+          <Detail link='/member' />
+        </div>
+      )}
+      {/* <TabView style={{ width: '100%' }}>
+        <TabPanel header='Câu lạc bộ' style={{ background: 'none' }}></TabPanel>
+        <TabPanel header='Cá nhân'>
+          <RankMember value={value.rankuser}></RankMember>
+          <Detail link='/member' />
+        </TabPanel>
+      </TabView> */}
     </div>
   )
 }

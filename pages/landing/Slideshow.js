@@ -1,18 +1,19 @@
+import Detail from '@/components/landing/Detail'
 import { Button } from 'primereact/button'
 import React, { useEffect, useState } from 'react'
 
 const Slideshow = ({ data, interval = 3000 }) => {
-  const brand = data.brand
+  const events = data.events
   const [currentSlide, setCurrentSlide] = useState(0)
   useEffect(() => {
     const slideInterval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % brand.length)
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % events.length)
     }, interval)
     return () => clearInterval(slideInterval)
-  }, [brand, interval])
+  }, [events, interval])
   return (
     <div id='slideshow-container'>
-      {brand.map((slide, index) => (
+      {events.map((slide, index) => (
         <div
           key={slide.id}
           id='slide'
@@ -22,23 +23,27 @@ const Slideshow = ({ data, interval = 3000 }) => {
           <div id='slide-caption'>
             <div id='slide-name'>{slide.name}</div>
             <div>{slide.content}</div>
-            <div id='multi-color-border'>
+            <div id='slide-detail'>
+              <Detail link={`/events/event-detail/${slide.id}`} />
+            </div>
+
+            {/* <div id='multi-color-border'>
               <Button
                 id='button-dark'
                 label='Explore all artwork'
                 severity='secondary'
                 raised
               />
-            </div>
+            </div> */}
 
             <div id='overview-slide'>
               <div>
-                <span>{data.total_brand}k+</span>
-                <h>Artwork</h>
+                <span>{slide.member}</span>
+                <h>Thành viên </h>
               </div>
               <div>
-                <span>{data.total_product}k+</span>
-                <h>Artist</h>
+                <span>{slide.club}k+</span>
+                <h>Câu lạc bộ</h>
               </div>
             </div>
           </div>

@@ -52,7 +52,7 @@ const RankClub = ({ value }) => {
   const clubsColumns = [
     {
       field: 'CLUB_RANKING',
-      header: 'Rank',
+      header: 'Hạng',
       body: formatRank,
       bodyClassName: 'text-center',
       className: 'text-rank',
@@ -64,7 +64,7 @@ const RankClub = ({ value }) => {
     },
     {
       field: 'CLUB_TOTAL_DISTANCE',
-      header: 'Km',
+      header: 'Tổng quảng đường',
       body: formatNumber,
       bodyClassName: 'text-center',
       className: 'text-km',
@@ -77,7 +77,7 @@ const RankClub = ({ value }) => {
     },
     {
       field: 'admin_name',
-      header: 'Admin',
+      header: 'Tổng hoạt động',
       bodyClassName: 'text-center',
       className: 'text-km',
     },
