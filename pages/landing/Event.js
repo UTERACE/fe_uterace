@@ -72,7 +72,7 @@ const Event = ({ event }) => {
         responsiveOptions={responsiveOptions}
         itemTemplate={eventTemplate}
       />
-      <Detail link='/event' />
+      <Detail link='/events' />
     </div>
   )
 }

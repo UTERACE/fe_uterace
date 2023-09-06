@@ -8,11 +8,11 @@ import Activity from './Activity'
 import { Paginator } from 'primereact/paginator'
 import Club from './Club'
 import Title from '@/components/landing/Title'
+import ChartActivity from './ChartActivity'
+import Link from 'next/link'
 
 const Profile = () => {
   const dispatch = useDispatch()
-  const [chartData, setChartData] = useState({})
-  const [chartOptions, setChartOptions] = useState({})
 
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
@@ -96,6 +96,44 @@ const Profile = () => {
         time: '00:12:45',
       },
     ],
+    club: [
+      {
+        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+        image: 'https://picsum.photos/200/300',
+        member: 100,
+        total_distance: 1000,
+      },
+      {
+        name: 'Club 2',
+        image: 'https://picsum.photos/200/300',
+        member: 100,
+        total_distance: 1000,
+      },
+      {
+        name: 'Club 3',
+        image: 'https://picsum.photos/200/300',
+        member: 100,
+        total_distance: 1000,
+      },
+      {
+        name: 'Club 4',
+        image: 'https://picsum.photos/200/300',
+        member: 100,
+        total_distance: 1000,
+      },
+      {
+        name: 'Club 5',
+        image: 'https://picsum.photos/200/300',
+        member: 100,
+        total_distance: 1000,
+      },
+      {
+        name: 'Club 6',
+        image: 'https://picsum.photos/200/300',
+        member: 100,
+        total_distance: 1000,
+      },
+    ],
     total_distance: 107.5,
     pace: 5.52,
     total_runs: 20,
@@ -103,74 +141,26 @@ const Profile = () => {
     total_events: 3,
     ranking: 112,
   }
-  useEffect(() => {
-    const documentStyle = getComputedStyle(document.documentElement)
-    const textColor = documentStyle.getPropertyValue('--text-color')
-    const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary'
-    )
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border')
-    const data = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          type: 'line',
-          label: 'Dataset 1',
-          borderColor: documentStyle.getPropertyValue('--blue-500'),
-          borderWidth: 2,
-          fill: false,
-          tension: 0.4,
-          data: [50, 25, 12, 48, 56, 76, 42],
-        },
-        {
-          type: 'bar',
-          label: 'Dataset 2',
-          backgroundColor: documentStyle.getPropertyValue('--green-500'),
-          data: [21, 84, 24, 75, 37, 65, 34],
-          borderColor: 'white',
-          borderWidth: 2,
-        },
-      ],
-    }
-    const options = {
-      maintainAspectRatio: false,
-      aspectRatio: 1,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-          },
-        },
-        y: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-          },
-        },
-      },
-    }
 
-    setChartData(data)
-    setChartOptions(options)
-  }, [])
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
   const [activeIndex, setActiveIndex] = useState(2)
+  const linkStrava = (rowData) => {
+    return (
+      <a
+        target="_blank"
+        href={`https://www.strava.com/activities/${rowData.activity_link_stava}`}
+      >
+        <img
+          style={{ width: "50px", height: "50px", cursor: "pointer" }}
+          src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/323_Strava_logo-512.png"
+        ></img>
+      </a>
+    );
+  };
   return (
     <div
       className='centered-content-full'
@@ -229,11 +219,13 @@ const Profile = () => {
                     <i className='fas icon-large fa-edit'></i>
                   </div>
                   <h4>Member since 2020</h4>
-                  <img
-                    src='/strava-icon.png'
-                    alt='Connected Strava'
-                    style={{ width: '3rem', height: '3rem' }}
-                  />
+                  <Link href='/events'>
+                    <img
+                      src='/strava-icon.png'
+                      alt='Connected Strava'
+                      style={{ width: '3rem', height: '3rem' }}
+                    />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -259,20 +251,10 @@ const Profile = () => {
           </div>
           <div id='profile-chart-container'>
             <div id='chart-container'>
-              <Chart
-                type='line'
-                data={chartData}
-                options={chartOptions}
-                style={{ width: '100%', height: '100%' }}
-              />
+              <ChartActivity />
             </div>
             <div id='chart-container'>
-              <Chart
-                type='line'
-                data={chartData}
-                options={chartOptions}
-                style={{ width: '100%', height: '100%' }}
-              />
+              <ChartActivity />
             </div>
           </div>
           <div id='profile-activities-container'>

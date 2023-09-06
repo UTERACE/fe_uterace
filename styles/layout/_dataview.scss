@@ -61,6 +61,16 @@
     flex-direction: column;
     height: auto;
 }
+#share-register-container h4 {
+    font-size: 1rem;
+    margin: 0.5rem 0 0.5rem 0; 
+    transition: color 0.3s ease;
+}
+#share-register-container  h6 {
+    font-size: 0.8rem;
+    margin: 0.5rem 0 0.5rem 0; 
+    transition: color 0.3s ease;
+}
 #share-register-content {
     display: flex;
     justify-content: space-between;

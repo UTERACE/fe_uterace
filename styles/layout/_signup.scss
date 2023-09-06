@@ -107,7 +107,8 @@
     z-index: 1;
     margin: 4rem 0 0 0;
 }
-#multi-color-border-login >button {
+
+#button-dark {
     width: 100%;
     height: 3rem;
     border-radius: 10px;
@@ -115,25 +116,17 @@
     font-size: 1rem;
     font-weight: bold;
     border-color: black ;
-}
-
-#multi-color-border-login::before {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border: 5px solid;
-    border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-    border-image-slice: 1;
-    z-index: -1;
-
-    filter: blur(15px);
-}
-#button-dark {
     background-color: #000000;
     color: #FFE49E;
+    cursor: pointer;
+}
+#button-dark:hover {
+    background-color: #FFE49E;
+    color: black;
+    border-color: $border-color;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+
 }
 #forgot-title a{
     color: black;

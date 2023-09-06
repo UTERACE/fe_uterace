@@ -78,11 +78,8 @@ const Clubs = () => {
   }
   const onPageChange = (event) => {
     setFirst(event.first)
-    console.log(event)
     setCurrentPage(event.page + 1)
-    console.log(current_page)
     setPerPage(event.rows)
-    console.log(per_page)
   }
   const itemTemplate = (club) => {
     return (
@@ -127,32 +124,6 @@ const Clubs = () => {
     )
   }
   return (
-    // <div
-    //   className='centered-content-full'
-    //   style={{
-    //     backgroundColor: '#f5f5f5',
-    //     backgroundImage: "url('/bg1.png')",
-    //     backgroundSize: 'cover',
-    //     backgroundPosition: 'center',
-    //   }}
-    // >
-    //   <Title title='Ranking club' />
-    //   <div className='centered-content-layout'>
-    //     <DataView
-    //       value={data.clubs}
-    //       layout='grid'
-    //       itemTemplate={itemTemplate}
-    //     />
-    //     <Paginator
-    //       first={first}
-    //       rows={per_page}
-    //       totalRecords={totalRecords}
-    //       rowsPerPageOptions={[5, 10, 15]}
-    //       onPageChange={onPageChange}
-    //       page={current_page}
-    //     />
-    //   </div>
-    // </div>
     <div>
       <Title title='Tất cả câu lạc bộ ' />
       {/* <Club club={data.clubs} /> */}

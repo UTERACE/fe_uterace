@@ -1,14 +1,18 @@
 #topbar {
-    background-color: $white-color;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: $primary-color;
     position: sticky;
     top: 0;
     z-index: 1000; /* Đảm bảo thanh topbar luôn nằm trên cùng so với các phần tử khác */
+    border-bottom: 1px solid #f5f5f5;
 }
 #topbar-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 4rem;
+    height: 3.7rem;
 }
 #logo-container {
     width: 10%;
@@ -26,29 +30,52 @@
     gap: 1.5rem;
     height: 3rem;
 }
-.p-tabmenu .p-tabmenu-nav {
-    border: none;
-    height: 100%;
-    overflow: hidden;
+#topbar-button-login {
+    background-color: $white-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 1px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 2.7rem;
+    width: 7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    border-color: transparent;
-    color: #FFE49E;
-    border-radius: 15px;
+#topbar-button-login:hover {
+    background-color: $black-color;
+    color: $primary-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 2.7rem;
+    width: 7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:hover {
-    background: #f5f5f5;
+#topbar-button-login-active {
+    background-color: $black-color;
+    color: $primary-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 2.7rem;
+    width: 7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus{
-    box-shadow: inset 0 0 0 0.1rem #FFE49E;
-    background: #f5f5f5;
+#login-container a{
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
-.p-tabmenuitem:hover {
-    background-color: #f5f5f5;
-    border-radius: 15px;
-}
-.p-menuitem-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-}

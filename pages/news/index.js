@@ -1,11 +1,12 @@
+import React, { useState } from 'react'
+import { Paginator } from 'primereact/paginator'
 import DataView from '@/components/dataview/DataView'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
-import { Paginator } from 'primereact/paginator'
-import React, { useState } from 'react'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 
-const Events = () => {
-  const [events, setEvents] = useState([])
+const NewsPage = () => {
+  const [news, setNews] = useState([])
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
@@ -14,25 +15,25 @@ const Events = () => {
     per_page: 5,
     current_page: 1,
     total_page: 5,
-    total_club: 22,
-    events: [
+    total_news: 22,
+    news: [
       {
         id: 127,
-        name: '21 DAY CHALLENGE - THE MONKEY WARRIOR ',
-        description: 'fasfsdfgdffa',
+        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG ',
+        description: 'Chạy vì 1 mình abcd',
         image:
           'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 3,
-        club: 2,
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
       },
       {
         id: 5,
         name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN ',
-        description: 'string',
+        description: 'Chạy vì 1 con mèo',
         image:
           'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 1,
-        club: 1,
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
       },
       {
         id: 1,
@@ -40,8 +41,8 @@ const Events = () => {
         description: 'Chạy vì 1 mình abcd',
         image:
           'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-        member: 4,
-        club: 1,
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
       },
       {
         id: 2,
@@ -50,8 +51,8 @@ const Events = () => {
           'Team yêu chạy bộ thuộc Công ty Dịch vụ MobiFone Khu vực 3',
         image:
           'https://mobirace.net/Upload/Images/Club/202009/bestfriend_24092020_103151_570.jpg',
-        member: 1,
-        club: 1,
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
       },
       {
         id: 3,
@@ -59,8 +60,8 @@ const Events = () => {
         description: 'Câu lạc bộ chạy bộ taị Quảng Trị',
         image:
           'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        member: 1,
-        total_distance: 0.0,
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
       },
       {
         id: 4,
@@ -68,8 +69,8 @@ const Events = () => {
         description: 'string',
         image:
           'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 1,
-        total_distance: 0.0,
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
       },
     ],
   }
@@ -81,21 +82,22 @@ const Events = () => {
         </div>
         <div id='info-dataview'>
           <h4>
-            <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-            {item.member} Thành viên
+            {/* <i className='pi pi-users ml2-icon' aria-hidden='true'></i> */}
+            Ngày tạo: {LocaleHelper.formatDateTime(new Date(item.createAt))}
           </h4>
           <h4>
-            <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-            {item.club} Câu lạc bộ
+            {/* <i className='pi pi-map ml2-icon' aria-hidden='true'></i> */}
+            Cập nhật: {LocaleHelper.formatDateTime(new Date(item.updateAt))}
           </h4>
         </div>
         <div id='name-dataview'>
           <i class='fa fa-running icon-run' aria-hidden='true'></i>
           <div id='share-register-container'>
             <h4>{item.name}</h4>
+            <h6>{item.description}</h6>
             <div id='share-register-content'>
-              <Link id='link-event' href={`/events/event-detail/${item.id}`}>
-                Tham gia sự kiện{' '}
+              <Link id='link-event' href={`/news/news-detail/${item.id}`}>
+                Xem ngay{' '}
                 <i className='pi pi-arrow-right' aria-hidden='true'></i>
               </Link>
               <Link id='link-event' href='/share'>
@@ -114,16 +116,16 @@ const Events = () => {
   }
   return (
     <div>
-      <Title title='Tất cả giải chạy bộ ' />
+      <Title title='Các tin tức thể thao ' />
       <DataView
-        data={data.events}
-        href='/events/event-detail/'
+        data={data.news}
+        href='/news/news-detail/'
         itemTemplate={itemTemplate}
       />
       <Paginator
         first={first}
         rows={data.per_page}
-        totalRecords={data.total_club}
+        totalRecords={data.total_news}
         rowsPerPageOptions={[5, 10, 15]}
         onPageChange={onPageChange}
         page={data.current_page}
@@ -132,4 +134,4 @@ const Events = () => {
   )
 }
 
-export default Events
+export default NewsPage

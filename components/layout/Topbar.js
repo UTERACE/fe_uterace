@@ -3,24 +3,23 @@ import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useDispatch, useSelector } from 'react-redux'
 import { SlideMenu } from 'primereact/slidemenu'
 import { logout } from '@/store/slices/authSlice'
 import { Avatar } from 'primereact/avatar'
 import { Badge } from 'primereact/badge'
+import store from '@/store/store'
 
 const Topbar = () => {
-  const dispatch = useDispatch()
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+  const isAuthenticated = store.getState().auth.isAuthenticated
   const router = useRouter()
   const handleClick = (url) => {
     router.push(url)
   }
   const handleClickLogout = () => {
-    dispatch(logout())
+    store.dispatch(logout())
+    router.push('/login')
   }
   const [windowWidth, setWindowWidth] = useState(0)
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth)
@@ -31,49 +30,74 @@ const Topbar = () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
+  const [activeIndex, setActiveIndex] = useState(0)
+  useEffect(() => {
+    if (router.pathname === '/') {
+      setActiveIndex(0)
+    } else if (router.pathname === '/scoreboard') {
+      setActiveIndex(1)
+    } else if (router.pathname === '/events') {
+      setActiveIndex(2)
+    } else if (router.pathname === '/clubs') {
+      setActiveIndex(3)
+    } else if (router.pathname === '/news') {
+      setActiveIndex(4)
+    } else if (router.pathname === '/dashboard') {
+      setActiveIndex(5)
+    } else if (router.pathname === '/login') {
+      setActiveIndex(6)
+    } else if (router.pathname === '/register') {
+      setActiveIndex(7)
+    }
+  }, [router.pathname])
+
   const items = [
     {
-      label: 'Home',
+      label: 'Trang chủ',
       icon: 'pi pi-fw pi-home',
       to: '/',
       command: () => handleClick('/'),
     },
     {
-      label: 'Scoreboard',
+      label: 'Bản xếp hạng',
       icon: 'pi pi-fw pi-chart-bar',
       to: '/scoreboard',
       command: () => handleClick('/scoreboard'),
     },
     {
-      label: 'Event',
+      label: 'Sự kiện',
       icon: 'pi pi-fw pi-calendar',
       to: '/events',
       command: () => handleClick('/events'),
     },
     {
-      label: 'Club',
+      label: 'Câu lạc bộ',
       icon: 'pi pi-fw pi-users',
       to: '/clubs',
       command: () => handleClick('/clubs'),
     },
     {
-      label: 'News',
+      label: 'Tin tức',
       icon: 'pi pi-fw pi-book',
       command: () => handleClick('/news'),
       to: '/news',
     },
-    { label: 'Settings', icon: 'pi pi-fw pi-cog', to: '/settings' },
+    {
+      label: 'Dashboard',
+      icon: 'pi pi-fw pi-chart-line',
+      to: '/dashboard',
+      command: () => handleClick('/dashboard'),
+    },
   ]
   const item = (model) => {
     model.forEach((item, i) => {
       let menuitem = {
         id: item.id,
-        label: windowWidth < 1400 ? null : item.label,
+        label: windowWidth < 1350 ? null : item.label,
         icon: item.icon,
         command: item.command,
         style: item.style,
         to: item.to,
-        active: item.to === router.pathname,
       }
       model[i] = menuitem
     })
@@ -183,21 +207,45 @@ const Topbar = () => {
             </Link>
           </div>
           <div id='menubar'>
-            <TabMenu model={item(items)} />
+            <TabMenu
+              model={item(items)}
+              activeIndex={activeIndex}
+              onTabChange={(e) => setActiveIndex(e.index)}
+            />
           </div>
           {!isAuthenticated ? (
             <div id='login-container'>
               <Link href='/login'>
                 <Button
+                  id={
+                    activeIndex == 6
+                      ? 'topbar-button-login-active'
+                      : 'topbar-button-login'
+                  }
+                  type='button'
                   label='Sign in'
                   severity='warning'
-                  text
                   raised
-                  rounded
+                  onClick={() => {
+                    setActiveIndex(6)
+                  }}
                 />
               </Link>
               <Link href='/register'>
-                <Button label='Sign up' severity='warning' outlined rounded />{' '}
+                <Button
+                  id={
+                    activeIndex == 7
+                      ? 'topbar-button-login-active'
+                      : 'topbar-button-login'
+                  }
+                  type='button'
+                  label='Sign up'
+                  severity='warning'
+                  outlined
+                  onClick={() => {
+                    setActiveIndex(7)
+                  }}
+                />
               </Link>
             </div>
           ) : (
@@ -221,7 +269,7 @@ const Topbar = () => {
                 <Avatar
                   size='large'
                   shape='circle'
-                  image={useSelector((state) => state.auth.image)}
+                  image={store.getState().auth.image}
                 />
               </Link>
               <div className=''>
@@ -229,7 +277,7 @@ const Topbar = () => {
                   ref={menu}
                   model={end_items}
                   popup
-                  viewportHeight={320}
+                  viewportHeight={295}
                   menuWidth={200}
                 ></SlideMenu>
 

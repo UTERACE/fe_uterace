@@ -7,12 +7,18 @@ import Layout from '@/components/layout/Layout'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import store, { persistor } from '@/store/store'
+import ToastProvider from '@/components/contexts/ToastContext'
+import { LoadingProvider } from '@/components/contexts/LoadingContext'
 export default function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Layout>
-          <Component {...pageProps} />
+          <ToastProvider>
+            <LoadingProvider>
+              <Component {...pageProps} />
+            </LoadingProvider>
+          </ToastProvider>
         </Layout>
       </PersistGate>
     </Provider>

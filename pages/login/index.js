@@ -1,5 +1,5 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 import Link from 'next/link'
@@ -10,13 +10,15 @@ import apiInstance from '@/api/apiInstance'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '@/store/slices/authSlice'
 import { useRouter } from 'next/router'
+import { useToast } from '@/components/contexts/ToastContext'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
 
 const Login = () => {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
-  const defaultValues = {
-    checked: false,
-  }
+  const showToast = useToast().showToast
+  const setLoading = useContext(LoadingContext)
+  const defaultValues = {}
   const {
     watch,
     control,
@@ -33,7 +35,15 @@ const Login = () => {
     }
   }, [isAuthenticated])
   const handleLogin = async (data) => {
+    setLoading(true)
     try {
+      if (data.remember) {
+        localStorage.setItem('username', data.username)
+        localStorage.setItem('password', data.password)
+      } else {
+        localStorage.removeItem('username')
+        localStorage.removeItem('password')
+      }
       console.log(data)
       let { remember, ...rest } = data
       console.log('rest', rest)
@@ -48,9 +58,21 @@ const Login = () => {
         console.log('accessToken', accessToken)
         console.log('refreshToken', refreshToken)
         dispatch(login({ accessToken, refreshToken, image, fullName }))
+        showToast('success', 'Đăng nhập thành công ', response.data.detail)
+        setLoading(false)
       }
     } catch (error) {
-      console.log(error)
+      if (error.response && error.response.status === 401) {
+        showToast('error', 'Đăng nhập thất bại', error.response.data.detail)
+        setLoading(false)
+      } else {
+        showToast(
+          'error',
+          'Lỗi trong quá trình đăng nhập',
+          `Vui lòng đăng nhập lại ${error}`
+        )
+        setLoading(false)
+      }
     }
   }
   const handleClickLoginGoogle = () => {
@@ -76,6 +98,7 @@ const Login = () => {
                     control={control}
                     required
                     errors={errors}
+                    defaultValues={localStorage.getItem('username') || ''}
                   >
                     <InputText type='text' style={{ width: '100%' }} />
                   </Field>
@@ -89,6 +112,7 @@ const Login = () => {
                     control={control}
                     required
                     errors={errors}
+                    defaultValues={localStorage.getItem('password') || ''}
                   >
                     <Password type='password' style={{ width: '100%' }} />
                   </Field>
@@ -101,6 +125,7 @@ const Login = () => {
                     label='Remember me'
                     control={control}
                     errors={errors}
+                    defaultValues={true}
                   >
                     <Checkbox
                       inputId='remember'

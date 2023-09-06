@@ -7,6 +7,16 @@ import { Paginator } from 'primereact/paginator'
 import { Button } from 'primereact/button'
 
 const Scoreboard = () => {
+  const [member, setMember] = useState([])
+  const [current_page, setCurrentPage] = useState(1)
+  const [per_page, setPerPage] = useState(5)
+  const [totalRecords, setTotalRecords] = useState(1)
+  const [first, setFirst] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(1)
+  const [month, setMonth] = useState(1)
+
+  const currentDate = new Date()
+  const currentMonth = currentDate.getMonth() + 1
   const data = {
     per_page: 10,
     total_user: 25,
@@ -95,15 +105,11 @@ const Scoreboard = () => {
       },
     ],
   }
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentPageapi, setCurrentPageapi] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [activeIndex, setActiveIndex] = useState(1)
 
   const onPageChange = (event) => {
-    setCurrentPage(event.first + 2)
-    setCurrentPageapi(event.page + 1)
-    setRowsPerPage(event.rows)
+    setFirst(event.first)
+    setCurrentPage(event.page + 1)
+    setPerPage(event.rows)
   }
   return (
     <div
@@ -115,7 +121,7 @@ const Scoreboard = () => {
         backgroundPosition: 'center',
       }}
     >
-      <Title title='Ranking club' />
+      <Title title={activeIndex === 1 ? 'Bảng xếp hạng cá nhân':'Bảng xếp hạng CLB'}/>
       <div className='centered-content-layout'>
         <div
           id='profile-button-container'
@@ -123,16 +129,16 @@ const Scoreboard = () => {
         >
           <Button
             id={activeIndex === 1 ? 'button-profile-active' : 'button-profile'}
-            icon='pi pi-calendar'
-            label=' Bảng xếp hạng CLB'
+            icon='pi pi-chart-bar'
+            label=' Bảng xếp hạng cá nhân'
             onClick={() => {
               setActiveIndex(1)
             }}
           />
           <Button
             id={activeIndex === 2 ? 'button-profile-active' : 'button-profile'}
-            icon='pi pi-calendar-plus'
-            label='Bảng xếp hạng cá nhân'
+            icon='pi pi-chart-line'
+            label='Bảng xếp hạng CLB'
             onClick={() => {
               setActiveIndex(2)
             }}
@@ -145,19 +151,66 @@ const Scoreboard = () => {
           <TabPanel header='Bảng xếp hạng cá nhân'> */}
         {activeIndex === 1 ? (
           <div>
+            <div id='month-button-container'>
+              <Button
+                id={month === 1 ? 'button-month-active' : 'button-month'}
+                icon='pi pi-chart-bar'
+                label='Tổng'
+                onClick={() => {
+                  setMonth(1)
+                }}
+              />
+              <Button
+                id={
+                  month === currentMonth
+                    ? 'button-month-active'
+                    : 'button-month'
+                }
+                icon='pi pi-calendar-plus'
+                label={`Tháng ${currentMonth}`}
+                onClick={() => {
+                  setMonth(currentMonth)
+                  console.log(month)
+                }}
+              />
+              <Button
+                id={
+                  month === currentMonth - 1
+                    ? 'button-month-active'
+                    : 'button-month'
+                }
+                icon='pi pi-calendar-minus'
+                label={`Tháng ${currentMonth - 1}`}
+                onClick={() => {
+                  setMonth(currentMonth - 1)
+                  console.log(month)
+                }}
+              />
+              <Button
+                id={
+                  month === currentMonth - 2
+                    ? 'button-month-active'
+                    : 'button-month'
+                }
+                icon='pi pi-calendar-times'
+                label={`Tháng ${currentMonth - 2}`}
+                onClick={() => {
+                  setMonth(currentMonth - 2)
+                  console.log(month)
+                }}
+              />
+            </div>
             <RankMember value={data.member}></RankMember>
             <Paginator
-              first={data.current_page}
+              first={first}
               rows={data.per_page}
-              totalRecords={data.total_page}
+              totalRecords={data.total_user}
               rowsPerPageOptions={[10, 25, 50]}
               onPageChange={onPageChange}
+              page={data.current_page}
             />
           </div>
         ) : null}
-
-        {/* </TabPanel>
-        </TabView> */}
       </div>
     </div>
   )

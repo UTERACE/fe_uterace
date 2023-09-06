@@ -1,0 +1,49 @@
+#month-button-container {
+    display: flex;
+    justify-content: start;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+#button-month {
+    background-color: $white-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#button-month:hover {
+    background-color: $primary-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#button-month-active {
+    background-color: $primary-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

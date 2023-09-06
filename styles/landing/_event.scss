@@ -38,14 +38,6 @@
     height: auto; 
 }
 
-#share-register-container {
-    font-size: 1rem;
-    width: 75%;
-    transition: color 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-}
 #share-register-content {
     display: flex;
     justify-content: space-between;
@@ -58,6 +50,11 @@
     font-weight: 500;
     color: $text-color;
     text-decoration: none;
+}
+#link-event:hover {
+    color: $background-color-2;
+    font-weight: 550;
+    transition: color 0.3s ease;
 }
 
 #custom-carousel-product {
