@@ -1,0 +1,127 @@
+#dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    background-color: $white-color;
+}
+#dashboard-menu-container {
+    margin: 1rem 0 1rem 1rem;
+    gap: 1rem;
+    width: 15rem;
+    height: auto;
+    background-color: $border-color;
+    border-radius: 15px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#dashboard-menu-container h4{
+    margin: 0 0 0 0;
+    font-size: 1.5rem;
+    color: $text-color;
+}
+#dashboard-menu-container h6{
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $text-color;
+}
+#dashboard-content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 1rem 0 1rem;
+    width: 100%;
+    height: 100%;
+    background-color: $white-color;
+}
+#dashboard-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: 10rem;
+}
+#dashboard-content-header {
+    width: 25%;
+    height: 100%;
+    background-color: $background-color;
+    border-radius: 10px;
+}
+#dashboard-content-header span {
+    font-size: 1rem;
+}
+#span-new {
+    color: rgb(85, 224, 171);
+    margin: 0 0 0 1rem;
+}
+#dashboard-content-header-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    padding: 1rem 3rem 1rem 2rem;
+}
+#dashboard-content-header-child span {
+    display: block;
+    font-size: 1.5rem;
+    color: $text-color;
+    margin: 1rem 0 0.5rem 0;
+}
+#dashboard-content-header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:bisque;
+    border-radius: 10px;
+}
+
+
+#dashboard-content-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: auto;
+}
+#dashboard-content-chart-header {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+#dashboard-content-chart-header-child {
+    width: 100%;
+    height: 100%;
+    background-color: $background-color;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+
+
+// image
+#dashboard-image {
+    margin-top: 2rem;
+    width: 12rem;
+    height: 12rem;
+    border-radius: 50%;
+    border: 2px solid $white-color;
+    object-fit:fill;
+}

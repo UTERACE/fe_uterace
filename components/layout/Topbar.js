@@ -203,11 +203,12 @@ const Topbar = () => {
         <div id='topbar-container'>
           <div id='logo-container'>
             <Link href='/'>
-              <img src='/logohome.png' alt='logo' />
+              <img src='/logohome.png' alt='logo' style={{marginTop:'1rem'}}/>
             </Link>
           </div>
           <div id='menubar'>
             <TabMenu
+              id='app-menu-topbar'
               model={item(items)}
               activeIndex={activeIndex}
               onTabChange={(e) => setActiveIndex(e.index)}
@@ -267,6 +268,7 @@ const Topbar = () => {
               </i>
               <Link href='/profile'>
                 <Avatar
+                  style={{ border: '1px solid #ffffff' }}
                   size='large'
                   shape='circle'
                   image={store.getState().auth.image}
