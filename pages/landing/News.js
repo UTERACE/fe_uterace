@@ -22,20 +22,25 @@ const News = ({ data }) => {
   ]
   const newsTemplate = (news) => {
     return (
-      <div id='news-container'>
-        <div id='image-news-container'>
-          <img src={news.image} alt={news.name} />
-        </div>
-        <div id='name-news'>
-          <h4>{news.name}</h4>
+      <Link id='link-news' href={`news/news-detail/${news.news_id}`}>
+        <div id='news-container'>
+          <div id='image-news-container'>
+            <img src={news.image} alt={news.name} />
+          </div>
+          <div id='name-news'>
+            <h4>{news.name}</h4>
+          </div>
           <div id='share-register-content'>
             <i class='fa fa-running icon-run' aria-hidden='true'></i>
-            <Link id='link-news' href='/post'>
+            <div style={{ width: '60%' }}>
+              <h5>{news.description}</h5>
+            </div>
+            <Link id='link-event' href='/post'>
               Share <i className='pi pi-share-alt' aria-hidden='true'></i>
             </Link>
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
 

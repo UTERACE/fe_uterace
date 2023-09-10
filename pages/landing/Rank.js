@@ -36,12 +36,12 @@ const Rank = ({ value }) => {
       </div>
       {activeIndex === 1 ? (
         <div>
-          <RankClub value={value.rankclub}></RankClub>
+          <RankClub value={value.ranking_club}></RankClub>
           <Detail link='/club' />
         </div>
       ) : (
         <div>
-          <RankMember value={value.rankuser}></RankMember>
+          <RankMember value={value.ranking_user}></RankMember>
           <Detail link='/member' />
         </div>
       )}

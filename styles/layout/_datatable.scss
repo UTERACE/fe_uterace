@@ -86,7 +86,10 @@
     border: 0px solid $background-color;
     border-width: 0 0 0 0;
     padding: 0.2rem 0.2rem ;
-  }
+}
+.p-datatable .p-datatable-tbody > tr > td a {
+    text-decoration: none;
+}
 .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
     border-width: 0 0 0 0;
 }

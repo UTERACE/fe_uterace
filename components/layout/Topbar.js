@@ -34,15 +34,15 @@ const Topbar = () => {
   useEffect(() => {
     if (router.pathname === '/') {
       setActiveIndex(0)
-    } else if (router.pathname === '/scoreboard') {
+    } else if (router.pathname.startsWith('/scoreboard')) {
       setActiveIndex(1)
-    } else if (router.pathname === '/events') {
+    } else if (router.pathname.startsWith('/events')) {
       setActiveIndex(2)
-    } else if (router.pathname === '/clubs') {
+    } else if (router.pathname.startsWith('/clubs')) {
       setActiveIndex(3)
-    } else if (router.pathname === '/news') {
+    } else if (router.pathname.startsWith('/news')) {
       setActiveIndex(4)
-    } else if (router.pathname === '/dashboard') {
+    } else if (router.pathname.startsWith('/dashboard')) {
       setActiveIndex(5)
     } else if (router.pathname === '/login') {
       setActiveIndex(6)
@@ -108,7 +108,7 @@ const Topbar = () => {
     {
       label: 'Profile',
       icon: 'pi pi-fw pi-user',
-      command: () => handleClick('/profile'),
+      command: () => handleClick('/user/profile'),
     },
     {
       label: 'Settings',
@@ -266,7 +266,7 @@ const Topbar = () => {
               >
                 <Badge value='1'></Badge>
               </i>
-              <Link href='/profile'>
+              <Link href='/user/profile'>
                 <Avatar
                   style={{ border: '1px solid #ffffff' }}
                   size='large'

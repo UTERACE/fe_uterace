@@ -18,57 +18,55 @@ const NewsPage = () => {
     total_news: 22,
     news: [
       {
-        id: 127,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG ',
-        description: 'Chạy vì 1 mình abcd',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        createAt: '2023-08-01T00:00:00Z',
-        updateAt: '2023-09-01T00:00:00Z',
-      },
-      {
-        id: 5,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN ',
-        description: 'Chạy vì 1 con mèo',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        createAt: '2023-08-01T00:00:00Z',
-        updateAt: '2023-09-01T00:00:00Z',
-      },
-      {
-        id: 1,
-        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC TÀY ',
-        description: 'Chạy vì 1 mình abcd',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-        createAt: '2023-08-01T00:00:00Z',
-        updateAt: '2023-09-01T00:00:00Z',
-      },
-      {
-        id: 2,
-        name: 'CHAMPIONSHIP - YEAR OF THE CAT 2023 ',
+        news_id: 1,
+        name: 'Hướng dẫn đăng ký và cài đặt ứng dụng Strava',
         description:
-          'Team yêu chạy bộ thuộc Công ty Dịch vụ MobiFone Khu vực 3',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/bestfriend_24092020_103151_570.jpg',
+          'Hướng dẫn chi tiết cách đăng ký tài khoản và cài đặt ứng dụng Strava trên điện thoại',
+        image: 'https://mobirace.net/Upload/Images/HuongDan/dang_ky_strava.png',
         createAt: '2023-08-01T00:00:00Z',
         updateAt: '2023-09-01T00:00:00Z',
       },
       {
-        id: 3,
-        name: '21 Day Challenge - The Horse Warrior ',
-        description: 'Câu lạc bộ chạy bộ taị Quảng Trị',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
+        news_id: 2,
+        name: 'Hướng dẫn ghi nhận thành tích chạy trong nhà, trên máy',
+        description:
+          'Hướng dẫn chạy ở chế độ indoor trong nhà/trên máy chạy bộ',
+        image: 'https://mobirace.net/Upload/Images/HuongDan/run_indoor.jpg',
         createAt: '2023-08-01T00:00:00Z',
         updateAt: '2023-09-01T00:00:00Z',
       },
       {
-        id: 4,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG ',
-        description: 'string',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
+        news_id: 3,
+        name: 'Hướng dẫn tham gia giải chạy tại UTE Marathon 2021',
+        description: 'Hướng dẫn tham gia giải chạy tại UTE Marathon 2021',
+        image: 'https://mobirace.net/Upload/Images/HuongDan/dangkygiai.png',
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
+      },
+      {
+        news_id: 4,
+        name: 'Hướng dẫn kết nối ứng dụng Strava với Mobirace',
+        description:
+          'Hướng dẫn kết nối ứng dụng Strava với Mobirace để đồng bộ dữ liệu chạy bộ từ Strava về Mobirace',
+        image: 'https://mobirace.net/Upload/Images/HuongDan/ketnoi_strava.png',
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
+      },
+      {
+        news_id: 5,
+        name: 'Hướng dẫn đăng ký và cài đặt ứng dụng Strava',
+        description:
+          'Hướng dẫn chi tiết cách đăng ký tài khoản và cài đặt ứng dụng Strava trên điện thoại',
+        image: 'https://picsum.photos/200/300',
+        createAt: '2023-08-01T00:00:00Z',
+        updateAt: '2023-09-01T00:00:00Z',
+      },
+      {
+        news_id: 6,
+        name: 'Các bước tham gia giải chạy bộ tại Mobirace',
+        description:
+          'Hướng dẫn chi tiết các bước tham gia giải chạy bộ tại Mobirace',
+        image: 'https://picsum.photos/200/300',
         createAt: '2023-08-01T00:00:00Z',
         updateAt: '2023-09-01T00:00:00Z',
       },
@@ -76,37 +74,37 @@ const NewsPage = () => {
   }
   const itemTemplate = (item) => {
     return (
-      <div id='dataview-container'>
-        <div id='image-container-dataview'>
-          <img src={item.image} alt={item.name} />
-        </div>
-        <div id='info-dataview'>
-          <h4>
-            {/* <i className='pi pi-users ml2-icon' aria-hidden='true'></i> */}
-            Ngày tạo: {LocaleHelper.formatDateTime(new Date(item.createAt))}
-          </h4>
-          <h4>
-            {/* <i className='pi pi-map ml2-icon' aria-hidden='true'></i> */}
-            Cập nhật: {LocaleHelper.formatDateTime(new Date(item.updateAt))}
-          </h4>
-        </div>
-        <div id='name-dataview'>
-          <i class='fa fa-running icon-run' aria-hidden='true'></i>
-          <div id='share-register-container'>
-            <h4>{item.name}</h4>
-            <h6>{item.description}</h6>
-            <div id='share-register-content'>
-              <Link id='link-event' href={`/news/news-detail/${item.id}`}>
-                Xem ngay{' '}
-                <i className='pi pi-arrow-right' aria-hidden='true'></i>
-              </Link>
-              <Link id='link-event' href='/share'>
-                Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
-              </Link>
+      <Link id='link-dataview' href={`/news/news-detail/${item.id}`}>
+        <div id='dataview-container'>
+          <div id='image-container-dataview'>
+            <img src={item.image} alt={item.name} />
+          </div>
+          <div id='info-dataview'>
+            <h4>
+              Ngày tạo: {LocaleHelper.formatDateTime(new Date(item.createAt))}
+            </h4>
+            <h4>
+              Cập nhật: {LocaleHelper.formatDateTime(new Date(item.updateAt))}
+            </h4>
+          </div>
+          <div id='name-dataview'>
+            <i class='fa fa-running icon-run' aria-hidden='true'></i>
+            <div id='share-register-container'>
+              <h4>{item.name}</h4>
+              <h6>{item.description}</h6>
+              <div id='share-register-content'>
+                <Link id='link-event' href={`/news/news-detail/${item.id}`}>
+                  Xem ngay{' '}
+                  <i className='pi pi-arrow-right' aria-hidden='true'></i>
+                </Link>
+                <Link id='link-event' href='/share'>
+                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
   const onPageChange = (event) => {

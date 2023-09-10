@@ -9,49 +9,51 @@ const RankMember = ({ value }) => {
   const formatRank = (rowData) => {
     return (
       <div className='customer-info-rank '>
-        {rowData.RANKING === 1 ? (
+        {rowData.ranking === 1 ? (
           <img
             src='https://mobirace.net//Images/no1.png'
             alt='rank1'
             className='customer-rank'
           />
-        ) : rowData.RANKING === 2 ? (
+        ) : rowData.ranking === 2 ? (
           <img
             src='https://mobirace.net//Images/no2.png'
             alt='rank2'
             className='customer-rank'
           />
-        ) : rowData.RANKING === 3 ? (
+        ) : rowData.ranking === 3 ? (
           <img
             src='https://mobirace.net//Images/no3.png'
             alt='rank3'
             className='customer-rank'
           />
         ) : (
-          <div>{rowData.RANKING}</div>
+          <div>{rowData.ranking}</div>
         )}
       </div>
     )
   }
   const fullnameWithImageTemplate = (rowData) => {
     return (
-      <div id='member-info'>
-        <Avatar image={rowData.AVATAR_PATH} size='xlarge' shape='circle' />
-        <Link href={`club/detail-club/${rowData.USER_ID}`}>
-          <span id='member-name'>{rowData.FULL_NAME}</span>
-        </Link>
-      </div>
+      <Link href={`/user/${rowData.user_id}`}>
+        <div id='member-info'>
+          <Avatar image={rowData.image} size='xlarge' shape='circle' />
+          <span id='member-name'>
+            {rowData.last_name + ' ' + rowData.first_name}
+          </span>
+        </div>
+      </Link>
     )
   }
   const formatNumber = (rowData) => {
     if (rowData) {
-      return LocaleHelper.formatNumber(rowData.TOTAL_DISTANCE.toFixed(2))
+      return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
   const clubsColumns = [
     {
-      field: 'RANKING',
+      field: 'ranking',
       header: 'Hạng',
       body: formatRank,
       bodyClassName: 'text-center',
@@ -76,7 +78,7 @@ const RankMember = ({ value }) => {
       className: 'text-km',
     },
     {
-      field: 'TOTAL_DISTANCE',
+      field: 'total_distance',
       header: 'Tổng quảng đường',
       bodyClassName: 'text-center',
       className: 'text-km',

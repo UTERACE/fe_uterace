@@ -4,48 +4,28 @@ import { SlideMenu } from 'primereact/slidemenu'
 import { Chart } from 'primereact/chart'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Activity from './Activity'
 import { Paginator } from 'primereact/paginator'
-import Club from './Club'
+import { Dialog } from 'primereact/dialog'
 import Title from '@/components/landing/Title'
-import ChartActivity from './ChartActivity'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import ChartActivity from './profile/ChartActivity'
+import Activity from './profile/Activity'
+import Club from './profile/Club'
 
-const Profile = () => {
-  const dispatch = useDispatch()
+const UserDetail = () => {
+  const router = useRouter()
+  const { id } = router.query
 
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(4)
   const [first, setFirst] = useState(1)
 
-  const menu = useRef(null)
-  const end_items = [
-    {
-      label: 'Chỉnh sửa thông tin',
-      icon: 'pi pi-fw pi-user-edit',
-      command: () => handleClick('/edit-profile'),
-    },
-    {
-      label: 'Đổi hình đại diện',
-      icon: 'pi pi-fw pi-image',
-      command: () => handleClick('/change-avatar'),
-    },
-    {
-      label: 'Kết nối ứng dụng',
-      icon: 'pi pi-fw  pi-link',
-      command: () => handleClick('/connect-app'),
-    },
-    {
-      separator: true,
-    },
-    {
-      label: 'Logout',
-      icon: 'pi pi-fw pi-power-off',
-      command: () => handleClickLogout(),
-    },
-  ]
   const data = {
+    id: 1,
+    name: 'Nguyễn Văn A',
+    image: 'https://picsum.photos/200/300',
     activities: [
       {
         name: 'Morning Run',
@@ -148,19 +128,7 @@ const Profile = () => {
     setPerPage(event.rows)
   }
   const [activeIndex, setActiveIndex] = useState(2)
-  const linkStrava = (rowData) => {
-    return (
-      <a
-        target="_blank"
-        href={`https://www.strava.com/activities/${rowData.activity_link_stava}`}
-      >
-        <img
-          style={{ width: "50px", height: "50px", cursor: "pointer" }}
-          src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/323_Strava_logo-512.png"
-        ></img>
-      </a>
-    );
-  };
+
   return (
     <div
       className='centered-content-full'
@@ -204,21 +172,20 @@ const Profile = () => {
             <div style={{ height: '8rem' }}>
               <div id='profile-image-overlay'>
                 <img
-                  src={useSelector((state) => state.auth.image)}
+                  src={data.image}
                   alt='profile'
                   id='profile-image'
                 />
                 <div id='info-profile-container'>
                   <div id='name-container'>
-                    <h1>{useSelector((state) => state.auth.fullName)}</h1>
+                    <h1>{data.name}</h1>
                     <img
                       src='/verified.png'
                       alt='verified'
                       style={{ width: '2rem', height: '2rem' }}
                     />
-                    <i className='fas icon-large fa-edit'></i>
                   </div>
-                  <h4>Member since 2020</h4>
+                  <h4> Mã người dùng: {id} </h4>
                   <Link href='/events'>
                     <img
                       src='/strava-icon.png'
@@ -228,25 +195,6 @@ const Profile = () => {
                   </Link>
                 </div>
               </div>
-            </div>
-
-            <div id='profile-menu'>
-              <SlideMenu
-                ref={menu}
-                model={end_items}
-                popup
-                viewportHeight={250}
-                menuWidth={250}
-              ></SlideMenu>
-
-              <Button
-                type='button'
-                icon='pi pi-bars icon-large'
-                severity='secondary'
-                raised
-                label='Menu'
-                onClick={(event) => menu.current.toggle(event)}
-              ></Button>
             </div>
           </div>
           <div id='profile-chart-container'>
@@ -301,7 +249,7 @@ const Profile = () => {
               />
             </div>
             {activeIndex === 2 ? (
-              <div>
+              <div style={{ width: '95%' }}>
                 <Title title='Hoạt động gần đây' />
                 <Activity activities={data.activities} />
                 <Paginator
@@ -314,7 +262,7 @@ const Profile = () => {
                 />
               </div>
             ) : activeIndex === 3 ? (
-              <div>
+              <div style={{ width: '95%' }}>
                 <Club club={data.club} />
                 <Paginator
                   first={first}
@@ -326,7 +274,7 @@ const Profile = () => {
                 />
               </div>
             ) : activeIndex === 1 ? (
-              <div>
+              <div style={{ width: '95%' }}>
                 <Club club={data.club} />
                 <Paginator
                   first={first}
@@ -345,4 +293,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default UserDetail

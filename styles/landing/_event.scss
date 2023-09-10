@@ -79,6 +79,22 @@
     border-radius: 50px;
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
+#custom-carousel-product.p-carousel .p-carousel-content .p-carousel-prev, 
+#custom-carousel-product.p-carousel .p-carousel-content .p-carousel-next {
+    width: 3rem;
+    height: 3rem;
+    color: #6c757d;
+    border: 0 none;
+    background: $white-color;
+      background-color: $white-color;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    margin: 0;
+}
+.p-icon {
+    width: 2rem;
+    height: 2rem;
+}
 #custom-carousel-product.p-carousel .p-highlight button {
     background-color: black;
     border-radius: 50px;

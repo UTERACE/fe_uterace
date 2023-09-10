@@ -17,62 +17,54 @@ const Clubs = () => {
     per_page: 5,
     current_page: 1,
     total_page: 5,
-    total_club: 22,
+    total_clubs: 22,
     clubs: [
       {
-        id: 127,
-        name: '21 DAY CHALLENGE - THE MONKEY WARRIOR ',
-        description: 'fasfsdfgdffa',
+        club_id: 1,
+        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+        image: 'https://picsum.photos/200/300',
+        total_members: 100,
+        total_distance: 1000,
+      },
+      {
+        club_id: 2,
+        name: 'Dak Lak Runners',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202008/IMG_20200816_094952_16082020_094942_562.jpg',
+        total_members: 100,
+        total_distance: 1000,
+      },
+      {
+        club_id: 3,
+        name: 'MOBIFONE ĐẮK LẮK - ĐẮK NÔNG',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202010/dl_dn_17102020_095936_684.jpg',
+        total_members: 100,
+        total_distance: 1000,
+      },
+      {
+        club_id: 4,
+        name: 'XOSOKIENTHIETQUANGBINH RUNNERS CLUB',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202103/IMG_20200913_114028_18032021_152058_637.jpg',
+        total_members: 100,
+        total_distance: 1000,
+      },
+      {
+        club_id: 5,
+        name: 'Đài Viễn Thông Đông HCM - TT MLMN',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202009/FN_29092020_130940_125.png',
+        total_members: 100,
+        total_distance: 1000,
+      },
+      {
+        club_id: 6,
+        name: 'MLMN Win Together',
         image:
           'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 3,
-        total_distance: 2.5,
-      },
-      {
-        id: 5,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN ',
-        description: 'string',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 1,
-        total_distance: 0.1,
-      },
-      {
-        id: 1,
-        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC TÀY ',
-        description: 'Chạy vì 1 mình abcd',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-        member: 4,
-        total_distance: 0.0,
-      },
-      {
-        id: 2,
-        name: 'CHAMPIONSHIP - YEAR OF THE CAT 2023 ',
-        description:
-          'Team yêu chạy bộ thuộc Công ty Dịch vụ MobiFone Khu vực 3',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/bestfriend_24092020_103151_570.jpg',
-        member: 1,
-        total_distance: 0.0,
-      },
-      {
-        id: 3,
-        name: '21 Day Challenge - The Horse Warrior ',
-        description: 'Câu lạc bộ chạy bộ taị Quảng Trị',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        member: 1,
-        total_distance: 0.0,
-      },
-      {
-        id: 4,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG ',
-        description: 'string',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 1,
-        total_distance: 0.0,
+        total_members: 100,
+        total_distance: 1000,
       },
     ],
   }
@@ -93,7 +85,7 @@ const Clubs = () => {
               <div id='info-club'>
                 <h4>
                   <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-                  {item.member} Thành viên 
+                  {item.member} Thành viên
                 </h4>
                 <h4>
                   <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
@@ -131,7 +123,7 @@ const Clubs = () => {
       <Paginator
         first={first}
         rows={data.per_page}
-        totalRecords={data.total_club}
+        totalRecords={data.total_clubs}
         rowsPerPageOptions={[5, 10, 15]}
         onPageChange={onPageChange}
         page={data.current_page}

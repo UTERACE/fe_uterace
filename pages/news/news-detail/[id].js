@@ -1,6 +1,6 @@
 import Title from '@/components/landing/Title'
 import News from '@/pages/landing/News'
-import Activity from '@/pages/profile/Activity'
+import Activity from '@/pages/user/profile/Activity'
 import RankMember from '@/pages/scoreboard/RankMember'
 import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'

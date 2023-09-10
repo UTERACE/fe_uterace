@@ -6,7 +6,38 @@ import HomePage from './HomePage'
 
 const DashboardPage = () => {
   const [activeIndex, setActiveIndex] = useState(0)
-
+  const model = [
+    {
+      label: 'Dashboard',
+      icon: 'pi pi-fw pi-home',
+      to: '/dashboard',
+    },
+    {
+      label: 'Quản lí trang chủ',
+      icon: 'pi pi-fw pi-home',
+      to: '/homepage',
+    },
+    {
+      label: 'Quản lí giải chạy ',
+      icon: 'pi pi-fw pi-calendar',
+      to: '/events',
+    },
+    {
+      label: 'Quản lí câu lạc bộ',
+      icon: 'pi pi-fw pi-users',
+      to: '/clubs',
+    },
+    {
+      label: 'Quản lí tin tức',
+      icon: 'pi pi-fw pi-book',
+      to: '/news',
+    },
+    {
+      label: 'Quản lí người dùng',
+      icon: 'pi pi-fw pi-user',
+      to: '/profile',
+    },
+  ]
   return (
     <div id='dashboard-container'>
       <div id='dashboard-menu-container'>
@@ -17,7 +48,7 @@ const DashboardPage = () => {
         />
         <h4>{store.getState().auth.fullName}</h4>
         <h6>Quản trị viên hệ thống</h6>
-        <AppMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        <AppMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex} model={model}/>
       </div>
       {activeIndex === 0 ? <Dashboard /> : <HomePage />}
     </div>

@@ -38,7 +38,9 @@ const RankMember = ({ value }) => {
       <div id='member-info'>
         <Avatar image={rowData.image} size='xlarge' shape='circle' />
         <Link href={`club/detail-club/${rowData.id}`}>
-          <span id='member-name'>{rowData.fullname}</span>
+          <span id='member-name'>
+            {rowData.last_name + ' ' + rowData.first_name}
+          </span>
         </Link>
       </div>
     )

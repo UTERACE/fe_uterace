@@ -73,7 +73,7 @@ const Register = () => {
                     required
                     errors={errors}
                   >
-                    <Password type='password' style={{ width: '100%' }} />
+                    <Password type='password' style={{ width: '100%' }} toggleMask/>
                   </Field>
                 </div>
               </div>
@@ -86,7 +86,7 @@ const Register = () => {
                     required
                     errors={errors}
                   >
-                    <Password type='password' style={{ width: '100%' }} />
+                    <Password type='password' style={{ width: '100%' }} toggleMask/>
                   </Field>
                 </div>
               </div>

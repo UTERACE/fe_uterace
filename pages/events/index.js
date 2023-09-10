@@ -14,97 +14,92 @@ const Events = () => {
     per_page: 5,
     current_page: 1,
     total_page: 5,
-    total_club: 22,
+    total_events: 22,
     events: [
       {
-        id: 127,
+        event_id: 127,
         name: '21 DAY CHALLENGE - THE MONKEY WARRIOR ',
-        description: 'fasfsdfgdffa',
         image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 3,
-        club: 2,
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/e06bb7dc736ecb9b9920953e4.png?w=720',
+        total_members: 3,
+        total_clubs: 2,
       },
       {
-        id: 5,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN ',
-        description: 'string',
+        event_id: 1,
+        name: 'MID-AUTUMN CHALLENGE - TẾT TRUNG THU ĐOÀN VIÊN ',
         image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 1,
-        club: 1,
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
+        total_members: 120,
+        total_clubs: 19,
       },
       {
-        id: 1,
-        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC TÀY ',
-        description: 'Chạy vì 1 mình abcd',
+        event_id: 2,
+        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC MƯỜNG ',
         image:
-          'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-        member: 4,
-        club: 1,
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=720',
+        total_members: 60,
+        total_clubs: 11,
       },
       {
-        id: 2,
-        name: 'CHAMPIONSHIP - YEAR OF THE CAT 2023 ',
-        description:
-          'Team yêu chạy bộ thuộc Công ty Dịch vụ MobiFone Khu vực 3',
+        event_id: 3,
+        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 13 - BẮC GIANG ',
         image:
-          'https://mobirace.net/Upload/Images/Club/202009/bestfriend_24092020_103151_570.jpg',
-        member: 1,
-        club: 1,
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=720',
+        total_members: 240,
+        total_clubs: 30,
       },
       {
-        id: 3,
-        name: '21 Day Challenge - The Horse Warrior ',
-        description: 'Câu lạc bộ chạy bộ taị Quảng Trị',
+        event_id: 4,
+        name: 'AZTEC LOST CHẶNG 1 - CHINH PHỤC THẦN MƯA TLALOC (THE GOD OF RAIN) ',
         image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        member: 1,
-        total_distance: 0.0,
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1bf678a8a67029fa1e6697c62.jpg?w=720',
+        total_members: 320,
+        total_clubs: 101,
       },
       {
-        id: 4,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG ',
-        description: 'string',
+        event_id: 5,
+        name: 'RACE AROUND THE WORLD - IRAN: BÍ ẨN XỨ BA TƯ ',
         image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        member: 1,
-        total_distance: 0.0,
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/3661e301e10ee6febd38e793a.png?w=720',
+        total_members: 130,
+        total_clubs: 12,
       },
     ],
   }
   const itemTemplate = (item) => {
     return (
-      <div id='dataview-container'>
-        <div id='image-container-dataview'>
-          <img src={item.image} alt={item.name} />
-        </div>
-        <div id='info-dataview'>
-          <h4>
-            <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-            {item.member} Thành viên
-          </h4>
-          <h4>
-            <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-            {item.club} Câu lạc bộ
-          </h4>
-        </div>
-        <div id='name-dataview'>
-          <i class='fa fa-running icon-run' aria-hidden='true'></i>
-          <div id='share-register-container'>
-            <h4>{item.name}</h4>
-            <div id='share-register-content'>
-              <Link id='link-event' href={`/events/event-detail/${item.id}`}>
-                Tham gia sự kiện{' '}
-                <i className='pi pi-arrow-right' aria-hidden='true'></i>
-              </Link>
-              <Link id='link-event' href='/share'>
-                Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
-              </Link>
+      <Link id='link-dataview' href={`/events/event-detail/${item.id}`}>
+        <div id='dataview-container'>
+          <div id='image-container-dataview'>
+            <img src={item.image} alt={item.name} />
+          </div>
+          <div id='info-dataview'>
+            <h4>
+              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
+              {item.member} Thành viên
+            </h4>
+            <h4>
+              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
+              {item.club} Câu lạc bộ
+            </h4>
+          </div>
+          <div id='name-dataview'>
+            <i class='fa fa-running icon-run' aria-hidden='true'></i>
+            <div id='share-register-container'>
+              <h4>{item.name}</h4>
+              <div id='share-register-content'>
+                <Link id='link-event' href={`/events/event-detail/${item.id}`}>
+                  Tham gia sự kiện{' '}
+                  <i className='pi pi-arrow-right' aria-hidden='true'></i>
+                </Link>
+                <Link id='link-event' href='/share'>
+                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
   const onPageChange = (event) => {
@@ -123,7 +118,7 @@ const Events = () => {
       <Paginator
         first={first}
         rows={data.per_page}
-        totalRecords={data.total_club}
+        totalRecords={data.total_events}
         rowsPerPageOptions={[5, 10, 15]}
         onPageChange={onPageChange}
         page={data.current_page}

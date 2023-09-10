@@ -1,0 +1,31 @@
+#setting-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+#setting-menu-container {
+    background-color: $border-color;
+    width: 20%;
+    height: 12rem;
+    margin: 2rem 0 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+#setting-profile-container {
+    background-color: $border-color;
+    width: 70%;
+    height: auto;
+    margin: 2rem 0 2rem 0;
+    padding: 0 0 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+#form-setting {
+    width: 45rem
+}

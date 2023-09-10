@@ -1,0 +1,31 @@
+#connect-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+#strava-icon {
+    width: 10rem;
+    height: 10rem;
+    margin: 2rem 0 0 0;
+}
+#default-container {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $primary-color;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 15px;
+    margin: 0 auto;
+}
+#connect-container a{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-color;
+    text-decoration: none;
+    margin: 0;
+}

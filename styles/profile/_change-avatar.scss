@@ -1,0 +1,120 @@
+#change-avatar-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#background-container {
+    width: 80%;
+    height: 20rem;
+    margin-top: 1rem;
+    background-color: $background-color-2;
+    border-radius: 15px;
+}
+#background-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+#camera-container-background {
+    width: 3rem;
+    height: 3rem;
+    background-color: $background-camera;
+    border-radius: 50%;
+    position: absolute; 
+    top: 50%;           
+    left: 50%;   
+    z-index: 1; 
+}
+#camera-container-background i{
+    font-size: 1.5rem;
+    position: absolute; 
+    top: 50%;           
+    left: 50%;   
+    transform: translate(-50%, -50%);
+}
+#avatar-container {
+    width: 10rem;
+    height: 10rem;
+    position: absolute; 
+    top: 90%;           
+    left: 13%;   
+    z-index: 1; 
+}
+#avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid $border-color;
+}
+#camera-container-avatar {
+    width: 3rem;
+    height: 3rem;
+    background-color: $background-camera;
+    border-radius: 50%;
+    position: absolute; 
+    top: 35%;           
+    left: 37%;   
+    z-index: 1; 
+}
+#camera-container-avatar i {
+    font-size: 1.5rem;
+    position: absolute; 
+    top: 50%;           
+    left: 50%;   
+    transform: translate(-50%, -50%);
+}
+#button-update-container {
+    width: 100%;
+    height: 3rem;
+    position: absolute; 
+    top: 25rem;           
+    left: 30%;   
+    z-index: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// custom upload file
+.p-button {
+    color: transparent;
+    background: transparent;
+    border: 0 solid #2196F3;
+      border-top-color: rgb(33, 150, 243);
+      border-right-color: rgb(33, 150, 243);
+      border-bottom-color: rgb(33, 150, 243);
+      border-left-color: rgb(33, 150, 243);
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 3px;
+}
+
+.p-button:enabled:hover, .p-button:not(button):not(a):not(.p-disabled):hover {
+    background: transparent;
+    color: transparent;
+    border-color: transparent;
+}
+.p-dialog .p-dialog-content {
+    background: #ffffffce;
+    color: #495057;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.p-dialog .p-dialog-header {
+    border-bottom: 0 none;
+    background: #ffffffce;
+    color: #495057;
+    padding: 1.5rem;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.p-dialog .p-dialog-content:last-of-type {
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}

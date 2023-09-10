@@ -145,18 +145,24 @@
 #name-activities {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
     width: 100%;
     height: auto;
 }
 #name-activities h4 {
     font-size: 1rem;
-    width: 65%;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
 }
 #name-activities i{
     margin-bottom: 0.5rem;
+}
+#name-activities img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
 }
 // button 
 #profile-button-container {

@@ -114,7 +114,7 @@ const Login = () => {
                     errors={errors}
                     defaultValues={localStorage.getItem('password') || ''}
                   >
-                    <Password type='password' style={{ width: '100%' }} />
+                    <Password type='password' style={{ width: '100%' }} toggleMask/>
                   </Field>
                 </div>
               </div>

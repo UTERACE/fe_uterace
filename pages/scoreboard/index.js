@@ -22,11 +22,13 @@ const Scoreboard = () => {
     total_user: 25,
     current_page: 1,
     total_page: 3,
-    member: [
+    ranking_user: [
       {
-        id: 119,
-        fullname: 'Can Lê',
-        image: '/no_avatar_strava.png',
+        user_id: 119,
+        first_name: 'Can',
+        last_name: 'Lê',
+        image:
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
         total_distance: 15.02,
         ranking: 1,
         pace: 10.082677841186523,
@@ -34,74 +36,171 @@ const Scoreboard = () => {
         gender: 'Nam',
       },
       {
-        id: 93,
-        fullname: 'Nguyễn Hà Kiên',
+        user_id: 2,
+        ranking: 2,
+        first_name: 'Nguyễn',
+        last_name: 'Sinh Hùng',
+        image:
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
+        total_distance: 2.42,
+        organization: 'Công ty DV MobiFone KV2',
+        pace: 6.15,
+        gender: 'Nam',
+      },
+      {
+        user_id: 1,
+        ranking: 3,
+        first_name: 'Nguyễn',
+        last_name: 'Văn A',
+        image:
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=1800',
+        total_distance: 0.0,
+        organization: 'Công ty DV MobiFone KV2',
+        pace: 0.0,
+        gender: 'Nam',
+      },
+      {
+        user_id: 3,
+        ranking: 4,
+        first_name: 'Nguyễn',
+        last_name: 'Văn B',
         image: '',
         total_distance: 0.0,
-        ranking: 2,
-        pace: 0.0,
         organization: 'Công ty DV MobiFone KV2',
-        gender: 'Nam',
-      },
-      {
-        id: 107,
-        fullname: 'nguyen van ha ',
-        image: '/no_avatar_strava.png',
-        total_distance: 0.0,
-        ranking: 3,
         pace: 0.0,
-        organization: 'Công ty PTI',
         gender: 'Nam',
       },
       {
-        id: 133,
-        fullname: 'Van Hoang Luong',
-        image: '/no_avatar_strava.png',
-        total_distance: 0.0,
-        ranking: 4,
-        pace: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        gender: 'Nam',
-      },
-      {
-        id: 129,
-        fullname: 'sadsad sad wq',
-        image: '/no_avatar_strava.png',
-        total_distance: 0.0,
+        user_id: 4,
         ranking: 5,
-        pace: 0.0,
+        first_name: 'Trần',
+        last_name: 'Thiện',
+        image: '',
+        total_distance: 0.0,
         organization: 'Công ty DV MobiFone KV2',
+        pace: 0.0,
         gender: 'Nam',
       },
       {
-        id: 127,
-        fullname: 'Nguyễn Sơn Tùng',
-        image: '/no_avatar_strava.png',
-        total_distance: 0.0,
+        user_id: 5,
         ranking: 6,
-        pace: 0.0,
+        first_name: 'Nguyễn',
+        last_name: 'Văn C',
+        image: '',
+        total_distance: 0.0,
         organization: 'Công ty DV MobiFone KV2',
+        pace: 0.0,
         gender: 'Nam',
       },
       {
-        id: 126,
-        fullname: 'sadsad as ds',
-        image: '/no_avatar_strava.png',
+        user_id: 6,
+        RANKING: 7,
+        first_name: 'Nguyễn',
+        last_name: 'Văn D',
+        image: '',
         total_distance: 0.0,
-        ranking: 7,
-        pace: 0.0,
         organization: 'Công ty DV MobiFone KV2',
+        pace: 0.0,
         gender: 'Nam',
       },
       {
-        id: 125,
-        fullname: 'Nguyễn Hà Kiên',
-        image: '/no_avatar_strava.png',
+        user_id: 21,
+        ranking: 8,
+        first_name: 'Nguyễn',
+        last_name: 'Văn E',
+        image: '',
         total_distance: 0.0,
-        ranking: 10,
-        pace: 0.0,
         organization: 'Công ty DV MobiFone KV2',
+        pace: 0.0,
         gender: 'Nam',
+      },
+    ],
+  }
+  const data_club = {
+    per_page: 10,
+    total_user: 25,
+    current_page: 1,
+    total_page: 3,
+    rank_club: [
+      {
+        club_id: 127,
+        ranking: 1,
+        name: '21 DAY CHALLENGE - THE MONKEY WARRIOR',
+        image:
+          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/964dc49a82e49a098b089ec7e.jpg?w=1800',
+        total_distance: 2.4822000511921942,
+        total_members: 3,
+        total_activities: 234,
+      },
+      {
+        club_id: 5,
+        ranking: 2,
+        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
+        total_distance: 0.1409999979659915,
+        total_members: 1,
+        total_activities: 6,
+      },
+      {
+        club_id: 23,
+        ranking: 3,
+        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC TÀY',
+        PICTURE_PATH:
+          'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
+        total_distance: 0.0,
+        total_members: 0,
+        total_activities: 0,
+      },
+      {
+        club_id: 133,
+        ranking: 4,
+        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
+        total_distance: 0.0,
+        total_members: 0,
+        total_activities: 0,
+      },
+      {
+        club_id: 131,
+        ranking: 5,
+        name: '21 Day Challenge - The Horse Warrior',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
+        total_distance: 0.0,
+        total_members: 0,
+        total_activities: 44,
+      },
+      {
+        club_id: 121,
+        ranking: 5,
+        name: '21 Day Challenge - The Horse Warrior',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
+        total_distance: 0.0,
+        total_members: 0,
+        total_activities: 44,
+      },
+      {
+        club_id: 117,
+        ranking: 5,
+        name: '21 Day Challenge - The Horse Warrior',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
+        total_distance: 0.0,
+        total_members: 0,
+        total_activities: 44,
+      },
+      {
+        club_id: 116,
+        ranking: 5,
+        name: '21 Day Challenge - The Horse Warrior',
+        image:
+          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
+        total_distance: 0.0,
+        total_members: 0,
+        total_activities: 44,
       },
     ],
   }
@@ -121,7 +220,11 @@ const Scoreboard = () => {
         backgroundPosition: 'center',
       }}
     >
-      <Title title={activeIndex === 1 ? 'Bảng xếp hạng cá nhân':'Bảng xếp hạng CLB'}/>
+      <Title
+        title={
+          activeIndex === 1 ? 'Bảng xếp hạng cá nhân' : 'Bảng xếp hạng CLB'
+        }
+      />
       <div className='centered-content-layout'>
         <div
           id='profile-button-container'
@@ -200,7 +303,7 @@ const Scoreboard = () => {
                 }}
               />
             </div>
-            <RankMember value={data.member}></RankMember>
+            <RankMember value={data.ranking_user}></RankMember>
             <Paginator
               first={first}
               rows={data.per_page}
@@ -210,7 +313,68 @@ const Scoreboard = () => {
               page={data.current_page}
             />
           </div>
-        ) : null}
+        ) : (
+          <div>
+            <div id='month-button-container'>
+              <Button
+                id={month === 1 ? 'button-month-active' : 'button-month'}
+                icon='pi pi-chart-bar'
+                label='Tổng'
+                onClick={() => {
+                  setMonth(1)
+                }}
+              />
+              <Button
+                id={
+                  month === currentMonth
+                    ? 'button-month-active'
+                    : 'button-month'
+                }
+                icon='pi pi-calendar-plus'
+                label={`Tháng ${currentMonth}`}
+                onClick={() => {
+                  setMonth(currentMonth)
+                  console.log(month)
+                }}
+              />
+              <Button
+                id={
+                  month === currentMonth - 1
+                    ? 'button-month-active'
+                    : 'button-month'
+                }
+                icon='pi pi-calendar-minus'
+                label={`Tháng ${currentMonth - 1}`}
+                onClick={() => {
+                  setMonth(currentMonth - 1)
+                  console.log(month)
+                }}
+              />
+              <Button
+                id={
+                  month === currentMonth - 2
+                    ? 'button-month-active'
+                    : 'button-month'
+                }
+                icon='pi pi-calendar-times'
+                label={`Tháng ${currentMonth - 2}`}
+                onClick={() => {
+                  setMonth(currentMonth - 2)
+                  console.log(month)
+                }}
+              />
+            </div>
+            <RankClub value={data_club.rank_club}></RankClub>
+            <Paginator
+              first={first}
+              rows={data_club.per_page}
+              totalRecords={data_club.total_user}
+              rowsPerPageOptions={[10, 25, 50]}
+              onPageChange={onPageChange}
+              page={data_club.current_page}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

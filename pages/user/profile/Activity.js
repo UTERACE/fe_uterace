@@ -1,5 +1,5 @@
 import React from 'react'
-import Title from '../../components/landing/Title'
+import Title from '../../../components/landing/Title'
 import Link from 'next/link'
 
 const Activity = ({ activities }) => {
@@ -15,18 +15,29 @@ const Activity = ({ activities }) => {
               </h4>
             </div>
             <div id='name-activities'>
-              <i class='fa fa-running icon-run' aria-hidden='true'></i>
-              <h4>{item.name}</h4>
+              <div>
+                <i class='fa fa-running icon-run' aria-hidden='true'></i>
+              </div>
+              <div>
+                <h4>{item.name}</h4>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <img src={'/googlemap-icon.png'} alt='avatar' />
+                <img src={'/strava-icon.png'} alt='avatar' />
+              </div>
             </div>
             <div id='name-activities'>
               <a id='link-activities'>
-                <i className='pi pi-map' aria-hidden='true'></i> {item.distance }km
+                <i className='pi pi-map' aria-hidden='true'></i> {item.distance}
+                km
               </a>
               <a id='link-activities'>
-                <i className='pi pi-chart-bar' aria-hidden='true'></i> {item.pace}/km
+                <i className='pi pi-chart-bar' aria-hidden='true'></i>{' '}
+                {item.pace}/km
               </a>
               <a id='link-activities'>
-                <i className='pi pi-stopwatch' aria-hidden='true'></i> {item.time}
+                <i className='pi pi-stopwatch' aria-hidden='true'></i>{' '}
+                {item.time}
               </a>
             </div>
           </div>
