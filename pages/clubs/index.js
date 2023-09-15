@@ -93,7 +93,7 @@ const Clubs = () => {
                 </h4>
               </div>
               <div id='name-club'>
-                <i class='fa fa-running icon-run' aria-hidden='true'></i>
+                <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
                 <div id='share-register-container'>
                   <h4>{item.name}</h4>
                   <div id='share-register-content'>

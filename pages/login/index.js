@@ -1,5 +1,5 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 import Link from 'next/link'
@@ -18,21 +18,24 @@ const Login = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
-  const defaultValues = {}
-  const {
-    watch,
-    control,
-    formState: { errors },
-    handleSubmit,
-  } = useForm()
+  const [initialValues, setInitialValues] = useState({})
+
   const onSubmit = (data) => {
     handleLogin(data)
   }
   const router = useRouter()
   useEffect(() => {
+    setLoading(true)
+    setInitialValues({
+      username: localStorage.getItem('username') || '',
+      password: localStorage.getItem('password') || '',
+      remember: true,
+    })
     if (isAuthenticated) {
       router.push('/landing')
+      setLoading(false)
     }
+    setLoading(false)
   }, [isAuthenticated])
   const handleLogin = async (data) => {
     setLoading(true)
@@ -54,10 +57,11 @@ const Login = () => {
       })
       console.log('response', response)
       if (response.status === 200) {
-        const { accessToken, refreshToken, fullName, image } = response.data
+        const { accessToken, refreshToken, firstname, image, roles } =
+          response.data
         console.log('accessToken', accessToken)
         console.log('refreshToken', refreshToken)
-        dispatch(login({ accessToken, refreshToken, image, fullName }))
+        dispatch(login({ accessToken, refreshToken, image, firstname, roles }))
         showToast('success', 'Đăng nhập thành công ', response.data.detail)
         setLoading(false)
       }
@@ -88,17 +92,14 @@ const Login = () => {
           <div id='signin-title'>
             <h1>Sign in</h1>
           </div>
-          <Form onSubmit={handleSubmit(onSubmit)} defaultValues={defaultValues}>
+          <Form onSubmit={onSubmit} initialValue={initialValues}>
             <div id='form'>
               <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
                   <Field
                     name='username'
                     label='Username or email address'
-                    control={control}
                     required
-                    errors={errors}
-                    defaultValues={localStorage.getItem('username') || ''}
                   >
                     <InputText type='text' style={{ width: '100%' }} />
                   </Field>
@@ -109,12 +110,13 @@ const Login = () => {
                   <Field
                     name='password'
                     label='Password(8 characters minimum)'
-                    control={control}
                     required
-                    errors={errors}
-                    defaultValues={localStorage.getItem('password') || ''}
                   >
-                    <Password type='password' style={{ width: '100%' }} toggleMask/>
+                    <Password
+                      type='password'
+                      style={{ width: '100%' }}
+                      toggleMask
+                    />
                   </Field>
                 </div>
               </div>
@@ -123,9 +125,6 @@ const Login = () => {
                   <Field
                     name='remember'
                     label='Remember me'
-                    control={control}
-                    errors={errors}
-                    defaultValues={true}
                   >
                     <Checkbox
                       inputId='remember'

@@ -4,7 +4,8 @@ const initialState = {
   accessToken: null,
   refreshToken: null,
   image: null,
-  fullName: null,
+  firstname: null,
+  roles: null,
   isAuthenticated: false,
 }
 const authSlice = createSlice({
@@ -19,14 +20,16 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken
       state.refreshToken = action.payload.refreshToken
       state.image = action.payload.image
-      state.fullName = action.payload.fullName
+      state.firstname = action.payload.firstname
+      state.roles = action.payload.roles
       state.isAuthenticated = true
     },
     logout(state) {
       state.accessToken = null
       state.refreshToken = null
       state.image = null
-      state.fullName = null
+      state.firstname = null
+      state.roles = null
       state.isAuthenticated = false
     },
   },

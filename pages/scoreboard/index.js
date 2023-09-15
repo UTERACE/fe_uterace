@@ -121,7 +121,7 @@ const Scoreboard = () => {
     total_user: 25,
     current_page: 1,
     total_page: 3,
-    rank_club: [
+    ranking_club: [
       {
         club_id: 127,
         ranking: 1,
@@ -364,7 +364,7 @@ const Scoreboard = () => {
                 }}
               />
             </div>
-            <RankClub value={data_club.rank_club}></RankClub>
+            <RankClub value={data_club.ranking_club}></RankClub>
             <Paginator
               first={first}
               rows={data_club.per_page}

@@ -34,9 +34,18 @@ const RankMember = ({ value }) => {
     )
   }
   const fullnameWithImageTemplate = (rowData) => {
+    const avatarImage = rowData.image
+    const avatarLabel = rowData.first_name
+      ? rowData.first_name[0].toUpperCase()
+      : 'B'
     return (
       <div id='member-info'>
-        <Avatar image={rowData.image} size='xlarge' shape='circle' />
+        <Avatar
+          label={!avatarImage ? avatarLabel : null}
+          image={avatarImage}
+          size='xlarge'
+          shape='circle'
+        />
         <Link href={`club/detail-club/${rowData.id}`}>
           <span id='member-name'>
             {rowData.last_name + ' ' + rowData.first_name}
@@ -54,7 +63,7 @@ const RankMember = ({ value }) => {
   const clubsColumns = [
     {
       field: 'ranking',
-      header: 'Rank',
+      header: 'Hạng',
       body: formatRank,
       bodyClassName: 'text-center',
       className: 'text-rank',
@@ -66,27 +75,27 @@ const RankMember = ({ value }) => {
     },
     {
       field: 'total_distance',
-      header: 'Km',
+      header: 'Tổng quảng đường (km)',
       bodyClassName: 'text-center',
       className: 'text-km',
       body: formatNumber,
     },
     {
       field: 'pace',
-      header: 'pace',
+      header: 'Pace (phút/km)',
       body: formatNumber,
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
       field: 'organization',
-      header: 'Đơn vị',
+      header: 'Cơ quan, tổ chức',
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
       field: 'gender',
-      header: 'Gioi tinh',
+      header: 'Giới tính',
       bodyClassName: 'text-center',
       className: '',
     },

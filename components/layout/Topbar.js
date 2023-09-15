@@ -11,6 +11,10 @@ import store from '@/store/store'
 
 const Topbar = () => {
   const isAuthenticated = store.getState().auth.isAuthenticated
+  const avatarImage = store.getState().auth.image
+  const avatarLabel = store.getState().auth.firstname
+    ? store.getState().auth.firstname[0].toUpperCase()
+    : 'B'
   const router = useRouter()
   const handleClick = (url) => {
     router.push(url)
@@ -19,6 +23,8 @@ const Topbar = () => {
     store.dispatch(logout())
     router.push('/login')
   }
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
   const [windowWidth, setWindowWidth] = useState(0)
   useEffect(() => {
     const handleResize = () => {
@@ -82,21 +88,49 @@ const Topbar = () => {
       command: () => handleClick('/news'),
       to: '/news',
     },
-    {
+  ]
+  let managementItems
+  if (hasAdminRole) {
+    items.push({
       label: 'Dashboard',
       icon: 'pi pi-fw pi-chart-line',
       to: '/dashboard',
       command: () => handleClick('/dashboard'),
-    },
-  ]
+    })
+    managementItems = [
+      {
+        label: 'Quản lí giải chạy',
+        icon: 'pi pi-fw pi-users',
+        items: [
+          {
+            label: 'Tạo mới giải chạy',
+            icon: 'pi pi-fw pi-plus',
+            command: () => handleClick('/events/event-management'),
+          },
+          {
+            label: 'Giải chạy của tôi',
+            icon: 'pi pi-fw pi-users',
+            command: () => handleClick('/events/event-management'),
+          },
+        ],
+      },
+    ]
+  } else {
+    managementItems = [
+      {
+        label: 'Tham gia giải chạy',
+        icon: 'fa pi-fw fa-running',
+        command: () => handleClick('/my-event'),
+      },
+    ]
+  }
   const item = (model) => {
-    model.forEach((item, i) => {
+    model.map((item, i) => {
       let menuitem = {
         id: item.id,
         label: windowWidth < 1350 ? null : item.label,
         icon: item.icon,
         command: item.command,
-        style: item.style,
         to: item.to,
       }
       model[i] = menuitem
@@ -106,85 +140,34 @@ const Topbar = () => {
   const menu = useRef(null)
   const end_items = [
     {
-      label: 'Profile',
+      label: 'Trang cá nhân',
       icon: 'pi pi-fw pi-user',
       command: () => handleClick('/user/profile'),
     },
     {
-      label: 'Settings',
-      icon: 'pi pi-fw pi-cog',
-      items: [
-        {
-          label: 'Edit Profile',
-          icon: 'pi pi-fw pi-user-edit',
-        },
-        {
-          label: 'Change Password',
-          icon: 'pi pi-fw pi-key',
-        },
-        {
-          label: 'Search',
-          icon: 'pi pi-fw pi-users',
-          items: [
-            {
-              label: 'Filter',
-              icon: 'pi pi-fw pi-filter',
-              items: [
-                {
-                  label: 'Print',
-                  icon: 'pi pi-fw pi-print',
-                },
-              ],
-            },
-            {
-              icon: 'pi pi-fw pi-bars',
-              label: 'List',
-            },
-          ],
-        },
-      ],
+      label: 'Thay đổi mật khẩu',
+      icon: 'pi pi-fw pi-key',
+      command: () => handleClick('/user/profile/setting?connect=1'),
     },
     {
-      label: 'Events',
-      icon: 'pi pi-fw pi-calendar',
-      items: [
-        {
-          label: 'New event',
-          icon: 'pi pi-fw pi-plus',
-          command: () => handleClick('/new-event'),
-        },
-        {
-          label: 'All event',
-          icon: 'pi pi-fw pi-trash',
-        },
-        {
-          separator: true,
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-fw pi-external-link',
-        },
-      ],
+      label: 'Kết nối ứng dụng',
+      icon: 'pi pi-fw pi-link',
+      command: () => handleClick('/user/profile/setting?connect=2'),
     },
+    ...managementItems,
     {
-      label: 'Club',
+      label: 'Quản lí câu lạc bộ',
       icon: 'pi pi-fw pi-users',
       items: [
         {
-          label: 'New club',
+          label: 'Tạo mới câu lạc bộ',
           icon: 'pi pi-fw pi-plus',
-          command: () => handleClick('/new-club'),
+          command: () => handleClick('/clubs/club-management'),
         },
         {
-          label: 'All club',
-          icon: 'pi pi-fw pi-trash',
-        },
-        {
-          separator: true,
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-fw pi-external-link',
+          label: 'Câu lạc bộ của tôi',
+          icon: 'pi pi-fw pi-users',
+          command: () => handleClick('/clubs/club-management'),
         },
       ],
     },
@@ -192,7 +175,7 @@ const Topbar = () => {
       separator: true,
     },
     {
-      label: 'Logout',
+      label: 'Đăng xuất',
       icon: 'pi pi-fw pi-power-off',
       command: () => handleClickLogout(),
     },
@@ -203,7 +186,11 @@ const Topbar = () => {
         <div id='topbar-container'>
           <div id='logo-container'>
             <Link href='/'>
-              <img src='/logohome.png' alt='logo' style={{marginTop:'1rem'}}/>
+              <img
+                src='/logohome.png'
+                alt='logo'
+                style={{ marginTop: '1rem' }}
+              />
             </Link>
           </div>
           <div id='menubar'>
@@ -271,16 +258,17 @@ const Topbar = () => {
                   style={{ border: '1px solid #ffffff' }}
                   size='large'
                   shape='circle'
-                  image={store.getState().auth.image}
+                  label={!avatarImage ? avatarLabel : null}
+                  image={avatarImage}
                 />
               </Link>
-              <div className=''>
+              <div>
                 <SlideMenu
                   ref={menu}
                   model={end_items}
                   popup
-                  viewportHeight={295}
-                  menuWidth={200}
+                  viewportHeight={284}
+                  menuWidth={207}
                 ></SlideMenu>
 
                 <i

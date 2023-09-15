@@ -156,6 +156,10 @@ const Profile = () => {
     total_clubs: 2,
     total_events: 3,
     ranking: 112,
+    first_name: 'A',
+    last_name: 'Nguyễn Văn',
+    image: 'https://picsum.photos/200/300',
+    connect_strava: false,
   }
 
   const onPageChange = (event) => {
@@ -207,14 +211,10 @@ const Profile = () => {
           <div id='profile-image-container'>
             <div style={{ height: '8rem' }}>
               <div id='profile-image-overlay'>
-                <img
-                  src={useSelector((state) => state.auth.image)}
-                  alt='profile'
-                  id='profile-image'
-                />
+                <img src={data.image} alt='profile' id='profile-image' />
                 <div id='info-profile-container'>
                   <div id='name-container'>
-                    <h1>{useSelector((state) => state.auth.fullName)}</h1>
+                    <h1>{data.last_name + ' ' + data.first_name}</h1>
                     <img
                       src='/verified.png'
                       alt='verified'
@@ -222,14 +222,23 @@ const Profile = () => {
                     />
                     <i className='fas icon-large fa-edit'></i>
                   </div>
-                  <h4> Mã người dùng: {170347} </h4>
-                  <Link href='/events'>
+                  <div>
+                    <h4> Mã người dùng: {170347} </h4>
+                  </div>
+                  <div style={{ display: 'flex' }}>
                     <img
                       src='/strava-icon.png'
                       alt='Connected Strava'
                       style={{ width: '3rem', height: '3rem' }}
                     />
-                  </Link>
+                    <Link href='/user/profile/setting?connect=2'>
+                      <h5 style={{ marginTop: '1rem' }}>
+                        {data.connect_strava
+                          ? 'Đã kết nối với Strava'
+                          : 'Chưa kết nối với Strava'}
+                      </h5>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -257,7 +266,7 @@ const Profile = () => {
             header='Thay đổi hình đại diện'
             visible={visibleChange}
             position='top'
-            style={{ width: '60%', height: '60%', borderRadius: '20px'}}
+            style={{ width: '60%', height: '60%', borderRadius: '20px' }}
             onHide={() => setVisibleChange(false)}
           >
             <ChangeAvatar />
@@ -314,7 +323,7 @@ const Profile = () => {
               />
             </div>
             {activeIndex === 2 ? (
-              <div style={{width:'95%'}}>
+              <div style={{ width: '95%' }}>
                 <Title title='Hoạt động gần đây' />
                 <Activity activities={data.activities} />
                 <Paginator

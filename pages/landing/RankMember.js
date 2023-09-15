@@ -34,10 +34,19 @@ const RankMember = ({ value }) => {
     )
   }
   const fullnameWithImageTemplate = (rowData) => {
+    const avatarImage = rowData.image
+    const avatarLabel = rowData.first_name
+      ? rowData.first_name[0].toUpperCase()
+      : 'B'
     return (
       <Link href={`/user/${rowData.user_id}`}>
         <div id='member-info'>
-          <Avatar image={rowData.image} size='xlarge' shape='circle' />
+          <Avatar
+            label={!avatarImage ? avatarLabel : null}
+            image={avatarImage}
+            size='xlarge'
+            shape='circle'
+          />
           <span id='member-name'>
             {rowData.last_name + ' ' + rowData.first_name}
           </span>
@@ -79,7 +88,7 @@ const RankMember = ({ value }) => {
     },
     {
       field: 'total_distance',
-      header: 'Tổng quảng đường',
+      header: 'Tổng quảng đường (km)',
       bodyClassName: 'text-center',
       className: 'text-km',
       body: formatNumber,

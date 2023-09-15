@@ -64,13 +64,13 @@ const RankClub = ({ value }) => {
     },
     {
       field: 'total_distance',
-      header: 'Tổng quảng đường',
+      header: 'Tổng quảng đường (km)',
       body: formatNumber,
       bodyClassName: 'text-center',
       className: 'text-km',
     },
     {
-      field: 'total_member',
+      field: 'total_members',
       header: 'Tổng thành viên',
       bodyClassName: 'text-center',
       className: 'text-km',

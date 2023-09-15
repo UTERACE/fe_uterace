@@ -52,6 +52,11 @@ main {
         grid-template-columns: repeat(2, 1fr); 
     }
 }
+@media (max-width: 1350px) {
+    .p-menuitem-icon {
+        font-size: 2rem;
+    }
+}
 @media (max-width: 900px) {
     .centered-content-layout {
         width: 95%;  /* Tăng giá trị từ 75% lên 85% */

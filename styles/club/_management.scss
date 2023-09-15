@@ -1,0 +1,19 @@
+#management-container {
+    // position: absolute; 
+    // top: 0; 
+    // right: 0;
+    // z-index: 1;
+}
+#outstanding-container {
+    width: 4rem;
+    height: 4rem;
+    background-color: $primary-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: absolute;
+    top: 6%;
+    left: 5%;
+    z-index: 1;
+}

@@ -57,9 +57,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap:1rem;
+    gap:0rem;
     position: absolute; 
-    top: 23rem;           
+    top: 21rem;           
     left: 23%;   
     z-index: 1;       
 }
@@ -69,20 +69,32 @@
     border-radius: 50%;
     border: 3px solid $white-color;
 }
-#info-profile-container div {
-    margin-top: 3rem;
-}
+
 #info-profile-container *{
-    margin: 0 auto;
+    margin: 0.2rem 0 0 0;
 }
 #info-profile-container h4 {
     font-weight: 500;
+    margin-left: 2.5rem;
+}
+#info-profile-container h5 {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+}
+#info-profile-container a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $background-color-2;
+    text-decoration: none;
 }
 #name-container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    margin-top: 5rem;
+    margin-left: 2.5rem;
 }
 #profile-menu {
     padding-top: 1rem;

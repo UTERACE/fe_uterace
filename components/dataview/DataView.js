@@ -9,7 +9,7 @@ const DataView = ({ data, href, itemTemplate }) => {
           itemTemplate ? (
             itemTemplate(item, index)
           ) : (
-            <Link id='link-dataview' href={href + item.id}>
+            <Link id='link-dataview' href={href + item.club_id}>
               <div id='dataview-container'>
                 <div id='image-container-dataview'>
                   <img src={item.image} alt={item.name} />
@@ -25,11 +25,11 @@ const DataView = ({ data, href, itemTemplate }) => {
                   </h4>
                 </div>
                 <div id='name-dataview'>
-                  <i class='fa fa-running icon-run' aria-hidden='true'></i>
+                  <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
                   <div id='share-register-container'>
                     <h4>{item.name}</h4>
                     <div id='share-register-content'>
-                      <Link id='link-event' href={href + item.id}>
+                      <Link id='link-event' href={href + item.club_id}>
                         Tham gia câu lạc bộ{' '}
                         <i className='pi pi-arrow-right' aria-hidden='true'></i>
                       </Link>

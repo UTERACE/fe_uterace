@@ -1,12 +1,15 @@
-import RankClub from '@/pages/landing/RankClub'
+import Title from '@/components/landing/Title'
+import News from '@/pages/landing/News'
+import Activity from '@/pages/user/profile/Activity'
 import RankMember from '@/pages/scoreboard/RankMember'
 import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useState } from 'react'
-import Countdown from '../Countdown'
+import { Dialog } from 'primereact/dialog'
+import Update from './Update'
 
-const EventDetail = () => {
+const ManagementClubDetail = () => {
   const router = useRouter()
   const { id } = router.query
   const [isStatistic, setIsStatistic] = useState(false)
@@ -14,10 +17,65 @@ const EventDetail = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(2)
+  const [activeIndex, setActiveIndex] = useState(1)
+  const [visibleChange, setVisibleChange] = useState(false)
 
   const data = {
-    participants: 1765,
+    image:
+      'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
+    name: 'CLB ĐỒNG HÀNH CÙNG CÁC THIÊN THẦN',
+    description:
+      'Giải chạy online “E-run for the heart I” do Đoàn khoa Quản trị kinh doanh (Đoàn trường Đại học Quốc tế Miền Đông) tổ chức với mong muốn thúc đẩy tinh thần tập luyện thể dục thể thao cho mọi người, đặc biệt là các bạn trẻ, hướng tới ngày tim mạch thế giới 29/9 và tuyên truyền, phổ biến, nâng cao nhận thức của cộng đồng về tăng cường sức khỏe tim mạch, phòng ngừa và tránh những rủi ro về sức khỏe tim mạch.',
+    news: {
+      per_page: 5,
+      current_page: 1,
+      total_page: 5,
+      total_activity: 22,
+      items: [
+        {
+          name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+        {
+          name: 'Event 2',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+        {
+          name: 'Event 3',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+        {
+          name: 'Event 4',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+        {
+          name: 'Event 5',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+        {
+          name: 'Event 6',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+        {
+          name: 'Event 7',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          club: 10,
+        },
+      ],
+    },
     activities: {
       per_page: 5,
       current_page: 1,
@@ -74,106 +132,16 @@ const EventDetail = () => {
         },
       ],
     },
-    data_club: {
+    rank_member: {
       per_page: 10,
       total_user: 25,
       current_page: 1,
       total_page: 3,
-      ranking_club: [
+      items: [
         {
-          club_id: 127,
-          ranking: 1,
-          name: '21 DAY CHALLENGE - THE MONKEY WARRIOR',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/964dc49a82e49a098b089ec7e.jpg?w=1800',
-          total_distance: 2.4822000511921942,
-          total_members: 3,
-          total_activities: 234,
-        },
-        {
-          club_id: 5,
-          ranking: 2,
-          name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-          total_distance: 0.1409999979659915,
-          total_members: 1,
-          total_activities: 6,
-        },
-        {
-          club_id: 23,
-          ranking: 3,
-          name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC TÀY',
-          PICTURE_PATH:
-            'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-          total_distance: 0.0,
-          total_members: 0,
-          total_activities: 0,
-        },
-        {
-          club_id: 133,
-          ranking: 4,
-          name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-          total_distance: 0.0,
-          total_members: 0,
-          total_activities: 0,
-        },
-        {
-          club_id: 131,
-          ranking: 5,
-          name: '21 Day Challenge - The Horse Warrior',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-          total_distance: 0.0,
-          total_members: 0,
-          total_activities: 44,
-        },
-        {
-          club_id: 121,
-          ranking: 5,
-          name: '21 Day Challenge - The Horse Warrior',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-          total_distance: 0.0,
-          total_members: 0,
-          total_activities: 44,
-        },
-        {
-          club_id: 117,
-          ranking: 5,
-          name: '21 Day Challenge - The Horse Warrior',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-          total_distance: 0.0,
-          total_members: 0,
-          total_activities: 44,
-        },
-        {
-          club_id: 116,
-          ranking: 5,
-          name: '21 Day Challenge - The Horse Warrior',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-          total_distance: 0.0,
-          total_members: 0,
-          total_activities: 44,
-        },
-      ],
-    },
-    ranking_member: {
-      per_page: 10,
-      total_user: 25,
-      current_page: 1,
-      total_page: 3,
-      ranking_user: [
-        {
-          user_id: 119,
-          first_name: 'Can',
-          last_name: 'Lê',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
+          id: 119,
+          fullname: 'Can Lê',
+          image: '/no_avatar_strava.png',
           total_distance: 15.02,
           ranking: 1,
           pace: 10.082677841186523,
@@ -181,103 +149,77 @@ const EventDetail = () => {
           gender: 'Nam',
         },
         {
-          user_id: 2,
+          id: 93,
+          fullname: 'Nguyễn Hà Kiên',
+          image: '',
+          total_distance: 0.0,
           ranking: 2,
-          first_name: 'Nguyễn',
-          last_name: 'Sinh Hùng',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
-          total_distance: 2.42,
+          pace: 0.0,
           organization: 'Công ty DV MobiFone KV2',
-          pace: 6.15,
           gender: 'Nam',
         },
         {
-          user_id: 1,
+          id: 107,
+          fullname: 'nguyen van ha ',
+          image: '/no_avatar_strava.png',
+          total_distance: 0.0,
           ranking: 3,
-          first_name: 'Nguyễn',
-          last_name: 'Văn A',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=1800',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
           pace: 0.0,
+          organization: 'Công ty PTI',
           gender: 'Nam',
         },
         {
-          user_id: 3,
+          id: 133,
+          fullname: 'Van Hoang Luong',
+          image: '/no_avatar_strava.png',
+          total_distance: 0.0,
           ranking: 4,
-          first_name: 'Nguyễn',
-          last_name: 'Văn B',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
           pace: 0.0,
+          organization: 'Công ty DV MobiFone KV2',
           gender: 'Nam',
         },
         {
-          user_id: 4,
+          id: 129,
+          fullname: 'sadsad sad wq',
+          image: '/no_avatar_strava.png',
+          total_distance: 0.0,
           ranking: 5,
-          first_name: 'Trần',
-          last_name: 'Thiện',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
           pace: 0.0,
+          organization: 'Công ty DV MobiFone KV2',
           gender: 'Nam',
         },
         {
-          user_id: 5,
+          id: 127,
+          fullname: 'Nguyễn Sơn Tùng',
+          image: '/no_avatar_strava.png',
+          total_distance: 0.0,
           ranking: 6,
-          first_name: 'Nguyễn',
-          last_name: 'Văn C',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
           pace: 0.0,
+          organization: 'Công ty DV MobiFone KV2',
           gender: 'Nam',
         },
         {
-          user_id: 6,
-          RANKING: 7,
-          first_name: 'Nguyễn',
-          last_name: 'Văn D',
-          image: '',
+          id: 126,
+          fullname: 'sadsad as ds',
+          image: '/no_avatar_strava.png',
           total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
+          ranking: 7,
           pace: 0.0,
+          organization: 'Công ty DV MobiFone KV2',
           gender: 'Nam',
         },
         {
-          user_id: 21,
-          ranking: 8,
-          first_name: 'Nguyễn',
-          last_name: 'Văn E',
-          image: '',
+          id: 125,
+          fullname: 'Nguyễn Hà Kiên',
+          image: '/no_avatar_strava.png',
           total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
+          ranking: 10,
           pace: 0.0,
+          organization: 'Công ty DV MobiFone KV2',
           gender: 'Nam',
         },
       ],
     },
-    distance: [
-      {
-        id: 1,
-        name: 'Chay 5km',
-        distance: 5,
-      },
-      {
-        id: 2,
-        name: 'Di bo 10km',
-        distance: 10,
-      },
-      {
-        id: 3,
-        name: 'Chay bo 21km',
-        distance: 21,
-      },
-    ],
   }
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -296,101 +238,71 @@ const EventDetail = () => {
         backgroundColor: '#ffffff',
       }}
     >
+      <Dialog
+        header='Chỉnh sửa thông tin câu lạc bộ'
+        visible={visibleChange}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleChange(false)}
+      >
+        <Update
+          image={data.image}
+          name={data.name}
+          description={data.description}
+        />
+      </Dialog>
       <div className='centered-content-layout'>
-        <div id='event-detail-container'>
-          <div id='event-image-container-detail'>
-            <img
-              src='https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg'
-              alt='club1'
-            />
+        <div id='detail-container'>
+          <div id='image-container-detail'>
+            <img src={data.image} alt='club1' />
           </div>
-          <div id='event-info-detail'>
-            <img
-              id='event-info-detail-img'
-              src='https://picsum.photos/200/300'
-              alt='logo'
-            />
+          <div id='info-detail'>
+            <div
+              style={{ width: '100%', display: 'flex', justifyContent: 'end' }}
+            >
+              <Button
+                id='button-statistic-club'
+                icon='pi pi-calendar-plus'
+                label='Chỉnh sửa thông tin'
+                onClick={() => {
+                  setVisibleChange(true)
+                }}
+              />
+            </div>
+            <img id='info-detail-img' src={data.image} alt='logo' />
             <h1>{'E-run for fun'}</h1>
             <h6>
               {
                 'Giải chạy online “E-run for the heart I” do Đoàn khoa Quản trị kinh doanh (Đoàn trường Đại học Quốc tế Miền Đông) tổ chức với mong muốn thúc đẩy tinh thần tập luyện thể dục thể thao cho mọi người, đặc biệt là các bạn trẻ, hướng tới ngày tim mạch thế giới 29/9 và tuyên truyền, phổ biến, nâng cao nhận thức của cộng đồng về tăng cường sức khỏe tim mạch, phòng ngừa và tránh những rủi ro về sức khỏe tim mạch.'
               }
             </h6>
-            <div id='event-time-detail'>
-              <Countdown
-                from_date='2023-05-16T00:00:00Z'
-                to_date='2023-09-15T23:59:59Z'
-              />
-            </div>
+
             <Button
-              id='button-join-event'
+              id='button-join-club'
               label='Tham gia ngay'
               onClick={() => {}}
             />
           </div>
-          <div id='event-distance-container'>
-            <div id='event-distance-title-container'>
-              <div
-                id='distance-event'
-                style={{
-                  backgroundColor: '#ffffff',
-                  width: '90%',
-                  marginBottom: '1rem',
-                }}
-              >
-                Cự ly tham gia
-              </div>
-              <div id='event-distance-detail'>
-                {data.distance.map((item, index) => (
-                  <div id='distance-event'>
-                    <i className='pi pi-map-marker'></i>
-                    <h4>{item.name}</h4>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div id='event-distance-title-container'>
-              <div
-                id='distance-event'
-                style={{
-                  backgroundColor: '#ffffff',
-                  width: '90%',
-                  marginBottom: '1rem',
-                }}
-              >
-                Hoạt động hợp lệ
-              </div>
-              <div id='event-distance-detail'>
-                <div id='distance-event'>
-                  <i className='pi pi-map-marker'></i>
-                  <h4>Chạy bộ</h4>
-                </div>
-                <div id='distance-event'>
-                  <i className='pi pi-map-marker'></i>
-                  <h4>Đi bộ</h4>
-                </div>
-                <div></div>
-              </div>
-            </div>
-          </div>
-
-          <div id='event-info-detail'>
-            <div id='statistic-event'>
+          <div id='info-detail'>
+            <div id='statistic-club'>
               <Button
-                id='button-statistic-event'
-                style={{ width: '35%' }}
-                label={`${data.participants} Người tham gia`}
+                id='button-statistic-club'
+                label='Người tham gia '
                 onClick={() => {}}
               />
               <Button
                 id={
                   !isStatistic
-                    ? 'button-statistic-event'
-                    : 'button-statistic-event-active'
+                    ? 'button-statistic-club'
+                    : 'button-statistic-club-active'
                 }
                 label='Xem thống kê'
-                style={{ width: '35%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
                 onClick={() => {
@@ -399,70 +311,63 @@ const EventDetail = () => {
               />
             </div>
             {isStatistic ? (
-              <div id='info-event-container'>
-                <div id='info-event-detail'>
-                  <div id='detail-event-container'>
+              <div id='info-club-container'>
+                <div id='info-club-detail'>
+                  <div id='detail-club-container'>
                     <h4>Tổng số VĐV đã tham gia: </h4>
                     <h4>{'67'}</h4>
                   </div>
-                  <div id='detail-event-container'>
+                  <div id='detail-club-container'>
                     <h4>Tổng số km đã chạy:</h4>
                     <h4>{'34'}</h4>
                   </div>
-                  <div id='detail-event-container'>
+                  <div id='detail-club-container'>
                     <h4>Tổng số hoạt động:</h4>
                     <h4>{'314'}</h4>
                   </div>
-                  <div id='detail-event-container'>
-                    <h4>Tổng số cự li:</h4>
-                    <h4>{'3'}</h4>
+                  <div id='detail-club-container'>
+                    <h4>Tổng số bài viết:</h4>
+                    <h4>{'4'}</h4>
                   </div>
                 </div>
-                <div id='info-event-detail'>
-                  <div id='detail-event-container'>
-                    <h4>VĐV đã hoàn thành: </h4>
-                    <h4>{'12'}</h4>
+                <div id='info-club-detail'>
+                  <div id='detail-club-container'>
+                    <h4>Ngày thành lập câu lạc bộ: </h4>
+                    <h4>{'12/12/2012'}</h4>
                   </div>
-                  <div id='detail-event-container'>
-                    <h4>VĐV chưa hoàn thành: </h4>
-                    <h4>{'65'}</h4>
+                  <div id='detail-club-container'>
+                    <h4>Quản lí câu lạc bộ: </h4>
+                    <h4>{'Nguyễn Văn A'}</h4>
                   </div>
-                  <div id='detail-event-container'>
+                  <div id='detail-club-container'>
                     <h4>VĐV Nam: </h4>
-                    <h4>{'25'}</h4>
+                    <h4>{'2'}</h4>
                   </div>
-                  <div id='detail-event-container'>
+                  <div id='detail-club-container'>
                     <h4>VĐV Nữ:</h4>
-                    <h4>{'29'}</h4>
+                    <h4>{'2'}</h4>
                   </div>
                 </div>
               </div>
             ) : null}
           </div>
+          <div>
+            <Title title='Bài viết của câu lạc bộ '>
+              <Button />
+            </Title>
+            <News data={data.news.items} />
+          </div>
           <div id='info-detail'>
-            <div id='statistic-event'>
-              <Button
-                id={
-                  activeIndex === 0
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
-                style={{ width: '20%' }}
-                icon='pi pi-tags'
-                label='Chi tiết'
-                onClick={() => {
-                  setActiveIndex(0)
-                }}
-              />
+            <div id='statistic-club'>
               <Button
                 id={
                   activeIndex === 1
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-statistic-club-active'
+                    : 'button-statistic-club'
                 }
-                style={{ width: '20%' }}
+                style={{ width: '100%' }}
                 icon='pi pi-calendar-plus'
-                label='Điều lệ'
+                label='Giới thiệu'
                 onClick={() => {
                   setActiveIndex(1)
                 }}
@@ -470,12 +375,12 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 2
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-statistic-club-active'
+                    : 'button-statistic-club'
                 }
-                style={{ width: '22%' }}
+                style={{ width: '100%' }}
                 icon='pi pi-calendar-plus'
-                label='Giải thưởng'
+                label='Hoạt động gần đây'
                 onClick={() => {
                   setActiveIndex(2)
                 }}
@@ -483,43 +388,32 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 3
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-statistic-club-active'
+                    : 'button-statistic-club'
                 }
-                style={{ width: '20%' }}
-                icon='pi pi-chart-line'
-                label='Thành viên '
+                style={{ width: '100%' }}
+                icon='pi pi-calendar'
+                label='Bảng xếp hạng thành viên '
                 onClick={() => {
                   setActiveIndex(3)
                 }}
               />
-              <Button
-                id={
-                  activeIndex === 4
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
-                style={{ width: '20%' }}
-                icon='pi pi-chart-line'
-                label='Câu lạc bộ'
-                onClick={() => {
-                  setActiveIndex(4)
-                }}
-              />
             </div>
-            {activeIndex === 1 ? (
-              <div
-                style={{ width: '100%' }}
-                dangerouslySetInnerHTML={{ __html: description }}
-              ></div>
-            ) : activeIndex === 2 ? (
-              <div
-                style={{ width: '100%' }}
-                dangerouslySetInnerHTML={{ __html: description }}
-              ></div>
+            {activeIndex === 2 ? (
+              <div style={{ width: '95%' }}>
+                <Activity activities={data.activities.items} />
+                <Paginator
+                  first={first}
+                  rows={data.activities.per_page}
+                  totalRecords={data.activities.total_activity}
+                  rowsPerPageOptions={[6, 12, 18]}
+                  onPageChange={onPageChange}
+                  page={data.activities.current_page}
+                />
+              </div>
             ) : activeIndex === 3 ? (
               <div>
-                <RankMember value={data.ranking_member.ranking_user} />
+                <RankMember value={data.rank_member.items} />
                 <Paginator
                   first={first}
                   rows={data.per_page}
@@ -527,18 +421,6 @@ const EventDetail = () => {
                   rowsPerPageOptions={[6, 12, 18]}
                   onPageChange={onPageChange}
                   page={data.current_page}
-                />
-              </div>
-            ) : activeIndex === 4 ? (
-              <div>
-                <RankClub value={data.data_club.ranking_club} />
-                <Paginator
-                  first={first}
-                  rows={data.data_club.per_page}
-                  totalRecords={data.data_club.total_activity}
-                  rowsPerPageOptions={[6, 12, 18]}
-                  onPageChange={onPageChange}
-                  page={data.data_club.current_page}
                 />
               </div>
             ) : (
@@ -554,4 +436,4 @@ const EventDetail = () => {
   )
 }
 
-export default EventDetail
+export default ManagementClubDetail

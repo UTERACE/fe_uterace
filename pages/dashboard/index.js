@@ -48,7 +48,11 @@ const DashboardPage = () => {
         />
         <h4>{store.getState().auth.fullName}</h4>
         <h6>Quản trị viên hệ thống</h6>
-        <AppMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex} model={model}/>
+        <AppMenu
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          model={model}
+        />
       </div>
       {activeIndex === 0 ? <Dashboard /> : <HomePage />}
     </div>
@@ -56,3 +60,20 @@ const DashboardPage = () => {
 }
 
 export default DashboardPage
+
+export async function getServerSideProps(context) {
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+  console.log('h1', hasAdminRole)
+  if (!hasAdminRole) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}

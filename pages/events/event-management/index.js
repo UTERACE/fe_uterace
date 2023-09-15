@@ -1,15 +1,21 @@
 import DataView from '@/components/dataview/DataView'
+import NewTitle from '@/components/landing/NewTitle'
 import Title from '@/components/landing/Title'
+import OutstandingEdit from '@/components/management/OutstandingEdit'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
+import { SpeedDial } from 'primereact/speeddial'
 import React, { useState } from 'react'
 
-const Events = () => {
-  const [events, setEvents] = useState([])
+const EventManagement = () => {
+  const [clubs, setClubs] = useState([])
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const router = useRouter()
   const data = {
     per_page: 5,
     current_page: 1,
@@ -23,6 +29,7 @@ const Events = () => {
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/e06bb7dc736ecb9b9920953e4.png?w=720',
         total_members: 3,
         total_clubs: 2,
+        outstanding: true,
       },
       {
         event_id: 1,
@@ -31,6 +38,7 @@ const Events = () => {
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
         total_members: 120,
         total_clubs: 19,
+        outstanding: true,
       },
       {
         event_id: 2,
@@ -39,6 +47,7 @@ const Events = () => {
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=720',
         total_members: 60,
         total_clubs: 11,
+        outstanding: false,
       },
       {
         event_id: 3,
@@ -47,6 +56,7 @@ const Events = () => {
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=720',
         total_members: 240,
         total_clubs: 30,
+        outstanding: true,
       },
       {
         event_id: 4,
@@ -55,6 +65,7 @@ const Events = () => {
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1bf678a8a67029fa1e6697c62.jpg?w=720',
         total_members: 320,
         total_clubs: 101,
+        outstanding: true,
       },
       {
         event_id: 5,
@@ -63,32 +74,53 @@ const Events = () => {
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/3661e301e10ee6febd38e793a.png?w=720',
         total_members: 130,
         total_clubs: 12,
+        outstanding: false,
       },
     ],
   }
+  const handleClick = (url) => {
+    router.push(url)
+  }
   const itemTemplate = (item) => {
     return (
-      <Link id='link-dataview' href={`/events/event-detail/${item.event_id}`}>
-        <div id='dataview-container'>
-          <div id='image-container-dataview'>
+      <div id='dataview-container'>
+        <div id='image-container-dataview'>
+          <Link
+            id='link-dataview'
+            href={`/events/event-management/${item.event_id}`}
+          >
             <img src={item.image} alt={item.name} />
-          </div>
+          </Link>
+          <OutstandingEdit
+            items={items}
+            isOutstanding={item.outstanding}
+            id={item.event_id}
+            title={'sự kiện'}
+          />
+        </div>
+        <Link
+          id='link-dataview'
+          href={`/events/event-management/${item.event_id}`}
+        >
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.member} Thành viên
+              {item.total_members} Thành viên
             </h4>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.club} Câu lạc bộ
+              {item.total_clubs} Câu lạc bộ
             </h4>
           </div>
           <div id='name-dataview'>
-            <i class='fa fa-running icon-run' aria-hidden='true'></i>
+            <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
             <div id='share-register-container'>
               <h4>{item.name}</h4>
               <div id='share-register-content'>
-                <Link id='link-event' href={`/events/event-detail/${item.event_id}`}>
+                <Link
+                  id='link-event'
+                  href={`/events/event-management/${item.event_id}`}
+                >
                   Tham gia sự kiện{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
@@ -98,8 +130,8 @@ const Events = () => {
               </div>
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     )
   }
   const onPageChange = (event) => {
@@ -107,12 +139,43 @@ const Events = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
+  const items = [
+    {
+      label: 'Add',
+      icon: 'pi pi-plus',
+      command: () => handleClick('/events/event-new'),
+      title: 'Thêm sự kiện mới',
+    },
+    {
+      label: 'Update',
+      icon: 'pi pi-pencil',
+      command: () => {
+        handleClick('/events/event-new')
+      },
+      title: 'Cập nhật sự kiện',
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-trash',
+      command: () => {},
+      title: 'Xóa sự kiệnộ',
+    },
+    {
+      label: 'React Website',
+      icon: 'pi pi-external-link',
+      command: () => {},
+    },
+  ]
   return (
     <div>
-      <Title title='Tất cả giải chạy bộ ' />
+      <NewTitle
+        title='Quản lí sự kiện'
+        href={'/events/event-new'}
+        newTitle='Thêm sự kiện mới'
+      />
       <DataView
         data={data.events}
-        href='/events/event-detail/'
+        href='/clubs/club-management/'
         itemTemplate={itemTemplate}
       />
       <Paginator
@@ -127,4 +190,4 @@ const Events = () => {
   )
 }
 
-export default Events
+export default EventManagement
