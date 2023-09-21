@@ -1,7 +1,6 @@
 import DataView from '@/components/dataview/DataView'
-import NewTitle from '@/components/landing/NewTitle'
-import Title from '@/components/landing/Title'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
+import store from '@/store/store'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
@@ -15,7 +14,12 @@ const EventManagement = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const [index, setIndex] = useState(2)
+
   const router = useRouter()
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+  console.log('hasAdminRole', hasAdminRole)
   const data = {
     per_page: 5,
     current_page: 1,
@@ -168,11 +172,108 @@ const EventManagement = () => {
   ]
   return (
     <div>
-      <NewTitle
-        title='Quản lí sự kiện'
-        href={'/events/event-new'}
-        newTitle='Thêm sự kiện mới'
-      />
+      <div className='centered-content-layout'>
+        <div id='title-item' style={{ height: '4rem' }}>
+          <h1>{'Quản lí sự kiện'}</h1>
+        </div>
+        {hasAdminRole ? (
+          <div
+            style={{
+              width: '75%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '2rem',
+            }}
+          >
+            <Button
+              id={
+                index == 1
+                  ? 'button-statistic-club-active'
+                  : 'button-statistic-club'
+              }
+              type='button'
+              style={{ width: '100%' }}
+              label={'Thêm sự kiện mới'}
+              icon='pi pi-plus'
+              iconPos='right'
+              onClick={() => {
+                setIndex(1)
+                setVisibleAdd(true)
+              }}
+            />
+            <Button
+              id={
+                index == 2
+                  ? 'button-statistic-club-active'
+                  : 'button-statistic-club'
+              }
+              type='button'
+              style={{ width: '100%' }}
+              label='Sự kiện đã tạo'
+              icon='pi pi-list'
+              iconPos='right'
+              onClick={() => {
+                setIndex(2)
+              }}
+            />
+            <Button
+              id={
+                index == 3
+                  ? 'button-statistic-club-active'
+                  : 'button-statistic-club'
+              }
+              type='button'
+              style={{ width: '100%' }}
+              label='Sự kiện đang diễn ra'
+              icon='pi pi-list'
+              iconPos='right'
+              onClick={() => {
+                setIndex(3)
+              }}
+            />
+          </div>
+        ) : (
+          <div style={{
+            width: '50%',
+            display: 'flex',
+            justifyContent: 'start',
+            alignItems: 'center',
+            gap: '2rem',
+          }}>
+            <Button
+              id={
+                index == 2
+                  ? 'button-statistic-club-active'
+                  : 'button-statistic-club'
+              }
+              type='button'
+              style={{ width: '100%' }}
+              label='Sự kiện đã tham gia'
+              icon='pi pi-list'
+              iconPos='right'
+              onClick={() => {
+                setIndex(2)
+              }}
+            />
+            <Button
+              id={
+                index == 3
+                  ? 'button-statistic-club-active'
+                  : 'button-statistic-club'
+              }
+              type='button'
+              style={{ width: '100%' }}
+              label='Sự kiện đang diễn ra'
+              icon='pi pi-list'
+              iconPos='right'
+              onClick={() => {
+                setIndex(3)
+              }}
+            />
+          </div>
+        )}
+      </div>
       <DataView
         data={data.events}
         href='/clubs/club-management/'

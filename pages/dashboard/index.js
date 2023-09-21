@@ -3,9 +3,19 @@ import React, { useEffect, useState } from 'react'
 import Dashboard from './Dashboard'
 import store from '@/store/store'
 import HomePage from './HomePage'
+import { useRouter } from 'next/router'
 
 const DashboardPage = () => {
   const [activeIndex, setActiveIndex] = useState(0)
+  const router = useRouter()
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+  console.log('hasAdminRole', hasAdminRole)
+  useEffect(() => {
+    if (!hasAdminRole) {
+      router.push('/landing')
+    }
+  }, [hasAdminRole])
   const model = [
     {
       label: 'Dashboard',
@@ -60,20 +70,3 @@ const DashboardPage = () => {
 }
 
 export default DashboardPage
-
-export async function getServerSideProps(context) {
-  const roles = store.getState().auth.roles
-  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
-  console.log('h1', hasAdminRole)
-  if (!hasAdminRole) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
-  return {
-    props: {}, // will be passed to the page component as props
-  }
-}

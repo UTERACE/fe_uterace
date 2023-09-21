@@ -1,6 +1,5 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
 import React, { useContext, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 import Link from 'next/link'
 import { InputText } from 'primereact/inputtext'
@@ -12,20 +11,27 @@ import { login } from '@/store/slices/authSlice'
 import { useRouter } from 'next/router'
 import { useToast } from '@/components/contexts/ToastContext'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
+import store from '@/store/store'
+import { set } from 'react-hook-form'
+import { useGoogleLogin } from '@react-oauth/google'
+import { Dialog } from 'primereact/dialog'
+import Register from '../register'
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const [initialValues, setInitialValues] = useState({})
+  const [visibleGoogle, setVisibleGoogle] = useState(false)
 
+  const [responseGoogle, setResponseGoogle] = useState({})
   const onSubmit = (data) => {
     handleLogin(data)
   }
   const router = useRouter()
   useEffect(() => {
     setLoading(true)
+    setIsAuthenticated(store.getState().auth.isAuthenticated)
     setInitialValues({
       username: localStorage.getItem('username') || '',
       password: localStorage.getItem('password') || '',
@@ -61,7 +67,10 @@ const Login = () => {
           response.data
         console.log('accessToken', accessToken)
         console.log('refreshToken', refreshToken)
-        dispatch(login({ accessToken, refreshToken, image, firstname, roles }))
+        store.dispatch(
+          login({ accessToken, refreshToken, image, firstname, roles })
+        )
+        setIsAuthenticated(store.getState().auth.isAuthenticated)
         showToast('success', 'Đăng nhập thành công ', response.data.detail)
         setLoading(false)
       }
@@ -79,14 +88,66 @@ const Login = () => {
       }
     }
   }
+  const loginGoogle = useGoogleLogin({
+    clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+    redirectUri: 'http://localhost:3000',
+    onSuccess: (res) => {
+      const request = JSON.stringify({
+        accessToken: res.access_token,
+        type: 'google',
+      })
+      handleLoginGoogle(request)
+    },
+    onFailure: (res) => {
+      console.log('login google', res)
+    },
+  })
+  const handleLoginGoogle = async (request) => {
+    try {
+      const response = await apiInstance.post(
+        '/auth/login/third-party',
+        request,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      if (response.data.newUser) {
+        setResponseGoogle(response.data)
+        setVisibleGoogle(true)
+      }
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
   const handleClickLoginGoogle = () => {
-    console.log('login google')
+    loginGoogle()
   }
   const handleClickLoginFacebook = () => {
     console.log('login facebook')
   }
   return (
     <div className='centered-content-full'>
+      <Dialog
+        header='Đăng ký tài khoản với Google'
+        visible={visibleGoogle}
+        position='top'
+        style={{
+          width: '60%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleGoogle(false)}
+      >
+        <Register
+          firstName={responseGoogle.firstname}
+          lastName={responseGoogle.lastname}
+          email={responseGoogle.email}
+          image={responseGoogle.image}
+          type='google'
+        />
+      </Dialog>
       <div id='signin-container'>
         <div id='signin-card'>
           <div id='signin-title'>
@@ -122,10 +183,7 @@ const Login = () => {
               </div>
               <div className='grid-form' id='remember-forgot-container'>
                 <div className='col-6' id='checkbox'>
-                  <Field
-                    name='remember'
-                    label='Remember me'
-                  >
+                  <Field name='remember' label='Remember me'>
                     <Checkbox
                       inputId='remember'
                       checked

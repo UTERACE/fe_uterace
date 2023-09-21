@@ -1,0 +1,33 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    background-color: #f0f0f0;
+  }
+  
+#title {
+    font-size: 3rem;
+    margin: 1rem 0;
+  }
+  
+#description {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+  
+#backHome {
+    font-size: 1rem;
+    color: #0070f3;
+    text-decoration: none;
+    border: 1px solid #0070f3;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+  }
+  
+#backHome:hover {
+    background-color: #0070f3;
+    color: white;
+  }

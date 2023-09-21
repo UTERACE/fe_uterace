@@ -1,5 +1,5 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 import Link from 'next/link'
@@ -12,47 +12,75 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import apiInstance from '@/api/apiInstance'
 import { useRouter } from 'next/router'
 import { useToast } from '@/components/contexts/ToastContext'
+import { Avatar } from 'primereact/avatar'
+import { Calendar } from 'primereact/calendar'
+import { Dropdown } from 'primereact/dropdown'
 
-const Register = () => {
+const Register = (props) => {
+  let { firstName, lastName, email, image, type = 'default' } = props
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
 
   const router = useRouter()
   const [initialValues, setInitialValues] = useState({})
-
+  const recaptcha_site_key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+  useEffect(() => {
+    setInitialValues({
+      firstname: firstName || '',
+      lastname: lastName || '',
+      email: email || '',
+      image: image || '',
+    })
+  }, [type])
   async function onSubmit(data) {
     // Lấy giá trị token từ reCAPTCHA
     window.grecaptcha.ready(function () {
       window.grecaptcha
-        .execute('6LdE3BQoAAAAAKY9Qt2fzCo9m0qVW1H-g-fpnYJj', {
+        .execute(recaptcha_site_key, {
           action: 'submit',
         })
         .then(function (token) {
-          // Thêm token vào formData và gửi lên server
-          // data.recaptcha = token
-          // Gửi formData đến server của bạn
-          handleRegister(data)
+          const date = new Date(data.birthday)
+          const strBirthday =
+            date.getFullYear() +
+            '-' +
+            (date.getMonth() + 1).toString().padStart(2, '0') +
+            '-' +
+            date.getDate().toString().padStart(2, '0')
+          data.recaptcha_token = token
+          data.birthday = strBirthday
+          let { agree, confirmPassword, ...rest } = data
+          handleRegister(rest)
         })
     })
   }
   const handleRegister = async (data) => {
     setLoading(true)
-    console.log(data)
-    let { agree, confirmPassword, ...rest } = data
-    console.log('rest', rest)
-    const response = await apiInstance.post('/auth/register', rest, {
-      hearders: {
-        'Content-Type': 'application/json',
-      },
-    })
-    console.log('response', response)
-    if (response.data.status === 201) {
-      showToast('success', 'Đăng ki thành công ', response.data.message)
-      router.push('/login')
+    try {
+      const response = await apiInstance.post('/auth/register', data, {
+        hearders: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log('response', response)
+      if (response.data.status === 201) {
+        showToast('success', 'Đăng ki thành công ', response.data.message)
+        router.push('/login')
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast(
+        'error',
+        'Đăng ki không thành công ',
+        error.response.data.message
+      )
       setLoading(false)
     }
   }
-
+  const genderOptions = [
+    { label: 'Nam', value: 'Nam' },
+    { label: 'Nữ', value: 'Nu' },
+  ]
   return (
     <div className='centered-content-full'>
       <Helmet>
@@ -62,14 +90,15 @@ const Register = () => {
           defer
         ></script>
       </Helmet>
-      <ReCAPTCHA
-        sitekey='6LdE3BQoAAAAAKY9Qt2fzCo9m0qVW1H-g-fpnYJj'
-        size='invisible'
-      />
+      <ReCAPTCHA sitekey={recaptcha_site_key} size='invisible' />
       <div id='signup-container'>
         <div id='signup-card'>
           <div id='signup-title'>
-            <h1>Sign up</h1>
+            {type === 'default' ? (
+              <h1>Sign up</h1>
+            ) : (
+              <Avatar image={image} size='xlarge' shape='circle' />
+            )}
           </div>
           <Form onSubmit={onSubmit} initialValue={initialValues}>
             <div id='form'>
@@ -85,35 +114,56 @@ const Register = () => {
                   </Field>
                 </div>
               </div>
-              <div className='grid-form'>
-                <div className='col-12' id='width-100-center'>
-                  <Field name='username' label='Username ' required>
-                    <InputText type='text' style={{ width: '100%' }} />
-                  </Field>
+              {type === 'default' ? (
+                <div className='grid-form'>
+                  <div className='col-12' id='width-100-center'>
+                    <Field name='username' label='Username ' required>
+                      <InputText type='text' style={{ width: '100%' }} />
+                    </Field>
+                  </div>
                 </div>
-              </div>
+              ) : null}
+              {type === 'default' ? (
+                <div className='grid-form'>
+                  <div className='col-6' id='width-100-center'>
+                    <Field name='password' label='Password' required>
+                      <Password
+                        type='password'
+                        style={{ width: '100%' }}
+                        toggleMask
+                      />
+                    </Field>
+                  </div>
+                </div>
+              ) : null}
+              {type === 'default' ? (
+                <div className='grid-form'>
+                  <div className='col-6' id='width-100-center'>
+                    <Field
+                      name='confirmPassword'
+                      label='Confirm password'
+                      required
+                    >
+                      <Password
+                        type='password'
+                        style={{ width: '100%' }}
+                        toggleMask
+                      />
+                    </Field>
+                  </div>
+                </div>
+              ) : null}
               <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
-                  <Field name='password' label='Password' required>
-                    <Password
-                      type='password'
-                      style={{ width: '100%' }}
-                      toggleMask
-                    />
+                  <Field name='birthday' label='Ngày sinh' required>
+                    <Calendar showTime={false} style={{ width: '100%' }} />
                   </Field>
                 </div>
-              </div>
-              <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
-                  <Field
-                    name='confirmPassword'
-                    label='Confirm password'
-                    required
-                  >
-                    <Password
-                      type='password'
-                      style={{ width: '100%' }}
-                      toggleMask
+                  <Field name='gender' label='Giới tính' required>
+                    <Dropdown
+                      options={genderOptions}
+                      style={{ width: '100%', borderRadius: '10px' }}
                     />
                   </Field>
                 </div>
@@ -121,11 +171,15 @@ const Register = () => {
               <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
                   <Field name='email' label='Email address' required>
-                    <InputText type='text' style={{ width: '100%' }} />
+                    <InputText
+                      type='text'
+                      style={{ width: '100%' }}
+                      disabled={type === 'google'}
+                    />
                   </Field>
                 </div>
               </div>
-              <div className='grid-form' id='agree-container'>
+              <div className='grid' id='agree-container'>
                 <div className='col-6' id='checkbox'>
                   <Field name='agree' label='I Agree with privacy and policy'>
                     <Checkbox

@@ -6,8 +6,9 @@ import Title from '../../components/landing/Title'
 const News = ({ data }) => {
   const [news, setNews] = useState([])
   useEffect(() => {
+    console.log('data', data)
     setNews(data.slice(0, 9))
-  }, [])
+  }, [data])
   const responsiveOptions = [
     {
       breakpoint: '1400px',

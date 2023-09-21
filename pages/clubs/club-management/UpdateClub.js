@@ -3,19 +3,23 @@ import { Button } from 'primereact/button'
 import { FileUpload } from 'primereact/fileupload'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import React, { useState } from 'react'
-import { set, useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
+import AvatarEditor from 'react-avatar-editor'
 
 const Update = ({ image, name, description }) => {
-  const [nameClub, setNameClub] = useState(name)
+  const [nameEvent, setNameEvent] = useState(name)
+  const [descriptionEvent, setDescriptionEvent] = useState(description)
   const [background, setBackground] = useState(image)
-  const {
-    watch,
-    control,
-    formState: { errors },
-    handleSubmit,
-  } = useForm()
+
+  const [initialValues, setInitialValues] = useState({})
+  useEffect(() => {
+    setInitialValues({
+      name: name,
+      description: description,
+    })
+  }, [])
   const onSubmit = (data) => {
+    data.background = background
     console.log(data)
   }
   const customBase64Uploader = async (event) => {
@@ -31,14 +35,21 @@ const Update = ({ image, name, description }) => {
     }
   }
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='update-info-container'>
         <div id='background-club-container'>
-          <img src={background} alt='background' />
+          <AvatarEditor
+            image={background}
+            style={{ width: '100%', height: '100%', borderRadius: '15px' }}
+            width={1200}
+            height={630}
+            scale={1}
+          />
+          {/* <img src={background} alt='background' /> */}
         </div>
-        <div id='camera-upload-container'>
+        {/* <div id='camera-upload-container'>
           <i className='fas fa-camera'></i>
-        </div>
+        </div> */}
         <div id='file-upload'>
           <FileUpload
             mode='basic'
@@ -53,40 +64,27 @@ const Update = ({ image, name, description }) => {
         </div>
 
         <div id='info-detail'>
-          <Field
-            name='name'
-            label='Tên câu lạc bộ'
-            control={control}
-            required
-            errors={errors}
-            watch={watch}
-            defaultValues={name || ''}
-          >
+          <Field name='name' label='Tên câu lạc bộ' required>
             <InputText
               type='text'
               style={{ width: '100%' }}
               onChange={(e) => {
-                setNameClub(e.target.value)
-                console.log(e.target.value)
+                setNameEvent(e.target.value)
               }}
             />
           </Field>
           <div style={{ height: '1.5rem' }}></div>
-          <Field
-            name='description'
-            label='Mô tả'
-            control={control}
-            required
-            errors={errors}
-            defaultValues={description || ''}
-          >
+          <Field name='description' label='Mô tả' required>
             <InputTextarea
               type='text'
               style={{ width: '100%', height: '8rem' }}
+              onChange={(e) => {
+                setDescriptionEvent(e.target.value)
+              }}
             />
           </Field>
-          <h1>{nameClub}</h1>
-          <h6>{description}</h6>
+          <h1>{nameEvent}</h1>
+          <h6>{descriptionEvent}</h6>
         </div>
         <Button
           id='button-detail'

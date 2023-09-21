@@ -1,6 +1,7 @@
 import DataView from '@/components/dataview/DataView'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
+import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useState } from 'react'
 
@@ -10,6 +11,9 @@ const Events = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+
+  const [activeIndex, setActiveIndex] = useState(1)
+
   const data = {
     per_page: 5,
     current_page: 1,
@@ -88,7 +92,10 @@ const Events = () => {
             <div id='share-register-container'>
               <h4>{item.name}</h4>
               <div id='share-register-content'>
-                <Link id='link-event' href={`/events/event-detail/${item.event_id}`}>
+                <Link
+                  id='link-event'
+                  href={`/events/event-detail/${item.event_id}`}
+                >
                   Tham gia sự kiện{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
@@ -108,8 +115,45 @@ const Events = () => {
     setPerPage(event.rows)
   }
   return (
-    <div>
-      <Title title='Tất cả giải chạy bộ ' />
+    <div
+      className='centered-content-full'
+      style={{
+        backgroundColor: '#ffffff',
+        backgroundImage: "url('/bg1.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Title
+        title={
+          activeIndex === 1
+            ? 'Các sự kiện đang diễn ra'
+            : 'Các sự kiện đã kết thúc'
+        }
+      />
+      <div className='centered-content-layout'>
+        <div
+          id='profile-button-container'
+          style={{ width: '100%', justifyContent: 'start', gap: '2rem' }}
+        >
+          <Button
+            id={activeIndex === 1 ? 'button-profile-active' : 'button-profile'}
+            icon='pi pi-chart-bar'
+            label='Các sự kiện đang diễn ra'
+            onClick={() => {
+              setActiveIndex(1)
+            }}
+          />
+          <Button
+            id={activeIndex === 2 ? 'button-profile-active' : 'button-profile'}
+            icon='pi pi-chart-line'
+            label='Các sự kiện đã kết thúc'
+            onClick={() => {
+              setActiveIndex(2)
+            }}
+          />
+        </div>
+      </div>
       <DataView
         data={data.events}
         href='/events/event-detail/'

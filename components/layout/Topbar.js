@@ -120,7 +120,7 @@ const Topbar = () => {
       {
         label: 'Tham gia giải chạy',
         icon: 'fa pi-fw fa-running',
-        command: () => handleClick('/my-event'),
+        command: () => handleClick('/events/event-management'),
       },
     ]
   }

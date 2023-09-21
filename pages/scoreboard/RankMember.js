@@ -6,6 +6,13 @@ import LocaleHelper from '@/components/locale/LocaleHelper'
 
 const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
+  const [rankMember, setRankMember] = useState(value)
+  useEffect(() => {
+    setLoading(true)
+    setRankMember(value)
+    setLoading(false)
+  }, [value])
+
   const formatRank = (rowData) => {
     return (
       <div id='member-ranking'>
@@ -102,7 +109,12 @@ const RankMember = ({ value }) => {
   ]
 
   return (
-    <DataTable data={value} rows={4} loading={loading} columns={clubsColumns} />
+    <DataTable
+      data={rankMember}
+      rows={4}
+      loading={loading}
+      columns={clubsColumns}
+    />
   )
 }
 export default RankMember

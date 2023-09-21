@@ -11,6 +11,8 @@ import ToastProvider from '@/components/contexts/ToastContext'
 import { LoadingProvider } from '@/components/contexts/LoadingContext'
 import { useRouter } from 'next/router'
 import { ProgressSpinner } from 'primereact/progressspinner'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+
 export default function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -31,18 +33,22 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Layout>
-          <ToastProvider>
-            <LoadingProvider>
-              {loading && (
-                <div className='loading-overlay'>
-                  <ProgressSpinner />
-                </div>
-              )}
-              <Component {...pageProps} />
-            </LoadingProvider>
-          </ToastProvider>
-        </Layout>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+        >
+          <Layout>
+            <ToastProvider>
+              <LoadingProvider>
+                {loading && (
+                  <div className='loading-overlay'>
+                    <ProgressSpinner />
+                  </div>
+                )}
+                <Component {...pageProps} />
+              </LoadingProvider>
+            </ToastProvider>
+          </Layout>
+        </GoogleOAuthProvider>
       </PersistGate>
     </Provider>
   )

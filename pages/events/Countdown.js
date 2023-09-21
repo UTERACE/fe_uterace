@@ -33,7 +33,7 @@ const Countdown = ({ from_date, to_date }) => {
 
       return () => clearInterval(interval)
     }
-  }, [])
+  }, [from_date, to_date])
   function formatNumber(number) {
     return String(number).padStart(2, '0')
   }

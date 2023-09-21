@@ -9,7 +9,7 @@
 }
 #signup-card {
     width: 35rem;
-    height: 50rem;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,10 +50,14 @@
     margin-top: 1rem;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: start;
 }
 #checkbox {
     width: 20rem;
+}
+.p-checkbox {
+    display: block;
 }
 .p-checkbox .p-checkbox-box.p-highlight {
     border-color: black;

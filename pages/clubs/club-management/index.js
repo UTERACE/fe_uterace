@@ -1,5 +1,5 @@
 import DataView from '@/components/dataview/DataView'
-import NewTitle from '@/components/landing/NewTitle'
+import Manage from '@/components/landing/Manage'
 import Title from '@/components/landing/Title'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
 import Link from 'next/link'
@@ -7,8 +7,9 @@ import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import { SpeedDial } from 'primereact/speeddial'
 import React, { useState } from 'react'
-import Update from './Update'
+import Update from './UpdateClub'
 import { Dialog } from 'primereact/dialog'
+import AddClub from './AddClub'
 
 const ClubManagement = () => {
   const [clubs, setClubs] = useState([])
@@ -17,7 +18,10 @@ const ClubManagement = () => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [visibleChange, setVisibleChange] = useState(false)
+  const [visibleAdd, setVisibleAdd] = useState(false)
   const [dataClub, setDataClub] = useState({})
+  const [index, setIndex] = useState(2)
+
   const data = {
     per_page: 5,
     current_page: 1,
@@ -199,11 +203,81 @@ const ClubManagement = () => {
           description={dataClub.description}
         />
       </Dialog>
-      <NewTitle
-        title='Quản lí câu lạc bộ'
-        href={'/clubs/club-new'}
-        newTitle='Thêm câu lạc bộ mới'
-      />
+      <Dialog
+        header='Thêm câu lạc bộ mới'
+        visible={visibleAdd}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleAdd(false)}
+      >
+        <AddClub />
+      </Dialog>
+      <div className='centered-content-layout'>
+        <div id='title-item' style={{ height: '4rem' }}>
+          <h1>{'Quản lí câu lạc bộ'}</h1>
+        </div>
+        <div
+          style={{
+            width: '75%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '2rem',
+          }}
+        >
+          <Button
+            id={
+              index == 1
+                ? 'button-statistic-club-active'
+                : 'button-statistic-club'
+            }
+            type='button'
+            style={{ width: '100%' }}
+            label={'Thêm câu lạc bộ mới'}
+            icon='pi pi-plus'
+            iconPos='right'
+            onClick={() => {
+              setIndex(1)
+              setVisibleAdd(true)
+            }}
+          />
+          <Button
+            id={
+              index == 2
+                ? 'button-statistic-club-active'
+                : 'button-statistic-club'
+            }
+            type='button'
+            style={{ width: '100%' }}
+            label='Câu lạc bộ đã tạo'
+            icon='pi pi-list'
+            iconPos='right'
+            onClick={() => {
+              setIndex(2)
+            }}
+          />
+          <Button
+            id={
+              index == 3
+                ? 'button-statistic-club-active'
+                : 'button-statistic-club'
+            }
+            type='button'
+            style={{ width: '100%' }}
+            label='Câu lạc bộ đã tham gia'
+            icon='pi pi-list'
+            iconPos='right'
+            onClick={() => {
+              setIndex(3)
+            }}
+          />
+        </div>
+      </div>
       <DataView
         data={data.clubs}
         href='/clubs/club-management/'

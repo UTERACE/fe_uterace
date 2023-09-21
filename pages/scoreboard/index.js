@@ -94,7 +94,7 @@ const Scoreboard = () => {
       },
       {
         user_id: 6,
-        RANKING: 7,
+        ranking: 7,
         first_name: 'Nguyễn',
         last_name: 'Văn D',
         image: '',
