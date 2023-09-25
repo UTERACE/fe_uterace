@@ -1,10 +1,34 @@
 import Link from 'next/link'
+import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
 import React, { useState } from 'react'
+import { set } from 'react-hook-form'
 
 const DataView = ({ data, href, itemTemplate }) => {
+  const [visible, setVisible] = useState(false)
+  const [url, setUrl] = useState('https://example.com/')
+  const [title, setTitle] = useState('Tiêu đề bài viết hoặc trang')
+  const [image, setImage] = useState('https://example.com/image.jpg')
+  const [caption, setCaption] = useState('Mô tả bài viết hoặc trang')
+
+  const onClickShare = () => {
+    // Mở một cửa sổ mới với URL chia sẻ Facebook
+    const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      url
+    )}&quote=${encodeURIComponent(title)}`
+    window.open(fbShareUrl, 'facebook-share-dialog', 'width=1080,height=720')
+  }
   return (
     <div className='centered-content-layout'>
       <div className='custom-carousel-content'>
+        <Dialog visible={visible} onHide={() => setVisible(false)}>
+          <Button label='Copy link chia sẻ' className='p-button-success' />
+          <Button
+            label='Chia sẻ lên Facebook'
+            className='p-button-success'
+            onClick={() => onClickShare()}
+          />
+        </Dialog>
         {data.map((item, index) =>
           itemTemplate ? (
             itemTemplate(item, index)
@@ -33,10 +57,19 @@ const DataView = ({ data, href, itemTemplate }) => {
                         Tham gia câu lạc bộ{' '}
                         <i className='pi pi-arrow-right' aria-hidden='true'></i>
                       </Link>
-                      <Link id='link-event' href='/share'>
+                      <a
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setUrl(`https://example.com/${href + item.club_id}}`)
+                          setCaption(item.name)
+                          setTitle(item.name)
+                          setImage(item.image)
+                          setVisible(true)
+                        }}
+                      >
                         Chia sẻ{' '}
                         <i className='pi pi-share-alt' aria-hidden='true'></i>
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 </div>

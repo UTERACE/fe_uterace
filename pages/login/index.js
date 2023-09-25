@@ -22,9 +22,12 @@ const Login = () => {
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const [initialValues, setInitialValues] = useState({})
-  const [visibleGoogle, setVisibleGoogle] = useState(false)
+  const [visibleThirdParty, setVisibleThirdParty] = useState(false)
+  const [visibleFacebook, setVisibleFacebook] = useState(false)
 
-  const [responseGoogle, setResponseGoogle] = useState({})
+  const [responseThirdParty, setResponseThirdParty] = useState({})
+  const [typeThirdParty, setTypeThirdParty] = useState('')
+  const [responseFacebook, setResponseFacebook] = useState({})
   const onSubmit = (data) => {
     handleLogin(data)
   }
@@ -96,13 +99,14 @@ const Login = () => {
         accessToken: res.access_token,
         type: 'google',
       })
-      handleLoginGoogle(request)
+      setTypeThirdParty('google')
+      handleLoginThirdParty(request)
     },
     onFailure: (res) => {
       console.log('login google', res)
     },
   })
-  const handleLoginGoogle = async (request) => {
+  const handleLoginThirdParty = async (request) => {
     try {
       const response = await apiInstance.post(
         '/auth/login/third-party',
@@ -114,38 +118,90 @@ const Login = () => {
         }
       )
       if (response.data.newUser) {
-        setResponseGoogle(response.data)
-        setVisibleGoogle(true)
+        setResponseThirdParty(response.data)
+        setVisibleThirdParty(true)
+      } else {
+        const { accessToken, refreshToken, firstname, image, roles } =
+          response.data
+        store.dispatch(
+          login({ accessToken, refreshToken, image, firstname, roles })
+        )
+        setIsAuthenticated(store.getState().auth.isAuthenticated)
+        showToast('success', 'Đăng nhập thành công ', response.data.detail)
+        setLoading(false)
       }
     } catch (error) {
       console.log('error', error)
     }
   }
+  useEffect(() => {
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v18.0',
+      })
+    }
+    ;(function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0]
+      if (d.getElementById(id)) return
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    })(document, 'script', 'facebook-jssdk')
+  }, [])
+  const loginFacebook = () => {
+    setLoading(true)
+    FB.login(
+      function (response) {
+        if (response.authResponse) {
+          var accessToken = response.authResponse.accessToken
+          const request = JSON.stringify({
+            accessToken: accessToken,
+            type: 'facebook',
+          })
+          console.log('re', request)
+          setTypeThirdParty('facebook')
+          handleLoginThirdParty(request)
+        } else {
+          console.log('User cancelled login or did not fully authorize.')
+        }
+      },
+      { scope: 'email' }
+    )
+  }
   const handleClickLoginGoogle = () => {
     loginGoogle()
   }
   const handleClickLoginFacebook = () => {
-    console.log('login facebook')
+    loginFacebook()
   }
   return (
     <div className='centered-content-full'>
       <Dialog
-        header='Đăng ký tài khoản với Google'
-        visible={visibleGoogle}
+        header={`Đăng ký tài khoản với ${
+          typeThirdParty === 'facebook' ? 'Facebook' : 'Google'
+        }`}
+        visible={visibleThirdParty}
         position='top'
         style={{
           width: '60%',
           borderRadius: '20px',
           textAlign: 'center',
         }}
-        onHide={() => setVisibleGoogle(false)}
+        onHide={() => setVisibleThirdParty(false)}
       >
         <Register
-          firstName={responseGoogle.firstname}
-          lastName={responseGoogle.lastname}
-          email={responseGoogle.email}
-          image={responseGoogle.image}
-          type='google'
+          id={responseThirdParty.id}
+          firstName={responseThirdParty.firstname}
+          lastName={responseThirdParty.lastname}
+          email={responseThirdParty.email}
+          image={responseThirdParty.image}
+          type={typeThirdParty}
+          setVisibleThirdParty={setVisibleThirdParty}
         />
       </Dialog>
       <div id='signin-container'>

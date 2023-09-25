@@ -17,7 +17,15 @@ import { Calendar } from 'primereact/calendar'
 import { Dropdown } from 'primereact/dropdown'
 
 const Register = (props) => {
-  let { firstName, lastName, email, image, type = 'default' } = props
+  let {
+    id,
+    firstName,
+    lastName,
+    email,
+    image,
+    type = 'default',
+    setVisibleThirdParty = false,
+  } = props
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
 
@@ -28,6 +36,7 @@ const Register = (props) => {
     setInitialValues({
       firstname: firstName || '',
       lastname: lastName || '',
+      username: id || '',
       email: email || '',
       image: image || '',
     })
@@ -49,7 +58,13 @@ const Register = (props) => {
             date.getDate().toString().padStart(2, '0')
           data.recaptcha_token = token
           data.birthday = strBirthday
+          data.image = image
+          data.type_account = type
+          if (type === 'facebook') {
+            data.username = id
+          }
           let { agree, confirmPassword, ...rest } = data
+          console.log('rest', rest)
           handleRegister(rest)
         })
     })
@@ -65,6 +80,7 @@ const Register = (props) => {
       console.log('response', response)
       if (response.data.status === 201) {
         showToast('success', 'Đăng ki thành công ', response.data.message)
+        setVisibleThirdParty(false)
         router.push('/login')
         setLoading(false)
       }
@@ -114,45 +130,49 @@ const Register = (props) => {
                   </Field>
                 </div>
               </div>
-              {type === 'default' ? (
+              {type !== 'google' ? (
                 <div className='grid-form'>
                   <div className='col-12' id='width-100-center'>
                     <Field name='username' label='Username ' required>
-                      <InputText type='text' style={{ width: '100%' }} />
-                    </Field>
-                  </div>
-                </div>
-              ) : null}
-              {type === 'default' ? (
-                <div className='grid-form'>
-                  <div className='col-6' id='width-100-center'>
-                    <Field name='password' label='Password' required>
-                      <Password
-                        type='password'
+                      <InputText
+                        type='text'
                         style={{ width: '100%' }}
-                        toggleMask
+                        disabled={type === 'facebook'}
                       />
                     </Field>
                   </div>
                 </div>
               ) : null}
-              {type === 'default' ? (
-                <div className='grid-form'>
-                  <div className='col-6' id='width-100-center'>
-                    <Field
-                      name='confirmPassword'
-                      label='Confirm password'
-                      required
-                    >
-                      <Password
-                        type='password'
-                        style={{ width: '100%' }}
-                        toggleMask
-                      />
-                    </Field>
-                  </div>
+              {/* {type !== 'facebook' ? ( */}
+              <div className='grid-form'>
+                <div className='col-6' id='width-100-center'>
+                  <Field name='password' label='Password' required>
+                    <Password
+                      type='password'
+                      style={{ width: '100%' }}
+                      toggleMask
+                    />
+                  </Field>
                 </div>
-              ) : null}
+              </div>
+              {/* ) : null}
+              {type !== 'facebook' ? ( */}
+              <div className='grid-form'>
+                <div className='col-6' id='width-100-center'>
+                  <Field
+                    name='confirmPassword'
+                    label='Confirm password'
+                    required
+                  >
+                    <Password
+                      type='password'
+                      style={{ width: '100%' }}
+                      toggleMask
+                    />
+                  </Field>
+                </div>
+              </div>
+              {/* ) : null} */}
               <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field name='birthday' label='Ngày sinh' required>

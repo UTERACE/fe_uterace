@@ -7,6 +7,7 @@ import DataView from '@/components/dataview/DataView'
 import Statistic from './landing/Statistic'
 import News from './landing/News'
 import Detail from '@/components/landing/Detail'
+import HeadPage from '@/components/headpage/HeadPage'
 
 const Landing = () => {
   const data = {
@@ -342,6 +343,7 @@ const Landing = () => {
   }
   return (
     <div>
+      <HeadPage title='UTE Race' description='Chao mung da den voi trang web' />
       <Slideshow data={data.overview} />
       <div
         className='centered-content-full'

@@ -268,7 +268,7 @@ const ClubDetail = () => {
     setPerPage(event.rows)
     console.log(per_page)
   }
-
+  
   return (
     <div
       className='centered-content-full'

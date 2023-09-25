@@ -101,10 +101,10 @@ const Clubs = () => {
                       Đăng ký{' '}
                       <i className='pi pi-arrow-right' aria-hidden='true'></i>
                     </Link>
-                    <Link id='link-event' href='/share'>
+                    <a>
                       Chia sẻ{' '}
                       <i className='pi pi-share-alt' aria-hidden='true'></i>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
