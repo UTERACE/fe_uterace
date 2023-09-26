@@ -16,7 +16,7 @@
     width: 80%;
     margin-top: 1rem;
     border-radius: 25px;
-    background-color: $background-color-2;
+    background-color: $background-color-red;
     background-image: url(/bg1.png);
     background-size: cover;
     background-position: center;
@@ -41,7 +41,7 @@
 }
 #statistic-card h1{
     margin: 0 auto;
-    color: $background-color-2;
+    color: $background-color-red;
 }
 #statistic-card h4{
     margin: 0 auto;
@@ -85,7 +85,7 @@
 #info-profile-container a {
     font-size: 1rem;
     font-weight: 500;
-    color: $background-color-2;
+    color: $background-color-red;
     text-decoration: none;
 }
 #name-container {

@@ -25,7 +25,7 @@
     position: relative; 
     width: 200px;
     height: auto;
-    color: white;
+    color: $white-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,32 +42,18 @@
     border: none;
     font-size: 1rem;
     font-weight: bold;
-    border-color: black ;
-  }
+    border-color: $black-color ;
+}
   
-// #button_detail-container::before {
-//     content: "";
-//     position: absolute;
-//     top: -2px;
-//     left: -2px;
-//     right: -2px;
-//     bottom: -2px;
-//     border: 10px solid;
-//     border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-//     border-image-slice: 1;
-//     z-index: -1; 
-//     filter: blur(20px); 
-// }
-
 #button-detail {
-    background-color: #000000;
-    color: #FFE49E;
+    background-color: $black-color;
+    color: $primary-color;
     border-radius: 25px;
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 #button-detail:hover {
-    background-color: #FFE49E;
-    color: #000000;
+    background-color: $primary-color;
+    color: $black-color;
     border-radius: 25px;
     transform: scale(1.05);
 }

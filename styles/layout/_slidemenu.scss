@@ -14,3 +14,11 @@
     background: $primary-color;
     border-radius: 25px;
 }
+.p-slidemenu .p-menuitem-link:not(.p-disabled):focus {
+    background: $primary-color;
+    border-radius: 25px;
+}
+.p-slidemenu .p-menuitem-link:not(.p-disabled):active {
+    background: $primary-color;
+    border-radius: 25px;
+}

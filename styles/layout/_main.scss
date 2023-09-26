@@ -32,10 +32,10 @@ main {
 }
 @media (max-width: 1600px) {
     .centered-content-layout {
-        width: 85%;  /* Tăng giá trị từ 75% lên 80% */
+        width: 85%;
     }
     .centered-content {
-        width: 85%;  /* Tăng giá trị từ 75% lên 85% */
+        width: 85%;
     }
     .custom-carousel-content {
         grid-template-columns: repeat(2, 1fr); 
@@ -43,10 +43,10 @@ main {
 }
 @media (max-width: 1400px) {
     .centered-content-layout {
-        width: 90%;  /* Tăng giá trị từ 75% lên 85% */
+        width: 90%;
     }
     .centered-content {
-        width: 90%;  /* Tăng giá trị từ 75% lên 85% */
+        width: 90%;
     }
     .custom-carousel-content {
         grid-template-columns: repeat(2, 1fr); 
@@ -59,30 +59,27 @@ main {
 }
 @media (max-width: 900px) {
     .centered-content-layout {
-        width: 95%;  /* Tăng giá trị từ 75% lên 85% */
+        width: 95%;
     }
     .centered-content {
-        width: 100%;  /* Tăng giá trị từ 75% lên 85% */
+        width: 100%;
     }
     .custom-carousel-content {
         grid-template-columns: repeat(1, 1fr); 
     }
 }
-.p-button:focus, .p-button:active, .p-button.p-focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
+
 .loading-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Đảm bảo nó nằm trên tất cả các phần tử khác */
+    z-index: 2000;
 }
 body, html {
     margin: 0;

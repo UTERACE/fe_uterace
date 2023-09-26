@@ -38,7 +38,7 @@
 #update-info-container.p-button {
     color: transparent;
     background: transparent;
-    border: 0 solid #2196F3;
+    border: 0 solid $white-color;
       border-top-color: rgb(33, 150, 243);
       border-right-color: rgb(33, 150, 243);
       border-bottom-color: rgb(33, 150, 243);
@@ -54,15 +54,15 @@
     border-color: transparent;
 }
 #update-info-container.p-dialog .p-dialog-content {
-    background: #ffffffce;
-    color: #495057;
+    background: $background-dialog;
+    color: $dialog-color;
     padding: 0 0 0 0;
     width: 100%;
 }
 #update-info-container.p-dialog .p-dialog-header {
     border-bottom: 0 none;
-    background: #ffffffce;
-    color: #495057;
+    background: $background-dialog;
+    color: $dialog-color;
     padding: 1.5rem;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;

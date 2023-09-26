@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #282932;
+    background: $background-footer;
     color: $white-color;
     a {
         color: $white-color;
@@ -21,9 +21,9 @@
     margin-top: 1.5rem;
 }
 #social-media-icons a {
-    margin-right: 1rem; /* Khoảng cách giữa các icon */
+    margin-right: 1rem; 
 }
 
 #social-media-icons a:last-child {
-    margin-right: 0; /* Đảm bảo rằng không có khoảng cách ở biểu tượng cuối cùng */
+    margin-right: 0;
 }

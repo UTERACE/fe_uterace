@@ -15,7 +15,6 @@
     align-items: center;
     background-color: #fff;
     border-radius: 15px;
-    // box-shadow: 0 0 0.5rem 0.1rem #FFE49E;
     font-style: bold;
     font-size: 1rem;
 }
@@ -49,23 +48,18 @@
     width: 10rem;
 }
 .p-checkbox .p-checkbox-box.p-highlight {
-    border-color: black;
-    background: #FFE49E;
+    border-color: $black-color;
+    background: $primary-color;
 }
 .p-checkbox .p-checkbox-box {
-    border: 2px solid black;
+    border: 2px solid $black-color;
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
-    border-color: black;
-    background: #FFE49E;
-    color: #000000;
+    border-color: $black-color;
+    background: $primary-color;
+    color: $black-color;
 }
-// .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:focus {
-//     box-shadow: inset 0 0 0 0.1rem #FFE49E;
-//     background: #FFE49E;
-//     color: #000000;
-// }
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
     transition-duration: 0.2s;
     color: black;
@@ -88,8 +82,8 @@
 }
 #border-login {
     width: 100%;
-    height: 3rem;
-    color: white;
+    height: 2rem;
+    color: $white-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,8 +92,8 @@
 }
 #border-login >button {
     width: 100%;
-    height: 3rem;
-    border-radius: 10px;
+    height: 2.5rem;
+    border-radius: 50px;
     border: none;
     font-size: 0.9rem;
     font-weight: bold;
@@ -109,7 +103,7 @@
     position: relative; 
     width: 100%;
     height: 3rem;
-    color: white;
+    color: $white-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,8 +123,13 @@
     margin-top: 2rem;
 }
 #login-signup-title a{
-    color: black;
+    color: $black-color;
     text-decoration: none;
     font-weight: bold;
     width: 100%;
 }
+#login-google {
+    color: $login-facebook-color;
+    background-color: $white-color;
+}
+

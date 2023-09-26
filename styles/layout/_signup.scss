@@ -14,9 +14,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+    background-color: $white-color;
     border-radius: 15px;
-    // box-shadow: 0 0 0.5rem 0.1rem #FFE49E;
     font-style: bold;
     font-size: 1rem;
 }
@@ -24,7 +23,7 @@
     margin-top: 4rem;
 }
 #register-signin-title a{
-    color: black;
+    color: $black-color;
     text-decoration: none;
     font-weight: bold;
     text-align: center;
@@ -60,26 +59,22 @@
     display: block;
 }
 .p-checkbox .p-checkbox-box.p-highlight {
-    border-color: black;
-    background: #FFE49E;
+    border-color: $black-color;
+    background: $primary-color;
 }
 .p-checkbox .p-checkbox-box {
-    border: 2px solid black;
+    border: 2px solid $black-color;
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
-    border-color: black;
-    background: #FFE49E;
-    color: #000000;
+    border-color: $black-color;
+    background: $primary-color;
+    color: $black-color;
 }
-// .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:focus {
-//     box-shadow: inset 0 0 0 0.1rem #FFE49E;
-//     background: #FFE49E;
-//     color: #000000;
-// }
+
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
     transition-duration: 0.2s;
-    color: black;
+    color: $black-color;
     font-size: 14px;
 }
 
@@ -102,7 +97,7 @@
     position: relative; 
     width: 100%;
     height: 3rem;
-    color: white;
+    color: $white-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,21 +114,21 @@
     border: none;
     font-size: 1rem;
     font-weight: bold;
-    border-color: black ;
-    background-color: #000000;
-    color: #FFE49E;
+    border-color: $black-color ;
+    background-color: $black-color;
+    color: $primary-color;
     cursor: pointer;
 }
 #button-dark:hover {
-    background-color: #FFE49E;
-    color: black;
+    background-color: $primary-color;
+    color: $black-color;
     border-color: $border-color;
     transform: scale(1.05);
     transition: transform 0.3s ease;
 
 }
 #forgot-title a{
-    color: black;
+    color: $black-color;
     text-decoration: none;
     font-weight: bold;
     width: 100%;   
@@ -142,7 +137,7 @@
     margin-top: 2rem;
 }
 #signup-title a{
-    color: black;
+    color: $black-color;
     text-decoration: none;
     font-weight: bold;
     width: 100%;

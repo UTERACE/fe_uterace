@@ -11,7 +11,7 @@
     width: 80%;
     height: 20rem;
     margin-top: 1rem;
-    background-color: $background-color-2;
+    background-color: $background-color-red;
     border-radius: 15px;
 }
 #background-container img {
@@ -85,7 +85,7 @@
 #camera-container-background.p-button {
     color: transparent;
     background: transparent;
-    border: 0 solid #2196F3;
+    border: 0 solid $white-color;
       border-top-color: rgb(33, 150, 243);
       border-right-color: rgb(33, 150, 243);
       border-bottom-color: rgb(33, 150, 243);
@@ -101,15 +101,15 @@
     border-color: transparent;
 }
 #camera-container-background.p-dialog .p-dialog-content {
-    background: #ffffffce;
-    color: #495057;
+    background: $background-dialog;
+    color: $dialog-color;
     padding: 0 0 0 0;
     width: 100%;
 }
 #camera-container-background.p-dialog .p-dialog-header {
     border-bottom: 0 none;
-    background: #ffffffce;
-    color: #495057;
+    background: $background-dialog;
+    color: $dialog-color;
     padding: 1.5rem;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -122,7 +122,7 @@
 .p-button {
     color: $black-color;
     background: $primary-color;
-    border: 0 solid #2196F3;
+    border: 0 solid $white-color;
       border-top-color: rgb(33, 150, 243);
       border-right-color: rgb(33, 150, 243);
       border-bottom-color: rgb(33, 150, 243);
@@ -138,15 +138,15 @@
     border-color: transparent;
 }
 .p-dialog .p-dialog-content {
-    background: #ffffffce;
-    color: #495057;
+    background: $background-dialog;
+    color: $dialog-color;
     padding: 0 0 0 0;
     width: 100%;
 }
 .p-dialog .p-dialog-header {
     border-bottom: 0 none;
-    background: #ffffffce;
-    color: #495057;
+    background: $background-dialog;
+    color: $dialog-color;
     padding: 1.5rem;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;

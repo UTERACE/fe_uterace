@@ -4,8 +4,8 @@
     justify-content: center;
     flex-wrap: wrap;
     background: transparent;
-    color: #54b315;
-    border: solid $border-color;
+    color: $primary-color;
+    border: solid $background-color;
     border-width: 0;
     padding: 0;
     padding-top: 1rem;
@@ -13,9 +13,9 @@
 }
 // custom css for paginator highlight
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background: $primary-color;
-    border-color: $border-color;
-    color: #54b315;
+    background: $black-color;
+    border-color: $background-color;
+    color: $primary-color;
     border-radius: 10px;
 }
 // custom css for paginator dropdown
@@ -29,6 +29,6 @@
     padding: 0;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-    color: #495057;
-    background: $primary-color;
+    color: $dialog-color;
+    background: $black-color;
 }

@@ -278,9 +278,7 @@ const Login = () => {
                   <Button
                     label='Countinue with Facebook'
                     icon='pi pi-facebook'
-                    severity='secondary'
-                    raised
-                    id='button-dark'
+                    id='login-google'
                     type='button'
                     onClick={() => {
                       handleClickLoginFacebook()

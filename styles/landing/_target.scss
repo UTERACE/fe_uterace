@@ -1,6 +1,5 @@
-@import "../layout/variables";
 #target-wrapper {
-    background-color: #f5f5f5;
+    background-color: $border-color;
     justify-content: center;
     padding: 2rem 0;
 }
@@ -30,6 +29,6 @@
 #target-item span {
     text-align: center;
     font-size: 2em;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: $fontFamily;
     font-weight: bold;
 }

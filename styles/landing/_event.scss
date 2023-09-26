@@ -5,7 +5,7 @@
     border-radius: 35px;
     width: 100%;
     height: auto;
-    box-shadow: 0 0 0.5rem 0.1rem #d6d2c7;
+    box-shadow: 0 0 0.5rem 0.1rem $border-color-yellow;
     z-index: -1;
 }
 #image-event-container {
@@ -52,7 +52,7 @@
     text-decoration: none;
 }
 #link-event:hover {
-    color: $background-color-2;
+    color: $background-color-red;
     font-weight: 550;
     transition: color 0.3s ease;
 }
@@ -83,7 +83,7 @@
 #custom-carousel-product.p-carousel .p-carousel-content .p-carousel-next {
     width: 3rem;
     height: 3rem;
-    color: #6c757d;
+    color: $dialog-color;
     border: 0 none;
     background: $white-color;
       background-color: $white-color;
@@ -96,7 +96,7 @@
     height: auto;
 }
 #custom-carousel-product.p-carousel .p-highlight button {
-    background-color: black;
+    background-color: $black-color;
     border-radius: 50px;
     width: 1.2rem;
 }

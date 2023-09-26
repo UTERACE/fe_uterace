@@ -1,5 +1,5 @@
 #slideshow-container {
-  background-color: #FFE49E;
+  background-color: $primary-color;
 }
 
 #slide {
@@ -14,11 +14,11 @@
 }
 
 #slide-caption {
-  position: absolute;  /* Đặt vị trí tuyệt đối cho tiêu đề */
-  top: 20%;           /* Khoảng cách từ phía trên của slide */
-  left: 10%;          /* Khoảng cách từ bên trái của slide */
-  background-color:transparent; /* Màu nền mờ */
-  color: black;
+  position: absolute; 
+  top: 20%;  
+  left: 10%; 
+  background-color:transparent; 
+  color: $black-color;
   border-radius: 5px;
   font-style: bold;
   width: 35rem;
@@ -35,7 +35,7 @@
   font-size: 1.5rem;
   width: 15rem;
   height: auto;
-  background-color: black;
+  background-color: $black-color;
   border: none;
   border-radius: 10px;
 }
@@ -61,9 +61,9 @@
 }
 
 #prev, #next {
-  position: absolute;  /* Đặt vị trí tuyệt đối cho nút */
-  top: 50%;            /* Đặt nút ở giữa chiều cao của slide */
-  transform: translateY(-50%);  /* Giữ cho nút ở giữa ngay cả khi kích thước thay đổi */
+  position: absolute;  
+  top: 50%;         
+  transform: translateY(-50%);  
   background-color: transparent;
   color: transparent;
   padding: 10px;
@@ -73,11 +73,11 @@
 }
 
 #prev {
-  left: 10px;          /* Đặt nút ở bên trái */
+  left: 10px;
 }
 
 #next {
-  right: 10px;         /* Đặt nút ở bên phải */
+  right: 10px; 
 }
 .overlay-content {
   position: absolute; 
@@ -89,42 +89,3 @@
 #slide-detail {
   margin-top: 2rem;
 }
-
-// #multi-color-border {
-//   position: relative; 
-//   width: 200px; /* Ví dụ kích thước, bạn có thể thay đổi */
-//   height: auto;
-//   color: white; /* Màu chữ cho button */
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 15px; /* Bạn cũng có thể thêm bo tròn cho button nếu muốn */
-//   position: relative; /* hoặc absolute, fixed, hoặc sticky tùy theo ngữ cảnh của bạn */
-//   z-index: 1;
-//   margin-top: 1rem;
-// }
-// #multi-color-border >button {
-//   width: 100%;
-//   height: 3rem;
-//   border-radius: 10px;
-//   border: none;
-//   font-size: 1rem;
-//   font-weight: bold;
-//   border-color: black ;
-// }
-
-// #multi-color-border::before {
-//   content: "";
-//   position: absolute;
-//   top: -2px; /* Đặt giá trị âm bằng độ dày viền */
-//   left: -2px;
-//   right: -2px;
-//   bottom: -2px;
-//   border: 10px solid;
-//   border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-//   border-image-slice: 1;
-//   z-index: -1; /* Đảm bảo bóng màu nằm dưới button */
-
-//   /* Tạo bóng màu */
-//   filter: blur(20px); /* Giảm giá trị blur để bóng màu không lệch quá xa */
-// }

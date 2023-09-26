@@ -54,6 +54,8 @@ const Topbar = () => {
       setActiveIndex(6)
     } else if (router.pathname === '/register') {
       setActiveIndex(7)
+    } else {
+      setActiveIndex(8)
     }
   }, [router.pathname])
 
@@ -268,7 +270,7 @@ const Topbar = () => {
                   model={end_items}
                   popup
                   viewportHeight={284}
-                  menuWidth={207}
+                  menuWidth={250}
                 ></SlideMenu>
 
                 <i
