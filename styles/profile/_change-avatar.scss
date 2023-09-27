@@ -133,8 +133,8 @@
 }
 
 .p-button:enabled:hover, .p-button:not(button):not(a):not(.p-disabled):hover {
-    background: $white-color;
-    color: $black-color;
+    background: $black-color;
+    color: $primary-color;
     border-color: transparent;
 }
 .p-dialog .p-dialog-content {

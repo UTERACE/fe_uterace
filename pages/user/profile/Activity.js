@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import Title from '../../../components/landing/Title'
-import Link from 'next/link'
+import React from 'react'
 
-const Activity = ({ activities }) => {
-  const [activity, setActivity] = useState(activities)
-  useEffect(() => {
-    setActivity(activities)
-  }, [activities])
+const Activity = ({ activities = [] }) => {
   return (
     <div className='centered-content-full'>
       <div className='custom-carousel-content'>
-        {activity.map((item) => (
+        {activities.map((item) => (
           <div id='activities-container'>
             <div id='info-activities'>
               <h4>

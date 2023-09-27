@@ -67,24 +67,21 @@ const RankMember = ({ value }) => {
     }
     return ''
   }
-  const clubsColumns = [
+  const memberColumns = [
     {
       field: 'ranking',
       header: 'Hạng',
       body: formatRank,
       bodyClassName: 'text-center',
-      className: 'text-rank',
     },
     {
       header: 'Thành viên',
       body: fullnameWithImageTemplate,
-      className: 'text-name',
     },
     {
       field: 'total_distance',
       header: 'Tổng quảng đường (km)',
       bodyClassName: 'text-center',
-      className: 'text-km',
       body: formatNumber,
     },
     {
@@ -92,19 +89,16 @@ const RankMember = ({ value }) => {
       header: 'Pace (phút/km)',
       body: formatNumber,
       bodyClassName: 'text-center',
-      className: 'text-km',
     },
     {
       field: 'organization',
       header: 'Cơ quan, tổ chức',
       bodyClassName: 'text-center',
-      className: 'text-km',
     },
     {
       field: 'gender',
       header: 'Giới tính',
       bodyClassName: 'text-center',
-      className: '',
     },
   ]
 
@@ -113,7 +107,7 @@ const RankMember = ({ value }) => {
       data={rankMember}
       rows={4}
       loading={loading}
-      columns={clubsColumns}
+      columns={memberColumns}
     />
   )
 }

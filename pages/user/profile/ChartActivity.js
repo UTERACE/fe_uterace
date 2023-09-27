@@ -1,8 +1,7 @@
-import Title from '@/components/landing/Title'
 import { Chart } from 'primereact/chart'
 import React, { useEffect, useState } from 'react'
 
-const ChartActivity = () => {
+const ChartActivity = ({ label = [], dataColumn = [], dataLine = [] }) => {
   const [chartData, setChartData] = useState({})
   const [chartOptions, setChartOptions] = useState({})
   useEffect(() => {
@@ -13,7 +12,7 @@ const ChartActivity = () => {
     )
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border')
     const data = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: label,
       datasets: [
         {
           type: 'line',
@@ -22,13 +21,13 @@ const ChartActivity = () => {
           borderWidth: 2,
           fill: false,
           tension: 0.4,
-          data: [50, 25, 12, 48, 56, 76, 42],
+          data: dataLine,
         },
         {
           type: 'bar',
           label: 'Dataset 2',
           backgroundColor: documentStyle.getPropertyValue('--green-500'),
-          data: [21, 84, 24, 75, 37, 65, 34],
+          data: dataColumn,
           borderColor: 'white',
           borderWidth: 2,
         },
@@ -65,7 +64,7 @@ const ChartActivity = () => {
     }
     setChartData(data)
     setChartOptions(options)
-  }, [])
+  }, [dataColumn, dataLine])
   return (
     <React.Fragment>
       <Chart

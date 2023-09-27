@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import ChartActivity from './profile/ChartActivity'
 import Activity from './profile/Activity'
 import Club from './profile/Club'
+import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 
 const UserDetail = () => {
   const router = useRouter()
@@ -22,105 +23,128 @@ const UserDetail = () => {
   const [totalRecords, setTotalRecords] = useState(4)
   const [first, setFirst] = useState(1)
 
-  const data = {
-    id: 1,
-    name: 'Nguyễn Văn A',
-    image: 'https://picsum.photos/200/300',
-    activities: [
-      {
-        name: 'Morning Run',
-        image: 'https://picsum.photos/200/300',
-        day: '23:04, 14/10/2022',
-        distance: 2.49,
-        pace: 5.0,
-        time: '00:12:45',
+  const [dataChartWeek, setDataChartWeek] = useState({})
+  const [dataChartMonth, setDataChartMonth] = useState({})
+  const [activities, setActivities] = useState([])
+  const [clubs, setClubs] = useState([])
+  const [data, setData] = useState({})
+  useEffect(() => {
+    const data = {
+      activities: [
+        {
+          name: 'Morning Run',
+          image: 'https://picsum.photos/200/300',
+          day: '23:04, 14/10/2022',
+          distance: 2.49,
+          pace: 5.0,
+          time: '00:12:45',
+        },
+        {
+          name: 'Afternoon Run',
+          image: 'https://picsum.photos/200/300',
+          day: '23:04, 14/10/2022',
+          distance: 2.49,
+          pace: 5.0,
+          time: '00:12:45',
+        },
+        {
+          name: 'Afternoon Run',
+          image: 'https://picsum.photos/200/300',
+          day: '23:04, 14/10/2022',
+          distance: 2.49,
+          pace: 5.0,
+          time: '00:12:45',
+        },
+        {
+          name: 'Lunch Run',
+          image: 'https://picsum.photos/200/300',
+          day: '23:04, 14/10/2022',
+          distance: 2.49,
+          pace: 5.0,
+          time: '00:12:45',
+        },
+        {
+          name: 'Lunch Run',
+          image: 'https://picsum.photos/200/300',
+          day: '23:04, 14/10/2022',
+          distance: 2.49,
+          pace: 5.0,
+          time: '00:12:45',
+        },
+        {
+          name: 'Morning Run',
+          image: 'https://picsum.photos/200/300',
+          day: '23:04, 14/10/2022',
+          distance: 2.49,
+          pace: 5.0,
+          time: '00:12:45',
+        },
+      ],
+      club: [
+        {
+          name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          total_distance: 1000,
+        },
+        {
+          name: 'Club 2',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          total_distance: 1000,
+        },
+        {
+          name: 'Club 3',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          total_distance: 1000,
+        },
+        {
+          name: 'Club 4',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          total_distance: 1000,
+        },
+        {
+          name: 'Club 5',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          total_distance: 1000,
+        },
+        {
+          name: 'Club 6',
+          image: 'https://picsum.photos/200/300',
+          member: 100,
+          total_distance: 1000,
+        },
+      ],
+      activities_chart_month: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        dataLine: [50, 25, 12, 48, 56, 76, 42],
+        dataBar: [65, 59, 80, 81, 56, 55, 40],
       },
-      {
-        name: 'Afternoon Run',
-        image: 'https://picsum.photos/200/300',
-        day: '23:04, 14/10/2022',
-        distance: 2.49,
-        pace: 5.0,
-        time: '00:12:45',
+      activities_chart_week: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        dataLine: [21, 84, 24, 75, 37, 65, 34],
+        dataBar: [35, 34, 80, 45, 56, 55, 23],
       },
-      {
-        name: 'Afternoon Run',
-        image: 'https://picsum.photos/200/300',
-        day: '23:04, 14/10/2022',
-        distance: 2.49,
-        pace: 5.0,
-        time: '00:12:45',
-      },
-      {
-        name: 'Lunch Run',
-        image: 'https://picsum.photos/200/300',
-        day: '23:04, 14/10/2022',
-        distance: 2.49,
-        pace: 5.0,
-        time: '00:12:45',
-      },
-      {
-        name: 'Lunch Run',
-        image: 'https://picsum.photos/200/300',
-        day: '23:04, 14/10/2022',
-        distance: 2.49,
-        pace: 5.0,
-        time: '00:12:45',
-      },
-      {
-        name: 'Morning Run',
-        image: 'https://picsum.photos/200/300',
-        day: '23:04, 14/10/2022',
-        distance: 2.49,
-        pace: 5.0,
-        time: '00:12:45',
-      },
-    ],
-    club: [
-      {
-        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
-        image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
-      },
-      {
-        name: 'Club 2',
-        image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
-      },
-      {
-        name: 'Club 3',
-        image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
-      },
-      {
-        name: 'Club 4',
-        image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
-      },
-      {
-        name: 'Club 5',
-        image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
-      },
-      {
-        name: 'Club 6',
-        image: 'https://picsum.photos/200/300',
-        member: 100,
-        total_distance: 1000,
-      },
-    ],
-    total_distance: 107.5,
-    pace: 5.52,
-    total_runs: 20,
-    total_clubs: 2,
-    total_events: 3,
-    ranking: 112,
-  }
+      total_distance: 107.5,
+      pace: 5.52,
+      total_activities: 20,
+      total_clubs: 2,
+      total_events: 3,
+      ranking: 112,
+      first_name: 'A',
+      last_name: 'Nguyễn Văn',
+      image: 'https://picsum.photos/200/300',
+      connect_strava: false,
+    }
+    setDataChartMonth(data.activities_chart_month)
+    setDataChartWeek(data.activities_chart_week)
+    setActivities(data.activities)
+    setClubs(data.club)
+    setData(data)
+  }, [])
 
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -128,7 +152,41 @@ const UserDetail = () => {
     setPerPage(event.rows)
   }
   const [activeIndex, setActiveIndex] = useState(2)
-
+  const itemTemplate = (item) => {
+    return (
+      <div id='dataview-container' style={{ backgroundColor: 'white' }}>
+        <div id='image-container-dataview'>
+          <Link
+            id='link-dataview'
+            href={`/events/event-management/${item.event_id}`}
+          >
+            <img src={item.image} alt={item.name} />
+          </Link>
+        </div>
+        <Link
+          id='link-dataview'
+          href={`/events/event-management/${item.event_id}`}
+        >
+          <div id='info-dataview'>
+            <h4>
+              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
+              {item.total_members} Thành viên
+            </h4>
+            <h4>
+              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
+              {item.total_clubs} Câu lạc bộ
+            </h4>
+          </div>
+          <div id='name-dataview'>
+            <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
+            <div id='share-register-container'>
+              <h4>{item.name}</h4>
+            </div>
+          </div>
+        </Link>
+      </div>
+    )
+  }
   return (
     <div
       className='centered-content-full'
@@ -171,38 +229,51 @@ const UserDetail = () => {
           <div id='profile-image-container'>
             <div style={{ height: '8rem' }}>
               <div id='profile-image-overlay'>
-                <img
-                  src={data.image}
-                  alt='profile'
-                  id='profile-image'
-                />
+                <img src={data.image} alt='profile' id='profile-image' />
                 <div id='info-profile-container'>
                   <div id='name-container'>
-                    <h1>{data.name}</h1>
+                    <h1>{data.last_name + ' ' + data.first_name}</h1>
                     <img
                       src='/verified.png'
                       alt='verified'
                       style={{ width: '2rem', height: '2rem' }}
                     />
                   </div>
-                  <h4> Mã người dùng: {id} </h4>
-                  <Link href='/events'>
+                  <div>
+                    <h4> Mã người dùng: {id} </h4>
+                  </div>
+                  <div style={{ display: 'flex' }}>
                     <img
                       src='/strava-icon.png'
                       alt='Connected Strava'
                       style={{ width: '3rem', height: '3rem' }}
                     />
-                  </Link>
+                    <Link href='/user/profile/setting?connect=2'>
+                      <h5 style={{ marginTop: '1rem' }}>
+                        {data.connect_strava
+                          ? 'Đã kết nối với Strava'
+                          : 'Chưa kết nối với Strava'}
+                      </h5>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div id='profile-chart-container'>
             <div id='chart-container'>
-              <ChartActivity />
+              <ChartActivity
+                label={dataChartWeek.labels}
+                dataColumn={dataChartWeek.dataBar}
+                dataLine={dataChartWeek.dataLine}
+              />
             </div>
             <div id='chart-container'>
-              <ChartActivity />
+              <ChartActivity
+                label={dataChartMonth.labels}
+                dataColumn={dataChartMonth.dataBar}
+                dataLine={dataChartMonth.dataLine}
+              />
             </div>
           </div>
           <div id='profile-activities-container'>
@@ -251,41 +322,35 @@ const UserDetail = () => {
             {activeIndex === 2 ? (
               <div style={{ width: '95%' }}>
                 <Title title='Hoạt động gần đây' />
-                <Activity activities={data.activities} />
-                <Paginator
-                  first={first}
-                  rows={per_page}
-                  totalRecords={totalRecords}
-                  rowsPerPageOptions={[6, 12, 18]}
-                  onPageChange={onPageChange}
-                  page={current_page}
-                />
+                <Activity activities={activities} />
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>
-                <Club club={data.club} />
-                <Paginator
-                  first={first}
-                  rows={per_page}
-                  totalRecords={totalRecords}
-                  rowsPerPageOptions={[6, 12, 18]}
-                  onPageChange={onPageChange}
-                  page={current_page}
+                <DataViewDashboard
+                  data={data.club}
+                  href='/clubs/club-management/'
+                  itemTemplate={itemTemplate}
                 />
               </div>
             ) : activeIndex === 1 ? (
               <div style={{ width: '95%' }}>
-                <Club club={data.club} />
-                <Paginator
-                  first={first}
-                  rows={per_page}
-                  totalRecords={totalRecords}
-                  rowsPerPageOptions={[6, 12, 18]}
-                  onPageChange={onPageChange}
-                  page={current_page}
+                <DataViewDashboard
+                  data={data.club}
+                  href='/clubs/club-management/'
+                  itemTemplate={itemTemplate}
                 />
               </div>
             ) : activeIndex === 4 ? null : null}
+            <div>
+              <Paginator
+                first={first}
+                rows={per_page}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={[6, 12, 18]}
+                onPageChange={onPageChange}
+                page={current_page}
+              />
+            </div>
           </div>
         </div>
       </div>

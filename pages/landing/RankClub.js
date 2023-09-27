@@ -55,31 +55,26 @@ const RankClub = ({ value }) => {
       header: 'Hạng',
       body: formatRank,
       bodyClassName: 'text-center',
-      className: 'text-rank',
     },
     {
       header: 'Tên câu lạc bộ',
       body: fullnameWithImageTemplate,
-      className: 'text-name',
     },
     {
       field: 'total_distance',
       header: 'Tổng quảng đường (km)',
       body: formatNumber,
       bodyClassName: 'text-center',
-      className: 'text-km',
     },
     {
       field: 'total_members',
       header: 'Tổng thành viên',
       bodyClassName: 'text-center',
-      className: 'text-km',
     },
     {
       field: 'total_activities',
       header: 'Tổng hoạt động',
       bodyClassName: 'text-center',
-      className: 'text-km',
     },
   ]
 
