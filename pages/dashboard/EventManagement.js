@@ -89,7 +89,7 @@ const EventManagement = () => {
             <img src={item.image} alt={item.name} />
           </Link>
           <OutstandingEdit
-            items={items}
+            items={items(item.event_id)}
             isOutstanding={item.outstanding}
             id={item.event_id}
             title={'sự kiện'}
@@ -124,12 +124,13 @@ const EventManagement = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const items = [
+  const items = (event_id) => [
     {
       label: 'Add',
       icon: 'pi pi-plus',
       command: () => handleClick('/events/event-new'),
-      title: 'Thêm sự kiện',    },
+      title: 'Thêm sự kiện',
+    },
     {
       label: 'Update',
       icon: 'pi pi-pencil',

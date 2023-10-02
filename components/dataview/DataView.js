@@ -1,10 +1,27 @@
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
-import React, { useState } from 'react'
-import { set } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
 
-const DataView = ({ data, href, itemTemplate }) => {
+const DataView = ({
+  data,
+  href,
+  itemTemplate,
+  responsiveOptions = [
+    {
+      breakpoint: 1920,
+      columnNumber: 3,
+    },
+    {
+      breakpoint: 1024,
+      columnNumber: 2,
+    },
+    {
+      breakpoint: 768,
+      columnNumber: 1,
+    },
+  ],
+}) => {
   const [visible, setVisible] = useState(false)
   const [url, setUrl] = useState('https://example.com/')
   const [title, setTitle] = useState('Tiêu đề bài viết hoặc trang')
@@ -18,6 +35,42 @@ const DataView = ({ data, href, itemTemplate }) => {
     )}&quote=${encodeURIComponent(title)}`
     window.open(fbShareUrl, 'facebook-share-dialog', 'width=1080,height=720')
   }
+
+  const [column, setColumn] = useState(3)
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+      if (width <= responsiveOptions[2].breakpoint) {
+        setColumn(responsiveOptions[2].columnNumber)
+      } else if (
+        width <= responsiveOptions[1].breakpoint &&
+        width > responsiveOptions[2].breakpoint
+      )
+        setColumn(responsiveOptions[1].columnNumber)
+      else if (
+        width <= responsiveOptions[0].breakpoint &&
+        width > responsiveOptions[1].breakpoint
+      )
+        setColumn(responsiveOptions[0].columnNumber)
+      else {
+        setColumn(3)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+  useEffect(() => {
+    const carouselElement = document.getElementsByClassName(
+      'custom-carousel-content'
+    )[0]
+    if (carouselElement) {
+      carouselElement.style.setProperty('--num-columns', column)
+    }
+  }, [column])
   return (
     <div className='centered-content-layout'>
       <div className='custom-carousel-content'>

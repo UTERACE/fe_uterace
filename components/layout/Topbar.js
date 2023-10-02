@@ -130,7 +130,7 @@ const Topbar = () => {
     model.map((item, i) => {
       let menuitem = {
         id: item.id,
-        label: windowWidth < 1350 ? null : item.label,
+        label: windowWidth < 1366 ? null : item.label,
         icon: item.icon,
         command: item.command,
         to: item.to,
@@ -140,6 +140,7 @@ const Topbar = () => {
     return model
   }
   const menu = useRef(null)
+  const menuHeader =useRef(null)
   const end_items = [
     {
       label: 'Trang cá nhân',
@@ -188,21 +189,39 @@ const Topbar = () => {
         <div id='topbar-container'>
           <div id='logo-container'>
             <Link href='/'>
-              <img
-                src='/logohome.png'
-                alt='logo'
-                style={{ marginTop: '1rem' }}
-              />
+              <img src='/logo.png' alt='logo' style={{ marginTop: '1rem' }} />
             </Link>
           </div>
-          <div id='menubar'>
-            <TabMenu
-              id='app-menu-topbar'
-              model={item(items)}
-              activeIndex={activeIndex}
-              onTabChange={(e) => setActiveIndex(e.index)}
-            />
-          </div>
+          {windowWidth > 810 ? (
+            <div id='menubar'>
+              <TabMenu
+                id='app-menu-topbar'
+                model={item(items)}
+                activeIndex={activeIndex}
+                onTabChange={(e) => setActiveIndex(e.index)}
+              />
+            </div>
+          ) : (
+            <div>
+              <SlideMenu
+                ref={menuHeader}
+                model={items}
+                popup
+                viewportHeight={370}
+                menuWidth={250}
+              ></SlideMenu>
+
+              <Button
+                type='button'
+                icon='pi pi-bars icon-large'
+                severity='secondary'
+                raised
+                label='Menu'
+                onClick={(event) => menuHeader.current.toggle(event)}
+              ></Button>
+            </div>
+          )}
+
           {!isAuthenticated ? (
             <div id='login-container'>
               <Link href='/login'>

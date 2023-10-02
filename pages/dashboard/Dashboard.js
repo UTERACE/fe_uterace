@@ -237,7 +237,7 @@ const Dashboard = () => {
             </div>
             <div
               id='dashboard-content-header-icon'
-              style={{ width: '2.5rem', height: '2.5rem' }}
+              style={{ backgroundColor: 'green'}}
             >
               <i className='pi pi-calendar' />
             </div>
@@ -254,8 +254,6 @@ const Dashboard = () => {
             <div
               id='dashboard-content-header-icon'
               style={{
-                width: '2.5rem',
-                height: '2.5rem',
                 backgroundColor: 'red',
               }}
             >
@@ -274,8 +272,6 @@ const Dashboard = () => {
             <div
               id='dashboard-content-header-icon'
               style={{
-                width: '2.5rem',
-                height: '2.5rem',
                 backgroundColor: 'turquoise',
               }}
             >
@@ -294,8 +290,6 @@ const Dashboard = () => {
             <div
               id='dashboard-content-header-icon'
               style={{
-                width: '2.5rem',
-                height: '2.5rem',
                 backgroundColor: 'yellow',
               }}
             >

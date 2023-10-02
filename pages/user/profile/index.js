@@ -238,32 +238,31 @@ const Profile = () => {
       <div className='centered-content-layout'>
         <div id='profile-container'>
           <div id='statistic-container'>
-            <div id='row-statistic'>
-              <div id='statistic-card'>
+            <div id='statistic-content'>
+              <div id='statistic-card' title='Tổng quãng đường đã chạy'>
                 <h1>{data.total_distance}</h1>
-                <h4>Total Distance (km)</h4>
+                <h4>Tổng quãng đường (km)</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Tốc độ trung bình'>
                 <h1>{data.pace}</h1>
-                <h4>Pace (min/km)</h4>
+                <h4>Tốc độ trung bình (km/h)</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
                 <h1>{data.total_activities}</h1>
-                <h4>Total Activities</h4>
+                <h4>Tổng số hoạt động</h4>
               </div>
-            </div>
-            <div id='row-statistic'>
-              <div id='statistic-card'>
+
+              <div id='statistic-card' title='Tổng số câu lạc bộ đã tham gia'>
                 <h1>{data.total_clubs}</h1>
-                <h4>Total Clubs</h4>
+                <h4>Tổng số câu lạc bộ</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Tổng số sự kiện đã tham gia'>
                 <h1>{data.total_events}</h1>
-                <h4>Total Events</h4>
+                <h4>Tổng số sự kiện</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Hạng của bạn trong hệ thống'>
                 <h1>{data.ranking}</h1>
-                <h4>Ranking</h4>
+                <h4>Hạng của bạn</h4>
               </div>
             </div>
           </div>
@@ -282,14 +281,13 @@ const Profile = () => {
                   shape='circle'
                   label={!avatarImage ? avatarLabel : null}
                   image={avatarImage}
-                />{' '}
+                />
                 <div id='info-profile-container'>
                   <div id='name-container'>
                     <h1>{data.last_name + ' ' + data.first_name}</h1>
                     <img
                       src='/verified.png'
                       alt='verified'
-                      style={{ width: '2rem', height: '2rem' }}
                     />
                     <i className='fas icon-large fa-edit'></i>
                   </div>

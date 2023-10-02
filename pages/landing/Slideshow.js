@@ -20,30 +20,23 @@ const Slideshow = ({ data, interval = 3000 }) => {
           style={{ display: index === currentSlide ? 'block' : 'none' }}
         >
           <img src={slide.image} alt={slide.title} />
-          <div id='slide-caption'>
+          <div id='slide-caption-content'>
             <div id='slide-name'>{slide.name}</div>
             <div>{slide.content}</div>
-            <div id='slide-detail'>
-              <Detail link={`/events/event-detail/${slide.id}`} />
-            </div>
-
-            {/* <div id='multi-color-border'>
-              <Button
-                id='button-dark'
-                label='Explore all artwork'
-                severity='secondary'
-                raised
-              />
-            </div> */}
-
-            <div id='overview-slide'>
-              <div>
-                <span>{slide.member}</span>
-                <h>Thành viên </h>
+            <div id='slide-detail-container'>
+              <div id='slide-detail'>
+                <Detail link={`/events/event-detail/${slide.id}`} />
               </div>
-              <div>
-                <span>{slide.club}k+</span>
-                <h>Câu lạc bộ</h>
+
+              <div id='overview-slide'>
+                <div>
+                  <span>{slide.member}</span>
+                  <h>Thành viên </h>
+                </div>
+                <div>
+                  <span>{slide.club}k+</span>
+                  <h>Câu lạc bộ</h>
+                </div>
               </div>
             </div>
           </div>

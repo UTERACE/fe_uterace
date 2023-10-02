@@ -63,13 +63,22 @@
     margin: 0 auto;
     background-color: $primary-color url(/bg.png) no-repeat center;
 }
-#custom-carousel-product .p-carousel-item-start {
-    transform: scale(0.85)translateX(15%);
-    z-index: -1;
+#custom-carousel-product .p-carousel-items-container {
+    display: flex;
+    flex-direction: row;
 }
-#custom-carousel-product .p-carousel-item-end {
-    transform: scale(0.85)translateX(-15%);
-    z-index: -1;
+#custom-carousel-product .p-items-hidden .p-carousel-item {
+    visibility:initial;
+}
+@media (max-width: 1920px) {
+    #custom-carousel-product .p-carousel-item-start {
+        transform: scale(0.85)translateX(15%);
+        z-index: -1;
+    }
+    #custom-carousel-product .p-carousel-item-end {
+        transform: scale(0.85)translateX(-15%);
+        z-index: -1;
+    }
 }
 
 #custom-carousel-product.p-carousel button {

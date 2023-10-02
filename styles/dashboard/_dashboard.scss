@@ -4,6 +4,7 @@
     gap: 1rem;
     width: 100%;
     background-color: $white-color;
+    overflow: auto;
 }
 #dashboard-menu-container {
     margin: 1rem 0 1rem 1rem;
@@ -19,12 +20,12 @@
 }
 #dashboard-menu-container h4{
     margin: 0 0 0 0;
-    font-size: 1.5rem;
+    font-size: $font-size-large;
     color: $text-color;
 }
 #dashboard-menu-container h6{
     margin: 0 0 1rem 0;
-    font-size: 1rem;
+    font-size: $font-size-small;
     font-weight: 500;
     color: $text-color;
 }
@@ -54,7 +55,7 @@
     border-radius: 10px;
 }
 #dashboard-content-header span {
-    font-size: 1rem;
+    font-size: $font-size-normal;
 }
 #span-new {
     color: rgb(85, 224, 171);
@@ -65,11 +66,11 @@
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
-    padding: 1rem 3rem 1rem 2rem;
+    padding: 1rem;
 }
 #dashboard-content-header-child span {
     display: block;
-    font-size: 1.5rem;
+    font-size: $font-size-header;
     color: $text-color;
     margin: 1rem 0 0.5rem 0;
 }
@@ -77,8 +78,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color:bisque;
     border-radius: 10px;
+    width: 2.5rem;
+    height: 2.5rem;
 }
 
 

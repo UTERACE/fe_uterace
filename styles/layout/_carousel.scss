@@ -1,0 +1,53 @@
+#carousel-container-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#carousel-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+#carousel-prev {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: $border-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+        background-color: $primary-color;
+    }
+}
+#carousel-next {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: $border-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+        background-color: $primary-color;
+    }
+}
+#pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    height: auto;
+    margin: 1rem 0 1rem 0;
+}

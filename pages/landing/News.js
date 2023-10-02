@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { Carousel } from 'primereact/carousel'
+// import { Carousel } from 'primereact/carousel'
 import React, { useEffect, useState } from 'react'
 import Title from '../../components/landing/Title'
+import Carousel from '@/components/dataview/Carousel'
 
 const News = ({ data }) => {
   const [news, setNews] = useState([])
@@ -11,12 +12,17 @@ const News = ({ data }) => {
   }, [data])
   const responsiveOptions = [
     {
-      breakpoint: '1400px',
+      breakpoint: '1024px',
+      numVisible: 3,
+      numScroll: 1,
+    },
+    {
+      breakpoint: '960px',
       numVisible: 2,
       numScroll: 1,
     },
     {
-      breakpoint: '900px',
+      breakpoint: '800px',
       numVisible: 1,
       numScroll: 1,
     },
@@ -52,7 +58,7 @@ const News = ({ data }) => {
         value={news}
         numVisible={3}
         numScroll={1}
-        responsiveOptions={responsiveOptions}
+        // responsiveOptions={responsiveOptions}
         itemTemplate={newsTemplate}
       />
     </div>

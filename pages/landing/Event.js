@@ -11,17 +11,17 @@ const Event = ({ event }) => {
   }, [])
   const responsiveOptions = [
     {
-      breakpoint: '1199px',
+      breakpoint: '1024px',
       numVisible: 3,
       numScroll: 1,
     },
     {
-      breakpoint: '991px',
+      breakpoint: '960px',
       numVisible: 2,
       numScroll: 1,
     },
     {
-      breakpoint: '767px',
+      breakpoint: '800px',
       numVisible: 1,
       numScroll: 1,
     },

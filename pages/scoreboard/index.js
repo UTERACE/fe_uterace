@@ -227,8 +227,7 @@ const Scoreboard = () => {
       />
       <div className='centered-content-layout'>
         <div
-          id='profile-button-container'
-          style={{ width: '100%', justifyContent: 'start', gap: '2rem' }}
+          id='button-header-container'
         >
           <Button
             id={activeIndex === 1 ? 'button-profile-active' : 'button-profile'}

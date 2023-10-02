@@ -1,14 +1,24 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Footer = () => {
+  useEffect(() => {
+    const width = window.innerWidth
+    if (width <= 1024) {
+      const carouselElement = document.getElementsByClassName('footer')[0]
+      if (carouselElement) {
+        carouselElement.style.setProperty('--num-columns', 2)
+      }
+    }
+  }, [])
   return (
-    <div id='footer' className='centered-content-layout'>
+    <div className='footer'>
       <div>
-        <h3>UTErace</h3>
-        <p>
-          UTErace is a website that allows you to create and participate in a 
-          race. You can also create a team and invite your friends to join.
+        <h3>UTE Race</h3>
+        <p style={{ maxWidth: '30rem' }}>
+          UTErace là một ứng dụng giúp người dùng có thể tìm kiếm các giải chạy
+          và tham gia vào các giải chạy đó. Ngoài ra, người dùng có thể tạo ra
+          các đội chạy và tham gia vào các giải chạy đó.
         </p>
         <div id='social-media-icons'>
           <a
@@ -37,26 +47,44 @@ const Footer = () => {
           ></a>
         </div>
       </div>
-      <div>
-        <h3>Company</h3>
-        <p>About</p>
-        <p>Features</p>
-        <p>Works</p>
-        <p>Career</p>
+      <div style={{ maxWidth: '30rem' }}>
+        <h3>Hướng dẫn</h3>
+        <p>Hướng dẫn đăng nhập</p>
+        <p>Hướng dẫn tạo đội</p>
+        <p>Hướng dẫn tham gia giải đấu</p>
+        <p>Hướng dẫn từ A-Z cho người mới bắt đầu </p>
       </div>
       <div>
-        <h3>Help</h3>
-        <p>Customer Support</p>
-        <p>Delivery Detail</p>
-        <p>Terms & Conditions</p>
-        <p>Privacy Policy</p>
+        <h3>Chính sách</h3>
+        <p>Chính sách vận chuyển</p>
+        <p>Chính sách hoàn trả</p>
+        <p>Chính sách bảo mật</p>
+        <p>Chính sách thanh toán</p>
       </div>
       <div>
-        <h3>Resources</h3>
-        <p>Blog</p>
-        <p>FAQs</p>
-        <p>How It Works</p>
-        <p>UTErace</p>
+        <h3>Tương thích với</h3>
+        <div
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'start',
+          }}
+        >
+          <i id='container-icon'>
+            <img src='/garmin-icon.png' alt='garmin'></img>
+          </i>
+          <i id='container-icon'>
+            <img src='/logo_suunto.png' alt='garmin'></img>
+          </i>
+          <a href='http://www.vietmap.vn' target='_blank'>
+            <i id='container-icon'>
+              <img src='/logo_vietmap.png' alt='vietmap'></img>
+            </i>
+          </a>
+        </div>
+        <div id='strava-footer'>
+          <img src='/strava_cptblWith.png'></img>
+        </div>
       </div>
     </div>
   )

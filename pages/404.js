@@ -5,7 +5,7 @@ const NotFoundPage = () => {
   return (
     <div id='container'>
       <img
-        src='/logohome.png' // Thay đổi đường dẫn này thành đường dẫn đến hình ảnh của bạn
+        src='/logo.png' // Thay đổi đường dẫn này thành đường dẫn đến hình ảnh của bạn
         width={300}
         height={300}
         alt='Running'

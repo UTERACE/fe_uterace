@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 
 const Statistic = ({ statistic }) => {
+  useEffect(() => {
+    const width = window.innerWidth
+    if (width <= 1024) {
+      const carouselElement =
+        document.getElementsByClassName('target-container')[0]
+      if (carouselElement) {
+        carouselElement.style.setProperty('--num-columns', 2)
+      }
+    }
+  }, [])
   return (
     <div id='target-wrapper'>
       <Title title='Thống kê cộng đồng ' />
-      <div id='target-container'>
+      <div className='target-container'>
         <div id='target-item'>
           <img src='/statistic/run_member.png' alt='member' />
           <span>{LocaleHelper.formatNumber(statistic.total_member)}</span>
@@ -18,8 +28,8 @@ const Statistic = ({ statistic }) => {
           style={{ backgroundColor: '#DB2D33', color: 'white' }}
         >
           <img src='/statistic/running.png' alt='running' />
-          <span>{LocaleHelper.formatNumber(statistic.total_distance)} km</span>
-          <p>Tổng quảng đường</p>
+          <span>{LocaleHelper.formatNumber(statistic.total_distance)}</span>
+          <p>Tổng quảng đường (km)</p>
         </div>
         <div id='target-item'>
           <img src='/statistic/run_club.png' alt='club' />
