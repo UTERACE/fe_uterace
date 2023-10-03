@@ -458,7 +458,7 @@ const EventDetail = () => {
               style={{ width: '100%', display: 'flex', justifyContent: 'end' }}
             >
               <Button
-                id='button-statistic-club'
+                id='button-join'
                 icon='pi pi-calendar-plus'
                 label='Chỉnh sửa thông tin'
                 onClick={() => {
@@ -473,8 +473,9 @@ const EventDetail = () => {
               <Countdown from_date={start_time} to_date={end_time} />
             </div>
             <Button
-              id='button-join-event'
+              id='button-join'
               label='Tham gia ngay'
+              disabled={true}
               onClick={() => {}}
             />
           </div>
@@ -484,7 +485,7 @@ const EventDetail = () => {
                 id='distance-event'
                 style={{
                   backgroundColor: '#ffffff',
-                  width: '90%',
+                  width: '70%',
                   marginBottom: '1rem',
                 }}
               >
@@ -505,7 +506,7 @@ const EventDetail = () => {
                 id='distance-event'
                 style={{
                   backgroundColor: '#ffffff',
-                  width: '90%',
+                  width: '70%',
                   marginBottom: '1rem',
                 }}
               >
@@ -528,17 +529,13 @@ const EventDetail = () => {
           <div id='event-info-detail'>
             <div id='statistic-event'>
               <Button
-                id='button-statistic-event'
+                id='button-tab'
                 style={{ width: '35%' }}
                 label={`${total_members} Người tham gia`}
                 onClick={() => {}}
               />
               <Button
-                id={
-                  !isStatistic
-                    ? 'button-statistic-event'
-                    : 'button-statistic-event-active'
-                }
+                id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label='Xem thống kê'
                 style={{ width: '35%' }}
                 iconPos='right'
@@ -594,8 +591,7 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 0
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                  ? 'button-tab--active' : 'button-tab'
                 }
                 style={{ width: '20%' }}
                 icon='pi pi-tags'
@@ -607,8 +603,7 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 1
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-tab--active' : 'button-tab'
                 }
                 style={{ width: '20%' }}
                 icon='pi pi-calendar-plus'
@@ -620,8 +615,7 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 2
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-tab--active' : 'button-tab'
                 }
                 style={{ width: '22%' }}
                 icon='pi pi-calendar-plus'
@@ -633,8 +627,7 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 3
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-tab--active' : 'button-tab'
                 }
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
@@ -646,8 +639,7 @@ const EventDetail = () => {
               <Button
                 id={
                   activeIndex === 4
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
+                    ? 'button-tab--active' : 'button-tab'
                 }
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
@@ -661,7 +653,7 @@ const EventDetail = () => {
               <div style={{ width: '100%' }}>
                 <Button
                   icon='pi pi-pencil'
-                  id='button-join-club'
+                  id='button-join'
                   style={{ width: '30%' }}
                   label='Chỉnh sửa thông tin điều lệ'
                   onClick={() => {
@@ -674,7 +666,7 @@ const EventDetail = () => {
               <div style={{ width: '100%' }}>
                 <Button
                   icon='pi pi-pencil'
-                  id='button-join-club'
+                  id='button-join'
                   style={{ width: '40%' }}
                   label='Chỉnh sửa thông tin giải thưởng'
                   onClick={() => {
@@ -711,7 +703,7 @@ const EventDetail = () => {
               <div>
                 <Button
                   icon='pi pi-pencil'
-                  id='button-join-club'
+                  id='button-join'
                   style={{ width: '30%' }}
                   label='Chỉnh sửa thông tin giới thiệu'
                   onClick={() => {

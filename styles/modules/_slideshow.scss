@@ -16,6 +16,7 @@
 #slide-caption-content {
   position: absolute; 
   top: 0%;  
+  left: calc(10% - 2rem);   
   background-color:transparent; 
   color: $black-color;
   font-style: bold;
@@ -23,7 +24,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 100%;
+  width: 60%;
   height: 50rem;
   font-size: 2rem;
   padding: 0 0 0 2rem;

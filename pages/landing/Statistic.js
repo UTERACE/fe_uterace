@@ -42,7 +42,7 @@ const Statistic = ({ statistic }) => {
           <p>Tổng sự kiện giải chạy </p>
         </div>
       </div>
-      <Detail link='/statistic' />
+      <Detail link='/news/news-detail/1' />
     </div>
   )
 }

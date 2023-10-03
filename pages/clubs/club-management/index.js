@@ -113,7 +113,7 @@ const ClubManagement = () => {
           />
         </div>
         <Link
-          id='link-dataview'
+          id='link-dataview-container'
           href={`/clubs/club-management/${item.club_id}`}
         >
           <div id='info-dataview'>
@@ -132,13 +132,13 @@ const ClubManagement = () => {
               <h4>{item.name}</h4>
               <div id='share-register-content'>
                 <Link
-                  id='link-event'
+                  id='link-dataview'
                   href={`/clubs/club-management/${item.id}`}
                 >
                   Tham gia câu lạc bộ{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
-                <Link id='link-event' href='/share'>
+                <Link id='link-dataview' href='/share'>
                   Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
@@ -231,11 +231,7 @@ const ClubManagement = () => {
           }}
         >
           <Button
-            id={
-              index == 1
-                ? 'button-statistic-club-active'
-                : 'button-statistic-club'
-            }
+            id={index == 1 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
             label={'Thêm câu lạc bộ mới'}
@@ -247,11 +243,7 @@ const ClubManagement = () => {
             }}
           />
           <Button
-            id={
-              index == 2
-                ? 'button-statistic-club-active'
-                : 'button-statistic-club'
-            }
+            id={index == 2 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
             label='Câu lạc bộ đã tạo'
@@ -262,11 +254,7 @@ const ClubManagement = () => {
             }}
           />
           <Button
-            id={
-              index == 3
-                ? 'button-statistic-club-active'
-                : 'button-statistic-club'
-            }
+            id={index == 3 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
             label='Câu lạc bộ đã tham gia'

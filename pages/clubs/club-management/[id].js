@@ -37,7 +37,7 @@ const ManagementClubDetail = () => {
   const [news, setNews] = useState([])
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
-  const [total_member, setTotalMember] = useState(0)
+  const [total_members, setTotalMembers] = useState(0)
   const [total_news, setTotalNews] = useState(0)
   const [total_distance, setTotalDistance] = useState(0)
   const [total_activities, setTotalActivities] = useState(0)
@@ -263,7 +263,7 @@ const ManagementClubDetail = () => {
     setNews(data.news)
     setActivities(data.activities)
     setRankMember(data.ranking_member)
-    setTotalMember(data.total_members)
+    setTotalMembers(data.total_members)
     setTotalNews(data.total_news)
     setTotalDistance(data.total_distance)
     setTotalActivities(data.total_activities)
@@ -326,7 +326,7 @@ const ManagementClubDetail = () => {
               style={{ width: '100%', display: 'flex', justifyContent: 'end' }}
             >
               <Button
-                id='button-statistic-club'
+                id='button-join'
                 icon='pi pi-calendar-plus'
                 label='Chỉnh sửa thông tin'
                 onClick={() => {
@@ -338,8 +338,9 @@ const ManagementClubDetail = () => {
             <h1>{name}</h1>
             <h6>{description}</h6>
             <Button
-              id='button-join-club'
+              id='button-join'
               label='Tham gia ngay'
+              disabled={true}
               onClick={() => {}}
             />
           </div>
@@ -347,17 +348,15 @@ const ManagementClubDetail = () => {
           <div id='info-detail'>
             <div id='statistic-club'>
               <Button
-                id='button-statistic-club'
-                label='Người tham gia '
+                id='button-tab'
+                style={{ width: '35%' }}
+                label={`${total_members} Người tham gia`}
                 onClick={() => {}}
               />
               <Button
-                id={
-                  !isStatistic
-                    ? 'button-statistic-club'
-                    : 'button-statistic-club-active'
-                }
+                id={!isStatistic ? 'button-tab--active' : 'button-tab'}
                 label='Xem thống kê'
+                style={{ width: '35%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
                 onClick={() => {
@@ -370,7 +369,7 @@ const ManagementClubDetail = () => {
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
                     <h4>Tổng số VĐV đã tham gia: </h4>
-                    <h4>{total_member}</h4>
+                    <h4>{total_members}</h4>
                   </div>
                   <div id='detail-club-container'>
                     <h4>Tổng số km đã chạy:</h4>
@@ -406,7 +405,7 @@ const ManagementClubDetail = () => {
               </div>
             ) : null}
           </div>
-          <div>
+          <div id='info-detail'>
             <Title title='Bài viết của câu lạc bộ '>
               <Button />
             </Title>
@@ -415,11 +414,7 @@ const ManagementClubDetail = () => {
           <div id='info-detail'>
             <div id='statistic-club'>
               <Button
-                id={
-                  activeIndex === 1
-                    ? 'button-statistic-club-active'
-                    : 'button-statistic-club'
-                }
+                id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '80%' }}
                 icon='pi pi-calendar-plus'
                 label='Giới thiệu'
@@ -428,11 +423,7 @@ const ManagementClubDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 2
-                    ? 'button-statistic-club-active'
-                    : 'button-statistic-club'
-                }
+                id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '90%' }}
                 icon='pi pi-calendar-plus'
                 label='Hoạt động gần đây'
@@ -441,11 +432,7 @@ const ManagementClubDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 3
-                    ? 'button-statistic-club-active'
-                    : 'button-statistic-club'
-                }
+                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar'
                 label='Bảng xếp hạng thành viên '
@@ -482,7 +469,7 @@ const ManagementClubDetail = () => {
               <div style={{ width: '100%' }}>
                 <Button
                   icon='pi pi-pencil'
-                  id='button-join-club'
+                  id='button-join'
                   style={{ width: '30%' }}
                   label='Chỉnh sửa thông tin giới thiệu'
                   onClick={() => {

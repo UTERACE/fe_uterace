@@ -2,7 +2,6 @@ import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import { SlideMenu } from 'primereact/slidemenu'
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Activity from './Activity'
 import { Paginator } from 'primereact/paginator'
 import { Dialog } from 'primereact/dialog'
@@ -14,8 +13,6 @@ import ChangeAvatar from './setting/ChangeAvatar'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 
 const Profile = () => {
-  const dispatch = useDispatch()
-
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(4)
@@ -360,7 +357,7 @@ const Profile = () => {
             <div id='profile-button-container'>
               <Button
                 id={
-                  activeIndex === 1 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 1 ? 'button-tab--active' : 'button-tab'
                 }
                 icon='pi pi-calendar'
                 label=' Giải đang tham gia'
@@ -370,7 +367,7 @@ const Profile = () => {
               />
               <Button
                 id={
-                  activeIndex === 2 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 2 ? 'button-tab--active' : 'button-tab'
                 }
                 icon='pi pi-calendar-plus'
                 label='Hoạt động'
@@ -380,9 +377,9 @@ const Profile = () => {
               />
               <Button
                 id={
-                  activeIndex === 3 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 3 ? 'button-tab--active' : 'button-tab'
                 }
-                icon='pi pi-calendar-check'
+                icon='pi pi-calendar-minus'
                 label='Giải đã hoàn thành'
                 onClick={() => {
                   setActiveIndex(3)
@@ -390,7 +387,7 @@ const Profile = () => {
               />
               <Button
                 id={
-                  activeIndex === 4 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 4 ? 'button-tab--active' : 'button-tab'
                 }
                 icon='pi pi-images'
                 label='Bộ sưu tập'

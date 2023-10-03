@@ -19,3 +19,18 @@
     color: $black-color;
     gap: 2rem;
 }
+// reinitialize user
+#initial-user-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0.5rem 1rem 0 1rem;
+    width: 100%;
+    background-color: $white-color;
+}
+#button-reinitialize-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}

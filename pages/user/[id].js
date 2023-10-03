@@ -1,17 +1,12 @@
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
-import { SlideMenu } from 'primereact/slidemenu'
-import { Chart } from 'primereact/chart'
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Paginator } from 'primereact/paginator'
-import { Dialog } from 'primereact/dialog'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ChartActivity from './profile/ChartActivity'
 import Activity from './profile/Activity'
-import Club from './profile/Club'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 
 const UserDetail = () => {
@@ -27,6 +22,8 @@ const UserDetail = () => {
   const [dataChartMonth, setDataChartMonth] = useState({})
   const [activities, setActivities] = useState([])
   const [clubs, setClubs] = useState([])
+  const [avatarImage, setAvatarImage] = useState('')
+  const [avatarLabel, setAvatarLabel] = useState('A')
   const [data, setData] = useState({})
   useEffect(() => {
     const data = {
@@ -136,13 +133,15 @@ const UserDetail = () => {
       ranking: 112,
       first_name: 'A',
       last_name: 'Nguyễn Văn',
-      image: 'https://picsum.photos/200/300',
+      image: '',
       connect_strava: false,
     }
     setDataChartMonth(data.activities_chart_month)
     setDataChartWeek(data.activities_chart_week)
     setActivities(data.activities)
     setClubs(data.club)
+    setAvatarImage(data.image)
+    setAvatarLabel(data.first_name[0])
     setData(data)
   }, [])
 
@@ -197,50 +196,57 @@ const UserDetail = () => {
       <div className='centered-content-layout'>
         <div id='profile-container'>
           <div id='statistic-container'>
-            <div id='row-statistic'>
-              <div id='statistic-card'>
+            <div id='statistic-content'>
+              <div id='statistic-card' title='Tổng quãng đường đã chạy'>
                 <h1>{data.total_distance}</h1>
-                <h4>Total Distance (km)</h4>
+                <h4>Tổng quãng đường (km)</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Tốc độ trung bình'>
                 <h1>{data.pace}</h1>
-                <h4>Pace (min/km)</h4>
+                <h4>Tốc độ trung bình (km/h)</h4>
               </div>
-              <div id='statistic-card'>
-                <h1>{data.total_runs}</h1>
-                <h4>Total Runs</h4>
+              <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
+                <h1>{data.total_activities}</h1>
+                <h4>Tổng số hoạt động</h4>
               </div>
-            </div>
-            <div id='row-statistic'>
-              <div id='statistic-card'>
+
+              <div id='statistic-card' title='Tổng số câu lạc bộ đã tham gia'>
                 <h1>{data.total_clubs}</h1>
-                <h4>Total Clubs</h4>
+                <h4>Tổng số câu lạc bộ</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Tổng số sự kiện đã tham gia'>
                 <h1>{data.total_events}</h1>
-                <h4>Total Events</h4>
+                <h4>Tổng số sự kiện</h4>
               </div>
-              <div id='statistic-card'>
+              <div id='statistic-card' title='Hạng của bạn trong hệ thống'>
                 <h1>{data.ranking}</h1>
-                <h4>Ranking</h4>
+                <h4>Hạng của bạn</h4>
               </div>
             </div>
           </div>
           <div id='profile-image-container'>
             <div style={{ height: '8rem' }}>
               <div id='profile-image-overlay'>
-                <img src={data.image} alt='profile' id='profile-image' />
+                <Avatar
+                  style={{
+                    border: '1px solid #ffffff',
+                    marginTop: '2rem',
+                    width: '10rem',
+                    height: '10rem',
+                    fontSize: '5rem',
+                  }}
+                  size='xlarge'
+                  shape='circle'
+                  label={!avatarImage ? avatarLabel : null}
+                  image={avatarImage}
+                />
                 <div id='info-profile-container'>
                   <div id='name-container'>
                     <h1>{data.last_name + ' ' + data.first_name}</h1>
-                    <img
-                      src='/verified.png'
-                      alt='verified'
-                      style={{ width: '2rem', height: '2rem' }}
-                    />
+                    <img src='/verified.png' alt='verified' />
                   </div>
                   <div>
-                    <h4> Mã người dùng: {id} </h4>
+                    <h4> Mã người dùng: {170347} </h4>
                   </div>
                   <div style={{ display: 'flex' }}>
                     <img
@@ -277,10 +283,10 @@ const UserDetail = () => {
             </div>
           </div>
           <div id='profile-activities-container'>
-            <div id='profile-button-container'>
+          <div id='profile-button-container'>
               <Button
                 id={
-                  activeIndex === 1 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 1 ? 'button-tab--active' : 'button-tab'
                 }
                 icon='pi pi-calendar'
                 label=' Giải đang tham gia'
@@ -290,7 +296,7 @@ const UserDetail = () => {
               />
               <Button
                 id={
-                  activeIndex === 2 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 2 ? 'button-tab--active' : 'button-tab'
                 }
                 icon='pi pi-calendar-plus'
                 label='Hoạt động'
@@ -300,9 +306,9 @@ const UserDetail = () => {
               />
               <Button
                 id={
-                  activeIndex === 3 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 3 ? 'button-tab--active' : 'button-tab'
                 }
-                icon='pi pi-calendar-check'
+                icon='pi pi-calendar-minus'
                 label='Giải đã hoàn thành'
                 onClick={() => {
                   setActiveIndex(3)
@@ -310,7 +316,7 @@ const UserDetail = () => {
               />
               <Button
                 id={
-                  activeIndex === 4 ? 'button-profile-active' : 'button-profile'
+                  activeIndex === 4 ? 'button-tab--active' : 'button-tab'
                 }
                 icon='pi pi-images'
                 label='Bộ sưu tập'

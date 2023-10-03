@@ -226,9 +226,23 @@ const Dashboard = () => {
     setChartData3(data3)
     setChartOptions3(options3)
   }, [])
+  useEffect(() => {
+    const width = window.innerWidth
+    if (width <= 1024) {
+      const carouselElement = document.getElementsByClassName(
+        'dashboard-content-chart'
+      )[0]
+      const carouselElementStatistic =
+        document.getElementsByClassName('dashboard-content')[0]
+      if (carouselElement) {
+        carouselElement.style.setProperty('--num-columns', 1)
+        carouselElementStatistic.style.setProperty('--num-columns', 2)
+      }
+    }
+  }, [])
   return (
     <div id='dashboard-content-container'>
-      <div id='dashboard-content'>
+      <div className='dashboard-content'>
         <div id='dashboard-content-header'>
           <div id='dashboard-content-header-child'>
             <div>
@@ -237,13 +251,15 @@ const Dashboard = () => {
             </div>
             <div
               id='dashboard-content-header-icon'
-              style={{ backgroundColor: 'green'}}
+              style={{ backgroundColor: 'green' }}
             >
               <i className='pi pi-calendar' />
             </div>
           </div>
-          <span id='span-new'>24 new </span>
-          <span>since last visit</span>
+          <div style={{ paddingBottom: '1rem' }}>
+            <span id='span-new'>24 new </span>
+            <span>since last visit</span>
+          </div>
         </div>
         <div id='dashboard-content-header'>
           <div id='dashboard-content-header-child'>
@@ -260,8 +276,10 @@ const Dashboard = () => {
               <i className='pi pi-users' />
             </div>
           </div>
-          <span id='span-new'>2 new </span>
-          <span>since last visit</span>
+          <div style={{ paddingBottom: '1rem' }}>
+            <span id='span-new'>2 new </span>
+            <span>since last visit</span>
+          </div>
         </div>
         <div id='dashboard-content-header'>
           <div id='dashboard-content-header-child'>
@@ -278,8 +296,10 @@ const Dashboard = () => {
               <i className='pi pi-book' />
             </div>
           </div>
-          <span id='span-new'>4 new </span>
-          <span>since last visit</span>
+          <div style={{ paddingBottom: '1rem' }}>
+            <span id='span-new'>4 new </span>
+            <span>since last visit</span>
+          </div>
         </div>
         <div id='dashboard-content-header'>
           <div id='dashboard-content-header-child'>
@@ -296,19 +316,22 @@ const Dashboard = () => {
               <i className='pi pi-user' />
             </div>
           </div>
-          <span id='span-new'>242 new </span>
-          <span>since last visit</span>
+          <div style={{ paddingBottom: '1rem' }}>
+            <span id='span-new'>242 new </span>
+            <span>since last visit</span>
+          </div>
         </div>
       </div>
 
-      <div id='dashboard-content-chart'>
+      <div className='dashboard-content-chart'>
         <div id='dashboard-content-chart-header'>
           <div id='dashboard-content-chart-header-child'>
             <Chart
               type='bar'
-              data={chartData}
-              options={chartOptions}
+              data={chartData1}
+              options={chartOptions1}
               width='100%'
+              height='30rem'
             />
           </div>
           <div id='dashboard-content-chart-header-child'>
@@ -325,10 +348,9 @@ const Dashboard = () => {
           <div id='dashboard-content-chart-header-child'>
             <Chart
               type='bar'
-              data={chartData1}
-              options={chartOptions1}
+              data={chartData}
+              options={chartOptions}
               width='100%'
-              height='30rem'
             />
           </div>
           <div id='dashboard-content-chart-header-child'>
@@ -336,7 +358,7 @@ const Dashboard = () => {
               type='polarArea'
               data={chartData3}
               options={chartOptions3}
-              style={{ position: 'relative', width: '60%' }}
+              style={{ position: 'relative', width: '90%' }}
             />
           </div>
         </div>

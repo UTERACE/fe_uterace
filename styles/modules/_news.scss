@@ -17,7 +17,6 @@
     height: 90%;
     object-fit: cover; 
 }
-
 #name-news {
     display: flex;
     align-items: center;
@@ -30,14 +29,6 @@
     width: 90%;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
-}
-#share-register-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.3rem;
-    width: 100%;
-    height: auto;
 }
 #link-news {
     font-size: 1rem;

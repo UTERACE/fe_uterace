@@ -192,7 +192,7 @@ const Topbar = () => {
               <img src='/logo.png' alt='logo' style={{ marginTop: '1rem' }} />
             </Link>
           </div>
-          {windowWidth > 810 ? (
+          {windowWidth > 500 ? (
             <div id='menubar'>
               <TabMenu
                 id='app-menu-topbar'

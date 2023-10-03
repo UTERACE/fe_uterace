@@ -17,7 +17,7 @@ const Carousel = ({
     },
     {
       breakpoint: 768,
-      numVisible: 1,
+      numVisible: 2,
       numScroll: 1,
     },
   ],

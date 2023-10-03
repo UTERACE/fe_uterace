@@ -7,16 +7,14 @@ const Detail = ({ link }) => {
     <div id='title-wrapper'>
       <div id='button-container'>
         <Link href={link}>
-          <div id='button_detail-container'>
-            <Button
-              id='button-detail'
-              label='Xem thêm'
-              severity='secondary'
-              raised
-              icon='pi pi-arrow-circle-right'
-              iconPos='right'
-            />
-          </div>
+          <Button
+            id='button-detail'
+            label='Xem thêm'
+            severity='secondary'
+            raised
+            icon='pi pi-arrow-circle-right'
+            iconPos='right'
+          />
         </Link>
       </div>
     </div>

@@ -103,7 +103,7 @@ const EventManagement = () => {
           />
         </div>
         <Link
-          id='link-dataview'
+          id='link-dataview-container'
           href={`/events/event-management/${item.event_id}`}
         >
           <div id='info-dataview'>
@@ -122,13 +122,13 @@ const EventManagement = () => {
               <h4>{item.name}</h4>
               <div id='share-register-content'>
                 <Link
-                  id='link-event'
+                  id='link-dataview'
                   href={`/events/event-management/${item.event_id}`}
                 >
                   Tham gia sự kiện{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
-                <Link id='link-event' href='/share'>
+                <Link id='link-dataview' href='/share'>
                   Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
@@ -189,8 +189,8 @@ const EventManagement = () => {
             <Button
               id={
                 index == 1
-                  ? 'button-statistic-club-active'
-                  : 'button-statistic-club'
+                  ? 'button-tab--active'
+                  : 'button-tab'
               }
               type='button'
               style={{ width: '100%' }}
@@ -205,8 +205,8 @@ const EventManagement = () => {
             <Button
               id={
                 index == 2
-                  ? 'button-statistic-club-active'
-                  : 'button-statistic-club'
+                  ? 'button-tab--active'
+                  : 'button-tab'
               }
               type='button'
               style={{ width: '100%' }}
@@ -220,8 +220,8 @@ const EventManagement = () => {
             <Button
               id={
                 index == 3
-                  ? 'button-statistic-club-active'
-                  : 'button-statistic-club'
+                  ? 'button-tab--active'
+                  : 'button-tab'
               }
               type='button'
               style={{ width: '100%' }}
@@ -244,8 +244,8 @@ const EventManagement = () => {
             <Button
               id={
                 index == 2
-                  ? 'button-statistic-club-active'
-                  : 'button-statistic-club'
+                  ? 'button-tab--active'
+                  : 'button-tab'
               }
               type='button'
               style={{ width: '100%' }}
@@ -259,8 +259,8 @@ const EventManagement = () => {
             <Button
               id={
                 index == 3
-                  ? 'button-statistic-club-active'
-                  : 'button-statistic-club'
+                  ? 'button-tab--active'
+                  : 'button-tab'
               }
               type='button'
               style={{ width: '100%' }}

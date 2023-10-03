@@ -1,0 +1,47 @@
+.p-icon {
+    font-size: $primeIconFontSize;
+}
+.p-icon {
+    width: 1rem;
+    height: auto;
+}
+.p-component {
+    font-family: "Helvetica Neue",Arial,sans-serif;
+}
+// custom SpeedDial #image-container-dataview
+.p-button {
+    color: $black-color;
+    background: $primary-color;
+    border: 1px solid $black-color;
+      border-top-color: $black-color;
+      border-right-color: $black-color;
+      border-bottom-color: $black-color;
+      border-left-color: $black-color;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 15px;
+}
+
+.p-button:enabled:hover, .p-button:not(button):not(a):not(.p-disabled):hover {
+    background: $black-color;
+    color: $primary-color;
+    border-color: transparent;
+}
+.p-dialog .p-dialog-content {
+    background: $background-dialog;
+    color: $dialog-color;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.p-dialog .p-dialog-header {
+    border-bottom: 0 none;
+    background: $background-dialog;
+    color: $dialog-color;
+    padding: 1.5rem;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.p-dialog .p-dialog-content:last-of-type {
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}

@@ -8,13 +8,9 @@ const Rank = ({ value }) => {
 
   return (
     <div className='centered-content-layout'>
-      <div id='statistic-club' style={{width:'100%'}}>
+      <div id='statistic-club' style={{ width: '100%' }}>
         <Button
-          id={
-            activeIndex === 1
-              ? 'button-statistic-club-active'
-              : 'button-statistic-club'
-          }
+          id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
           icon='pi pi-users'
           label='Câu lạc bộ'
           onClick={() => {
@@ -22,11 +18,7 @@ const Rank = ({ value }) => {
           }}
         />
         <Button
-          id={
-            activeIndex === 2
-              ? 'button-statistic-club-active'
-              : 'button-statistic-club'
-          }
+          id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
           icon='pi pi-user'
           label='Cá nhân'
           onClick={() => {

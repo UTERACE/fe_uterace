@@ -37,13 +37,6 @@
     width: 100%;
     height: auto; 
 }
-
-#share-register-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: auto;
-}
 #link-event {
     font-size: 1rem;
     transition: color 0.3s ease;
@@ -70,16 +63,6 @@
 #custom-carousel-product .p-items-hidden .p-carousel-item {
     visibility:initial;
 }
-@media (max-width: 1920px) {
-    #custom-carousel-product .p-carousel-item-start {
-        transform: scale(0.85)translateX(15%);
-        z-index: -1;
-    }
-    #custom-carousel-product .p-carousel-item-end {
-        transform: scale(0.85)translateX(-15%);
-        z-index: -1;
-    }
-}
 
 #custom-carousel-product.p-carousel button {
     background-color: $background-color;
@@ -99,10 +82,6 @@
     border-radius: 50%;
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
     margin: 0;
-}
-.p-icon {
-    width: 1rem;
-    height: auto;
 }
 #custom-carousel-product.p-carousel .p-highlight button {
     background-color: $black-color;

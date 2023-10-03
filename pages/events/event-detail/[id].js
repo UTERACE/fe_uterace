@@ -28,7 +28,6 @@ const EventDetail = () => {
   const [image, setImage] = useState('')
   const [start_time, setStartTime] = useState('')
   const [end_time, setEndTime] = useState('')
-  const [participants, setParticipants] = useState(0)
   const [total_members, setTotalMembers] = useState(0)
   const [total_clubs, setTotalClubs] = useState(0)
   const [total_distance, setTotalDistance] = useState(0)
@@ -340,7 +339,6 @@ const EventDetail = () => {
     setRole(data.role)
     setStartTime(data.start_time)
     setEndTime(data.end_time)
-    setParticipants(data.participants)
     setTotalMembers(data.total_members)
     setTotalClubs(data.total_clubs)
     setTotalDistance(data.total_distance)
@@ -381,11 +379,7 @@ const EventDetail = () => {
             <div id='event-time-detail'>
               <Countdown from_date={start_time} to_date={end_time} />
             </div>
-            <Button
-              id='button-join-event'
-              label='Tham gia ngay'
-              onClick={() => {}}
-            />
+            <Button id='button-join' label='Tham gia ngay' onClick={() => {}} />
           </div>
           <div id='event-distance-container'>
             <div id='event-distance-title-container'>
@@ -393,7 +387,7 @@ const EventDetail = () => {
                 id='distance-event'
                 style={{
                   backgroundColor: '#ffffff',
-                  width: '90%',
+                  width: '70%',
                   marginBottom: '1rem',
                 }}
               >
@@ -414,7 +408,7 @@ const EventDetail = () => {
                 id='distance-event'
                 style={{
                   backgroundColor: '#ffffff',
-                  width: '90%',
+                  width: '70%',
                   marginBottom: '1rem',
                 }}
               >
@@ -437,17 +431,13 @@ const EventDetail = () => {
           <div id='event-info-detail'>
             <div id='statistic-event'>
               <Button
-                id='button-statistic-event'
+                id='button-tab'
                 style={{ width: '35%' }}
                 label={`${total_members} Người tham gia`}
                 onClick={() => {}}
               />
               <Button
-                id={
-                  !isStatistic
-                    ? 'button-statistic-event'
-                    : 'button-statistic-event-active'
-                }
+                id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label='Xem thống kê'
                 style={{ width: '35%' }}
                 iconPos='right'
@@ -501,11 +491,7 @@ const EventDetail = () => {
           <div id='info-detail'>
             <div id='statistic-event'>
               <Button
-                id={
-                  activeIndex === 0
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
+                id={activeIndex === 0 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-tags'
                 label='Chi tiết'
@@ -514,11 +500,7 @@ const EventDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 1
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
+                id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-calendar-plus'
                 label='Điều lệ'
@@ -527,11 +509,7 @@ const EventDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 2
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
+                id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '22%' }}
                 icon='pi pi-calendar-plus'
                 label='Giải thưởng'
@@ -540,11 +518,7 @@ const EventDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 3
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
+                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
                 label='Thành viên '
@@ -553,11 +527,7 @@ const EventDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 4
-                    ? 'button-statistic-event-active'
-                    : 'button-statistic-event'
-                }
+                id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
                 label='Câu lạc bộ'

@@ -1,0 +1,29 @@
+#title-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#title-item {
+    width: auto;
+    padding: 2rem 0 1.5rem 0;
+}
+#title-item h1 {
+    display: inline;
+}
+// detail button 
+#button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0 2rem 0;
+}
+#button-container a {
+    text-decoration: none;
+}
+
+
+
+  
+

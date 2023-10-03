@@ -2,7 +2,7 @@ import AppMenu from '@/components/dashboard/AppMenu'
 import Form, { Field } from '@/components/react-hook-form/Form'
 import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dropdown } from 'primereact/dropdown'
 import { Calendar } from 'primereact/calendar'
@@ -11,6 +11,7 @@ import Update from './Update'
 import Connect from './Connect'
 import { useRouter } from 'next/router'
 import ChangePassword from './ChangePassword'
+import apiInstance from '@/api/apiInstance'
 
 const SettingPage = () => {
   const router = useRouter()
@@ -96,6 +97,17 @@ const SettingPage = () => {
     { label: 'Cần Thơ', value: 'ct' },
     { label: 'Hải Phòng', value: 'hp' },
   ]
+  useEffect(() => {
+    fetchUser()
+  }, [])
+  const fetchUser = async () => {
+    try {
+      const response = await apiInstance.get('/user')
+      console.log('resp',response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div
       className='centered-content-full'

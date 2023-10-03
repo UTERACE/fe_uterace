@@ -230,7 +230,7 @@ const Scoreboard = () => {
           id='button-header-container'
         >
           <Button
-            id={activeIndex === 1 ? 'button-profile-active' : 'button-profile'}
+            id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-bar'
             label=' Bảng xếp hạng cá nhân'
             onClick={() => {
@@ -238,7 +238,7 @@ const Scoreboard = () => {
             }}
           />
           <Button
-            id={activeIndex === 2 ? 'button-profile-active' : 'button-profile'}
+            id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-line'
             label='Bảng xếp hạng CLB'
             onClick={() => {

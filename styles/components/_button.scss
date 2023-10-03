@@ -1,0 +1,110 @@
+#button-tab {
+    background-color: $black-color;
+    color: $white-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $white-color;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+#button-tab:hover {
+    background-color: $white-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0 0.5rem 0; 
+}
+#button-tab--active {
+    background-color: $white-color;
+    color: $black-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $black-color;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0 0.5rem 0; 
+}
+#button-detail {
+    width: auto;
+    height: auto;
+    padding: 0.8rem 1.5rem; 
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-color: $black-color ;
+    background-color: $black-color;
+    color: $primary-color;
+    border-radius: 1.5rem;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+#button-detail:hover {
+    background-color: $primary-color;
+    color: $black-color;
+    border-radius: 1.5rem;
+    transform: scale(1.05);
+}
+
+#button-join {
+    background-color: $background-color-red;
+    color: $white-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 2px solid $white-color;
+    border-radius: 20px;
+    padding: 1rem;
+    height: 4rem;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0 0.5rem 0; 
+}
+#button-join:hover {
+    background-color: $white-color;
+    color: $background-color-red;
+    border: 2px solid $background-color-red;
+    cursor: pointer;
+}
+
+#button-reinitialize {
+    width: auto;
+    height: auto;
+    padding: 0.8rem 1.5rem; 
+    font-weight: bold;
+    background-color: $black-color;
+    color: $primary-color;
+    border-radius: 1rem;
+    border: none;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+#button-reinitialize:hover {
+    background-color: $primary-color;
+    color: $black-color;
+    border-radius: 1rem;
+    transform: scale(1.05);
+}
+#button-menu-hide {
+    width: 3rem;
+    height: 3rem;
+    background-color: $black-color;
+    color: $primary-color;
+    border-radius: 50%;
+    position: fixed;
+    top: 5.5rem;           
+    left: 1.5rem;   
+    z-index: 2; 
+}

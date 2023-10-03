@@ -12,7 +12,7 @@
     width: 15rem;
     height: auto;
     background-color: $background-color;
-    border-radius: 15px;
+    border-radius: 1rem;
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -36,26 +36,29 @@
     align-items: center;
     gap: 1rem;
     margin: 1rem 1rem 0 1rem;
-    width: 100%;
+    width: calc(100%);
     height: 100%;
     background-color: $white-color;
 }
-#dashboard-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(var(--num-columns, 4), 1fr);
     gap: 1rem;
     width: 100%;
-    height: 10rem;
+    height: auto;
 }
 #dashboard-content-header {
-    width: 25%;
-    height: 100%;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     background-color: $background-color;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 #dashboard-content-header span {
-    font-size: $font-size-normal;
+    font-size: 1rem;
 }
 #span-new {
     color: rgb(85, 224, 171);
@@ -66,7 +69,9 @@
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
-    padding: 1rem;
+    height: auto;
+    width: 100%;
+    padding: 1rem 1rem 0 1rem;
 }
 #dashboard-content-header-child span {
     display: block;
@@ -78,35 +83,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 1rem;
     width: 2.5rem;
     height: 2.5rem;
 }
-
-
-#dashboard-content-chart {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.dashboard-content-chart {
+    display: grid;
+    grid-template-columns: repeat(var(--num-columns, 2), 1fr); 
     gap: 1rem;
     width: 100%;
     height: auto;
 }
 #dashboard-content-chart-header {
-    width: 50%;
+    width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     gap: 1rem;
 }
 #dashboard-content-chart-header-child {
     width: 100%;
-    height: 100%;
+    height: auto;
     background-color: $background-color;
-    border-radius: 10px;
+    border-radius: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;

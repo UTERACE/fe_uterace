@@ -1,13 +1,14 @@
-@import 'variables';
 body {
     font-family: $fontFamily;
 }
 html {
     font-size: 16px;
 }
-.p-icon {
-    font-size: $primeIconFontSize;
+body, html {
+    margin: 0;
+    padding: 0;
 }
+
 #layout-main {
     display: flex;
     flex-direction: column;
@@ -17,6 +18,15 @@ html {
 main {
     flex: 1;
 }
+.custom-carousel-content {
+    display: grid;
+    grid-template-columns: repeat(var(--num-columns, 3), 1fr); 
+    gap: 2rem;
+    margin-bottom: 1rem;
+    transition: transform 0.5s ease-in-out;
+}
+
+
 .centered-content-layout {
     width: 75%;
     margin: 0 auto;
@@ -46,7 +56,16 @@ main {
     .centered-content-dashboard {
         grid-template-columns: repeat(3, 1fr); 
     }
+    #custom-carousel-product .p-carousel-item-start {
+        transform: scale(0.85)translateX(15%);
+        z-index: -1;
+    }
+    #custom-carousel-product .p-carousel-item-end {
+        transform: scale(0.85)translateX(-15%);
+        z-index: -1;
+    }    
 }
+
 @media (max-width: 1366px) {
     .p-menuitem-icon {
         font-size: 2rem;
@@ -58,10 +77,10 @@ main {
         width: 90%;
     }
     .custom-carousel-content {
-        grid-template-columns: repeat(2, 1fr); 
+        grid-template-columns: repeat(3, 1fr); 
     }
     .centered-content-dashboard {
-        grid-template-columns: repeat(2, 1fr); 
+        grid-template-columns: repeat(3, 1fr); 
     }
     html {
         font-size: 14px;
@@ -69,7 +88,6 @@ main {
 }
 
 @media (max-width: 1024px) {
-    $font-size-max: 3rem;
     .centered-content-layout {
         width: 95%;
     }
@@ -77,10 +95,10 @@ main {
         width: 100%;
     }
     .custom-carousel-content {
-        grid-template-columns: repeat(1, 1fr); 
+        grid-template-columns: repeat(2, 1fr); 
     }
     .centered-content-dashboard {
-        grid-template-columns: repeat(1, 1fr); 
+        grid-template-columns: repeat(2, 1fr); 
     }
     html {
         font-size: 12px;
@@ -88,6 +106,9 @@ main {
 
 }
 @media (max-width: 768px) {
+    .p-menuitem-icon {
+        font-size: 1.5rem;
+    }
     html {
         font-size: 10px;
     }
@@ -109,8 +130,4 @@ main {
     align-items: center;
     justify-content: center;
     z-index: 2000;
-}
-body, html {
-    margin: 0;
-    padding: 0;
 }

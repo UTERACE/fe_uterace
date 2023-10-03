@@ -25,7 +25,7 @@ const ClubDetail = () => {
   const [news, setNews] = useState([])
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
-  const [total_member, setTotalMember] = useState(0)
+  const [total_members, setTotalMembers] = useState(0)
   const [total_news, setTotalNews] = useState(0)
   const [total_distance, setTotalDistance] = useState(0)
   const [total_activities, setTotalActivities] = useState(0)
@@ -251,7 +251,7 @@ const ClubDetail = () => {
     setNews(data.news)
     setActivities(data.activities)
     setRankMember(data.ranking_member)
-    setTotalMember(data.total_members)
+    setTotalMembers(data.total_members)
     setTotalNews(data.total_news)
     setTotalDistance(data.total_distance)
     setTotalActivities(data.total_activities)
@@ -268,7 +268,7 @@ const ClubDetail = () => {
     setPerPage(event.rows)
     console.log(per_page)
   }
-  
+
   return (
     <div
       className='centered-content-full'
@@ -286,27 +286,21 @@ const ClubDetail = () => {
             <h1>{name}</h1>
             <h6>{description}</h6>
 
-            <Button
-              id='button-join-club'
-              label='Tham gia ngay'
-              onClick={() => {}}
-            />
+            <Button id='button-join' label='Tham gia ngay' onClick={() => {}} />
           </div>
 
           <div id='info-detail'>
             <div id='statistic-club'>
               <Button
-                id='button-statistic-club'
-                label='Người tham gia '
+                id='button-tab'
+                style={{ width: '35%' }}
+                label={`${total_members} Người tham gia`}
                 onClick={() => {}}
               />
               <Button
-                id={
-                  !isStatistic
-                    ? 'button-statistic-club'
-                    : 'button-statistic-club-active'
-                }
+                id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label='Xem thống kê'
+                style={{ width: '35%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
                 onClick={() => {
@@ -319,7 +313,7 @@ const ClubDetail = () => {
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
                     <h4>Tổng số VĐV đã tham gia: </h4>
-                    <h4>{total_member}</h4>
+                    <h4>{total_members}</h4>
                   </div>
                   <div id='detail-club-container'>
                     <h4>Tổng số km đã chạy:</h4>
@@ -337,7 +331,7 @@ const ClubDetail = () => {
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
                     <h4>Ngày thành lập câu lạc bộ: </h4>
-                    <h4>{LocaleHelper.formatDateTime(create_at)}</h4>
+                    <h4>{LocaleHelper.formatDateTime(new Date(create_at))}</h4>
                   </div>
                   <div id='detail-club-container'>
                     <h4>Quản lí câu lạc bộ: </h4>
@@ -355,18 +349,14 @@ const ClubDetail = () => {
               </div>
             ) : null}
           </div>
-          <div>
-            <Title title='Bài viết của câu lạc bộ ' />
+          <div id='info-detail'>
+            <Title title='Bài viết của câu lạc bộ' />
             <News data={news} />
           </div>
           <div id='info-detail'>
             <div id='statistic-club'>
               <Button
-                id={
-                  activeIndex === 1
-                    ? 'button-statistic-club-active'
-                    : 'button-statistic-club'
-                }
+                id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar-plus'
                 label='Giới thiệu'
@@ -375,11 +365,7 @@ const ClubDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 2
-                    ? 'button-statistic-club-active'
-                    : 'button-statistic-club'
-                }
+                id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar-plus'
                 label='Hoạt động gần đây'
@@ -388,11 +374,7 @@ const ClubDetail = () => {
                 }}
               />
               <Button
-                id={
-                  activeIndex === 3
-                    ? 'button-statistic-club-active'
-                    : 'button-statistic-club'
-                }
+                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar'
                 label='Bảng xếp hạng thành viên '

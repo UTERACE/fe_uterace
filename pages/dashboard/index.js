@@ -10,6 +10,7 @@ import EventManagement from './EventManagement'
 import ClubManagement from './ClubManagement'
 import NewsManagement from './NewsManagement'
 import UserManagement from './UserManagement'
+import { Button } from 'primereact/button'
 
 const DashboardPage = () => {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -60,33 +61,42 @@ const DashboardPage = () => {
       to: '/profile',
     },
   ]
+  const [isCollapsed, setIsCollapsed] = useState(true)
   return (
     <div id='dashboard-container'>
-      <div id='dashboard-menu-container'>
-        <Link href='/user/profile'>
-          <Avatar
-            style={{
-              border: '1px solid #ffffff',
-              marginTop: '2rem',
-              width: '10rem',
-              height: '10rem',
-              fontSize: '5rem',
-            }}
-            size='xlarge'
-            shape='circle'
-            label={!avatarImage ? avatarLabel : null}
-            image={avatarImage}
-          />
-        </Link>
+      <Button
+        id='button-menu-hide'
+        icon='pi pi-bars'
+        className='p-button-rounded p-button-text'
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      />
+      {isCollapsed ? (
+        <div id='dashboard-menu-container'>
+          <Link href='/user/profile'>
+            <Avatar
+              style={{
+                border: '1px solid #ffffff',
+                marginTop: '2rem',
+                width: '10rem',
+                height: '10rem',
+                fontSize: '5rem',
+              }}
+              size='xlarge'
+              shape='circle'
+              label={!avatarImage ? avatarLabel : null}
+              image={avatarImage}
+            />
+          </Link>
 
-        <h4>{lastname + ' ' + firstname}</h4>
-        <h6>Quản trị viên hệ thống</h6>
-        <AppMenu
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}
-          model={model}
-        />
-      </div>
+          <h4>{lastname + ' ' + firstname}</h4>
+          <h6>Quản trị viên hệ thống</h6>
+          <AppMenu
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            model={model}
+          />
+        </div>
+      ) : null}
       {activeIndex === 0 ? (
         <Dashboard />
       ) : activeIndex === 1 ? (

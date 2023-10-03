@@ -7,21 +7,21 @@ import Detail from '@/components/landing/Detail'
 const Event = ({ event }) => {
   const [events, setEvents] = useState([])
   useEffect(() => {
-    setEvents(event.slice(0, 9))
+    setEvents(event.slice(0, 6))
   }, [])
   const responsiveOptions = [
     {
-      breakpoint: '1024px',
+      breakpoint: '1920px',
       numVisible: 3,
       numScroll: 1,
     },
     {
       breakpoint: '960px',
-      numVisible: 2,
+      numVisible: 3,
       numScroll: 1,
     },
     {
-      breakpoint: '800px',
+      breakpoint: '500px',
       numVisible: 1,
       numScroll: 1,
     },
@@ -29,7 +29,7 @@ const Event = ({ event }) => {
 
   const eventTemplate = (event) => {
     return (
-      <Link id='link-dataview' href={`/events/event-detail/${event.event_id}`}>
+      <Link id='link-dataview-container' href={`/events/event-detail/${event.event_id}`}>
         <div id='event-container'>
           <div id='image-event-container'>
             <img src={event.image} alt={event.name} />

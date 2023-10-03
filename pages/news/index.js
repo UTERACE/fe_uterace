@@ -74,7 +74,7 @@ const NewsPage = () => {
   }
   const itemTemplate = (item) => {
     return (
-      <Link id='link-dataview' href={`/news/news-detail/${item.news_id}`}>
+      <Link id='link-dataview-container' href={`/news/news-detail/${item.news_id}`}>
         <div id='dataview-container'>
           <div id='image-container-dataview'>
             <img src={item.image} alt={item.name} />
@@ -93,11 +93,11 @@ const NewsPage = () => {
               <h4>{item.name}</h4>
               <h6>{item.description}</h6>
               <div id='share-register-content'>
-                <Link id='link-event' href={`/news/news-detail/${item.news_id}`}>
+                <Link id='link-dataview' href={`/news/news-detail/${item.news_id}`}>
                   Xem ngay{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
-                <Link id='link-event' href='/share'>
+                <Link id='link-dataview' href='/share'>
                   Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>

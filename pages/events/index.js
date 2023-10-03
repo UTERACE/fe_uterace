@@ -72,7 +72,7 @@ const Events = () => {
   }
   const itemTemplate = (item) => {
     return (
-      <Link id='link-dataview' href={`/events/event-detail/${item.event_id}`}>
+      <Link id='link-dataview-container' href={`/events/event-detail/${item.event_id}`}>
         <div id='dataview-container'>
           <div id='image-container-dataview'>
             <img src={item.image} alt={item.name} />
@@ -93,13 +93,13 @@ const Events = () => {
               <h4>{item.name}</h4>
               <div id='share-register-content'>
                 <Link
-                  id='link-event'
+                  id='link-dataview'
                   href={`/events/event-detail/${item.event_id}`}
                 >
                   Tham gia sự kiện{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
-                <Link id='link-event' href='/share'>
+                <Link id='link-dataview' href='/share'>
                   Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
@@ -137,7 +137,7 @@ const Events = () => {
           style={{ width: '100%', justifyContent: 'start', gap: '2rem' }}
         >
           <Button
-            id={activeIndex === 1 ? 'button-profile-active' : 'button-profile'}
+            id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-bar'
             label='Các sự kiện đang diễn ra'
             onClick={() => {
@@ -145,7 +145,7 @@ const Events = () => {
             }}
           />
           <Button
-            id={activeIndex === 2 ? 'button-profile-active' : 'button-profile'}
+            id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-line'
             label='Các sự kiện đã kết thúc'
             onClick={() => {
