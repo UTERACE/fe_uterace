@@ -32,6 +32,8 @@ const EventDetail = () => {
   const [total_clubs, setTotalClubs] = useState(0)
   const [total_distance, setTotalDistance] = useState(0)
   const [total_activities, setTotalActivities] = useState(0)
+  const [min_pace, setMinPace] = useState(0)
+  const [max_pace, setMaxPace] = useState(0)
   const [completed, setCompleted] = useState(0)
   const [in_progress, setInProgress] = useState(0)
   const [male, setMale] = useState(0)
@@ -46,7 +48,8 @@ const EventDetail = () => {
       in_progress: 0,
       male: 120,
       female: 80,
-
+      min_pace: 5.0,
+      max_pace: 10.0,
       image:
         'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
       name: 'CLB ĐỒNG HÀNH CÙNG CÁC THIÊN THẦN',
@@ -346,6 +349,8 @@ const EventDetail = () => {
     setCompleted(data.completed)
     setInProgress(data.in_progress)
     setMale(data.male), setFemale(data.female)
+    setMinPace(data.min_pace)
+    setMaxPace(data.max_pace)
   }, [])
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -466,6 +471,10 @@ const EventDetail = () => {
                     <h4>Tổng số câu lạc bộ:</h4>
                     <h4>{total_clubs}</h4>
                   </div>
+                  <div id='detail-event-container'>
+                    <h4>Tốc độ trung bình tối thiểu (phút/km):</h4>
+                    <h4>{min_pace}</h4>
+                  </div>
                 </div>
                 <div id='info-event-detail'>
                   <div id='detail-event-container'>
@@ -483,6 +492,10 @@ const EventDetail = () => {
                   <div id='detail-event-container'>
                     <h4>VĐV Nữ:</h4>
                     <h4>{female}</h4>
+                  </div>
+                  <div id='detail-event-container'>
+                    <h4>Tốc độ trung bình tối đa (phút/km):</h4>
+                    <h4>{max_pace}</h4>
                   </div>
                 </div>
               </div>
