@@ -27,13 +27,11 @@ const HomePage = () => {
           last_name: 'Lê',
           image:
             'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
-          stt: 1,
           last_sync: '2021-06-01 10:00:00',
           status: 1,
         },
         {
           user_id: 2,
-          stt: 2,
           first_name: 'Nguyễn',
           last_name: 'Sinh Hùng',
           image:
@@ -43,7 +41,6 @@ const HomePage = () => {
         },
         {
           user_id: 1,
-          stt: 3,
           first_name: 'Nguyễn',
           last_name: 'Văn A',
           image:
@@ -53,7 +50,6 @@ const HomePage = () => {
         },
         {
           user_id: 3,
-          stt: 4,
           first_name: 'Nguyễn',
           last_name: 'Văn B',
           image: '',
@@ -62,7 +58,6 @@ const HomePage = () => {
         },
         {
           user_id: 4,
-          stt: 5,
           first_name: 'Trần',
           last_name: 'Thiện',
           image: '',
@@ -71,7 +66,6 @@ const HomePage = () => {
         },
         {
           user_id: 5,
-          stt: 6,
           first_name: 'Nguyễn',
           last_name: 'Văn C',
           image: '',
@@ -80,7 +74,6 @@ const HomePage = () => {
         },
         {
           user_id: 6,
-          stt: 7,
           first_name: 'Nguyễn',
           last_name: 'Văn D',
           image: '',
@@ -89,7 +82,6 @@ const HomePage = () => {
         },
         {
           user_id: 21,
-          stt: 8,
           first_name: 'Nguyễn',
           last_name: 'Văn E',
           image: '',
@@ -153,8 +145,8 @@ const HomePage = () => {
   }
   const userInitColumns = [
     {
-      field: 'stt',
-      header: 'STT',
+      field: 'user_id',
+      header: 'ID',
       bodyClassName: 'text-center',
     },
     {

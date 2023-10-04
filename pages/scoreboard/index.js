@@ -226,15 +226,14 @@ const Scoreboard = () => {
         }
       />
       <div className='centered-content-layout'>
-        <div
-          id='button-header-container'
-        >
+        <div id='button-header-container'>
           <Button
             id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-bar'
             label=' Bảng xếp hạng cá nhân'
             onClick={() => {
               setActiveIndex(1)
+              setMonth(1)
             }}
           />
           <Button
@@ -243,19 +242,15 @@ const Scoreboard = () => {
             label='Bảng xếp hạng CLB'
             onClick={() => {
               setActiveIndex(2)
+              setMonth(1)
             }}
           />
         </div>
-        {/* <TabView style={{ width: '100%' }}>
-          <TabPanel header='Bảng xếp hạng CLB' style={{ background: 'none' }}>
-            <RankClub value={value.rankclub}></RankClub>
-          </TabPanel>
-          <TabPanel header='Bảng xếp hạng cá nhân'> */}
         {activeIndex === 1 ? (
           <div>
             <div id='month-button-container'>
               <Button
-                id={month === 1 ? 'button-month-active' : 'button-month'}
+                id={month === 1 ? 'button-tab-month' : ''}
                 icon='pi pi-chart-bar'
                 label='Tổng'
                 onClick={() => {
@@ -263,11 +258,7 @@ const Scoreboard = () => {
                 }}
               />
               <Button
-                id={
-                  month === currentMonth
-                    ? 'button-month-active'
-                    : 'button-month'
-                }
+                id={month === currentMonth ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-plus'
                 label={`Tháng ${currentMonth}`}
                 onClick={() => {
@@ -276,11 +267,7 @@ const Scoreboard = () => {
                 }}
               />
               <Button
-                id={
-                  month === currentMonth - 1
-                    ? 'button-month-active'
-                    : 'button-month'
-                }
+                id={month === currentMonth - 1 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-minus'
                 label={`Tháng ${currentMonth - 1}`}
                 onClick={() => {
@@ -289,11 +276,7 @@ const Scoreboard = () => {
                 }}
               />
               <Button
-                id={
-                  month === currentMonth - 2
-                    ? 'button-month-active'
-                    : 'button-month'
-                }
+                id={month === currentMonth - 2 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-times'
                 label={`Tháng ${currentMonth - 2}`}
                 onClick={() => {
@@ -316,7 +299,7 @@ const Scoreboard = () => {
           <div>
             <div id='month-button-container'>
               <Button
-                id={month === 1 ? 'button-month-active' : 'button-month'}
+                id={month === 1 ? 'button-tab-month' : ''}
                 icon='pi pi-chart-bar'
                 label='Tổng'
                 onClick={() => {
@@ -324,11 +307,7 @@ const Scoreboard = () => {
                 }}
               />
               <Button
-                id={
-                  month === currentMonth
-                    ? 'button-month-active'
-                    : 'button-month'
-                }
+                id={month === currentMonth ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-plus'
                 label={`Tháng ${currentMonth}`}
                 onClick={() => {
@@ -337,11 +316,7 @@ const Scoreboard = () => {
                 }}
               />
               <Button
-                id={
-                  month === currentMonth - 1
-                    ? 'button-month-active'
-                    : 'button-month'
-                }
+                id={month === currentMonth - 1 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-minus'
                 label={`Tháng ${currentMonth - 1}`}
                 onClick={() => {
@@ -350,11 +325,7 @@ const Scoreboard = () => {
                 }}
               />
               <Button
-                id={
-                  month === currentMonth - 2
-                    ? 'button-month-active'
-                    : 'button-month'
-                }
+                id={month === currentMonth - 2 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-times'
                 label={`Tháng ${currentMonth - 2}`}
                 onClick={() => {

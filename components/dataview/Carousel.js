@@ -1,3 +1,4 @@
+import { Button } from 'primereact/button'
 import React, { useEffect, useState } from 'react'
 
 const Carousel = ({
@@ -83,9 +84,11 @@ const Carousel = ({
   return (
     <div id='carousel-container-wrapper'>
       <div id='carousel-container'>
-        <button id='carousel-prev' onClick={() => handleScroll(-1)}>
-          <i className='pi pi-chevron-left' aria-hidden='true'></i>
-        </button>
+        <Button
+          id='prev-news'
+          onClick={() => handleScroll(-1)}
+          icon='pi pi-chevron-left'
+        ></Button>
         <div className='custom-carousel-content' style={{ width: '100%' }}>
           {value
             .slice(currentIndex, currentIndex + column)
@@ -93,9 +96,11 @@ const Carousel = ({
               return itemTemplate(item, index)
             })}
         </div>
-        <button id='carousel-next' onClick={() => handleScroll(1)}>
-          <i className='pi pi-chevron-right' aria-hidden='true'></i>
-        </button>
+        <Button
+          id='next-news'
+          onClick={() => handleScroll(1)}
+          icon='pi pi-chevron-right'
+        ></Button>
       </div>
       <div id='pagination-container'>
         {value.map((item, index) => {

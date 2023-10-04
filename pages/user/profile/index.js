@@ -242,7 +242,7 @@ const Profile = () => {
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
                 <h1>{data.pace}</h1>
-                <h4>Tốc độ trung bình (km/h)</h4>
+                <h4>Tốc độ trung bình (phút/km)</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
                 <h1>{data.total_activities}</h1>
@@ -282,10 +282,7 @@ const Profile = () => {
                 <div id='info-profile-container'>
                   <div id='name-container'>
                     <h1>{data.last_name + ' ' + data.first_name}</h1>
-                    <img
-                      src='/verified.png'
-                      alt='verified'
-                    />
+                    <img src='/verified.png' alt='verified' />
                     <i className='fas icon-large fa-edit'></i>
                   </div>
                   <div>
@@ -356,41 +353,37 @@ const Profile = () => {
           <div id='profile-activities-container'>
             <div id='profile-button-container'>
               <Button
-                id={
-                  activeIndex === 1 ? 'button-tab--active' : 'button-tab'
-                }
+                id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar'
                 label=' Giải đang tham gia'
+                style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(1)
                 }}
               />
               <Button
-                id={
-                  activeIndex === 2 ? 'button-tab--active' : 'button-tab'
-                }
+                id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-plus'
                 label='Hoạt động'
+                style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(2)
                 }}
               />
               <Button
-                id={
-                  activeIndex === 3 ? 'button-tab--active' : 'button-tab'
-                }
+                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-minus'
                 label='Giải đã hoàn thành'
+                style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(3)
                 }}
               />
               <Button
-                id={
-                  activeIndex === 4 ? 'button-tab--active' : 'button-tab'
-                }
+                id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-images'
                 label='Bộ sưu tập'
+                style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(4)
                 }}

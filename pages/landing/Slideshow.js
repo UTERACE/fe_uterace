@@ -44,18 +44,16 @@ const Slideshow = ({ data, interval = 3000 }) => {
             id='prev'
             onClick={() =>
               setCurrentSlide(
-                currentSlide === 0 ? brand.length - 1 : currentSlide - 1
+                currentSlide === 0 ? events.length - 1 : currentSlide - 1
               )
             }
-          >
-            &#10094;
-          </Button>
+            icon='pi pi-chevron-left'
+          ></Button>
           <Button
             id='next'
-            onClick={() => setCurrentSlide((currentSlide + 1) % brand.length)}
-          >
-            &#10095;
-          </Button>
+            onClick={() => setCurrentSlide((currentSlide + 1) % events.length)}
+            icon='pi pi-chevron-right'
+          ></Button>
         </div>
       ))}
     </div>

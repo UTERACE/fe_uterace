@@ -35,7 +35,6 @@ const UserManagement = () => {
           image:
             'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
           total_distance: 15.02,
-          ranking: 1,
           pace: 10.082677841186523,
           organization: 'Tổng công ty Viễn thông MobiFone',
           gender: 'Nam',
@@ -44,7 +43,6 @@ const UserManagement = () => {
         },
         {
           user_id: 2,
-          ranking: 2,
           first_name: 'Nguyễn',
           last_name: 'Sinh Hùng',
           image:
@@ -58,7 +56,6 @@ const UserManagement = () => {
         },
         {
           user_id: 1,
-          ranking: 3,
           first_name: 'Nguyễn',
           last_name: 'Văn A',
           image:
@@ -72,7 +69,6 @@ const UserManagement = () => {
         },
         {
           user_id: 3,
-          ranking: 4,
           first_name: 'Nguyễn',
           last_name: 'Văn B',
           image: '',
@@ -85,7 +81,6 @@ const UserManagement = () => {
         },
         {
           user_id: 4,
-          ranking: 5,
           first_name: 'Trần',
           last_name: 'Thiện',
           image: '',
@@ -98,7 +93,6 @@ const UserManagement = () => {
         },
         {
           user_id: 5,
-          ranking: 6,
           first_name: 'Nguyễn',
           last_name: 'Văn C',
           image: '',
@@ -111,7 +105,6 @@ const UserManagement = () => {
         },
         {
           user_id: 6,
-          ranking: 7,
           first_name: 'Nguyễn',
           last_name: 'Văn D',
           image: '',
@@ -124,7 +117,6 @@ const UserManagement = () => {
         },
         {
           user_id: 21,
-          ranking: 8,
           first_name: 'Nguyễn',
           last_name: 'Văn E',
           image: '',
@@ -170,33 +162,6 @@ const UserManagement = () => {
       return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
-  }
-  const formatRank = (rowData) => {
-    return (
-      <div id='member-ranking'>
-        {rowData.ranking === 1 ? (
-          <img
-            src='https://mobirace.net//Images/no1.png'
-            alt='rank1'
-            className='customer-rank'
-          />
-        ) : rowData.ranking === 2 ? (
-          <img
-            src='https://mobirace.net//Images/no2.png'
-            alt='rank2'
-            className='customer-rank'
-          />
-        ) : rowData.ranking === 3 ? (
-          <img
-            src='https://mobirace.net//Images/no3.png'
-            alt='rank3'
-            className='customer-rank'
-          />
-        ) : (
-          <div>{rowData.ranking}</div>
-        )}
-      </div>
-    )
   }
   const formatStatus = (rowData) => {
     if (rowData.status === 0) {
@@ -295,8 +260,8 @@ const UserManagement = () => {
   }
   const memberColumns = [
     {
-      field: 'ranking',
-      header: 'STT',
+      field: 'user_id',
+      header: 'ID',
       bodyClassName: 'text-center',
     },
     {

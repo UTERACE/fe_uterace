@@ -31,6 +31,7 @@ const Register = (props) => {
 
   const router = useRouter()
   const [initialValues, setInitialValues] = useState({})
+  const [checked, setChecked] = useState(true)
   const recaptcha_site_key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
   useEffect(() => {
     setInitialValues({
@@ -39,6 +40,7 @@ const Register = (props) => {
       username: id || '',
       email: email || '',
       image: image || '',
+      agree: checked,
     })
   }, [type])
   async function onSubmit(data) {
@@ -107,9 +109,9 @@ const Register = (props) => {
         ></script>
       </Helmet>
       <ReCAPTCHA sitekey={recaptcha_site_key} size='invisible' />
-      <div id='signup-container'>
-        <div id='signup-card'>
-          <div id='signup-title'>
+      <div id='form-container'>
+        <div id='form-card'>
+          <div id='form-title'>
             {type === 'default' ? (
               <h1>Sign up</h1>
             ) : (
@@ -183,7 +185,7 @@ const Register = (props) => {
                   <Field name='gender' label='Giới tính' required>
                     <Dropdown
                       options={genderOptions}
-                      style={{ width: '100%', borderRadius: '10px' }}
+                      style={{ width: '100%', borderRadius: '1rem' }}
                     />
                   </Field>
                 </div>
@@ -199,30 +201,27 @@ const Register = (props) => {
                   </Field>
                 </div>
               </div>
-              <div className='grid' id='agree-container'>
-                <div className='col-6' id='checkbox'>
-                  <Field name='agree' label='I Agree with privacy and policy'>
-                    <Checkbox
-                      inputId='agree'
-                      checked
-                      onChange={(e) => onChange(e.checked)}
-                    />
-                  </Field>
-                </div>
-              </div>
-              <div className='grid-form'>
-                <div className='col-12' id='multi-color-border-login'>
-                  <Button
-                    type='submit'
-                    label='Sign up'
-                    severity='secondary'
-                    raised
-                    id='button-dark'
+              <div className='grid' id='remember-forgot-container'>
+                <Field name='agree' label='I Agree with privacy and policy'>
+                  <Checkbox
+                    inputId='agree'
+                    checked={checked}
+                    onChange={(e) => setChecked(e.checked)}
                   />
-                </div>
+                </Field>
               </div>
               <div className='grid-form'>
-                <div className='col-12' id='register-signin-title'>
+                <Button
+                  type='submit'
+                  label='Sign up'
+                  severity='secondary'
+                  raised
+                  id='button-detail'
+                  style={{ width: '100%', marginTop: '2rem' }}
+                />
+              </div>
+              <div className='grid-form'>
+                <div className='col-12' id='signin-signup-title'>
                   Already have an account?
                   <Link href='/login'> Sign in now</Link>
                 </div>

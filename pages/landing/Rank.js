@@ -13,6 +13,7 @@ const Rank = ({ value }) => {
           id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
           icon='pi pi-users'
           label='Câu lạc bộ'
+          style={{width: '25%'}}
           onClick={() => {
             setActiveIndex(1)
           }}
@@ -21,6 +22,7 @@ const Rank = ({ value }) => {
           id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
           icon='pi pi-user'
           label='Cá nhân'
+          style={{width: '25%'}}
           onClick={() => {
             setActiveIndex(2)
           }}

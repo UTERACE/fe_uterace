@@ -91,7 +91,7 @@
     text-decoration: none;
 }
 .p-datatable > .p-datatable-wrapper {
-    overflow: scroll;
+    overflow:auto;
 }
 .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
     border-width: 0 0 0 0;

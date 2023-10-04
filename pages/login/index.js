@@ -24,6 +24,7 @@ const Login = () => {
   const [initialValues, setInitialValues] = useState({})
   const [visibleThirdParty, setVisibleThirdParty] = useState(false)
   const [visibleFacebook, setVisibleFacebook] = useState(false)
+  const [checked, setChecked] = useState(true)
 
   const [responseThirdParty, setResponseThirdParty] = useState({})
   const [typeThirdParty, setTypeThirdParty] = useState('')
@@ -38,7 +39,7 @@ const Login = () => {
     setInitialValues({
       username: localStorage.getItem('username') || '',
       password: localStorage.getItem('password') || '',
-      remember: true,
+      remember: checked,
     })
     if (isAuthenticated) {
       router.push('/landing')
@@ -204,9 +205,9 @@ const Login = () => {
           setVisibleThirdParty={setVisibleThirdParty}
         />
       </Dialog>
-      <div id='signin-container'>
-        <div id='signin-card'>
-          <div id='signin-title'>
+      <div id='form-container'>
+        <div id='form-card'>
+          <div id='form-title'>
             <h1>Sign in</h1>
           </div>
           <Form onSubmit={onSubmit} initialValue={initialValues}>
@@ -218,7 +219,12 @@ const Login = () => {
                     label='Username or email address'
                     required
                   >
-                    <InputText type='text' style={{ width: '100%' }} />
+                    <InputText
+                      type='text'
+                      style={{ width: '100%' }}
+                      tooltip='Enter your username or email address'
+                      tooltipOptions={{ event: 'focus' }}
+                    />
                   </Field>
                 </div>
               </div>
@@ -233,6 +239,8 @@ const Login = () => {
                       type='password'
                       style={{ width: '100%' }}
                       toggleMask
+                      tooltip='Enter your password'
+                      tooltipOptions={{ event: 'focus' }}
                     />
                   </Field>
                 </div>
@@ -242,8 +250,8 @@ const Login = () => {
                   <Field name='remember' label='Remember me'>
                     <Checkbox
                       inputId='remember'
-                      checked
-                      onChange={(e) => onChange(e.checked)}
+                      checked={checked}
+                      onChange={(e) => setChecked(e.checked)}
                     />
                   </Field>
                 </div>
@@ -252,16 +260,15 @@ const Login = () => {
                 </div>
               </div>
               <div className='grid-form'>
-                <div className='col-12' id='multi-color-border-login'>
-                  <Button
-                    icon='pi pi-sign-in'
-                    type='submit'
-                    label='Sign in'
-                    severity='secondary'
-                    raised
-                    id='button-dark'
-                  />
-                </div>
+                <Button
+                  icon='pi pi-sign-in'
+                  type='submit'
+                  label='Sign in'
+                  severity='secondary'
+                  raised
+                  id='button-detail'
+                  style={{ width: '100%', marginTop: '2rem' }}
+                />
               </div>
               <div
                 style={{
@@ -274,9 +281,9 @@ const Login = () => {
                 Or Using
               </div>
               <div className='grid-form'>
-                <div className='col-12' id='border-login'>
+                <div className='col-12' id='border-form'>
                   <Button
-                    label='Countinue with Facebook'
+                    label='Continue with Facebook'
                     icon='pi pi-facebook'
                     id='login-google'
                     type='button'
@@ -285,9 +292,9 @@ const Login = () => {
                     }}
                   />
                 </div>
-                <div className='col-12' id='border-login'>
+                <div className='col-12' id='border-form'>
                   <Button
-                    label='Countinue with Google'
+                    label='Continue with Google'
                     icon='pi pi-google'
                     severity='secondary'
                     raised
@@ -301,7 +308,7 @@ const Login = () => {
               </div>
 
               <div className='grid-form' id='top-8'>
-                <div className='col-12' id='login-signup-title'>
+                <div className='col-12' id='signin-signup-title'>
                   Don't have an account?
                   <Link href='/register'> Sign up now</Link>
                 </div>

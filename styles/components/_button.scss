@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: center;
     margin: 0.5rem 0 0.5rem 0;
+    transition: transform 0.3s ease;
 }
 
 #button-tab:hover {
@@ -24,6 +25,7 @@
     justify-content: center;
     align-items: center;
     margin: 0.5rem 0 0.5rem 0; 
+    transform: scale(1.02);
 }
 #button-tab--active {
     background-color: $white-color;
@@ -37,6 +39,13 @@
     justify-content: center;
     align-items: center;
     margin: 0.5rem 0 0.5rem 0; 
+    transform: scale(1.02); 
+}
+#button-tab-month {
+    background-color: $black-color;
+    color: $primary-color;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
 }
 #button-detail {
     width: auto;
@@ -107,4 +116,44 @@
     top: 5.5rem;           
     left: 1.5rem;   
     z-index: 2; 
+}
+#prev, #next {
+    position: absolute;  
+    top: 50%;         
+    transform: translateY(-50%);  
+    background-color: $background-dialog;
+    color: $black-color;
+    border: none;
+    font-size: 1.5rem;
+    width: 3rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+  
+#prev {
+    left: 1rem;
+}
+  
+#next {
+    right: 1rem; 
+}
+#prev:hover, #next:hover {
+    background-color: $white-color;
+    color: $black-color;
+}
+
+#prev-news, #next-news {        
+    transform: translateY(-50%);  
+    background-color: $background-dialog;
+    color: $black-color;
+    border: none;
+    font-size: 1.5rem;
+    width: 3rem;
+    margin-top: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#prev-news:hover, #next-news:hover {
+    background-color: $white-color;
+    color: $black-color;
 }

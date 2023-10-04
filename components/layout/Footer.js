@@ -12,78 +12,80 @@ const Footer = () => {
     }
   }, [])
   return (
-    <div className='footer'>
-      <div>
-        <h3>UTE Race</h3>
-        <p style={{ maxWidth: '30rem' }}>
-          UTErace là một ứng dụng giúp người dùng có thể tìm kiếm các giải chạy
-          và tham gia vào các giải chạy đó. Ngoài ra, người dùng có thể tạo ra
-          các đội chạy và tham gia vào các giải chạy đó.
-        </p>
-        <div id='social-media-icons'>
-          <a
-            href='https://www.facebook.com/'
-            className='pi pi-facebook'
-            target='_blank'
-            rel='noopener noreferrer'
-          ></a>
-          <a
-            href='https://www.instagram.com/'
-            className='pi pi-instagram'
-            target='_blank'
-            rel='noopener noreferrer'
-          ></a>
-          <a
-            href='https://twitter.com/'
-            className='pi pi-twitter'
-            target='_blank'
-            rel='noopener noreferrer'
-          ></a>
-          <a
-            href='https://www.youtube.com/channel/UC9JUJQx8XQXZG3t5QXq2Y0Q'
-            className='pi pi-youtube'
-            target='_blank'
-            rel='noopener noreferrer'
-          ></a>
+    <div id='footer-container'>
+      <div className='footer'>
+        <div>
+          <h3>UTE Race</h3>
+          <p style={{ maxWidth: '30rem' }}>
+            UTErace là một ứng dụng giúp người dùng có thể tìm kiếm các giải
+            chạy và tham gia vào các giải chạy đó. Ngoài ra, người dùng có thể
+            tạo ra các đội chạy và tham gia vào các giải chạy đó.
+          </p>
+          <div id='social-media-icons'>
+            <a
+              href='https://www.facebook.com/'
+              className='pi pi-facebook'
+              target='_blank'
+              rel='noopener noreferrer'
+            ></a>
+            <a
+              href='https://www.instagram.com/'
+              className='pi pi-instagram'
+              target='_blank'
+              rel='noopener noreferrer'
+            ></a>
+            <a
+              href='https://twitter.com/'
+              className='pi pi-twitter'
+              target='_blank'
+              rel='noopener noreferrer'
+            ></a>
+            <a
+              href='https://www.youtube.com/channel/UC9JUJQx8XQXZG3t5QXq2Y0Q'
+              className='pi pi-youtube'
+              target='_blank'
+              rel='noopener noreferrer'
+            ></a>
+          </div>
         </div>
-      </div>
-      <div style={{ maxWidth: '30rem' }}>
-        <h3>Hướng dẫn</h3>
-        <p>Hướng dẫn đăng nhập</p>
-        <p>Hướng dẫn tạo đội</p>
-        <p>Hướng dẫn tham gia giải đấu</p>
-        <p>Hướng dẫn từ A-Z cho người mới bắt đầu </p>
-      </div>
-      <div>
-        <h3>Chính sách</h3>
-        <p>Chính sách vận chuyển</p>
-        <p>Chính sách hoàn trả</p>
-        <p>Chính sách bảo mật</p>
-        <p>Chính sách thanh toán</p>
-      </div>
-      <div>
-        <h3>Tương thích với</h3>
-        <div
-          style={{
-            display: 'flex',
-            gap: '1rem',
-            justifyContent: 'start',
-          }}
-        >
-          <i id='container-icon'>
-            <img src='/garmin-icon.png' alt='garmin'></img>
-          </i>
-          <i id='container-icon'>
-            <img src='/logo_suunto.png' alt='garmin'></img>
-          </i>
-          <a href='http://www.vietmap.vn' target='_blank'>
+        <div style={{ maxWidth: '30rem' }}>
+          <h3>Hướng dẫn</h3>
+          <p>Hướng dẫn đăng nhập</p>
+          <p>Hướng dẫn tạo đội</p>
+          <p>Hướng dẫn tham gia giải đấu</p>
+          <p>Hướng dẫn từ A-Z cho người mới bắt đầu </p>
+        </div>
+        <div>
+          <h3>Chính sách</h3>
+          <p>Chính sách vận chuyển</p>
+          <p>Chính sách hoàn trả</p>
+          <p>Chính sách bảo mật</p>
+          <p>Chính sách thanh toán</p>
+        </div>
+        <div>
+          <h3>Tương thích với</h3>
+          <div
+            style={{
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'start',
+            }}
+          >
             <i id='container-icon'>
-              <img src='/logo_vietmap.png' alt='vietmap'></img>
+              <img src='/garmin-icon.png' alt='garmin'></img>
             </i>
-          </a>
-        </div>
-        <div id='strava-footer'>
-          <img src='/strava_cptblWith.png'></img>
+            <i id='container-icon'>
+              <img src='/logo_suunto.png' alt='garmin'></img>
+            </i>
+            <a href='http://www.vietmap.vn' target='_blank'>
+              <i id='container-icon'>
+                <img src='/logo_vietmap.png' alt='vietmap'></img>
+              </i>
+            </a>
+          </div>
+          <div id='strava-footer'>
+            <img src='/strava_cptblWith.png'></img>
+          </div>
         </div>
       </div>
     </div>

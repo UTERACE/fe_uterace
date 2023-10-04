@@ -1,8 +1,16 @@
+#footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: $background-footer;
+    border-top: 2px solid $border-color;
+}
 .footer {
     display: grid;
     justify-content: space-between;
-    gap: 1rem;
-    background: $background-footer;
+    gap: 2rem;
     color: $white-color;
     a {
         color: $white-color;
@@ -10,13 +18,11 @@
         font-size: 1rem;
     }
     height: auto;
-    padding: 2%;
-    border-top: 2px solid $border-color;
+    padding: 2rem;
     grid-template-columns: repeat(var(--num-columns, 4), 1fr); 
 }
 .footer p {
     font-size: $font-size-small;
-    
 }
 
 #social-media-icons{
@@ -39,11 +45,8 @@
     width: 100%;
     height: 100%;
     max-width: 10rem;
-    border-radius: 5px;
-
 }
 #container-icon img{
     width: 2rem;
     height: 2rem;
-    border-radius: 5px;
 }

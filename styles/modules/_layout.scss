@@ -50,6 +50,9 @@ main {
     .centered-content {
         width: 85%;
     }
+    .footer {
+        width: 80%;
+    }
     .custom-carousel-content {
         grid-template-columns: repeat(3, 1fr); 
     }
@@ -99,6 +102,9 @@ main {
     }
     .centered-content-dashboard {
         grid-template-columns: repeat(2, 1fr); 
+    }
+    .footer {
+        width: 100%;
     }
     html {
         font-size: 12px;
