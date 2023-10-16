@@ -1,11 +1,12 @@
 import LocaleHelper from '@/components/locale/LocaleHelper'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import Title from '../../components/landing/Title'
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 import Club from '../landing/Club'
 import DataView from '@/components/dataview/DataView'
+import apiInstance from '@/api/apiInstance'
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([])
@@ -68,53 +69,23 @@ const Clubs = () => {
       },
     ],
   }
+  useEffect(() => {
+    setClubs(data.clubs)
+    setTotalRecords(data.total_clubs)
+  }, [])
+  const fetchClubs = async () => {
+    const res = await apiInstance.get(
+      `/clubs?page=${current_page}&per_page=${per_page}`
+    )
+    const data = await res.json()
+    setClubs(data.clubs)
+    setTotalRecords(data.total_clubs)
+  }
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  // const itemTemplate = (club) => {
-  //   return (
-  //     <div className='centered-content-layout'>
-  //       <div className='custom-carousel-content'>
-  //         {club.map((item) => (
-  //           <div id='club-container'>
-  //             <div id='image-container-club'>
-  //               <img src={item.image} alt={item.name} />
-  //             </div>
-  //             <div id='info-club'>
-  //               <h4>
-  //                 <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-  //                 {item.member} Thành viên
-  //               </h4>
-  //               <h4>
-  //                 <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
-  //                 {item.total_distance} km
-  //               </h4>
-  //             </div>
-  //             <div id='name-club'>
-  //               <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
-  //               <div id='share-register-container'>
-  //                 <h4>{item.name}</h4>
-  //                 <div id='share-register-content'>
-  //                   <Link id='link-event' href='/register'>
-  //                     Đăng ký{' '}
-  //                     <i className='pi pi-arrow-right' aria-hidden='true'></i>
-  //                   </Link>
-  //                   <a>
-  //                     Chia sẻ{' '}
-  //                     <i className='pi pi-share-alt' aria-hidden='true'></i>
-  //                   </a>
-  //                 </div>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //       <Detail link='/club' />
-  //     </div>
-  //   )
-  // }
   return (
     <div>
       <Title title='Tất cả câu lạc bộ ' />

@@ -7,11 +7,21 @@
     flex-direction: column;
     gap: 2rem;
 }
-#strava-icon {
+#avatar-connect-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0 1rem 0;
+}
+#avatar-connect-container img {
     width: 10rem;
     height: 10rem;
-    margin: 2rem 0 0 0;
+    border-radius: 1rem;
 }
+
 #default-container {
     width: auto;
     display: flex;

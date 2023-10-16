@@ -1,5 +1,6 @@
+import apiInstance from '@/api/apiInstance'
 import { Button } from 'primereact/button'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Connect = () => {
   let strava_client_id = process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID,
@@ -8,6 +9,12 @@ const Connect = () => {
     strava_approval_prompt = process.env.NEXT_PUBLIC_STRAVA_APPROVAL_PROMPT,
     strava_scope = process.env.NEXT_PUBLIC_STRAVA_SCOPE,
     strava_activity = process.env.NEXT_PUBLIC_STRAVA_ACTIVATY
+
+  const [detail, setDetail] = useState('')
+  const [stravaId, setStravaId] = useState('')
+  const [stravaFullName, setStravaFullName] = useState('')
+  const [stravaImage, setStravaImage] = useState('')
+  const [status, setStatus] = useState(false)
   const handleAuth = async () => {
     window.location = `https://www.strava.com/oauth/authorize?client_id=${strava_client_id}&response_type=${strava_response_type}&redirect_uri=${strava_redirect_uri}&approval_prompt=${strava_approval_prompt}&scope=${strava_scope},activity:${strava_activity}`
   }
@@ -24,17 +31,44 @@ const Connect = () => {
       </a>
     )
   }
+  useEffect(() => {
+    fetchStatus()
+  }, [])
+  const fetchStatus = async () => {
+    const res = await apiInstance.get(`/strava/status`)
+    if (res.status === 200) {
+      const data = res.data
+      setDetail(data.detail)
+      setStravaId(data.stravaId)
+      setStravaFullName(data.stravaFullname)
+      setStravaImage(data.stravaImage)
+      if (data.detail === 'Strava has been connected') {
+        setStatus(true)
+      }
+    }
+  }
   return (
     <div id='connect-container'>
-      <img src='/strava-icon.png' alt='Strava' id='strava-icon' />
+      <div id='avatar-connect-container'>
+        <div>
+          <img src='/strava-icon.png' alt='Strava' id='strava-icon' />
+        </div>
+        {status ? <i className='pi pi-link' aria-hidden='true'></i> : null}
+        {status ? (
+          <div>
+            <img src={stravaImage} alt='Strava' id='strava-icon' />
+          </div>
+        ) : null}
+      </div>
+
       <div id='default-container'>
-        <span>Mặc định</span>
+        <span>{detail}</span>
       </div>
       <a
         id='connect-container'
-        href='https://www.strava.com/athletes/108382917'
+        href={`https://www.strava.com/athletes/${stravaId}`}
       >
-        https://www.strava.com/athletes/108382917
+        {`https://www.strava.com/athletes/${stravaId}`}
       </a>
       <Button
         id='button-detail'
@@ -42,7 +76,7 @@ const Connect = () => {
         raised
         icon='pi pi-paperclip'
         iconPos='right'
-        label='Kết nối'
+        label={status ? 'Hủy kết nối Strava' : 'Kết nối Strava'}
         onClick={handleAuth}
       />
     </div>
