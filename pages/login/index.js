@@ -12,7 +12,6 @@ import { useRouter } from 'next/router'
 import { useToast } from '@/components/contexts/ToastContext'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import store from '@/store/store'
-import { set } from 'react-hook-form'
 import { useGoogleLogin } from '@react-oauth/google'
 import { Dialog } from 'primereact/dialog'
 import Register from '../register'
@@ -57,20 +56,11 @@ const Login = () => {
         localStorage.removeItem('username')
         localStorage.removeItem('password')
       }
-      console.log(data)
       let { remember, ...rest } = data
-      console.log('rest', rest)
-      const response = await apiInstance.post('/auth/login', rest, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      console.log('response', response)
+      const response = await apiInstance.post('/auth/login', rest)
       if (response.status === 200) {
         const { accessToken, refreshToken, firstname, image, roles } =
           response.data
-        console.log('accessToken', accessToken)
-        console.log('refreshToken', refreshToken)
         store.dispatch(
           login({ accessToken, refreshToken, image, firstname, roles })
         )
@@ -104,7 +94,7 @@ const Login = () => {
       handleLoginThirdParty(request)
     },
     onFailure: (res) => {
-      console.log('login google', res)
+      showToast('error', 'Đăng nhập thất bại', res.error)
     },
   })
   const handleLoginThirdParty = async (request) => {
@@ -132,7 +122,12 @@ const Login = () => {
         setLoading(false)
       }
     } catch (error) {
-      console.log('error', error)
+      showToast(
+        'error',
+        'Lỗi trong quá trình đăng nhập',
+        `Vui lòng đăng nhập lại ${error}`
+      )
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -164,11 +159,14 @@ const Login = () => {
             accessToken: accessToken,
             type: 'facebook',
           })
-          console.log('re', request)
           setTypeThirdParty('facebook')
           handleLoginThirdParty(request)
         } else {
-          console.log('User cancelled login or did not fully authorize.')
+          showToast(
+            'warn',
+            'Đăng nhập thất bại',
+            'Người dùng hủy đăng nhập hoặc không đăng nhập đầy đủ.'
+          )
         }
       },
       { scope: 'email' }

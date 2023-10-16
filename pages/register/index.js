@@ -66,7 +66,6 @@ const Register = (props) => {
             data.username = id
           }
           let { agree, confirmPassword, ...rest } = data
-          console.log('rest', rest)
           handleRegister(rest)
         })
     })
@@ -74,12 +73,7 @@ const Register = (props) => {
   const handleRegister = async (data) => {
     setLoading(true)
     try {
-      const response = await apiInstance.post('/auth/register', data, {
-        hearders: {
-          'Content-Type': 'application/json',
-        },
-      })
-      console.log('response', response)
+      const response = await apiInstance.post('/auth/register', data)
       if (response.data.status === 201) {
         showToast('success', 'Đăng ki thành công ', response.data.message)
         setVisibleThirdParty(false)

@@ -1,24 +1,138 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useContext, useEffect, useState } from 'react'
 import { Dropdown } from 'primereact/dropdown'
 import { Calendar } from 'primereact/calendar'
 import Form, { Field } from '@/components/react-hook-form/Form'
 import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
 import { Button } from 'primereact/button'
+import { useToast } from '@/components/contexts/ToastContext'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import apiInstance from '@/api/apiInstance'
 
 const Update = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm()
+  const showToast = useToast().showToast
+  const setLoading = useContext(LoadingContext)
+  const [provinceOptions, setProvinceOptions] = useState([])
+  const [districtOptions, setDistrictOptions] = useState([])
+  const [wardOptions, setWardOptions] = useState([])
+  const [organizationOptions, setOrganizationOptions] = useState([])
+  const [childOrganizationOptions, setChildOrganizationOptions] = useState([])
+  const [initialValues, setInitialValues] = useState({})
+
+  const [dataProvince, setDataProvince] = useState([])
+  const [dataDistrict, setDataDistrict] = useState([])
+  const [dataOrganization, setDataOrganization] = useState([])
+
+  useEffect(() => {
+    setLoading(true)
+    fetchUser()
+    fetchProvince()
+    setLoading(false)
+  }, [])
+  useEffect(() => {
+    fetchDistrict(dataProvince)
+  }, [dataProvince])
+  useEffect(() => {
+    fetchWard(dataDistrict, dataProvince)
+  }, [dataDistrict, dataProvince])
+  const fetchUser = async () => {
+    try {
+      const response = await apiInstance.get('/user')
+      const data = response.data
+      console.log('data', data)
+      setDataProvince(data.province)
+      setDataDistrict(data.district)
+      setDataOrganization(data.organization)
+      setInitialValues({
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        telNumber: data.telNumber,
+        gender: data.gender,
+        birthday: new Date(data.birthday),
+        organization: data.organization,
+        childOrganization: data.childOrganization,
+        province: data.province,
+        district: data.district,
+        ward: data.ward,
+        address: data.address,
+      })
+    } catch (error) {
+      showToast('error', 'Lỗi!', error)
+    }
+  }
+  const fetchProvince = async () => {
+    try {
+      const response = await apiInstance.get('/area/province')
+      const data = response.data
+      const options = data.map((item) => ({
+        label: item.province_name,
+        value: item.province_id,
+      }))
+      setProvinceOptions(options)
+    } catch (error) {
+      showToast('error', 'Lỗi!', error)
+    }
+  }
+  const fetchDistrict = async (provinceId) => {
+    try {
+      const response = await apiInstance.get(
+        `/area/district?province=${provinceId}`
+      )
+      const data = response.data
+      const options = data.map((item) => ({
+        label: item.district_name,
+        value: item.district_id,
+      }))
+      setDistrictOptions(options)
+    } catch (error) {
+      showToast('error', 'Lỗi!', error)
+    }
+  }
+  const fetchWard = async (districtId, provinceId) => {
+    try {
+      const response = await apiInstance.get(
+        `/area/precinct?district=${districtId}&province=${provinceId}`
+      )
+      const data = response.data
+      const options = data.map((item) => ({
+        label: item.precinct_name,
+        value: item.precinct_id,
+      }))
+      setWardOptions(options)
+    } catch (error) {
+      showToast('error', 'Lỗi!', error)
+    }
+  }
   const onSubmit = (data) => {
-    console.log(data)
+    handleUpdateProfile(data)
+  }
+  const handleUpdateProfile = async (data) => {
+    setLoading(true)
+    const date = new Date(data.birthday)
+    const strBirthday =
+      date.getFullYear() +
+      '-' +
+      (date.getMonth() + 1).toString().padStart(2, '0') +
+      '-' +
+      date.getDate().toString().padStart(2, '0')
+    data.birthday = strBirthday
+    try {
+      const res = await apiInstance.put('/user/update', data)
+      console.log('res', res.data)
+      if (res.data.status === 200) {
+        showToast('success', 'Cập nhật hồ sơ thành công!', res.data.message)
+      } else {
+        showToast('error', 'Cập nhật hồ sơ thất bại!', res.data.message)
+      }
+    } catch (err) {
+      showToast('error', 'Cập nhật hồ sơ thất bại!', err)
+    }
+    setLoading(false)
   }
   const gender = [
-    { label: 'Nam', value: 'male' },
-    { label: 'Nữ', value: 'female' },
+    { label: 'Nam', value: 'Nam' },
+    { label: 'Nữ', value: 'Nu' },
   ]
   const organization = [
     { label: 'Đại học Bách Khoa Hà Nội', value: 'bk' },
@@ -48,68 +162,30 @@ const Update = () => {
     { label: 'Khoa Kỹ Thuật Điện Tử', value: 'eet' },
     { label: 'Khoa Kỹ Thuật Máy Tính và Mạng', value: 'cse' },
   ]
-  const ward = [
-    { label: 'Phường 1', value: '1' },
-    { label: 'Phường 2', value: '2' },
-    { label: 'Phường 3', value: '3' },
-    { label: 'Phường 4', value: '4' },
-    { label: 'Phường 5', value: '5' },
-  ]
-  const district = [
-    { label: 'Quận 1', value: '1' },
-    { label: 'Quận 2', value: '2' },
-    { label: 'Quận 3', value: '3' },
-    { label: 'Quận 4', value: '4' },
-    { label: 'Quận 5', value: '5' },
-  ]
-  const city = [
-    { label: 'Hồ Chí Minh', value: 'hcm' },
-    { label: 'Hà Nội', value: 'hn' },
-    { label: 'Đà Nẵng', value: 'dn' },
-    { label: 'Cần Thơ', value: 'ct' },
-    { label: 'Hải Phòng', value: 'hp' },
-  ]
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='form-setting'>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field
-              name='firstName'
-              label='Tên'
-              control={control}
-              required
-              errors={errors}
-            >
+            <Field name='firstname' label='Tên' required>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
           <div className='col-6' id='width-100-center'>
-            <Field
-              name='lastName'
-              label='Họ'
-              control={control}
-              required
-              errors={errors}
-            >
+            <Field name='lastname' label='Họ' required>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field
-              name='email'
-              label='Email'
-              control={control}
-              required
-              errors={errors}
-            >
+            <Field name='email' label='Email' required>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
           <div className='col-6' id='width-100-center'>
-            <Field name='phone' label='Số điện thoại' control={control}>
+            <Field name='telNumber' label='Số điện thoại'>
               <InputMask
                 mask='(999) 999-9999'
                 placeholder='(999) 999-9999'
@@ -120,7 +196,7 @@ const Update = () => {
         </div>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='gender' label='Giới tính' control={control}>
+            <Field name='gender' label='Giới tính'>
               <Dropdown
                 options={gender}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -128,30 +204,25 @@ const Update = () => {
             </Field>
           </div>
           <div className='col-6' id='width-100-center'>
-            <Field name='birthday' label='Ngày sinh' control={control}>
+            <Field name='birthday' label='Ngày sinh'>
               <Calendar style={{ width: '100%' }}></Calendar>
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-12' id='width-100-center'>
-            <Field
-              name='organization'
-              label='Danh sách tổ chức'
-              control={control}
-            >
+            <Field name='organization' label='Danh sách tổ chức'>
               <Dropdown
                 options={organization}
                 style={{ width: '100%', borderRadius: '10px' }}
+                onChange={(e) => {
+                  setDataOrganization(e.value)
+                }}
               ></Dropdown>
             </Field>
           </div>
           <div className='col-12' id='width-100-center'>
-            <Field
-              name='childOrganization'
-              label='Danh sách đơn vị'
-              control={control}
-            >
+            <Field name='childOrganization' label='Danh sách đơn vị'>
               <Dropdown
                 options={childOrganization}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -161,33 +232,43 @@ const Update = () => {
         </div>
         <div className='grid-form'>
           <div className='col-12' id='width-100-center'>
-            <Field name='city' label='Tỉnh/Thành phố' control={control}>
+            <Field name='province' label='Tỉnh/Thành phố'>
               <Dropdown
-                options={city}
+                options={provinceOptions}
                 style={{ width: '100%', borderRadius: '10px' }}
+                value={dataProvince}
+                onChange={(e) => {
+                  setDataProvince(e.value)
+                  fetchDistrict(e.value)
+                }}
               ></Dropdown>
             </Field>
           </div>
           <div className='col-12' id='width-100-center'>
-            <Field name='district' label='Quận/Huyện' control={control}>
+            <Field name='district' label='Quận/Huyện'>
               <Dropdown
-                options={district}
+                options={districtOptions}
                 style={{ width: '100%', borderRadius: '10px' }}
+                value={dataDistrict}
+                onChange={(e) => {
+                  setDataDistrict(e.value)
+                  fetchWard(e.value, dataProvince)
+                }}
               ></Dropdown>
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-12' id='width-100-center'>
-            <Field name='ward' label='Phường/Xã' control={control}>
+            <Field name='ward' label='Phường/Xã'>
               <Dropdown
-                options={ward}
+                options={wardOptions}
                 style={{ width: '100%', borderRadius: '10px' }}
               ></Dropdown>
             </Field>
           </div>
           <div className='col-12' id='width-100-center'>
-            <Field name='address' label='Địa chỉ chi tiết' control={control}>
+            <Field name='address' label='Địa chỉ chi tiết'>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
