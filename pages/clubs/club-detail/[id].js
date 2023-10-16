@@ -276,12 +276,7 @@ const ClubDetail = () => {
   }
 
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-      }}
-    >
+    <div className='centered-content-detailpage'>
       <div className='centered-content-layout'>
         <div id='detail-container'>
           <div id='image-container-detail'>

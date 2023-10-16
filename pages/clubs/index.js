@@ -87,7 +87,7 @@ const Clubs = () => {
     setPerPage(event.rows)
   }
   return (
-    <div>
+    <div className='centered-content-dataview'>
       <Title title='Tất cả câu lạc bộ ' />
       <DataView data={data.clubs} href='/clubs/club-detail/' />
       <Paginator

@@ -7,7 +7,7 @@
 // tabview nav link transparent
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
     background: transparent;
-    color: $primary-color;
+    color: var(--primary-color);
     position: relative;
     border-color: transparent;
 }
@@ -20,7 +20,7 @@
     transform: translateX(-50%); 
     width: 30%;
     height: 3px;
-    background-color: $primary-color;
+    background-color: var(--primary-color);
 }
 // tabview nav link hover transparent
 .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
@@ -34,7 +34,7 @@
     border-width: 0 0 2px 0;
     border-color: transparent;
     background: transparent;
-    color: $text-color;
+    color: var(--text-color);
     padding: 1rem;
     font-weight: 600;
     border-top-right-radius: 3px;
@@ -59,8 +59,8 @@
     //   border-left-width: 1px;
     font-weight: 600;
     text-align: center;
-    color: $text-color;
-    background: $background-color;
+    color: var(--text-color);
+    background: var(--background-color);
     border-radius: 1rem;
     transition: box-shadow 0.2s;
 }
@@ -77,13 +77,13 @@
 // custom row
 .p-datatable .p-datatable-tbody > tr {
     background: transparent;
-    color: $text-color;
+    color: var(--text-color);
     transition: box-shadow 0.2s;
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
     text-align: center;
-    border: 0px solid $background-color;
+    border: 0px solid var(--background-color);
     border-width: 0 0 0 0;
     padding: 0.2rem 0.2rem ;
 }
@@ -104,6 +104,6 @@
   }
 // custom color row odd
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
-    background: $secondary-color;
+    background: var(--secondary-color);
 }
 // border row

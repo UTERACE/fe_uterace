@@ -4,8 +4,8 @@
     justify-content: center;
     flex-wrap: wrap;
     background: transparent;
-    color: $primary-color;
-    border: solid $background-color;
+    color: var(--primary-color);
+    border: solid var(--background-color);
     border-width: 0;
     padding: 0;
     padding-top: 1rem;
@@ -14,8 +14,8 @@
 // custom css for paginator highlight
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background: $black-color;
-    border-color: $background-color;
-    color: $primary-color;
+    border-color: var(--background-color);
+    color: var(--primary-color);
     border-radius: 10px;
 }
 // custom css for paginator dropdown

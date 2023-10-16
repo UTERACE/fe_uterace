@@ -25,7 +25,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     &:hover {
-        background-color: $primary-color;
+        background-color: var(--primary-color);
     }
 }
 #carousel-next {
@@ -39,7 +39,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     &:hover {
-        background-color: $primary-color;
+        background-color: var(--primary-color);
     }
 }
 #pagination-container {

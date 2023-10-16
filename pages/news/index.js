@@ -113,7 +113,7 @@ const NewsPage = () => {
     setPerPage(event.rows)
   }
   return (
-    <div>
+    <div className='centered-content-dataview'>
       <Title title='Các tin tức thể thao ' />
       <DataView
         data={data.news}

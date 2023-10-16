@@ -211,15 +211,7 @@ const Scoreboard = () => {
     setPerPage(event.rows)
   }
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-        backgroundImage: "url('/bg1.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
+    <div className='centered-content-scoreboard'>
       <Title
         title={
           activeIndex === 1 ? 'Bảng xếp hạng cá nhân' : 'Bảng xếp hạng CLB'

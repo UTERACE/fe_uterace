@@ -344,28 +344,12 @@ const Landing = () => {
   return (
     <div>
       <Slideshow data={data.overview} />
-      <div
-        className='centered-content-full'
-        style={{
-          backgroundColor: '#ffffff',
-          backgroundImage: "url('/bg1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className='centered-content-full'>
         <Title title='Bảng xếp hạng ' />
         <Rank value={data} />
       </div>
 
-      <div
-        className='centered-content-full'
-        style={{
-          backgroundColor: '#FFE49E',
-          backgroundImage: "url('/bg.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className='centered-content-full'>
         <Title title='Sự kiện nổi bật' />
         <Event event={data.events} />
       </div>
@@ -377,15 +361,7 @@ const Landing = () => {
       />
       <Detail link={'/clubs'} />
       <Statistic statistic={data.statistic} />
-      <div
-        className='centered-content-full'
-        style={{
-          backgroundColor: '#DB2D33',
-          backgroundImage: "url('/bg1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className='centered-content-full'>
         <Title title='Các tin thể thao khác' />
         <News data={data.news} />
         <Detail link={'/news'} />

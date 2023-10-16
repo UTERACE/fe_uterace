@@ -345,48 +345,28 @@ const Landing = () => {
     <div>
       <HeadPage title='UTE Race' description='Chao mung da den voi trang web' />
       <Slideshow data={data.overview} />
-      <div
-        className='centered-content-full'
-        style={{
-          backgroundColor: '#ffffff',
-          backgroundImage: "url('/bg1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className='centered-content-scoreboard'>
         <Title title='Bảng xếp hạng ' />
         <Rank value={data} />
       </div>
 
-      <div
-        className='centered-content-full'
-        style={{
-          backgroundColor: '#FFE49E',
-          backgroundImage: "url('/bg.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className='centered-content-event'>
         <Title title='Sự kiện nổi bật' />
         <Event event={data.events} />
       </div>
+      <div className='centered-content-club'>
+        <Title title='Giải DN/Nhóm/Đơn vị' />
+        <DataView
+          data={data.clubs}
+          href={`/clubs/club-detail/${data.clubs.club_id}`}
+        />
+        <Detail link={'/clubs'} />
+      </div>
+      <div className='centered-content-statistic'>
+        <Statistic statistic={data.statistic} />
+      </div>
 
-      <Title title='Giải DN/Nhóm/Đơn vị' />
-      <DataView
-        data={data.clubs}
-        href={`/clubs/club-detail/${data.clubs.club_id}`}
-      />
-      <Detail link={'/clubs'} />
-      <Statistic statistic={data.statistic} />
-      <div
-        className='centered-content-full'
-        style={{
-          backgroundColor: '#DB2D33',
-          backgroundImage: "url('/bg1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className='centered-content-news'>
         <Title title='Các tin thể thao khác' />
         <News data={data.news} />
         <Detail link={'/news'} />

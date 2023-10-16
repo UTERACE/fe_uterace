@@ -1,5 +1,5 @@
 .text-red-700{
-    color: $background-color-red;
+    color: $third-color;
 }
 .checkbox-label {
     margin-left: 1rem;
@@ -98,7 +98,7 @@
 }
 .p-checkbox .p-checkbox-box.p-highlight {
     border-color: $black-color;
-    background: $primary-color;
+    background: --primary-color;
 }
 .p-checkbox .p-checkbox-box {
     width: 1.5rem;
@@ -118,7 +118,7 @@
 }
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
     border-color: $black-color;
-    background: $primary-color;
+    background: --primary-color;
     color: $black-color;
 }
 .p-checkbox .p-checkbox-box .p-checkbox-icon {

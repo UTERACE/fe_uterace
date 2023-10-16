@@ -135,15 +135,7 @@ const Events = () => {
     setPerPage(event.rows)
   }
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-        backgroundImage: "url('/bg1.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
+    <div className='centered-content-dataview'>
       <Title
         title={
           activeIndex === 1

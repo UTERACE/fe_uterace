@@ -371,12 +371,7 @@ const EventDetail = () => {
   }
 
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-      }}
-    >
+    <div className='centered-content-detailpage'>
       <div className='centered-content-layout'>
         <div id='event-detail-container'>
           <div id='event-image-container-detail'>

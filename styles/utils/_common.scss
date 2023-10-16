@@ -1,0 +1,22 @@
+#theme-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 999;
+}
+
+#theme-button {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--background-color);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    
+    &:hover {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+}

@@ -19,7 +19,7 @@
     object-fit: cover; 
 }
 #info-detail {
-    background-color: $background-color;
+    background-color: var(--background-color);
     padding: 2rem 1rem 1rem 1rem;
     margin-top: 2rem;
     border-radius: 2rem;
@@ -40,7 +40,7 @@
     margin: 0.5rem 0 0.5rem 0; 
 }
 #info-detail h1 {
-    color: $background-color-red;
+    color: $third-color;
     width: 90%;
     height: auto;
     text-align: center;
@@ -105,6 +105,7 @@
     height: 100%;
     width: 100%;
     margin-top: 2rem;
+    padding-bottom: 1rem;
 }
 #event-image-container-detail {
     width: 100%;
@@ -138,7 +139,7 @@
     margin: 0.5rem 0 0.5rem 0; 
 }
 #event-info-detail h1 {
-    color: $background-color-red;
+    color: $third-color;
     width: 90%;
     height: auto;
     text-align: center;

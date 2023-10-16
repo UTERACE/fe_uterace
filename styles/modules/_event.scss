@@ -45,7 +45,7 @@
     text-decoration: none;
 }
 #link-event:hover {
-    color: $background-color-red;
+    color: $third-color;
     font-weight: 550;
     transition: color 0.3s ease;
 }
@@ -65,7 +65,7 @@
 }
 
 #custom-carousel-product.p-carousel button {
-    background-color: $background-color;
+    background-color: var(--background-color);
     width: 0.8rem;
     height: 0.5rem;
     border-radius: 50px;

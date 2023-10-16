@@ -2,7 +2,7 @@
 .p-slidemenu.p-slidemenu-overlay {
     background: $white-color;
     border: 0 none;
-    box-shadow: 0 2px 4px -1px $primary-color;
+    box-shadow: 0 2px 4px -1px var(--primary-color);
     border-radius: 20px;
     padding: 0; 
     overflow: hidden;
@@ -11,14 +11,14 @@
 }
 // custom item menu
 .p-slidemenu .p-menuitem-link:not(.p-disabled):hover {
-    background: $primary-color;
+    background: var(--primary-color);
     border-radius: 25px;
 }
 .p-slidemenu .p-menuitem-link:not(.p-disabled):focus {
-    background: $primary-color;
+    background: var(--primary-color);
     border-radius: 25px;
 }
 .p-slidemenu .p-menuitem-link:not(.p-disabled):active {
-    background: $primary-color;
+    background: var(--primary-color);
     border-radius: 25px;
 }

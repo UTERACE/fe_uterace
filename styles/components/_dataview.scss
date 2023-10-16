@@ -6,19 +6,18 @@
 
 //component DataView
 #dataview-container {
-    background-color: $background-color;
+    background-color: var(--secondary-color);
     padding: 1rem;
     margin-top: 0.3rem;
     border-radius: 2rem;
     width: 100%;
     height: auto;
-    transition: transform 0.3s ease;
     position: relative;
 }
 #dataview-container:hover {
-    background-color: $primary-color;
-    border-radius: 2rem;
+    background-color: var(--primary-color);
     transform: scale(1.05);
+    transition: transform 0.3s ease;
 }
 #image-container-dataview {
     width: 100%;
@@ -53,7 +52,7 @@
     height: auto; 
 }
 .icon-run {
-    color: $primary-color;
+    color: var(--primary-color);
     transition: color 0.3s ease;
     background-color: $black-color;
     width: 3.5rem;
@@ -100,7 +99,7 @@
     text-decoration: none;
 }
 #link-dataview:hover {
-    color: $background-color-red;
+    color: var(--third-color);
     font-weight: 550;
     transition: color 0.3s ease;
 }

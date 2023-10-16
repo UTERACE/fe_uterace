@@ -57,7 +57,7 @@ const ManagementClubDetail = () => {
       manager: 'Nguyễn Văn A',
       male: 234,
       female: 754,
-      min_pace:5.0,
+      min_pace: 5.0,
       max_pace: 10.0,
       image:
         'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
@@ -288,12 +288,7 @@ const ManagementClubDetail = () => {
     console.log(per_page)
   }
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-      }}
-    >
+    <div className='centered-content-full'>
       <Dialog
         header='Chỉnh sửa thông tin câu lạc bộ'
         visible={visibleChange}

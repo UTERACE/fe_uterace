@@ -53,7 +53,6 @@ const Activity = ({
     }
   }, [column])
   return (
-    <div className='centered-content-full'>
       <div className='custom-carousel-content'>
         {activities.map((item) => (
           <div id='activities-container'>
@@ -92,7 +91,6 @@ const Activity = ({
           </div>
         ))}
       </div>
-    </div>
   )
 }
 

@@ -11,16 +11,13 @@ $font-size-xxlarge: 2.5rem;
 $font-size-max:5rem;
 $font-size-header:1.5rem;
 $text-color: black;
-$primary-color: #FFE49E;
-$secondary-color: #fce4a438;
+
 $white-color: #ffffff;
 $black-color: #000000;
 $border-color: #f5f5f5d2;
 $border-color-yellow: #d6d2c7;
-$border-color-red: #DB2D33;
 $dialog-color:#6c757d;
 $background-color: #f5f5f5d2;
-$background-color-red: #DB2D33;
 $background-camera: #eeda82bb;
 $background-dialog: #ffffffce;
 $background-footer: #282932;
@@ -28,3 +25,18 @@ $background-footer: #282932;
 $login-facebook-color: #4285F4;
 $login-google-color: #DB4437;
 $login-apple-color: #000000;
+
+$primary-color-light: #FFE49E;
+$secondary-color-light: #fce4a438;
+// color light mode
+$primary-color: #EFBF7F;
+$secondary-color: #F8E4CC;
+$third-color: #F20231;
+$fourth-color: #0C5D7B;
+$fiveth-color: #12103D;
+// color dark mode
+$primary-color-dark: #8B939C;
+$secondary-color-dark: #59546C;
+$third-color-dark: #FF0035;
+$fourth-color-dark:#38405F;
+$fiveth-color-dark: #0E131F;

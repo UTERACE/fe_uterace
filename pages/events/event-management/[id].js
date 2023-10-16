@@ -385,7 +385,7 @@ const EventDetail = () => {
     <div
       className='centered-content-full'
       style={{
-        backgroundColor: '#ffffff',
+        backgroundImage: "url('/bg.png')",
       }}
     >
       <Dialog

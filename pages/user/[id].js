@@ -187,12 +187,7 @@ const UserDetail = () => {
     )
   }
   return (
-    <div
-      className='centered-content-full'
-      style={{
-        backgroundColor: '#ffffff',
-      }}
-    >
+    <div className='centered-content-full'>
       <div className='centered-content-layout'>
         <div id='profile-container'>
           <div id='statistic-container'>

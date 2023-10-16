@@ -13,7 +13,7 @@
     height: 20rem;
     width: 95%;
     border-radius: 2rem;
-    background-color: $background-color-red;
+    background-color: $third-color;
     background-image: url(/bg1.png);
     background-size: cover;
     background-position: center;
@@ -42,7 +42,7 @@
 }
 #statistic-card h1{
     margin: 0 auto;
-    color: $background-color-red;
+    color: $third-color;
 }
 #statistic-card h4{
     margin: 0 auto;
@@ -86,7 +86,7 @@
 #info-profile-container a {
     font-size: 1rem;
     font-weight: 500;
-    color: $background-color-red;
+    color: $third-color;
     text-decoration: none;
 }
 #name-container {
@@ -103,7 +103,7 @@
 }
 #name-container i {
     font-size: 2rem;
-    color: $background-color-red;
+    color: $third-color;
 }
 #name-container img {
     width: 2.5rem;
@@ -134,7 +134,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $background-color;
+    background-color: var(--background-color);
     border-radius: 1.5rem;
     padding: 1rem;
 }
@@ -146,12 +146,12 @@
     align-items: center;
     width: 95%;
     height: 100%;
-    background-color: $background-color;
+    background-color: var(--background-color);
     border-radius: 1.5rem;
     margin-bottom: 1rem;
 }
 #activities-container {
-    background-color: $white-color;
+    background-color: var(--secondary-color);
     padding: 1rem;
     margin-top: 0.3rem;
     border-radius: 2rem;

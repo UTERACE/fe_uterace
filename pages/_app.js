@@ -12,6 +12,7 @@ import { LoadingProvider } from '@/components/contexts/LoadingContext'
 import { useRouter } from 'next/router'
 import { ProgressSpinner } from 'primereact/progressspinner'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import ThemeProvider from '@/components/contexts/ThemeProvider'
 
 export default function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)
@@ -39,6 +40,7 @@ export default function MyApp({ Component, pageProps }) {
           <Layout>
             <ToastProvider>
               <LoadingProvider>
+                <ThemeProvider />
                 {loading && (
                   <div className='loading-overlay'>
                     <ProgressSpinner />
