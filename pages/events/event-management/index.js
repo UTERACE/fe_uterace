@@ -1,4 +1,5 @@
 import DataView from '@/components/dataview/DataView'
+import Title from '@/components/landing/Title'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
 import store from '@/store/store'
 import Link from 'next/link'
@@ -171,11 +172,17 @@ const EventManagement = () => {
     },
   ]
   return (
-    <div>
+    <div className='centered-content-dataview'>
+      <Title
+        title={
+          index === 3
+            ? 'Các sự kiện đang diễn ra'
+            : index === 2
+            ? 'Các sự kiện đã tạo'
+            : null
+        }
+      />
       <div className='centered-content-layout'>
-        <div id='title-item' style={{ height: '4rem' }}>
-          <h1>{'Quản lí sự kiện'}</h1>
-        </div>
         {hasAdminRole ? (
           <div
             style={{
@@ -187,11 +194,7 @@ const EventManagement = () => {
             }}
           >
             <Button
-              id={
-                index == 1
-                  ? 'button-tab--active'
-                  : 'button-tab'
-              }
+              id={index == 1 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label={'Thêm sự kiện mới'}
@@ -203,11 +206,7 @@ const EventManagement = () => {
               }}
             />
             <Button
-              id={
-                index == 2
-                  ? 'button-tab--active'
-                  : 'button-tab'
-              }
+              id={index == 2 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label='Sự kiện đã tạo'
@@ -218,11 +217,7 @@ const EventManagement = () => {
               }}
             />
             <Button
-              id={
-                index == 3
-                  ? 'button-tab--active'
-                  : 'button-tab'
-              }
+              id={index == 3 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label='Sự kiện đang diễn ra'
@@ -234,19 +229,17 @@ const EventManagement = () => {
             />
           </div>
         ) : (
-          <div style={{
-            width: '50%',
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-            gap: '2rem',
-          }}>
+          <div
+            style={{
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'start',
+              alignItems: 'center',
+              gap: '2rem',
+            }}
+          >
             <Button
-              id={
-                index == 2
-                  ? 'button-tab--active'
-                  : 'button-tab'
-              }
+              id={index == 2 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label='Sự kiện đã tham gia'
@@ -257,11 +250,7 @@ const EventManagement = () => {
               }}
             />
             <Button
-              id={
-                index == 3
-                  ? 'button-tab--active'
-                  : 'button-tab'
-              }
+              id={index == 3 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label='Sự kiện đang diễn ra'

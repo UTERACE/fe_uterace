@@ -3,7 +3,7 @@
     justify-content: space-between;
     gap: 1rem;
     width: 100%;
-    background-color: $white-color;
+    background-color: var(--primary-color);
     overflow: auto;
 }
 #dashboard-menu-container {
@@ -21,13 +21,13 @@
 #dashboard-menu-container h4{
     margin: 0 0 0 0;
     font-size: $font-size-large;
-    color: $text-color;
+    color: var(--text-color);
 }
 #dashboard-menu-container h6{
     margin: 0 0 1rem 0;
     font-size: $font-size-small;
     font-weight: 500;
-    color: $text-color;
+    color: var(--text-color);
 }
 #dashboard-content-container {
     display: flex;
@@ -38,7 +38,6 @@
     margin: 1rem 1rem 0 1rem;
     width: calc(100%);
     height: 100%;
-    background-color: $white-color;
 }
 .dashboard-content {
     display: grid;
@@ -76,7 +75,7 @@
 #dashboard-content-header-child span {
     display: block;
     font-size: $font-size-header;
-    color: $text-color;
+    color: var(--text-color);
     margin: 1rem 0 0.5rem 0;
 }
 #dashboard-content-header-icon {

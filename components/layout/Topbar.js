@@ -140,7 +140,7 @@ const Topbar = () => {
     return model
   }
   const menu = useRef(null)
-  const menuHeader =useRef(null)
+  const menuHeader = useRef(null)
   const end_items = [
     {
       label: 'Trang cá nhân',
@@ -267,16 +267,16 @@ const Topbar = () => {
                   width: '3rem',
                   height: '3rem',
                   textAlign: 'center',
-                  backgroundColor: '#FFE49E',
+                  backgroundColor: 'var(--secondary-color)',
                   borderRadius: '50%',
-                  color: '#000000',
+                  color: 'var(--text-color)',
                 }}
               >
                 <Badge value='1'></Badge>
               </i>
               <Link href='/user/profile'>
                 <Avatar
-                  style={{ border: '1px solid #ffffff' }}
+                  style={{ border: '0.1rem solid #ffffff' }}
                   size='large'
                   shape='circle'
                   label={!avatarImage ? avatarLabel : null}
@@ -301,8 +301,9 @@ const Topbar = () => {
                     width: '3rem',
                     height: '3rem',
                     textAlign: 'center',
-                    backgroundColor: '#FFE49E',
+                    backgroundColor: 'var(--secondary-color)',
                     borderRadius: '50%',
+                    color: 'var(--text-color)',
                   }}
                   onClick={(event) => menu.current.toggle(event)}
                 ></i>

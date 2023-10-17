@@ -12,7 +12,7 @@ const NewNews = () => {
   const [text, setText] = useState('')
 
   return (
-    <div className='centered-content-full'>
+    <div className='centered-content-detailpage'>
       <div className='centered-content-layout'>
         <DynamicTinyMCE
           label='Thêm bài viết'

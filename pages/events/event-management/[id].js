@@ -383,7 +383,7 @@ const EventDetail = () => {
 
   return (
     <div
-      className='centered-content-full'
+      className='centered-content-detailpage'
       style={{
         backgroundImage: "url('/bg.png')",
       }}

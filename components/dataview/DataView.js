@@ -103,7 +103,7 @@ const DataView = ({
                 </div>
                 <div id='name-dataview'>
                   <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
-                  <div id='share-register-container'>
+                  <div id='share-register-container' title={item.name}>
                     <h4>{item.name}</h4>
                     <div id='share-register-content'>
                       <Link id='link-dataview' href={href + item.club_id}>

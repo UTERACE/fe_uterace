@@ -38,11 +38,11 @@
     width: auto;
     padding: 1rem;
     border-radius: 2rem;
-    background-color: $white-color;
+    background-color: var(--background-color);
 }
 #statistic-card h1{
     margin: 0 auto;
-    color: $third-color;
+    color: var(--third-color);
 }
 #statistic-card h4{
     margin: 0 auto;
@@ -115,7 +115,8 @@
     padding-top: 1rem;
 }
 #profile-menu button {
-    background-color: $black-color;
+    background-color: var(--background-color);
+    color: var(--text-color);
     border-radius: 1rem;
 }
 // chart

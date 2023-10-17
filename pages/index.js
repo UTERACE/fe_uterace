@@ -67,7 +67,7 @@ const Landing = () => {
       },
       {
         event_id: 4,
-        name: 'AZTEC LOST CHẶNG 1 - CHINH PHỤC THẦN MƯA TLALOC (THE GOD OF RAIN) ',
+        name: 'AZTEC LOST CHẶNG 1 - CHINH PHỤC THẦN MƯA TLALOC (THE GOD OF RAIN) LẦN 2 NĂM 2021 CHỈ TỪ 1KM',
         image:
           'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1bf678a8a67029fa1e6697c62.jpg?w=720',
         total_members: 320,
@@ -85,7 +85,7 @@ const Landing = () => {
     clubs: [
       {
         club_id: 1,
-        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN CLUB DAK LAK FANPAGE RUNNERS',
         image: 'https://picsum.photos/200/300',
         total_members: 100,
         total_distance: 1000,

@@ -184,7 +184,16 @@ const ClubManagement = () => {
     },
   ]
   return (
-    <div>
+    <div className='centered-content-dataview'>
+      <Title
+        title={
+          index === 3
+            ? 'Các câu lạc bộ đã tham gia'
+            : index === 2
+            ? 'Các câu lạc bộ đã tạo'
+            : null
+        }
+      />
       <Dialog
         header='Chỉnh sửa thông tin câu lạc bộ'
         visible={visibleChange}
@@ -218,9 +227,6 @@ const ClubManagement = () => {
         <AddClub />
       </Dialog>
       <div className='centered-content-layout'>
-        <div id='title-item' style={{ height: '4rem' }}>
-          <h1>{'Quản lí câu lạc bộ'}</h1>
-        </div>
         <div
           style={{
             width: '75%',

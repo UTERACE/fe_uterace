@@ -34,12 +34,12 @@ const News = ({ data }) => {
           <div id='image-news-container'>
             <img src={news.image} alt={news.name} />
           </div>
-          <div id='name-news'>
+          <div id='name-news' title={news.name}>
             <h4>{news.name}</h4>
           </div>
           <div id='share-register-content'>
-            <i class='fa fa-running icon-run' aria-hidden='true'></i>
-            <div style={{ width: '60%' }}>
+            <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
+            <div id='description-news' title={news.description}>
               <h5>{news.description}</h5>
             </div>
             <Link id='link-event' href='/post'>

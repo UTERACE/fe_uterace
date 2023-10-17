@@ -46,7 +46,7 @@ const Event = ({ event }) => {
           </div>
           <div id='name-event'>
             <i class='fa fa-running icon-run' aria-hidden='true'></i>
-            <div id='share-register-container'>
+            <div id='share-register-container' title={event.name}>
               <h4>{event.name}</h4>
               <div id='share-register-content'>
                 <Link
@@ -76,6 +76,7 @@ const Event = ({ event }) => {
         numScroll={1}
         responsiveOptions={responsiveOptions}
         itemTemplate={eventTemplate}
+        circular={true}
       />
       <Detail link='/events' />
     </div>

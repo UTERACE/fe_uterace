@@ -28,20 +28,20 @@
 }
 #app-menu-topbar.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link{
     border: solid var(--primary-color);
-    border-radius: 15px;
+    border-radius: 1rem;
     border-width: 0 0 0 0;
     border-color: transparent transparent $white-color transparent;
     background: var(--primary-color);
-    color: $black-color;
+    color: var(--text-color);
     font-weight: 600;
     transition: box-shadow 0.2s;
     margin: 0 0.2rem 0 0;
     height: 3.2rem;
 }
 #app-menu-topbar.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    background: $black-color;
-    border-color: var(--primary-color);
+    background: var(--text-color);
     color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 #app-menu-topbar.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
     outline: 0 none;

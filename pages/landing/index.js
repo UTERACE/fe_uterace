@@ -344,24 +344,28 @@ const Landing = () => {
   return (
     <div>
       <Slideshow data={data.overview} />
-      <div className='centered-content-full'>
+      <div className='centered-content-scoreboard'>
         <Title title='Bảng xếp hạng ' />
         <Rank value={data} />
       </div>
 
-      <div className='centered-content-full'>
+      <div className='centered-content-event'>
         <Title title='Sự kiện nổi bật' />
         <Event event={data.events} />
       </div>
+      <div className='centered-content-club'>
+        <Title title='Giải DN/Nhóm/Đơn vị' />
+        <DataView
+          data={data.clubs}
+          href={`/clubs/club-detail/${data.clubs.club_id}`}
+        />
+        <Detail link={'/clubs'} />
+      </div>
+      <div className='centered-content-statistic'>
+        <Statistic statistic={data.statistic} />
+      </div>
 
-      <Title title='Giải DN/Nhóm/Đơn vị' />
-      <DataView
-        data={data.clubs}
-        href={`/clubs/club-detail/${data.clubs.club_id}`}
-      />
-      <Detail link={'/clubs'} />
-      <Statistic statistic={data.statistic} />
-      <div className='centered-content-full'>
+      <div className='centered-content-news'>
         <Title title='Các tin thể thao khác' />
         <News data={data.news} />
         <Detail link={'/news'} />

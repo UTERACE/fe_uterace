@@ -1,22 +1,46 @@
+// #theme-container {
+//     position: fixed;
+//     bottom: 1rem;
+//     right: 1rem;
+//     z-index: 999;
+// }
+
+// #theme-button {
+//     background-color: var(--background-color);
+//     color: var(--text-color);
+//     border: 1px solid var(--background-color);
+//     border-radius: 4px;
+//     padding: 8px 16px;
+//     font-size: 16px;
+//     cursor: pointer;
+//     transition: all 0.3s ease-in-out;
+    
+//     &:hover {
+//         background-color: var(--primary-color);
+//         border-color: var(--primary-color);
+//     }
+// }
 #theme-container {
+    /* Just as an example, place your container styles here */
     position: fixed;
     bottom: 1rem;
     right: 1rem;
     z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
 #theme-button {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    border: 1px solid var(--background-color);
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 16px;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 2rem;
+    background-color: var(--primary-color);
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    
-    &:hover {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
+    transition: all 0.3s; /* Smooth transition for other properties */
+    position: relative; /* To position our day/night icons */
 }

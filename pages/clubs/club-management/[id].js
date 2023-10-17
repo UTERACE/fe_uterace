@@ -288,7 +288,7 @@ const ManagementClubDetail = () => {
     console.log(per_page)
   }
   return (
-    <div className='centered-content-full'>
+    <div className='centered-content-detailpage'>
       <Dialog
         header='Chỉnh sửa thông tin câu lạc bộ'
         visible={visibleChange}

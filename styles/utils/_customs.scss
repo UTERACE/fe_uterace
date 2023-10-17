@@ -11,7 +11,7 @@
 // custom SpeedDial #image-container-dataview
 .p-button {
     color: $black-color;
-    background: $primary-color;
+    background: var(--primary-color);
     border: 1px solid $black-color;
       border-top-color: $black-color;
       border-right-color: $black-color;
@@ -24,7 +24,7 @@
 
 .p-button:enabled:hover, .p-button:not(button):not(a):not(.p-disabled):hover {
     background: $black-color;
-    color: $primary-color;
+    color: var(--primary-color);
     border-color: transparent;
 }
 .p-dialog .p-dialog-content {
@@ -45,3 +45,9 @@
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
 }
+//custom menu 
+.p-button.p-button-secondary:enabled:hover, .p-button.p-button-secondary:not(button):not(a):not(.p-disabled):hover, .p-buttonset.p-button-secondary > .p-button:enabled:hover, .p-buttonset.p-button-secondary > .p-button:not(button):not(a):not(.p-disabled):hover, .p-splitbutton.p-button-secondary > .p-button:enabled:hover, .p-splitbutton.p-button-secondary > .p-button:not(button):not(a):not(.p-disabled):hover, .p-fileupload-choose.p-button-secondary:enabled:hover, .p-fileupload-choose.p-button-secondary:not(button):not(a):not(.p-disabled):hover {
+    background: var(--background-color);
+    color: var(--text-color);
+    border-color: var(--background-color);
+  }
