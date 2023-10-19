@@ -13,8 +13,10 @@ import { useRouter } from 'next/router'
 import { ProgressSpinner } from 'primereact/progressspinner'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import ThemeProvider from '@/components/contexts/ThemeProvider'
+import { appWithTranslation } from 'next-i18next'
+import nextI18nextConfig from '@/next-i18next.config'
 
-export default function MyApp({ Component, pageProps }) {
+export default appWithTranslation(function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   useEffect(() => {
@@ -54,4 +56,4 @@ export default function MyApp({ Component, pageProps }) {
       </PersistGate>
     </Provider>
   )
-}
+},nextI18nextConfig);

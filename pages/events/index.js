@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const Events = () => {
   const [events, setEvents] = useState([])
@@ -15,6 +17,7 @@ const Events = () => {
   const [onGoing, setOnGoing] = useState(true)
 
   const [activeIndex, setActiveIndex] = useState(1)
+  const { t } = useTranslation('event')
 
   // const data1 = {
   //   per_page: 5,
@@ -100,11 +103,11 @@ const Events = () => {
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.member} Thành viên
+              {item.member} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.club} Câu lạc bộ
+              {item.club} {t('club-join')}
             </h4>
           </div>
           <div id='name-dataview'>
@@ -116,11 +119,12 @@ const Events = () => {
                   id='link-dataview'
                   href={`/events/event-detail/${item.event_id}`}
                 >
-                  Tham gia sự kiện{' '}
+                  {t('event-join')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <Link id='link-dataview' href='/share'>
-                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                  {t('share')}{' '}
+                  <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
             </div>
@@ -137,11 +141,7 @@ const Events = () => {
   return (
     <div className='centered-content-dataview'>
       <Title
-        title={
-          activeIndex === 1
-            ? 'Các sự kiện đang diễn ra'
-            : 'Các sự kiện đã kết thúc'
-        }
+        title={activeIndex === 1 ? t('on-going-event') : t('finished-event')}
       />
       <div className='centered-content-layout'>
         <div
@@ -151,7 +151,7 @@ const Events = () => {
           <Button
             id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-bar'
-            label='Các sự kiện đang diễn ra'
+            label={t('on-going-event')}
             onClick={() => {
               setActiveIndex(1)
               setOnGoing(true)
@@ -160,7 +160,7 @@ const Events = () => {
           <Button
             id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-line'
-            label='Các sự kiện đã kết thúc'
+            label={t('finished-event')}
             onClick={() => {
               setActiveIndex(2)
               setOnGoing(false)
@@ -186,3 +186,10 @@ const Events = () => {
 }
 
 export default Events
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['event', 'topbar'])),
+    },
+  }
+}

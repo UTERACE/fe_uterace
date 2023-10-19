@@ -21,9 +21,6 @@
     width: 3.7rem;
     height: 3.7rem;
 }
-#menubar {
-    height: 4rem;
-}
 #login-container {
     display: flex;
     gap: 1.5rem;
@@ -78,3 +75,58 @@
     align-content: center;
 }
 
+#end-menu-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+#select-language select {
+    border: 0.1rem solid #ccc;
+    border-radius: 1rem;
+    height: 2.7rem;
+    width: 3rem;
+    padding-left: 30px; /* Để có không gian cho logo */
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: 5px center; /* Điều chỉnh vị trí của logo */
+}
+
+.custom-dropdown {
+    position: relative;
+    cursor: pointer;
+    height: 3rem;
+    width: 4.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--secondary-color);
+    border-radius: 2rem;
+}
+.custom-dropdown img {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--secondary-color);
+    border: 0.1rem solid #ccc;
+    border-radius: 1rem;
+    z-index: 1;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 9rem;
+}
+.option:hover {
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+}

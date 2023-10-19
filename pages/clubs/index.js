@@ -7,6 +7,8 @@ import { Button } from 'primereact/button'
 import Club from '../landing/Club'
 import DataView from '@/components/dataview/DataView'
 import apiInstance from '@/api/apiInstance'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([])
@@ -14,6 +16,7 @@ const Clubs = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const {t}=useTranslation('club')
   const data = {
     per_page: 5,
     current_page: 1,
@@ -88,7 +91,7 @@ const Clubs = () => {
   }
   return (
     <div className='centered-content-dataview'>
-      <Title title='Tất cả câu lạc bộ ' />
+      <Title title={t('all-clubs')} />
       <DataView data={data.clubs} href='/clubs/club-detail/' />
       <Paginator
         first={first}
@@ -103,3 +106,10 @@ const Clubs = () => {
 }
 
 export default Clubs
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['club','topbar'])),
+    },
+  }
+}

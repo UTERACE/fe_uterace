@@ -2,8 +2,10 @@ import React, { use, useEffect } from 'react'
 import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import { useTranslation } from 'next-i18next'
 
 const Statistic = ({ statistic }) => {
+  const {t}=useTranslation('home')
   useEffect(() => {
     const width = window.innerWidth
     if (width <= 1024) {
@@ -16,12 +18,11 @@ const Statistic = ({ statistic }) => {
   }, [])
   return (
     <div id='target-wrapper'>
-      <Title title='Thống kê cộng đồng ' />
       <div className='target-container'>
         <div id='target-item'>
           <img src='/statistic/run_member.png' alt='member' />
           <span>{LocaleHelper.formatNumber(statistic.total_member)}</span>
-          <p>Tổng thành viên</p>
+          <p>{t('total-member')}</p>
         </div>
         <div
           id='target-item'
@@ -29,17 +30,17 @@ const Statistic = ({ statistic }) => {
         >
           <img src='/statistic/running.png' alt='running' />
           <span>{LocaleHelper.formatNumber(statistic.total_distance)}</span>
-          <p>Tổng quảng đường (km)</p>
+          <p>{t('total-distance')}</p>
         </div>
         <div id='target-item'>
           <img src='/statistic/run_club.png' alt='club' />
           <span>{LocaleHelper.formatNumber(statistic.total_club)}</span>
-          <p>Tổng câu lạc bộ</p>
+          <p>{t('total-club')}</p>
         </div>
         <div id='target-item'>
           <img src='/statistic/run_event.png' alt='event' />
           <span>{LocaleHelper.formatNumber(statistic.total_event)}</span>
-          <p>Tổng sự kiện giải chạy </p>
+          <p>{t('total-event')}</p>
         </div>
       </div>
       <Detail link='/news/news-detail/1' />

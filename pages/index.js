@@ -8,8 +8,12 @@ import Statistic from './landing/Statistic'
 import News from './landing/News'
 import Detail from '@/components/landing/Detail'
 import HeadPage from '@/components/headpage/HeadPage'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-const Landing = () => {
+const Homepage = () => {
+  const { t } = useTranslation('home')
+
   const data = {
     overview: [
       {
@@ -346,16 +350,16 @@ const Landing = () => {
       <HeadPage title='UTE Race' description='Chao mung da den voi trang web' />
       <Slideshow data={data.overview} />
       <div className='centered-content-scoreboard'>
-        <Title title='Bảng xếp hạng ' />
+        <Title title={t('scoreboard')} />
         <Rank value={data} />
       </div>
 
       <div className='centered-content-event'>
-        <Title title='Sự kiện nổi bật' />
+        <Title title={t('event-popular')} />
         <Event event={data.events} />
       </div>
       <div className='centered-content-club'>
-        <Title title='Giải DN/Nhóm/Đơn vị' />
+        <Title title={t('club-popular')} />
         <DataView
           data={data.clubs}
           href={`/clubs/club-detail/${data.clubs.club_id}`}
@@ -363,11 +367,12 @@ const Landing = () => {
         <Detail link={'/clubs'} />
       </div>
       <div className='centered-content-statistic'>
+        <Title title={t('statistic-social')} />
         <Statistic statistic={data.statistic} />
       </div>
 
       <div className='centered-content-news'>
-        <Title title='Các tin thể thao khác' />
+        <Title title={t('news-popular')} />
         <News data={data.news} />
         <Detail link={'/news'} />
       </div>
@@ -375,4 +380,18 @@ const Landing = () => {
   )
 }
 
-export default Landing
+export default Homepage
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        'home',
+        'scoreboard',
+        'event',
+        'club',
+        'news',
+        'topbar',
+      ])),
+    },
+  }
+}

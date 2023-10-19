@@ -1,6 +1,6 @@
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
@@ -8,10 +8,63 @@ import { useRouter } from 'next/router'
 import ChartActivity from './profile/ChartActivity'
 import Activity from './profile/Activity'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-const UserDetail = () => {
+export async function getStaticPaths() {
+  // Giả sử bạn lấy danh sách các ID từ API hoặc cơ sở dữ liệu của mình
+  const ids = await fetchUserIds()
+  if (!ids) {
+    return { paths: [], fallback: 'blocking' }
+  } // Chuyển đổi danh sách ID này thành định dạng mà Next.js yêu cầu
+  const paths = ids.map((user) => ({
+    params: { id: user.user_id.toString() },
+  }))
+
+  return {
+    paths,
+    fallback: 'blocking', // nếu bạn đặt là false, mọi path không nằm trong danh sách sẽ trả về 404
+  }
+}
+async function fetchUserIds() {
+  try {
+    const response = await apiInstance.get(
+      '/events?current_page=0&per_page=6&ongoing=true'
+    )
+    const data = await response.data.events
+    return data
+  } catch (error) {
+    console.error('Error fetching event IDs:', error)
+    return null
+  }
+}
+export const getStaticProps = async ({ locale, params }) => {
+  const user = await getUser(params.id)
+  return {
+    props: {
+      user,
+      ...(await serverSideTranslations(locale, [
+        'user',
+        'scoreboard',
+        'topbar',
+      ])),
+    },
+  }
+}
+async function getUser(id) {
+  try {
+    const response = await apiInstance.get(`/events/event-detail/${id}`)
+    const data = await response.data
+    return data
+  } catch (error) {
+    console.error('Error fetching event details:', error)
+    return null
+  }
+}
+const UserDetail = (user) => {
   const router = useRouter()
   const { id } = router.query
+  const { t } = useTranslation('user')
 
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
@@ -169,11 +222,11 @@ const UserDetail = () => {
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_members} Thành viên
+              {item.total_members} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_clubs} Câu lạc bộ
+              {item.total_clubs} {t('club-join')}
             </h4>
           </div>
           <div id='name-dataview'>
@@ -194,28 +247,28 @@ const UserDetail = () => {
             <div id='statistic-content'>
               <div id='statistic-card' title='Tổng quãng đường đã chạy'>
                 <h1>{data.total_distance}</h1>
-                <h4>Tổng quãng đường (km)</h4>
+                <h4>{t('total-distance')}</h4>
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
                 <h1>{data.pace}</h1>
-                <h4>Tốc độ trung bình (phút/km)</h4>
+                <h4>{t('pace-agv')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
                 <h1>{data.total_activities}</h1>
-                <h4>Tổng số hoạt động</h4>
+                <h4>{t('total-activities')}</h4>
               </div>
 
               <div id='statistic-card' title='Tổng số câu lạc bộ đã tham gia'>
                 <h1>{data.total_clubs}</h1>
-                <h4>Tổng số câu lạc bộ</h4>
+                <h4>{t('total-clubs')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số sự kiện đã tham gia'>
                 <h1>{data.total_events}</h1>
-                <h4>Tổng số sự kiện</h4>
+                <h4>{t('total-events')}</h4>
               </div>
               <div id='statistic-card' title='Hạng của bạn trong hệ thống'>
                 <h1>{data.ranking}</h1>
-                <h4>Hạng của bạn</h4>
+                <h4>{t('rank')}</h4>
               </div>
             </div>
           </div>
@@ -241,7 +294,9 @@ const UserDetail = () => {
                     <img src='/verified.png' alt='verified' />
                   </div>
                   <div>
-                    <h4> Mã người dùng: {170347} </h4>
+                    <h4>
+                      {t('user-id')} {170347}{' '}
+                    </h4>
                   </div>
                   <div style={{ display: 'flex' }}>
                     <img
@@ -252,8 +307,8 @@ const UserDetail = () => {
                     <Link href='/user/profile/setting?connect=2'>
                       <h5 style={{ marginTop: '1rem' }}>
                         {data.connect_strava
-                          ? 'Đã kết nối với Strava'
-                          : 'Chưa kết nối với Strava'}
+                          ? t('connected-strava')
+                          : t('not-connected-strava')}
                       </h5>
                     </Link>
                   </div>
@@ -282,7 +337,7 @@ const UserDetail = () => {
               <Button
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar'
-                label=' Giải đang tham gia'
+                label={t('joining-events')}
                 style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(1)
@@ -291,7 +346,7 @@ const UserDetail = () => {
               <Button
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-plus'
-                label='Hoạt động'
+                label={t('recent-activities')}
                 style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(2)
@@ -300,7 +355,7 @@ const UserDetail = () => {
               <Button
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-minus'
-                label='Giải đã hoàn thành'
+                label={t('completed-events')}
                 style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(3)
@@ -309,7 +364,7 @@ const UserDetail = () => {
               <Button
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-images'
-                label='Bộ sưu tập'
+                label={t('collection')}
                 style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(4)
@@ -318,7 +373,7 @@ const UserDetail = () => {
             </div>
             {activeIndex === 2 ? (
               <div style={{ width: '95%' }}>
-                <Title title='Hoạt động gần đây' />
+                <Title title={t('recent-activities')} />
                 <Activity activities={activities} />
               </div>
             ) : activeIndex === 3 ? (

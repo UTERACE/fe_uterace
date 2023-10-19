@@ -1,0 +1,21 @@
+{
+    "homepage":"Home page",
+    "scoreboard":"Scoreboard",
+    "event":"Events",
+    "club":"Clubs",
+    "news":"News",
+    "dashboard":"Dashboard",
+    "logout":"Logout",
+    "login":"Sign in",
+    "register":"Sign up",
+    "profile":"Profile",
+    "change-password":"Change password",
+    "connect-strava":"Connect Strava",
+    "manage-clubs":"Manage clubs",
+    "new-club":"New club",
+    "my-clubs":"My clubs",
+    "manage-events":"Manage events",
+    "new-event":"New event",
+    "my-events":"My events",
+    "join-event":"Join event"
+}

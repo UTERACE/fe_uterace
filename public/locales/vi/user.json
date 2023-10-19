@@ -1,0 +1,22 @@
+{
+    "edit-info": "Chỉnh sửa thông tin",
+    "change-avatar": "Đổi hình đại diện",
+    "change-password": "Thay đổi mật khẩu",
+    "connect-strava": "Kết nối với Strava",
+    "logout": "Đăng xuất",
+    "total-distance": "Tổng quãng đường (km)",
+    "pace-agv": "Tốc độ trung bình (phút/km)",
+    "total-activities": "Tổng số lần chạy",
+    "total-clubs": "Tổng số câu lạc bộ",
+    "total-events": "Tổng số sự kiện",
+    "rank": "Xếp hạng",
+    "user-id": "Mã người dùng:",
+    "connected-strava": "Đã kết nối với Strava",
+    "not-connected-strava": "Chưa kết nối với Strava",
+    "joining-events": "Sự kiện đang tham gia",
+    "recent-activities": "Hoạt động gần đây",
+    "completed-events": "Sự kiện đã hoàn thành",
+    "collection": "Bộ sưu tập",
+    "member-join":"Thành viên",
+    "club-join":"Câu lạc bộ"
+}

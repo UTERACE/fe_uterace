@@ -1,10 +1,4 @@
-import Title from '@/components/landing/Title'
-import News from '@/pages/landing/News'
-import Activity from '@/pages/user/profile/Activity'
-import RankMember from '@/pages/scoreboard/RankMember'
 import { useRouter } from 'next/router'
-import { Button } from 'primereact/button'
-import { Paginator } from 'primereact/paginator'
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 

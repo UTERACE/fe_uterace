@@ -8,6 +8,7 @@ import { logout } from '@/store/slices/authSlice'
 import { Avatar } from 'primereact/avatar'
 import { Badge } from 'primereact/badge'
 import store from '@/store/store'
+import { useTranslation } from 'next-i18next'
 
 const Topbar = () => {
   const isAuthenticated = store.getState().auth.isAuthenticated
@@ -58,34 +59,34 @@ const Topbar = () => {
       setActiveIndex(8)
     }
   }, [router.pathname])
-
+  const { t } = useTranslation('topbar')
   const items = [
     {
-      label: 'Trang chủ',
+      label: t('homepage'),
       icon: 'pi pi-fw pi-home',
       to: '/',
       command: () => handleClick('/'),
     },
     {
-      label: 'Bản xếp hạng',
+      label: t('scoreboard'),
       icon: 'pi pi-fw pi-chart-bar',
       to: '/scoreboard',
       command: () => handleClick('/scoreboard'),
     },
     {
-      label: 'Sự kiện',
+      label: t('event'),
       icon: 'pi pi-fw pi-calendar',
       to: '/events',
       command: () => handleClick('/events'),
     },
     {
-      label: 'Câu lạc bộ',
+      label: t('club'),
       icon: 'pi pi-fw pi-users',
       to: '/clubs',
       command: () => handleClick('/clubs'),
     },
     {
-      label: 'Tin tức',
+      label: t('news'),
       icon: 'pi pi-fw pi-book',
       command: () => handleClick('/news'),
       to: '/news',
@@ -94,23 +95,23 @@ const Topbar = () => {
   let managementItems
   if (hasAdminRole) {
     items.push({
-      label: 'Dashboard',
+      label: t('dashboard'),
       icon: 'pi pi-fw pi-chart-line',
       to: '/dashboard',
       command: () => handleClick('/dashboard'),
     })
     managementItems = [
       {
-        label: 'Quản lí giải chạy',
+        label: t('manage-events'),
         icon: 'pi pi-fw pi-users',
         items: [
           {
-            label: 'Tạo mới giải chạy',
+            label: t('new-event'),
             icon: 'pi pi-fw pi-plus',
             command: () => handleClick('/events/event-management'),
           },
           {
-            label: 'Giải chạy của tôi',
+            label: t('my-events'),
             icon: 'pi pi-fw pi-users',
             command: () => handleClick('/events/event-management'),
           },
@@ -120,7 +121,7 @@ const Topbar = () => {
   } else {
     managementItems = [
       {
-        label: 'Tham gia giải chạy',
+        label: t('join-event'),
         icon: 'fa pi-fw fa-running',
         command: () => handleClick('/events/event-management'),
       },
@@ -143,32 +144,32 @@ const Topbar = () => {
   const menuHeader = useRef(null)
   const end_items = [
     {
-      label: 'Trang cá nhân',
+      label: t('profile'),
       icon: 'pi pi-fw pi-user',
       command: () => handleClick('/user/profile'),
     },
     {
-      label: 'Thay đổi mật khẩu',
+      label: t('change-password'),
       icon: 'pi pi-fw pi-key',
       command: () => handleClick('/user/profile/setting?connect=1'),
     },
     {
-      label: 'Kết nối ứng dụng',
+      label: t('connect-strava'),
       icon: 'pi pi-fw pi-link',
       command: () => handleClick('/user/profile/setting?connect=2'),
     },
     ...managementItems,
     {
-      label: 'Quản lí câu lạc bộ',
+      label: t('manage-clubs'),
       icon: 'pi pi-fw pi-users',
       items: [
         {
-          label: 'Tạo mới câu lạc bộ',
+          label: t('new-club'),
           icon: 'pi pi-fw pi-plus',
           command: () => handleClick('/clubs/club-management'),
         },
         {
-          label: 'Câu lạc bộ của tôi',
+          label: t('my-clubs'),
           icon: 'pi pi-fw pi-users',
           command: () => handleClick('/clubs/club-management'),
         },
@@ -178,11 +179,23 @@ const Topbar = () => {
       separator: true,
     },
     {
-      label: 'Đăng xuất',
+      label: t('logout'),
       icon: 'pi pi-fw pi-power-off',
       command: () => handleClickLogout(),
     },
   ]
+  const [showOptions, setShowOptions] = useState(false)
+  const [currentLanguage, setCurrentLanguage] = useState(router.locale)
+
+  const toggleDropdown = () => {
+    setShowOptions(!showOptions)
+  }
+
+  const changeLanguage = (lang) => {
+    router.push(router.pathname, router.asPath, { locale: lang })
+    setCurrentLanguage(lang)
+    setShowOptions(false)
+  }
   return (
     <div id='topbar'>
       <div className='centered-content-layout'>
@@ -207,8 +220,6 @@ const Topbar = () => {
                 ref={menuHeader}
                 model={items}
                 popup
-                viewportHeight={370}
-                menuWidth={250}
               ></SlideMenu>
 
               <Button
@@ -222,79 +233,46 @@ const Topbar = () => {
             </div>
           )}
 
-          {!isAuthenticated ? (
-            <div id='login-container'>
-              <Link href='/login'>
-                <Button
-                  id={
-                    activeIndex == 6
-                      ? 'topbar-button-login-active'
-                      : 'topbar-button-login'
-                  }
-                  type='button'
-                  label='Sign in'
-                  severity='warning'
-                  raised
-                  onClick={() => {
-                    setActiveIndex(6)
-                  }}
-                />
-              </Link>
-              <Link href='/register'>
-                <Button
-                  id={
-                    activeIndex == 7
-                      ? 'topbar-button-login-active'
-                      : 'topbar-button-login'
-                  }
-                  type='button'
-                  label='Sign up'
-                  severity='warning'
-                  outlined
-                  onClick={() => {
-                    setActiveIndex(7)
-                  }}
-                />
-              </Link>
-            </div>
-          ) : (
-            <div id='login-container'>
-              <i
-                className='pi pi-bell p-overlay-badge'
-                style={{
-                  fontSize: '2rem',
-                  paddingTop: '0.5rem',
-                  width: '3rem',
-                  height: '3rem',
-                  textAlign: 'center',
-                  backgroundColor: 'var(--secondary-color)',
-                  borderRadius: '50%',
-                  color: 'var(--text-color)',
-                }}
-              >
-                <Badge value='1'></Badge>
-              </i>
-              <Link href='/user/profile'>
-                <Avatar
-                  style={{ border: '0.1rem solid #ffffff' }}
-                  size='large'
-                  shape='circle'
-                  label={!avatarImage ? avatarLabel : null}
-                  image={avatarImage}
-                />
-              </Link>
-              <div>
-                <SlideMenu
-                  ref={menu}
-                  model={end_items}
-                  popup
-                  viewportHeight={284}
-                  menuWidth={250}
-                ></SlideMenu>
-
+          <div id='end-menu-container'>
+            {!isAuthenticated ? (
+              <div id='login-container'>
+                <Link href='/login'>
+                  <Button
+                    id={
+                      activeIndex == 6
+                        ? 'topbar-button-login-active'
+                        : 'topbar-button-login'
+                    }
+                    type='button'
+                    label={t('login')}
+                    severity='warning'
+                    raised
+                    onClick={() => {
+                      setActiveIndex(6)
+                    }}
+                  />
+                </Link>
+                <Link href='/register'>
+                  <Button
+                    id={
+                      activeIndex == 7
+                        ? 'topbar-button-login-active'
+                        : 'topbar-button-login'
+                    }
+                    type='button'
+                    label={t('register')}
+                    severity='warning'
+                    outlined
+                    onClick={() => {
+                      setActiveIndex(7)
+                    }}
+                  />
+                </Link>
+              </div>
+            ) : (
+              <div id='login-container'>
                 <i
-                  className='pi pi-spin pi-cog'
-                  title='Settings menu'
+                  className='pi pi-bell p-overlay-badge'
                   style={{
                     fontSize: '2rem',
                     paddingTop: '0.5rem',
@@ -305,11 +283,66 @@ const Topbar = () => {
                     borderRadius: '50%',
                     color: 'var(--text-color)',
                   }}
-                  onClick={(event) => menu.current.toggle(event)}
-                ></i>
+                >
+                  <Badge value='1'></Badge>
+                </i>
+                <Link href='/user/profile'>
+                  <Avatar
+                    style={{ border: '0.1rem solid #ffffff' }}
+                    size='large'
+                    shape='circle'
+                    label={!avatarImage ? avatarLabel : null}
+                    image={avatarImage}
+                  />
+                </Link>
+                <div>
+                  <SlideMenu
+                    ref={menu}
+                    model={end_items}
+                    popup
+                    viewportHeight={284}
+                    menuWidth={250}
+                  ></SlideMenu>
+
+                  <i
+                    className='pi pi-spin pi-cog'
+                    title='Settings menu'
+                    style={{
+                      fontSize: '2rem',
+                      paddingTop: '0.5rem',
+                      width: '3rem',
+                      height: '3rem',
+                      textAlign: 'center',
+                      backgroundColor: 'var(--secondary-color)',
+                      borderRadius: '50%',
+                      color: 'var(--text-color)',
+                    }}
+                    onClick={(event) => menu.current.toggle(event)}
+                  ></i>
+                </div>
               </div>
+            )}
+            <div className='custom-dropdown' onClick={toggleDropdown}>
+              {currentLanguage === 'en' ? (
+                <img src='/en.png' alt='English' />
+              ) : (
+                <img src='/vn.png' alt='Tiếng Việt' />
+              )}
+              <i className='pi pi-chevron-down'></i>
+              {showOptions && (
+                <div className='options'>
+                  <div className='option' onClick={() => changeLanguage('en')}>
+                    <img src='/en.png' alt='English' />
+                    <span>English</span>
+                  </div>
+                  <div className='option' onClick={() => changeLanguage('vi')}>
+                    <img src='/vn.png' alt='Tiếng Việt' />
+                    <span>Tiếng Việt</span>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

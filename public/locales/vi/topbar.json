@@ -1,0 +1,21 @@
+{
+    "homepage":"Trang chủ",
+    "scoreboard":"Bảng xếp hạng",
+    "event":"Sự kiện",
+    "club":"Câu lạc bộ",
+    "news":"Tin tức",
+    "dashboard":"Quản lí",
+    "logout":"Đăng xuất",
+    "login":"Đăng nhập",
+    "register":"Đăng kí",
+    "profile":"Trang cá nhân",
+    "change-password":"Thay đổi mật khẩu",
+    "connect-strava":"Kết nối Strava",
+    "manage-clubs":"Quản lí câu lạc bộ",
+    "new-club":"Câu lạc bộ mới",
+    "my-clubs":"Câu lạc bộ của tôi",
+    "manage-events":"Quản lí sự kiện",
+    "new-event":"Sự kiện mới",
+    "my-events":"Sự kiện của tôi",
+    "joint-event":"Tham gia sự kiện"
+}

@@ -1,0 +1,22 @@
+{
+    "edit-info": "Update information",
+    "change-avatar": "Change avatar",
+    "change-password": "Change password",
+    "connect-strava": "Connect with Strava",
+    "logout": "Logout",
+    "total-distance": "Total distance (km)",
+    "pace-agv": "Pace average (min/km)",
+    "total-activities": "Total activities",
+    "total-clubs": "Total clubs",
+    "total-events": "Total events",
+    "rank": "Rank",
+    "user-id": "User ID:",
+    "connected-strava": "Connected with Strava",
+    "not-connected-strava": "Not connected with Strava",
+    "joining-events": "Joining events",
+    "recent-activities": "Recent activities",
+    "completed-events": "Completed events",
+    "collection": "Collection",
+    "member-join":"Members",
+    "club-join":"Clubs"
+}

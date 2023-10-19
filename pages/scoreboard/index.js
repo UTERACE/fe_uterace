@@ -5,6 +5,8 @@ import RankClub from '../landing/RankClub'
 import RankMember from './RankMember'
 import { Paginator } from 'primereact/paginator'
 import { Button } from 'primereact/button'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const Scoreboard = () => {
   const [member, setMember] = useState([])
@@ -210,11 +212,12 @@ const Scoreboard = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
+  const { t } = useTranslation('scoreboard')
   return (
     <div className='centered-content-scoreboard'>
       <Title
         title={
-          activeIndex === 1 ? 'Bảng xếp hạng cá nhân' : 'Bảng xếp hạng CLB'
+          activeIndex === 1 ? t('scoreboard-member') : t('scoreboard-club')
         }
       />
       <div className='centered-content-layout'>
@@ -222,7 +225,7 @@ const Scoreboard = () => {
           <Button
             id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-bar'
-            label=' Bảng xếp hạng cá nhân'
+            label={t('scoreboard-member')}
             onClick={() => {
               setActiveIndex(1)
               setMonth(1)
@@ -231,7 +234,7 @@ const Scoreboard = () => {
           <Button
             id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-line'
-            label='Bảng xếp hạng CLB'
+            label={t('scoreboard-club')}
             onClick={() => {
               setActiveIndex(2)
               setMonth(1)
@@ -244,7 +247,7 @@ const Scoreboard = () => {
               <Button
                 id={month === 1 ? 'button-tab-month' : ''}
                 icon='pi pi-chart-bar'
-                label='Tổng'
+                label={t('total')}
                 onClick={() => {
                   setMonth(1)
                 }}
@@ -252,7 +255,7 @@ const Scoreboard = () => {
               <Button
                 id={month === currentMonth ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-plus'
-                label={`Tháng ${currentMonth}`}
+                label={`${t('month')} ${currentMonth}`}
                 onClick={() => {
                   setMonth(currentMonth)
                   console.log(month)
@@ -261,7 +264,7 @@ const Scoreboard = () => {
               <Button
                 id={month === currentMonth - 1 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-minus'
-                label={`Tháng ${currentMonth - 1}`}
+                label={`${t('month')} ${currentMonth - 1}`}
                 onClick={() => {
                   setMonth(currentMonth - 1)
                   console.log(month)
@@ -270,7 +273,7 @@ const Scoreboard = () => {
               <Button
                 id={month === currentMonth - 2 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-times'
-                label={`Tháng ${currentMonth - 2}`}
+                label={`${t('month')} ${currentMonth - 2}`}
                 onClick={() => {
                   setMonth(currentMonth - 2)
                   console.log(month)
@@ -293,7 +296,7 @@ const Scoreboard = () => {
               <Button
                 id={month === 1 ? 'button-tab-month' : ''}
                 icon='pi pi-chart-bar'
-                label='Tổng'
+                label={t('total')}
                 onClick={() => {
                   setMonth(1)
                 }}
@@ -301,7 +304,7 @@ const Scoreboard = () => {
               <Button
                 id={month === currentMonth ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-plus'
-                label={`Tháng ${currentMonth}`}
+                label={`${t('month')} ${currentMonth}`}
                 onClick={() => {
                   setMonth(currentMonth)
                   console.log(month)
@@ -310,7 +313,7 @@ const Scoreboard = () => {
               <Button
                 id={month === currentMonth - 1 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-minus'
-                label={`Tháng ${currentMonth - 1}`}
+                label={`${t('month')} ${currentMonth - 1}`}
                 onClick={() => {
                   setMonth(currentMonth - 1)
                   console.log(month)
@@ -319,7 +322,7 @@ const Scoreboard = () => {
               <Button
                 id={month === currentMonth - 2 ? 'button-tab-month' : ''}
                 icon='pi pi-calendar-times'
-                label={`Tháng ${currentMonth - 2}`}
+                label={`${t('month')} ${currentMonth - 2}`}
                 onClick={() => {
                   setMonth(currentMonth - 2)
                   console.log(month)
@@ -343,3 +346,10 @@ const Scoreboard = () => {
 }
 
 export default Scoreboard
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['scoreboard','topbar'])),
+    },
+  }
+}

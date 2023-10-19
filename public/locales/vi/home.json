@@ -1,0 +1,21 @@
+{
+    "scoreboard":"Bảng xếp hạng",
+    "news":"Tin tức",
+    "see-more":"Xem thêm",
+    "event-popular":"Sự kiện nổi bật",
+    "event-new":"Sự kiện mới",
+    "event-coming":"Sự kiện sắp diễn ra",
+    "event-expired":"Sự kiện đã kết thúc",
+    "event-join":"Tham gia sự kiện",
+    "event-joined":"Đã tham gia",
+    "event-join-success":"Tham gia thành công",
+    "event-join-fail":"Tham gia thất bại",
+    "club-popular":"Câu lạc bộ nổi bật",
+    "club-new":"Câu lạc bộ mới",
+    "statistic-social":"Thống kê cộng đồng ",
+    "news-popular":"Tin tức nổi bật",
+    "total-member":"Tổng thành viên",
+    "total-club":"Tổng câu lạc bộ",
+    "total-event":"Tổng sự kiện giải chạy",
+    "total-distance":"Tổng quảng đường (km)"
+}

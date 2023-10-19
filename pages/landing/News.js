@@ -1,13 +1,12 @@
 import Link from 'next/link'
-// import { Carousel } from 'primereact/carousel'
 import React, { useEffect, useState } from 'react'
-import Title from '../../components/landing/Title'
 import Carousel from '@/components/dataview/Carousel'
+import { useTranslation } from 'next-i18next'
 
 const News = ({ data }) => {
   const [news, setNews] = useState([])
+  const { t } = useTranslation('news')
   useEffect(() => {
-    console.log('data', data)
     setNews(data.slice(0, 9))
   }, [data])
   const responsiveOptions = [
@@ -43,7 +42,7 @@ const News = ({ data }) => {
               <h5>{news.description}</h5>
             </div>
             <Link id='link-event' href='/post'>
-              Share <i className='pi pi-share-alt' aria-hidden='true'></i>
+              {t('share')} <i className='pi pi-share-alt' aria-hidden='true'></i>
             </Link>
           </div>
         </div>

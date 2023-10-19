@@ -7,8 +7,62 @@ import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import apiInstance from '@/api/apiInstance'
 
-const ClubDetail = () => {
+export async function getStaticPaths() {
+  // Giả sử bạn lấy danh sách các ID từ API hoặc cơ sở dữ liệu của mình
+  const ids = await fetchClubIds()
+  if (!ids) {
+    return { paths: [], fallback: 'blocking' }
+  } // Chuyển đổi danh sách ID này thành định dạng mà Next.js yêu cầu
+  const paths = ids.map((club) => ({
+    params: { id: club.club_id.toString() },
+  }))
+
+  return {
+    paths,
+    fallback: 'blocking', // nếu bạn đặt là false, mọi path không nằm trong danh sách sẽ trả về 404
+  }
+}
+async function fetchClubIds() {
+  try {
+    const response = await apiInstance.get(
+      '/clubs?current_page=0&per_page=6'
+    )
+    const data = await response.data.clubs
+    return data
+  } catch (error) {
+    console.error('Error fetching event IDs:', error)
+    return null
+  }
+}
+export const getStaticProps = async ({ locale, params }) => {
+  const club = await getClub(params.id)
+  return {
+    props: {
+      club,
+      ...(await serverSideTranslations(locale, [
+        'detail',
+        'news',
+        'scoreboard',
+        'topbar',
+      ])),
+    },
+  }
+}
+async function getClub(id) {
+  try {
+    const response = await apiInstance.get(`/events/event-detail/${id}`)
+    const data = await response.data
+    return data
+  } catch (error) {
+    console.error('Error fetching event details:', error)
+    return null
+  }
+}
+const ClubDetail = ({club}) => {
   const router = useRouter()
   const { id } = router.query
   const [isStatistic, setIsStatistic] = useState(false)
@@ -274,7 +328,7 @@ const ClubDetail = () => {
     setPerPage(event.rows)
     console.log(per_page)
   }
-
+  const { t } = useTranslation('detail')
   return (
     <div className='centered-content-detailpage'>
       <div className='centered-content-layout'>
@@ -287,7 +341,7 @@ const ClubDetail = () => {
             <h1>{name}</h1>
             <h6>{description}</h6>
 
-            <Button id='button-join' label='Tham gia ngay' onClick={() => {}} />
+            <Button id='button-join' label={t('join-now')} onClick={() => {}} />
           </div>
 
           <div id='info-detail'>
@@ -295,12 +349,12 @@ const ClubDetail = () => {
               <Button
                 id='button-tab'
                 style={{ width: '35%' }}
-                label={`${total_members} Người tham gia`}
+                label={`${total_members} ${t('participants')}`}
                 onClick={() => {}}
               />
               <Button
                 id={!isStatistic ? 'button-tab' : 'button-tab--active'}
-                label='Xem thống kê'
+                label={t('view-statistic')}
                 style={{ width: '35%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
@@ -313,45 +367,45 @@ const ClubDetail = () => {
               <div id='info-club-container'>
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
-                    <h4>Tổng số VĐV đã tham gia: </h4>
+                    <h4>{t('total-member-join')}</h4>
                     <h4>{total_members}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>Tổng số km đã chạy:</h4>
+                    <h4>{t('total-distance')}</h4>
                     <h4>{total_distance}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>Tổng số hoạt động:</h4>
+                    <h4>{t('total-activities')}</h4>
                     <h4>{total_activities}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>Tổng số bài viết:</h4>
+                    <h4>{t('total-news')}</h4>
                     <h4>{total_news}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>Tốc độ trung bình tối thiểu (phút/km):</h4>
+                    <h4>{t('min-pace')}</h4>
                     <h4>{min_pace}</h4>
                   </div>
                 </div>
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
-                    <h4>Ngày thành lập câu lạc bộ: </h4>
+                    <h4>{t('created-at')}</h4>
                     <h4>{LocaleHelper.formatDateTime(new Date(create_at))}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>Quản lí câu lạc bộ: </h4>
+                    <h4>{t('manager')}</h4>
                     <h4>{manager}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>VĐV Nam: </h4>
+                    <h4>{t('athlete-male')}</h4>
                     <h4>{male}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>VĐV Nữ:</h4>
+                    <h4>{t('athlete-female')}</h4>
                     <h4>{female}</h4>
                   </div>
                   <div id='detail-club-container'>
-                    <h4>Tốc độ trung bình tối đa (phút/km):</h4>
+                    <h4>{t('max-pace')}</h4>
                     <h4>{max_pace}</h4>
                   </div>
                 </div>
@@ -359,7 +413,7 @@ const ClubDetail = () => {
             ) : null}
           </div>
           <div id='info-detail'>
-            <Title title='Bài viết của câu lạc bộ' />
+            <Title title={t('post-clubs')} />
             <News data={news} />
           </div>
           <div id='info-detail'>
@@ -368,7 +422,7 @@ const ClubDetail = () => {
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar-plus'
-                label='Giới thiệu'
+                label={t('detail')}
                 onClick={() => {
                   setActiveIndex(1)
                 }}
@@ -377,7 +431,7 @@ const ClubDetail = () => {
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar-plus'
-                label='Hoạt động gần đây'
+                label={t('recent-activities')}
                 onClick={() => {
                   setActiveIndex(2)
                 }}
@@ -386,7 +440,7 @@ const ClubDetail = () => {
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '100%' }}
                 icon='pi pi-calendar'
-                label='Bảng xếp hạng thành viên '
+                label={t('scoreboard-member')}
                 onClick={() => {
                   setActiveIndex(3)
                 }}

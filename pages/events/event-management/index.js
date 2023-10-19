@@ -8,6 +8,8 @@ import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import { SpeedDial } from 'primereact/speeddial'
 import React, { useState } from 'react'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const EventManagement = () => {
   const [clubs, setClubs] = useState([])
@@ -86,6 +88,7 @@ const EventManagement = () => {
   const handleClick = (url) => {
     router.push(url)
   }
+  const { t } = useTranslation('event')
   const itemTemplate = (item) => {
     return (
       <div id='dataview-container'>
@@ -110,11 +113,11 @@ const EventManagement = () => {
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_members} Thành viên
+              {item.total_members} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_clubs} Câu lạc bộ
+              {item.total_clubs} {t('club-join')}
             </h4>
           </div>
           <div id='name-dataview'>
@@ -126,11 +129,12 @@ const EventManagement = () => {
                   id='link-dataview'
                   href={`/events/event-management/${item.event_id}`}
                 >
-                  Tham gia sự kiện{' '}
+                  {t('event-join')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <Link id='link-dataview' href='/share'>
-                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                  {t('share')}{' '}
+                  <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
             </div>
@@ -149,7 +153,6 @@ const EventManagement = () => {
       label: 'Add',
       icon: 'pi pi-plus',
       command: () => handleClick('/events/event-new'),
-      title: 'Thêm sự kiện mới',
     },
     {
       label: 'Update',
@@ -157,13 +160,11 @@ const EventManagement = () => {
       command: () => {
         handleClick('/events/event-new')
       },
-      title: 'Cập nhật sự kiện',
     },
     {
       label: 'Delete',
       icon: 'pi pi-trash',
       command: () => {},
-      title: 'Xóa sự kiệnộ',
     },
     {
       label: 'React Website',
@@ -176,9 +177,9 @@ const EventManagement = () => {
       <Title
         title={
           index === 3
-            ? 'Các sự kiện đang diễn ra'
+            ? t('on-going-event')
             : index === 2
-            ? 'Các sự kiện đã tạo'
+            ? t('created-event')
             : null
         }
       />
@@ -197,7 +198,7 @@ const EventManagement = () => {
               id={index == 1 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
-              label={'Thêm sự kiện mới'}
+              label={t('new-event')}
               icon='pi pi-plus'
               iconPos='right'
               onClick={() => {
@@ -209,7 +210,7 @@ const EventManagement = () => {
               id={index == 2 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
-              label='Sự kiện đã tạo'
+              label={t('created-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
@@ -220,7 +221,7 @@ const EventManagement = () => {
               id={index == 3 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
-              label='Sự kiện đang diễn ra'
+              label={t('on-going-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
@@ -242,7 +243,7 @@ const EventManagement = () => {
               id={index == 2 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
-              label='Sự kiện đã tham gia'
+              label={t('joined-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
@@ -253,7 +254,7 @@ const EventManagement = () => {
               id={index == 3 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
-              label='Sự kiện đang diễn ra'
+              label={t('on-going-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
@@ -281,3 +282,10 @@ const EventManagement = () => {
 }
 
 export default EventManagement
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['event','topbar'])),
+    },
+  }
+}

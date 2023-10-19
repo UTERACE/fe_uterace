@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
@@ -27,6 +28,7 @@ const DataView = ({
   const [title, setTitle] = useState('Tiêu đề bài viết hoặc trang')
   const [image, setImage] = useState('https://example.com/image.jpg')
   const [caption, setCaption] = useState('Mô tả bài viết hoặc trang')
+  const { t } = useTranslation('club')
 
   const onClickShare = () => {
     // Mở một cửa sổ mới với URL chia sẻ Facebook
@@ -94,7 +96,7 @@ const DataView = ({
                 <div id='info-dataview'>
                   <h4>
                     <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-                    {item.member} Thành viên
+                    {item.member} {t('member-join')}
                   </h4>
                   <h4>
                     <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
@@ -107,7 +109,7 @@ const DataView = ({
                     <h4>{item.name}</h4>
                     <div id='share-register-content'>
                       <Link id='link-dataview' href={href + item.club_id}>
-                        Tham gia câu lạc bộ{' '}
+                        {t('club-join')}{' '}
                         <i className='pi pi-arrow-right' aria-hidden='true'></i>
                       </Link>
                       <a
@@ -120,7 +122,7 @@ const DataView = ({
                           setVisible(true)
                         }}
                       >
-                        Chia sẻ{' '}
+                        {t('share')}{' '}
                         <i className='pi pi-share-alt' aria-hidden='true'></i>
                       </a>
                     </div>

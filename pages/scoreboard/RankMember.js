@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Avatar } from 'primereact/avatar'
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import { useTranslation } from 'next-i18next'
 
 const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
@@ -67,37 +68,38 @@ const RankMember = ({ value }) => {
     }
     return ''
   }
+  const { t } = useTranslation('scoreboard')
   const memberColumns = [
     {
       field: 'ranking',
-      header: 'Hạng',
+      header: t('rank'),
       body: formatRank,
       bodyClassName: 'text-center',
     },
     {
-      header: 'Thành viên',
+      header: t('member'),
       body: fullnameWithImageTemplate,
     },
     {
       field: 'total_distance',
-      header: 'Tổng quảng đường (km)',
+      header: t('total-distance'),
       bodyClassName: 'text-center',
       body: formatNumber,
     },
     {
       field: 'pace',
-      header: 'Pace (phút/km)',
+      header: t('pace'),
       body: formatNumber,
       bodyClassName: 'text-center',
     },
     {
       field: 'organization',
-      header: 'Cơ quan, tổ chức',
+      header: t('organization'),
       bodyClassName: 'text-center',
     },
     {
       field: 'gender',
-      header: 'Giới tính',
+      header: t('gender'),
       bodyClassName: 'text-center',
     },
   ]

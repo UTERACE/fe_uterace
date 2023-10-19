@@ -4,6 +4,7 @@ import { Carousel } from 'primereact/carousel'
 import Link from 'next/link'
 import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
+import { useTranslation } from 'next-i18next'
 const Event = ({ event }) => {
   const [events, setEvents] = useState([])
   useEffect(() => {
@@ -26,10 +27,13 @@ const Event = ({ event }) => {
       numScroll: 1,
     },
   ]
-
+  const { t } = useTranslation('event')
   const eventTemplate = (event) => {
     return (
-      <Link id='link-dataview-container' href={`/events/event-detail/${event.event_id}`}>
+      <Link
+        id='link-dataview-container'
+        href={`/events/event-detail/${event.event_id}`}
+      >
         <div id='event-container'>
           <div id='image-event-container'>
             <img src={event.image} alt={event.name} />
@@ -37,11 +41,11 @@ const Event = ({ event }) => {
           <div id='info-event'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {event.member} Thành viên
+              {event.member} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-briefcase ml2-icon' aria-hidden='true'></i>
-              {event.club} Câu lạc bộ
+              {event.club} {t('club-join')}
             </h4>
           </div>
           <div id='name-event'>
@@ -53,11 +57,12 @@ const Event = ({ event }) => {
                   id='link-event'
                   href={`/events/event-detail/${event.event_id}`}
                 >
-                  Tham gia sự kiện{' '}
+                  {t('event-join')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <Link id='link-event' href='/share'>
-                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                  {t('share')}{' '}
+                  <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
             </div>

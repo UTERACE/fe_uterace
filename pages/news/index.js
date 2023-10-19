@@ -4,6 +4,8 @@ import DataView from '@/components/dataview/DataView'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const NewsPage = () => {
   const [news, setNews] = useState([])
@@ -11,6 +13,7 @@ const NewsPage = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const { t } = useTranslation('news')
   const data = {
     per_page: 5,
     current_page: 1,
@@ -74,17 +77,22 @@ const NewsPage = () => {
   }
   const itemTemplate = (item) => {
     return (
-      <Link id='link-dataview-container' href={`/news/news-detail/${item.news_id}`}>
+      <Link
+        id='link-dataview-container'
+        href={`/news/news-detail/${item.news_id}`}
+      >
         <div id='dataview-container'>
           <div id='image-container-dataview'>
             <img src={item.image} alt={item.name} />
           </div>
           <div id='info-dataview'>
             <h4>
-              Ngày tạo: {LocaleHelper.formatDateTime(new Date(item.createAt))}
+              {t('created-at')}:{' '}
+              {LocaleHelper.formatDateTime(new Date(item.createAt))}
             </h4>
             <h4>
-              Cập nhật: {LocaleHelper.formatDateTime(new Date(item.updateAt))}
+              {t('updated-at')}:{' '}
+              {LocaleHelper.formatDateTime(new Date(item.updateAt))}
             </h4>
           </div>
           <div id='name-dataview'>
@@ -93,12 +101,15 @@ const NewsPage = () => {
               <h4>{item.name}</h4>
               <h6>{item.description}</h6>
               <div id='share-register-content'>
-                <Link id='link-dataview' href={`/news/news-detail/${item.news_id}`}>
-                  Xem ngay{' '}
+                <Link
+                  id='link-dataview'
+                  href={`/news/news-detail/${item.news_id}`}
+                >
+                  {t('watch-now')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <Link id='link-dataview' href='/share'>
-                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                  {t('share')} <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
             </div>
@@ -114,7 +125,7 @@ const NewsPage = () => {
   }
   return (
     <div className='centered-content-dataview'>
-      <Title title='Các tin tức thể thao ' />
+      <Title title={t('news')}/>
       <DataView
         data={data.news}
         href='/news/news-detail/'
@@ -133,3 +144,10 @@ const NewsPage = () => {
 }
 
 export default NewsPage
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['news','topbar'])),
+    },
+  }
+}

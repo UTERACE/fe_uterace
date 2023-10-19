@@ -1,0 +1,21 @@
+{
+    "scoreboard":"Scoreboard",
+    "news":"Tin tức",
+    "see-more":"See more",
+    "event-popular":"Popular events",
+    "event-new":"New events",
+    "event-coming":"Coming events",
+    "event-expired":"Expired events",
+    "event-join":"Join event",
+    "event-joined":"Joined",
+    "event-join-success":"Join success",
+    "event-join-fail":"Join fail",
+    "club-popular":"Popular clubs",
+    "club-new":"New clubs",
+    "statistic-social":"Social statistic",
+    "news-popular":"Popular news",
+    "total-member":"Total members",
+    "total-club":"Total clubs",
+    "total-event":"Total events",
+    "total-distance":"Total distance (km)"
+}

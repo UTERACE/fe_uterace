@@ -10,6 +10,8 @@ import React, { useState } from 'react'
 import Update from './UpdateClub'
 import { Dialog } from 'primereact/dialog'
 import AddClub from './AddClub'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const ClubManagement = () => {
   const [clubs, setClubs] = useState([])
@@ -95,6 +97,7 @@ const ClubManagement = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
+  const { t } = useTranslation('club')
   const itemTemplate = (item) => {
     return (
       <div id='dataview-container'>
@@ -119,7 +122,7 @@ const ClubManagement = () => {
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.member} Thành viên
+              {item.member} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
@@ -135,11 +138,12 @@ const ClubManagement = () => {
                   id='link-dataview'
                   href={`/clubs/club-management/${item.id}`}
                 >
-                  Tham gia câu lạc bộ{' '}
+                  {t('club-join')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <Link id='link-dataview' href='/share'>
-                  Chia sẻ <i className='pi pi-share-alt' aria-hidden='true'></i>
+                  {t('share')}{' '}
+                  <i className='pi pi-share-alt' aria-hidden='true'></i>
                 </Link>
               </div>
             </div>
@@ -161,7 +165,6 @@ const ClubManagement = () => {
       label: 'Add',
       icon: 'pi pi-plus',
       command: () => {},
-      title: 'Thêm câu lạc bộ mới',
     },
     {
       label: 'Update',
@@ -169,13 +172,11 @@ const ClubManagement = () => {
       command: () => {
         handleClickEdit(club_id)
       },
-      title: 'Cập nhật câu lạc bộ',
     },
     {
       label: 'Delete',
       icon: 'pi pi-trash',
       command: () => {},
-      title: 'Xóa câu lạc bộ',
     },
     {
       label: 'React Website',
@@ -188,14 +189,14 @@ const ClubManagement = () => {
       <Title
         title={
           index === 3
-            ? 'Các câu lạc bộ đã tham gia'
+            ? t('joined-clubs')
             : index === 2
-            ? 'Các câu lạc bộ đã tạo'
+            ? t('created-clubs')
             : null
         }
       />
       <Dialog
-        header='Chỉnh sửa thông tin câu lạc bộ'
+        header={t('update-clubs')}
         visible={visibleChange}
         position='top'
         style={{
@@ -213,7 +214,7 @@ const ClubManagement = () => {
         />
       </Dialog>
       <Dialog
-        header='Thêm câu lạc bộ mới'
+        header={t('new-club')}
         visible={visibleAdd}
         position='top'
         style={{
@@ -240,7 +241,7 @@ const ClubManagement = () => {
             id={index == 1 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
-            label={'Thêm câu lạc bộ mới'}
+            label={t('new-club')}
             icon='pi pi-plus'
             iconPos='right'
             onClick={() => {
@@ -252,7 +253,7 @@ const ClubManagement = () => {
             id={index == 2 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
-            label='Câu lạc bộ đã tạo'
+            label={t('created-clubs')}
             icon='pi pi-list'
             iconPos='right'
             onClick={() => {
@@ -263,7 +264,7 @@ const ClubManagement = () => {
             id={index == 3 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
-            label='Câu lạc bộ đã tham gia'
+            label={t('joined-clubs')}
             icon='pi pi-list'
             iconPos='right'
             onClick={() => {
@@ -290,3 +291,10 @@ const ClubManagement = () => {
 }
 
 export default ClubManagement
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['club', 'topbar'])),
+    },
+  }
+}

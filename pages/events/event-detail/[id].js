@@ -6,8 +6,62 @@ import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
 import Countdown from '../Countdown'
 import apiInstance from '@/api/apiInstance'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-const EventDetail = () => {
+export async function getStaticPaths() {
+  // Giả sử bạn lấy danh sách các ID từ API hoặc cơ sở dữ liệu của mình
+  const ids = await fetchEventIds()
+  if (!ids) {
+    return { paths: [], fallback: 'blocking' }
+  } // Chuyển đổi danh sách ID này thành định dạng mà Next.js yêu cầu
+  const paths = ids.map((event) => ({
+    params: { id: event.event_id.toString() },
+  }))
+
+  return {
+    paths,
+    fallback: 'blocking', // nếu bạn đặt là false, mọi path không nằm trong danh sách sẽ trả về 404
+  }
+}
+async function fetchEventIds() {
+  try {
+    const response = await apiInstance.get(
+      '/events?current_page=0&per_page=6&ongoing=true'
+    )
+    const data = await response.data.events
+    return data
+  } catch (error) {
+    console.error('Error fetching event IDs:', error)
+    return null
+  }
+}
+export const getStaticProps = async ({ locale, params }) => {
+  const event = await getEvent(params.id)
+  return {
+    props: {
+      event,
+      ...(await serverSideTranslations(locale, [
+        'detail',
+        'news',
+        'scoreboard',
+        'topbar',
+      ])),
+    },
+  }
+}
+async function getEvent(id) {
+  try {
+    const response = await apiInstance.get(`/events/event-detail/${id}`)
+    const data = await response.data
+    return data
+  } catch (error) {
+    console.error('Error fetching event details:', error)
+    return null
+  }
+}
+
+const EventDetail = ({ event }) => {
   const router = useRouter()
   const { id } = router.query
   const [isStatistic, setIsStatistic] = useState(false)
@@ -333,33 +387,29 @@ const EventDetail = () => {
     }
     fetchDetailEvent()
   }, [])
-  const fetchDetailEvent = async () => {
-    const res = await apiInstance.get(`/events/event-detail/${id}`)
-    console.log(res.data)
-    const data = res.data
-    if (res.status === 200) {
-      setIntroduce(data.details)
-      setImage(data.image)
-      setName(data.name)
-      setDescription(data.description)
-      setActivities(data.activities)
-      setRankMember(data.ranking_member)
-      setRankClub(data.ranking_club)
-      setDistance(data.distance)
-      setPrize(data.prize)
-      setRole(data.regulations)
-      setStartTime(data.from_date)
-      setEndTime(data.to_date)
-      setTotalMembers(data.total_members)
-      setTotalClubs(data.total_clubs)
-      setTotalDistance(data.total_distance)
-      setTotalActivities(data.total_activities)
-      setCompleted(data.completed)
-      setInProgress(data.in_progress)
-      setMale(data.male), setFemale(data.female)
-      setMinPace(data.min_pace)
-      setMaxPace(data.max_pace)
-    }
+  const fetchDetailEvent = () => {
+    const data = event
+    setIntroduce(data.details)
+    setImage(data.image)
+    setName(data.name)
+    setDescription(data.description)
+    setActivities(data.activities)
+    setRankMember(data.ranking_member)
+    setRankClub(data.ranking_club)
+    setDistance(data.distance)
+    setPrize(data.prize)
+    setRole(data.regulations)
+    setStartTime(data.from_date)
+    setEndTime(data.to_date)
+    setTotalMembers(data.total_members)
+    setTotalClubs(data.total_clubs)
+    setTotalDistance(data.total_distance)
+    setTotalActivities(data.total_activities)
+    setCompleted(data.completed)
+    setInProgress(data.in_progress)
+    setMale(data.male), setFemale(data.female)
+    setMinPace(data.min_pace)
+    setMaxPace(data.max_pace)
   }
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -369,7 +419,7 @@ const EventDetail = () => {
     setPerPage(event.rows)
     console.log(per_page)
   }
-
+  const { t } = useTranslation('detail')
   return (
     <div className='centered-content-detailpage'>
       <div className='centered-content-layout'>
@@ -388,7 +438,7 @@ const EventDetail = () => {
             <div id='event-time-detail'>
               <Countdown from_date={start_time} to_date={end_time} />
             </div>
-            <Button id='button-join' label='Tham gia ngay' onClick={() => {}} />
+            <Button id='button-join' label={t('join-now')} onClick={() => {}} />
           </div>
           <div id='event-distance-container'>
             <div id='event-distance-title-container'>
@@ -400,7 +450,7 @@ const EventDetail = () => {
                   marginBottom: '1rem',
                 }}
               >
-                Cự ly tham gia
+                {t('race-distances')}
               </div>
               <div id='event-distance-detail'>
                 {distance.map((item, index) => (
@@ -421,16 +471,16 @@ const EventDetail = () => {
                   marginBottom: '1rem',
                 }}
               >
-                Hoạt động hợp lệ
+                {t('qualifying-activities')}
               </div>
               <div id='event-distance-detail'>
                 <div id='distance-event'>
                   <i className='pi pi-map-marker'></i>
-                  <h4>Chạy bộ</h4>
+                  <h4>{t('running')}</h4>
                 </div>
                 <div id='distance-event'>
                   <i className='pi pi-map-marker'></i>
-                  <h4>Đi bộ</h4>
+                  <h4>{t('walking')}</h4>
                 </div>
                 <div></div>
               </div>
@@ -442,12 +492,12 @@ const EventDetail = () => {
               <Button
                 id='button-tab'
                 style={{ width: '35%' }}
-                label={`${total_members} Người tham gia`}
+                label={`${total_members} ${t('participants')}`}
                 onClick={() => {}}
               />
               <Button
                 id={!isStatistic ? 'button-tab' : 'button-tab--active'}
-                label='Xem thống kê'
+                label={t('view-statistic')}
                 style={{ width: '35%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
@@ -460,45 +510,45 @@ const EventDetail = () => {
               <div id='info-event-container'>
                 <div id='info-event-detail'>
                   <div id='detail-event-container'>
-                    <h4>Tổng số VĐV đã tham gia: </h4>
+                    <h4>{t('total-member-join')}</h4>
                     <h4>{total_members}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>Tổng số km đã chạy:</h4>
+                    <h4>{t('total-distance')}</h4>
                     <h4>{total_distance}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>Tổng số hoạt động:</h4>
+                    <h4>{t('total-activities')}</h4>
                     <h4>{total_activities}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>Tổng số câu lạc bộ:</h4>
+                    <h4>{t('total-clubs')}</h4>
                     <h4>{total_clubs}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>Tốc độ trung bình tối thiểu (phút/km):</h4>
+                    <h4>{t('min-pace')}</h4>
                     <h4>{min_pace}</h4>
                   </div>
                 </div>
                 <div id='info-event-detail'>
                   <div id='detail-event-container'>
-                    <h4>VĐV đã hoàn thành: </h4>
+                    <h4>{t('athlete-completed')}</h4>
                     <h4>{completed}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>VĐV chưa hoàn thành: </h4>
+                    <h4>{t('athlete-in-progress')}</h4>
                     <h4>{in_progress}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>VĐV Nam: </h4>
+                    <h4>{t('athlete-male')}</h4>
                     <h4>{male}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>VĐV Nữ:</h4>
+                    <h4>{t('athlete-female')}</h4>
                     <h4>{female}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>Tốc độ trung bình tối đa (phút/km):</h4>
+                    <h4>{t('max-pace')}</h4>
                     <h4>{max_pace}</h4>
                   </div>
                 </div>
@@ -511,7 +561,7 @@ const EventDetail = () => {
                 id={activeIndex === 0 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-tags'
-                label='Chi tiết'
+                label={t('detail')}
                 onClick={() => {
                   setActiveIndex(0)
                 }}
@@ -520,7 +570,7 @@ const EventDetail = () => {
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-calendar-plus'
-                label='Điều lệ'
+                label={t('rules')}
                 onClick={() => {
                   setActiveIndex(1)
                 }}
@@ -529,7 +579,7 @@ const EventDetail = () => {
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '22%' }}
                 icon='pi pi-calendar-plus'
-                label='Giải thưởng'
+                label={t('awards')}
                 onClick={() => {
                   setActiveIndex(2)
                 }}
@@ -538,7 +588,7 @@ const EventDetail = () => {
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
-                label='Thành viên '
+                label={t('scoreboard-member')}
                 onClick={() => {
                   setActiveIndex(3)
                 }}
@@ -547,7 +597,7 @@ const EventDetail = () => {
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
-                label='Câu lạc bộ'
+                label={t('scoreboard-club')}
                 onClick={() => {
                   setActiveIndex(4)
                 }}
