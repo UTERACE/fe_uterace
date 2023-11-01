@@ -7,83 +7,110 @@ import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import { SpeedDial } from 'primereact/speeddial'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import apiInstance from '@/api/apiInstance'
+import { Dialog } from 'primereact/dialog'
+import Update from './UpdateEvent'
+import AddEvent from './AddEvent'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 
 const EventManagement = () => {
-  const [clubs, setClubs] = useState([])
+  const [events, setEvents] = useState([])
+  const [dataEvent, setDataEvent] = useState({})
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [index, setIndex] = useState(2)
+  const [visibleChange, setVisibleChange] = useState(false)
+  const [visibleAdd, setVisibleAdd] = useState(false)
+  const [deleteStatus, setDeleteStatus] = useState(false)
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
 
   const router = useRouter()
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
   console.log('hasAdminRole', hasAdminRole)
-  const data = {
-    per_page: 5,
-    current_page: 1,
-    total_page: 5,
-    total_events: 22,
-    events: [
-      {
-        event_id: 127,
-        name: '21 DAY CHALLENGE - THE MONKEY WARRIOR ',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/e06bb7dc736ecb9b9920953e4.png?w=720',
-        total_members: 3,
-        total_clubs: 2,
-        outstanding: true,
-      },
-      {
-        event_id: 1,
-        name: 'MID-AUTUMN CHALLENGE - TẾT TRUNG THU ĐOÀN VIÊN ',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
-        total_members: 120,
-        total_clubs: 19,
-        outstanding: true,
-      },
-      {
-        event_id: 2,
-        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC MƯỜNG ',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=720',
-        total_members: 60,
-        total_clubs: 11,
-        outstanding: false,
-      },
-      {
-        event_id: 3,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 13 - BẮC GIANG ',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=720',
-        total_members: 240,
-        total_clubs: 30,
-        outstanding: true,
-      },
-      {
-        event_id: 4,
-        name: 'AZTEC LOST CHẶNG 1 - CHINH PHỤC THẦN MƯA TLALOC (THE GOD OF RAIN) ',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1bf678a8a67029fa1e6697c62.jpg?w=720',
-        total_members: 320,
-        total_clubs: 101,
-        outstanding: true,
-      },
-      {
-        event_id: 5,
-        name: 'RACE AROUND THE WORLD - IRAN: BÍ ẨN XỨ BA TƯ ',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/3661e301e10ee6febd38e793a.png?w=720',
-        total_members: 130,
-        total_clubs: 12,
-        outstanding: false,
-      },
-    ],
+  // const data = {
+  //   per_page: 5,
+  //   current_page: 1,
+  //   total_page: 5,
+  //   total_events: 22,
+  //   events: [
+  //     {
+  //       event_id: 127,
+  //       name: '21 DAY CHALLENGE - THE MONKEY WARRIOR ',
+  //       image:
+  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/e06bb7dc736ecb9b9920953e4.png?w=720',
+  //       total_members: 3,
+  //       total_clubs: 2,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       event_id: 1,
+  //       name: 'MID-AUTUMN CHALLENGE - TẾT TRUNG THU ĐOÀN VIÊN ',
+  //       image:
+  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
+  //       total_members: 120,
+  //       total_clubs: 19,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       event_id: 2,
+  //       name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC MƯỜNG ',
+  //       image:
+  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=720',
+  //       total_members: 60,
+  //       total_clubs: 11,
+  //       outstanding: false,
+  //     },
+  //     {
+  //       event_id: 3,
+  //       name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 13 - BẮC GIANG ',
+  //       image:
+  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=720',
+  //       total_members: 240,
+  //       total_clubs: 30,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       event_id: 4,
+  //       name: 'AZTEC LOST CHẶNG 1 - CHINH PHỤC THẦN MƯA TLALOC (THE GOD OF RAIN) ',
+  //       image:
+  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1bf678a8a67029fa1e6697c62.jpg?w=720',
+  //       total_members: 320,
+  //       total_clubs: 101,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       event_id: 5,
+  //       name: 'RACE AROUND THE WORLD - IRAN: BÍ ẨN XỨ BA TƯ ',
+  //       image:
+  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/3661e301e10ee6febd38e793a.png?w=720',
+  //       total_members: 130,
+  //       total_clubs: 12,
+  //       outstanding: false,
+  //     },
+  //   ],
+  // }
+  useEffect(() => {
+    fetchEventsOnGoing()
+  }, [current_page, per_page])
+  const fetchEventsOnGoing = async () => {
+    const res = await apiInstance.get(
+      `/events?current_page=${current_page}&per_page=${per_page}&ongoing=true`
+    )
+    if (res.status === 200) {
+      const data = res.data
+      setEvents(data.events)
+      setTotalRecords(data.total_events)
+      setCurrentPage(data.current_page)
+      setPerPage(data.per_page)
+    }
   }
   const handleClick = (url) => {
     router.push(url)
@@ -100,7 +127,7 @@ const EventManagement = () => {
             <img src={item.image} alt={item.name} />
           </Link>
           <OutstandingEdit
-            items={items}
+            items={items(item.event_id)}
             isOutstanding={item.outstanding}
             id={item.event_id}
             title={'sự kiện'}
@@ -148,7 +175,22 @@ const EventManagement = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const items = [
+  const handleClickEdit = (event_id) => {
+    fetchDetailEvent(event_id)
+  }
+  const fetchDetailEvent = async (event_id) => {
+    try {
+      const res = await apiInstance.get(`/events/${event_id}`)
+      if (res.status === 200) {
+        const data = res.data
+        setDataEvent(data)
+        setVisibleChange(true)
+      }
+    } catch (error) {
+      showToast('error', 'Lỗi', error)
+    }
+  }
+  const items = (event_id) => [
     {
       label: 'Add',
       icon: 'pi pi-plus',
@@ -158,7 +200,7 @@ const EventManagement = () => {
       label: 'Update',
       icon: 'pi pi-pencil',
       command: () => {
-        handleClick('/events/event-new')
+        handleClickEdit(event_id)
       },
     },
     {
@@ -183,6 +225,48 @@ const EventManagement = () => {
             : null
         }
       />
+      <Dialog
+        header={t('update-events')}
+        visible={visibleChange}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleChange(false)}
+      >
+        <Update
+          club_id={dataEvent.event_id}
+          image={dataEvent.image}
+          name={dataEvent.name}
+          description={dataEvent.description}
+          start_time={dataEvent.from_date}
+          end_time={dataEvent.to_date}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleChange={setVisibleChange}
+        />
+      </Dialog>
+      <Dialog
+        header={t('new-event')}
+        visible={visibleAdd}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleAdd(false)}
+      >
+        <AddEvent
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleAdd={setVisibleAdd}
+        />
+      </Dialog>
       <div className='centered-content-layout'>
         {hasAdminRole ? (
           <div
@@ -265,17 +349,17 @@ const EventManagement = () => {
         )}
       </div>
       <DataView
-        data={data.events}
+        data={events}
         href='/clubs/club-management/'
         itemTemplate={itemTemplate}
       />
       <Paginator
         first={first}
-        rows={data.per_page}
-        totalRecords={data.total_events}
-        rowsPerPageOptions={[5, 10, 15]}
+        rows={per_page}
+        totalRecords={totalRecords}
+        rowsPerPageOptions={[6, 9, 12]}
         onPageChange={onPageChange}
-        page={data.current_page}
+        page={current_page}
       />
     </div>
   )
@@ -285,7 +369,7 @@ export default EventManagement
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['event','topbar'])),
+      ...(await serverSideTranslations(locale, ['event', 'topbar'])),
     },
   }
 }

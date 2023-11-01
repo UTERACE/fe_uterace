@@ -14,9 +14,9 @@ const DynamicTinyMCE = dynamic(
     loading: () => <p>Loading...</p>,
   }
 )
-const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
-  const [nameClub, setNameClub] = useState('')
-  const [descriptionClub, setDescriptionClub] = useState('')
+const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
+  const [nameEvent, setNameEvent] = useState('')
+  const [descriptionEvent, setDescriptionEvent] = useState('')
   const [background, setBackground] = useState('')
   const [introduce, setIntroduce] = useState('')
 
@@ -96,7 +96,7 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
               type='text'
               style={{ width: '100%' }}
               onChange={(e) => {
-                setNameClub(e.target.value)
+                setNameEvent(e.target.value)
               }}
             />
           </Field>
@@ -106,7 +106,7 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
               type='text'
               style={{ width: '100%', height: '8rem' }}
               onChange={(e) => {
-                setDescriptionClub(e.target.value)
+                setDescriptionEvent(e.target.value)
               }}
             />
           </Field>
@@ -122,8 +122,8 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
               </Field>
             </div>
           </div>
-          <h1>{nameClub}</h1>
-          <h6>{descriptionClub}</h6>
+          <h1>{nameEvent}</h1>
+          <h6>{descriptionEvent}</h6>
         </div>
         <h1>Giới thiệu</h1>
         <div id='info-detail'>
@@ -138,4 +138,4 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
   )
 }
 
-export default AddClub
+export default AddEvent

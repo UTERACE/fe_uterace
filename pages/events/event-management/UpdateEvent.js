@@ -7,8 +7,18 @@ import React, { useEffect, useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import Countdown from '../Countdown'
 import { Calendar } from 'primereact/calendar'
+import apiInstance from '@/api/apiInstance'
 
-const Update = ({ image, name, description, start_time, end_time }) => {
+const Update = ({
+  image,
+  name,
+  description,
+  start_time,
+  end_time,
+  setLoading,
+  showToast,
+  setVisibleChange,
+}) => {
   const [nameClub, setNameClub] = useState(name)
   const [background, setBackground] = useState(image)
   const [initialValues, setInitialValues] = useState({})
@@ -16,14 +26,18 @@ const Update = ({ image, name, description, start_time, end_time }) => {
   const [end, setEnd] = useState(end_time)
 
   const onSubmit = (data) => {
-    data.background = background
-    console.log(data)
+    data.image = background
+    data.start_time = start
+    data.end_time = end
+    handleUpdateEvent(data)
   }
   useEffect(() => {
     const start_time = new Date(start)
-    start_time.setHours(start_time.getHours() - 7)
+    start_time.setHours(start_time.getHours())
     const end_time = new Date(end)
-    end_time.setHours(end_time.getHours() - 7)
+    end_time.setHours(end_time.getHours())
+    console.log('start', start_time)
+    console.log('end', end_time)
     setInitialValues({
       name: name,
       description: description,
@@ -31,6 +45,21 @@ const Update = ({ image, name, description, start_time, end_time }) => {
       end_time: end_time,
     })
   }, [start, end])
+  const handleUpdateEvent = async (data) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.put('/events', data)
+      const dataRes = res.data
+      if (res.status == 200) {
+        showToast('success', 'Chỉnh sửa sự kiện thành công')
+        setLoading(false)
+        setVisibleChange(false)
+      }
+    } catch (error) {
+      showToast('error', 'Chỉnh sửa sự kiện thất bại', error)
+      setLoading(false)
+    }
+  }
 
   const customBase64Uploader = async (event) => {
     const file = event.files[0]

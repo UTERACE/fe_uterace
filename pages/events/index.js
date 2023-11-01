@@ -10,8 +10,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const Events = () => {
   const [events, setEvents] = useState([])
-  const [current_page, setCurrentPage] = useState(0)
-  const [per_page, setPerPage] = useState(5)
+  const [current_page, setCurrentPage] = useState(1)
+  const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [onGoing, setOnGoing] = useState(true)
@@ -85,7 +85,7 @@ const Events = () => {
     if (res.status === 200) {
       const data = res.data
       setEvents(data.events)
-      setTotalRecords(data.total_event)
+      setTotalRecords(data.total_events)
       setCurrentPage(data.current_page)
       setPerPage(data.per_page)
     }
@@ -177,7 +177,7 @@ const Events = () => {
         first={first}
         rows={per_page}
         totalRecords={totalRecords}
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[6, 9, 12]}
         onPageChange={onPageChange}
         page={current_page}
       />
