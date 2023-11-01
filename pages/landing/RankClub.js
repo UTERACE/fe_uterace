@@ -12,19 +12,19 @@ const RankClub = ({ value }) => {
       <div className='customer-info-rank '>
         {rowData.ranking === 1 ? (
           <img
-            src='https://mobirace.net//Images/no1.png'
+            src='/no1.png'
             alt='rank1'
             className='customer-rank'
           />
         ) : rowData.ranking === 2 ? (
           <img
-            src='https://mobirace.net//Images/no2.png'
+            src='/no2.png'
             alt='rank2'
             className='customer-rank'
           />
         ) : rowData.ranking === 3 ? (
           <img
-            src='https://mobirace.net//Images/no3.png'
+            src='/no3.png'
             alt='rank3'
             className='customer-rank'
           />

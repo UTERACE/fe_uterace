@@ -6,92 +6,149 @@ import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import { SpeedDial } from 'primereact/speeddial'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Update from './UpdateClub'
 import { Dialog } from 'primereact/dialog'
 import AddClub from './AddClub'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
+import apiInstance from '@/api/apiInstance'
 
 const ClubManagement = () => {
   const [clubs, setClubs] = useState([])
-  const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [current_page, setCurrentPage] = useState(0)
+  const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleAdd, setVisibleAdd] = useState(false)
   const [dataClub, setDataClub] = useState({})
   const [index, setIndex] = useState(2)
+  const [deleteStatus, setDeleteStatus] = useState(false)
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
 
-  const data = {
-    per_page: 5,
-    current_page: 1,
-    total_page: 5,
-    total_clubs: 22,
-    clubs: [
-      {
-        club_id: 1,
-        name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
-        image: 'https://picsum.photos/200/300',
-        total_members: 100,
-        total_distance: 1000,
-        outstanding: true,
-      },
-      {
-        club_id: 2,
-        name: 'Dak Lak Runners',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/IMG_20200816_094952_16082020_094942_562.jpg',
-        total_members: 100,
-        total_distance: 1000,
-        outstanding: false,
-      },
-      {
-        club_id: 3,
-        name: 'MOBIFONE ĐẮK LẮK - ĐẮK NÔNG',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202010/dl_dn_17102020_095936_684.jpg',
-        total_members: 100,
-        total_distance: 1000,
-        outstanding: true,
-      },
-      {
-        club_id: 4,
-        name: 'XOSOKIENTHIETQUANGBINH RUNNERS CLUB',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202103/IMG_20200913_114028_18032021_152058_637.jpg',
-        total_members: 100,
-        total_distance: 1000,
-        outstanding: true,
-      },
-      {
-        club_id: 5,
-        name: 'Đài Viễn Thông Đông HCM - TT MLMN',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/FN_29092020_130940_125.png',
-        total_members: 100,
-        total_distance: 1000,
-        outstanding: false,
-      },
-      {
-        club_id: 6,
-        name: 'MLMN Win Together',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        total_members: 100,
-        total_distance: 1000,
-        outstanding: true,
-      },
-    ],
+  // const data = {
+  //   per_page: 5,
+  //   current_page: 1,
+  //   total_page: 5,
+  //   total_clubs: 22,
+  //   clubs: [
+  //     {
+  //       club_id: 1,
+  //       name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
+  //       image: 'https://picsum.photos/200/300',
+  //       total_members: 100,
+  //       total_distance: 1000,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       club_id: 2,
+  //       name: 'Dak Lak Runners',
+  //       image:
+  //         'https://mobirace.net/Upload/Images/Club/202008/IMG_20200816_094952_16082020_094942_562.jpg',
+  //       total_members: 100,
+  //       total_distance: 1000,
+  //       outstanding: false,
+  //     },
+  //     {
+  //       club_id: 3,
+  //       name: 'MOBIFONE ĐẮK LẮK - ĐẮK NÔNG',
+  //       image:
+  //         'https://mobirace.net/Upload/Images/Club/202010/dl_dn_17102020_095936_684.jpg',
+  //       total_members: 100,
+  //       total_distance: 1000,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       club_id: 4,
+  //       name: 'XOSOKIENTHIETQUANGBINH RUNNERS CLUB',
+  //       image:
+  //         'https://mobirace.net/Upload/Images/Club/202103/IMG_20200913_114028_18032021_152058_637.jpg',
+  //       total_members: 100,
+  //       total_distance: 1000,
+  //       outstanding: true,
+  //     },
+  //     {
+  //       club_id: 5,
+  //       name: 'Đài Viễn Thông Đông HCM - TT MLMN',
+  //       image:
+  //         'https://mobirace.net/Upload/Images/Club/202009/FN_29092020_130940_125.png',
+  //       total_members: 100,
+  //       total_distance: 1000,
+  //       outstanding: false,
+  //     },
+  //     {
+  //       club_id: 6,
+  //       name: 'MLMN Win Together',
+  //       image:
+  //         'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
+  //       total_members: 100,
+  //       total_distance: 1000,
+  //       outstanding: true,
+  //     },
+  //   ],
+  // }
+  // const dataDetail = {
+  //   image:
+  //     'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
+  //   name: 'CLB ĐỒNG HÀNH CÙNG CÁC THIÊN THẦN',
+  //   description:
+  //     'Giải chạy online “E-run for the heart I” do Đoàn khoa Quản trị kinh doanh (Đoàn trường Đại học Quốc tế Miền Đông) tổ chức với mong muốn thúc đẩy tinh thần tập luyện thể dục thể thao cho mọi người, đặc biệt là các bạn trẻ, hướng tới ngày tim mạch thế giới 29/9 và tuyên truyền, phổ biến, nâng cao nhận thức của cộng đồng về tăng cường sức khỏe tim mạch, phòng ngừa và tránh những rủi ro về sức khỏe tim mạch.',
+  // }
+  useEffect(() => {
+    if (index === 2) {
+      fetchCreatedClubs()
+    } else if (index === 3) {
+      fetchJoinedClubs()
+    }
+  }, [current_page, per_page, index, visibleChange, visibleAdd, deleteStatus])
+  const fetchCreatedClubs = async () => {
+    try {
+      const res = await apiInstance.get(
+        `/clubs/created-club?current_page=${current_page}&per_page=${per_page}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setClubs(data.clubs)
+        setTotalRecords(data.total_clubs)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+      }
+    } catch (err) {
+      showToast('error', 'Lỗi', err)
+    }
   }
-  const dataDetail = {
-    image:
-      'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-    name: 'CLB ĐỒNG HÀNH CÙNG CÁC THIÊN THẦN',
-    description:
-      'Giải chạy online “E-run for the heart I” do Đoàn khoa Quản trị kinh doanh (Đoàn trường Đại học Quốc tế Miền Đông) tổ chức với mong muốn thúc đẩy tinh thần tập luyện thể dục thể thao cho mọi người, đặc biệt là các bạn trẻ, hướng tới ngày tim mạch thế giới 29/9 và tuyên truyền, phổ biến, nâng cao nhận thức của cộng đồng về tăng cường sức khỏe tim mạch, phòng ngừa và tránh những rủi ro về sức khỏe tim mạch.',
+  const fetchJoinedClubs = async () => {
+    try {
+      const res = await apiInstance.get(
+        `/clubs/joined-club?current_page=${current_page}&per_page=${per_page}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setClubs(data.clubs)
+        setTotalRecords(data.total_clubs)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+      }
+    } catch (err) {
+      showToast('error', 'Lỗi', err)
+    }
   }
+  const fetchDetailClub = async (club_id) => {
+    try {
+      const res = await apiInstance.get(`/clubs/${club_id}`)
+      if (res.status === 200) {
+        setDataClub(res.data)
+        setVisibleChange(true)
+      }
+    } catch (err) {
+      showToast('error', 'Lỗi', err)
+    }
+  }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
@@ -122,7 +179,7 @@ const ClubManagement = () => {
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.member} {t('member-join')}
+              {item.total_member} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
@@ -153,12 +210,21 @@ const ClubManagement = () => {
     )
   }
   const handleClickEdit = (club_id) => {
-    if (club_id == 1) {
-      setDataClub(dataDetail)
-    } else {
-      setDataClub({})
+    fetchDetailClub(club_id)
+  }
+  const handleClickDelete = (club_id) => {
+    deleteClub(club_id)
+  }
+  const deleteClub = async (club_id) => {
+    try {
+      const res = await apiInstance.delete(`/clubs/${club_id}`)
+      if (res.status === 200) {
+        showToast('success', 'Xóa câu lạc bộ thành công')
+        setDeleteStatus(!deleteStatus)
+      }
+    } catch (err) {
+      showToast('error', 'Xóa câu lạc bộ thất bại', err)
     }
-    setVisibleChange(true)
   }
   const items = (club_id) => [
     {
@@ -176,7 +242,9 @@ const ClubManagement = () => {
     {
       label: 'Delete',
       icon: 'pi pi-trash',
-      command: () => {},
+      command: () => {
+        handleClickDelete(club_id)
+      },
     },
     {
       label: 'React Website',
@@ -208,9 +276,13 @@ const ClubManagement = () => {
         onHide={() => setVisibleChange(false)}
       >
         <Update
+          club_id={dataClub.club_id}
           image={dataClub.image}
           name={dataClub.name}
           description={dataClub.description}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleChange={setVisibleChange}
         />
       </Dialog>
       <Dialog
@@ -225,7 +297,11 @@ const ClubManagement = () => {
         }}
         onHide={() => setVisibleAdd(false)}
       >
-        <AddClub />
+        <AddClub
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleAdd={setVisibleAdd}
+        />
       </Dialog>
       <div className='centered-content-layout'>
         <div
@@ -274,17 +350,17 @@ const ClubManagement = () => {
         </div>
       </div>
       <DataView
-        data={data.clubs}
+        data={clubs}
         href='/clubs/club-management/'
         itemTemplate={itemTemplate}
       />
       <Paginator
         first={first}
-        rows={data.per_page}
-        totalRecords={data.total_clubs}
+        rows={per_page}
+        totalRecords={totalRecords}
         rowsPerPageOptions={[5, 10, 15]}
         onPageChange={onPageChange}
-        page={data.current_page}
+        page={current_page}
       />
     </div>
   )

@@ -66,6 +66,7 @@ const TinyMCEEditor = (props) => {
         onEditorChange={handleEditorChange}
         init={{
           height: 800,
+          width: '100%',
           menubar: 'file edit view insert format tools table help',
           base_url: '/tinymce',
           suffix: '.min',

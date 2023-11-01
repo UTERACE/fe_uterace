@@ -7,9 +7,9 @@ import DataView from '@/components/dataview/DataView'
 import Statistic from './landing/Statistic'
 import News from './landing/News'
 import Detail from '@/components/landing/Detail'
-import HeadPage from '@/components/headpage/HeadPage'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Head from 'next/head'
 
 const Homepage = () => {
   const { t } = useTranslation('home')
@@ -347,7 +347,6 @@ const Homepage = () => {
   }
   return (
     <div>
-      <HeadPage title='UTE Race' description='Chao mung da den voi trang web' />
       <Slideshow data={data.overview} />
       <div className='centered-content-scoreboard'>
         <Title title={t('scoreboard')} />

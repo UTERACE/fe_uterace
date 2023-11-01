@@ -15,7 +15,11 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import ThemeProvider from '@/components/contexts/ThemeProvider'
 import { appWithTranslation } from 'next-i18next'
 import nextI18nextConfig from '@/next-i18next.config'
-
+import Head from 'next/head'
+/** @type {import("next").Metadata} */
+export const metadata = {
+  title: 'Next.js',
+}
 export default appWithTranslation(function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -34,26 +38,36 @@ export default appWithTranslation(function MyApp({ Component, pageProps }) {
     }
   }, [router])
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-        >
-          <Layout>
-            <ToastProvider>
-              <LoadingProvider>
-                <ThemeProvider />
-                {loading && (
-                  <div className='loading-overlay'>
-                    <ProgressSpinner />
-                  </div>
-                )}
-                <Component {...pageProps} />
-              </LoadingProvider>
-            </ToastProvider>
-          </Layout>
-        </GoogleOAuthProvider>
-      </PersistGate>
-    </Provider>
+    <>
+      <Head>
+        <title>UTE Race</title>
+        <meta
+          name='description'
+          content='Trang web tổ chức gỉai chạy bộ online'
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+          >
+            <Layout>
+              <ToastProvider>
+                <LoadingProvider>
+                  <ThemeProvider />
+                  {loading && (
+                    <div className='loading-overlay'>
+                      <ProgressSpinner />
+                    </div>
+                  )}
+                  <Component {...pageProps} />
+                </LoadingProvider>
+              </ToastProvider>
+            </Layout>
+          </GoogleOAuthProvider>
+        </PersistGate>
+      </Provider>
+    </>
   )
-},nextI18nextConfig);
+}, nextI18nextConfig)

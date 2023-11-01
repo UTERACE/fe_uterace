@@ -52,7 +52,7 @@ export const getStaticProps = async ({ locale, params }) => {
 }
 async function getEvent(id) {
   try {
-    const response = await apiInstance.get(`/events/event-detail/${id}`)
+    const response = await apiInstance.get(`/events/${id}`)
     const data = await response.data
     return data
   } catch (error) {

@@ -1,3 +1,4 @@
+import apiInstance from '@/api/apiInstance'
 import Form, { Field } from '@/components/react-hook-form/Form'
 import { Button } from 'primereact/button'
 import { FileUpload } from 'primereact/fileupload'
@@ -6,7 +7,15 @@ import { InputTextarea } from 'primereact/inputtextarea'
 import React, { useEffect, useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 
-const Update = ({ image, name, description }) => {
+const Update = ({
+  club_id,
+  image,
+  name,
+  description,
+  setLoading,
+  showToast,
+  setVisibleChange,
+}) => {
   const [nameEvent, setNameEvent] = useState(name)
   const [descriptionEvent, setDescriptionEvent] = useState(description)
   const [background, setBackground] = useState(image)
@@ -19,8 +28,25 @@ const Update = ({ image, name, description }) => {
     })
   }, [])
   const onSubmit = (data) => {
-    data.background = background
+    data.club_id = parseInt(club_id)
+    data.image = background
     console.log(data)
+    handleUpdateClub(data)
+  }
+  const handleUpdateClub = async (data) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.put('/clubs', data)
+      const dataRes = res.data
+      if (res.status == 200) {
+        showToast('success', 'Chỉnh sửa câu lạc bộ thành công')
+        setLoading(false)
+        setVisibleChange(false)
+      }
+    } catch (error) {
+      showToast('error', 'Chỉnh sửa câu lạc bộ thất bại', error)
+      setLoading(false)
+    }
   }
   const customBase64Uploader = async (event) => {
     const file = event.files[0]

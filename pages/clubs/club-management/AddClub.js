@@ -1,11 +1,11 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
-import { Button } from 'primereact/button'
 import { FileUpload } from 'primereact/fileupload'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 import React, { useEffect, useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import dynamic from 'next/dynamic'
+import apiInstance from '@/api/apiInstance'
 
 const DynamicTinyMCE = dynamic(
   () => import('../../../components/editor/TinyMCEEditor'),
@@ -14,7 +14,7 @@ const DynamicTinyMCE = dynamic(
     loading: () => <p>Loading...</p>,
   }
 )
-const AddClub = () => {
+const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
   const [nameEvent, setNameEvent] = useState('')
   const [descriptionEvent, setDescriptionEvent] = useState('')
   const [background, setBackground] = useState('')
@@ -28,9 +28,26 @@ const AddClub = () => {
     })
   }, [])
   const onSubmit = (data) => {
-    data.background = background
-    data.introduce = introduce
-    console.log(data)
+    data.image = background
+    data.details = introduce
+    data.min_pace = parseInt(data.min_pace)
+    data.max_pace = parseInt(data.max_pace)
+    handleCreateClub(data)
+  }
+  const handleCreateClub = async (data) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post('/clubs', data)
+      const dataRes = res.data
+      if (res.status == 200) {
+        showToast('success', 'Tạo câu lạc bộ thành công', dataRes.message)
+        setLoading(false)
+        setVisibleAdd(false)
+      }
+    } catch (error) {
+      showToast('error', 'Tạo câu lạc bộ thất bại', error)
+      setLoading(false)
+    }
   }
   const customBase64Uploader = async (event) => {
     const file = event.files[0]
@@ -93,15 +110,29 @@ const AddClub = () => {
               }}
             />
           </Field>
+          <div className='grid-form'>
+            <div className='col-6' id='width-100-center'>
+              <Field name='min_pace' label='Tốc độ tối thiểu' required>
+                <InputText type='number' style={{ width: '100%' }} />
+              </Field>
+            </div>
+            <div className='col-6' id='width-100-center'>
+              <Field name='max_pace' label='Tốc độ tối đa' required>
+                <InputText type='number' style={{ width: '100%' }} />
+              </Field>
+            </div>
+          </div>
           <h1>{nameEvent}</h1>
           <h6>{descriptionEvent}</h6>
         </div>
         <h1>Giới thiệu</h1>
-        <DynamicTinyMCE
-          value={introduce}
-          onSave={setIntroduce}
-          label={'Cập nhật thông tin'}
-        />
+        <div id='info-detail'>
+          <DynamicTinyMCE
+            value={introduce}
+            onSave={setIntroduce}
+            label={'Tạo câu lạc bộ của bạn'}
+          />
+        </div>
       </div>
     </Form>
   )
