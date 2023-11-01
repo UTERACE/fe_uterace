@@ -6,30 +6,29 @@ import { Button } from 'primereact/button'
 const ChangeAvatar = () => {
   const [background, setBackground] = useState('/bg1.png')
   const [avatar, setAvatar] = useState(`${store.getState().auth.image}`)
+
   const customBase64Uploader = async (event) => {
     const file = event.files[0]
     const reader = new FileReader()
-
     let blob = await fetch(file.objectURL).then((r) => r.blob())
-
     reader.readAsDataURL(blob)
     reader.onloadend = function () {
       const base64data = reader.result
       setBackground(base64data)
     }
   }
+
   const customBase64UploaderAvatar = async (event) => {
     const file = event.files[0]
     const reader = new FileReader()
-
     let blob = await fetch(file.objectURL).then((r) => r.blob())
-
     reader.readAsDataURL(blob)
     reader.onloadend = function () {
       const base64data = reader.result
       setAvatar(base64data)
     }
   }
+  
   return (
     <div id='change-avatar-container'>
       <div id='background-container'>

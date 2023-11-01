@@ -14,6 +14,7 @@ const DynamicTinyMCE = dynamic(
     loading: () => <p>Loading...</p>,
   }
 )
+
 const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
   const [nameClub, setNameClub] = useState('')
   const [descriptionClub, setDescriptionClub] = useState('')
@@ -21,12 +22,14 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
   const [introduce, setIntroduce] = useState('')
 
   const [initialValues, setInitialValues] = useState({})
+
   useEffect(() => {
     setInitialValues({
       name: '',
       description: '',
     })
   }, [])
+
   const onSubmit = (data) => {
     data.image = background
     data.details = introduce
@@ -34,6 +37,7 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
     data.max_pace = parseInt(data.max_pace)
     handleCreateClub(data)
   }
+
   const handleCreateClub = async (data) => {
     setLoading(true)
     try {
@@ -49,18 +53,18 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
       setLoading(false)
     }
   }
+
   const customBase64Uploader = async (event) => {
     const file = event.files[0]
     const reader = new FileReader()
-
     let blob = await fetch(file.objectURL).then((r) => r.blob())
-
     reader.readAsDataURL(blob)
     reader.onloadend = function () {
       const base64data = reader.result
       setBackground(base64data)
     }
   }
+
   return (
     <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='update-info-container'>
@@ -72,11 +76,7 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd }) => {
             height={630}
             scale={1}
           />
-          {/* <img src={background} alt='background' /> */}
         </div>
-        {/* <div id='camera-upload-container'>
-          <i className='fas fa-camera'></i>
-        </div> */}
         <div id='file-upload'>
           <FileUpload
             mode='basic'

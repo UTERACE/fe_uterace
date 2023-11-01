@@ -1,6 +1,5 @@
 import RankClub from '@/pages/landing/RankClub'
 import RankMember from '@/pages/scoreboard/RankMember'
-import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
@@ -10,20 +9,20 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export async function getStaticPaths() {
-  // Giả sử bạn lấy danh sách các ID từ API hoặc cơ sở dữ liệu của mình
   const ids = await fetchEventIds()
   if (!ids) {
     return { paths: [], fallback: 'blocking' }
-  } // Chuyển đổi danh sách ID này thành định dạng mà Next.js yêu cầu
+  }
   const paths = ids.map((event) => ({
     params: { id: event.event_id.toString() },
   }))
 
   return {
     paths,
-    fallback: 'blocking', // nếu bạn đặt là false, mọi path không nằm trong danh sách sẽ trả về 404
+    fallback: 'blocking',
   }
 }
+
 async function fetchEventIds() {
   try {
     const response = await apiInstance.get(
@@ -36,6 +35,7 @@ async function fetchEventIds() {
     return null
   }
 }
+
 export const getStaticProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
   return {
@@ -50,6 +50,7 @@ export const getStaticProps = async ({ locale, params }) => {
     },
   }
 }
+
 async function getEvent(id) {
   try {
     const response = await apiInstance.get(`/events/${id}`)
@@ -91,6 +92,9 @@ const EventDetail = ({ event }) => {
   const [in_progress, setInProgress] = useState(0)
   const [male, setMale] = useState(0)
   const [female, setFemale] = useState(0)
+
+  const { t } = useTranslation('detail')
+
   useEffect(() => {
     // const data = {
     //   total_members: 1765,
@@ -412,13 +416,10 @@ const EventDetail = ({ event }) => {
   }
   const onPageChange = (event) => {
     setFirst(event.first)
-    console.log(event)
     setCurrentPage(event.page + 1)
-    console.log(current_page)
     setPerPage(event.rows)
-    console.log(per_page)
   }
-  const { t } = useTranslation('detail')
+
   return (
     <div className='centered-content-detailpage'>
       <div className='centered-content-layout'>
@@ -427,11 +428,7 @@ const EventDetail = ({ event }) => {
             <img src={image} alt='event' />
           </div>
           <div id='event-info-detail'>
-            <img
-              id='event-info-detail-img'
-              src='https://picsum.photos/200/300'
-              alt='logo'
-            />
+            <img id='event-info-detail-img' src={image} alt='logo' />
             <h1>{name}</h1>
             <h6>{description}</h6>
             <div id='event-time-detail'>

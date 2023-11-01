@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import DataTable from '@/components/datatable/DataTable'
@@ -7,6 +7,9 @@ import { useTranslation } from 'next-i18next'
 
 const RankClub = ({ value }) => {
   const [loading, setLoading] = useState(false)
+  
+  const { t } = useTranslation('scoreboard')
+
   const formatRank = (rowData) => {
     return (
       <div className='customer-info-rank '>
@@ -34,6 +37,7 @@ const RankClub = ({ value }) => {
       </div>
     )
   }
+
   const fullnameWithImageTemplate = (rowData) => {
     return (
       <Link href={`clubs/club-detail/${rowData.club_id}`}>
@@ -44,13 +48,14 @@ const RankClub = ({ value }) => {
       </Link>
     )
   }
+
   const formatNumber = (rowData) => {
     if (rowData) {
       return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
-  const { t } = useTranslation('scoreboard')
+
   const clubsColumns = [
     {
       field: 'ranking',

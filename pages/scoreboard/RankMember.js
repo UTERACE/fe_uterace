@@ -8,6 +8,9 @@ import { useTranslation } from 'next-i18next'
 const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
   const [rankMember, setRankMember] = useState(value)
+  
+  const { t } = useTranslation('scoreboard')
+
   useEffect(() => {
     setLoading(true)
     setRankMember(value)
@@ -41,6 +44,7 @@ const RankMember = ({ value }) => {
       </div>
     )
   }
+
   const fullnameWithImageTemplate = (rowData) => {
     const avatarImage = rowData.image
     const avatarLabel = rowData.first_name
@@ -62,13 +66,14 @@ const RankMember = ({ value }) => {
       </div>
     )
   }
+
   const formatNumber = (rowData) => {
     if (rowData) {
       return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
-  const { t } = useTranslation('scoreboard')
+
   const memberColumns = [
     {
       field: 'ranking',

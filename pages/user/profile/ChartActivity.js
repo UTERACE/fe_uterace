@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 const ChartActivity = ({ label = [], dataColumn = [], dataLine = [] }) => {
   const [chartData, setChartData] = useState({})
   const [chartOptions, setChartOptions] = useState({})
+
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement)
     const textColor = documentStyle.getPropertyValue('--text-color')
@@ -33,6 +34,7 @@ const ChartActivity = ({ label = [], dataColumn = [], dataLine = [] }) => {
         },
       ],
     }
+
     const options = {
       maintainAspectRatio: false,
       aspectRatio: 1,
@@ -65,6 +67,7 @@ const ChartActivity = ({ label = [], dataColumn = [], dataLine = [] }) => {
     setChartData(data)
     setChartOptions(options)
   }, [dataColumn, dataLine])
+  
   return (
     <React.Fragment>
       <Chart

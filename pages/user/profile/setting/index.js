@@ -1,5 +1,5 @@
 import AppMenu from '@/components/dashboard/AppMenu'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Title from '@/components/landing/Title'
 import Update from './Update'
 import Connect from './Connect'
@@ -38,6 +38,7 @@ const SettingPage = () => {
       to: '/connect',
     },
   ]
+  
   return (
     <div className='centered-content-full'>
       <div className='centered-content-layout'>

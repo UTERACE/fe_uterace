@@ -31,9 +31,11 @@ const Connect = () => {
       </a>
     )
   }
+  
   useEffect(() => {
     fetchStatus()
   }, [])
+
   const fetchStatus = async () => {
     const res = await apiInstance.get(`/strava/status`)
     if (res.status === 200) {
@@ -47,6 +49,7 @@ const Connect = () => {
       }
     }
   }
+
   return (
     <div id='connect-container'>
       <div id='avatar-connect-container'>

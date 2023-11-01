@@ -1,7 +1,5 @@
 import RankClub from '@/pages/landing/RankClub'
-import Activity from '@/pages/user/profile/Activity'
 import RankMember from '@/pages/scoreboard/RankMember'
-import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
@@ -12,21 +10,22 @@ import dynamic from 'next/dynamic'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
+
 export async function getStaticPaths() {
-  // Giả sử bạn lấy danh sách các ID từ API hoặc cơ sở dữ liệu của mình
   const ids = await fetchEventIds()
   if (!ids) {
     return { paths: [], fallback: 'blocking' }
-  } // Chuyển đổi danh sách ID này thành định dạng mà Next.js yêu cầu
+  }
   const paths = ids.map((event) => ({
     params: { id: event.event_id.toString() },
   }))
 
   return {
     paths,
-    fallback: 'blocking', // nếu bạn đặt là false, mọi path không nằm trong danh sách sẽ trả về 404
+    fallback: 'blocking',
   }
 }
+
 async function fetchEventIds() {
   try {
     const response = await apiInstance.get(
@@ -39,6 +38,7 @@ async function fetchEventIds() {
     return null
   }
 }
+
 export const getStaticProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
   return {
@@ -53,6 +53,7 @@ export const getStaticProps = async ({ locale, params }) => {
     },
   }
 }
+
 async function getEvent(id) {
   try {
     const response = await apiInstance.get(`/events/${id}`)
@@ -63,6 +64,7 @@ async function getEvent(id) {
     return null
   }
 }
+
 const DynamicTinyMCE = dynamic(
   () => import('../../../components/editor/TinyMCEEditor'),
   {
@@ -70,6 +72,7 @@ const DynamicTinyMCE = dynamic(
     loading: () => <p>Loading...</p>,
   }
 )
+
 const EventDetail = ({ event }) => {
   const [isStatistic, setIsStatistic] = useState(false)
   const [current_page, setCurrentPage] = useState(1)
@@ -106,6 +109,8 @@ const EventDetail = ({ event }) => {
   const [in_progress, setInProgress] = useState(0)
   const [male, setMale] = useState(0)
   const [female, setFemale] = useState(0)
+
+  const { t } = useTranslation('detail')
 
   useEffect(() => {
     // const data = {
@@ -428,20 +433,12 @@ const EventDetail = ({ event }) => {
   }
   const onPageChange = (event) => {
     setFirst(event.first)
-    console.log(event)
     setCurrentPage(event.page + 1)
-    console.log(current_page)
     setPerPage(event.rows)
-    console.log(per_page)
   }
-  const { t } = useTranslation('detail')
+
   return (
-    <div
-      className='centered-content-detailpage'
-      style={{
-        backgroundImage: "url('/bg.png')",
-      }}
-    >
+    <div className='centered-content-detailpage'>
       <Dialog
         header={t('update-info-event')}
         visible={visibleChange}

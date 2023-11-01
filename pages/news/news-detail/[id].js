@@ -16,6 +16,7 @@ export async function getStaticPaths() {
     fallback: 'blocking',
   }
 }
+
 async function fetchNewsIds() {
   try {
     const response = await apiInstance.get('/news?current_page=1&per_page=6')
@@ -26,6 +27,7 @@ async function fetchNewsIds() {
     return null
   }
 }
+
 export const getStaticProps = async ({ locale, params }) => {
   const news = await getNews(params.id)
   return {
@@ -35,6 +37,7 @@ export const getStaticProps = async ({ locale, params }) => {
     },
   }
 }
+
 async function getNews(id) {
   try {
     const response = await apiInstance.get(`/news/${id}`)
@@ -45,6 +48,7 @@ async function getNews(id) {
     return null
   }
 }
+
 const NewsDetail = ({ news }) => {
   return (
     <div className='centered-content-detailpage'>

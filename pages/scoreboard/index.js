@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Title from '../../components/landing/Title'
-import { TabPanel, TabView } from 'primereact/tabview'
 import RankClub from '../landing/RankClub'
 import RankMember from './RankMember'
 import { Paginator } from 'primereact/paginator'
@@ -19,6 +18,9 @@ const Scoreboard = () => {
 
   const currentDate = new Date()
   const currentMonth = currentDate.getMonth() + 1
+  
+  const { t } = useTranslation('scoreboard')
+
   const data = {
     per_page: 10,
     total_user: 25,
@@ -212,7 +214,7 @@ const Scoreboard = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const { t } = useTranslation('scoreboard')
+
   return (
     <div className='centered-content-scoreboard'>
       <Title

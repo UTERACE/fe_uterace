@@ -13,6 +13,7 @@ const ChangePassword = () => {
   const onSubmit = (data) => {
     handleResetPassword(data)
   }
+
   const handleResetPassword = async (data) => {
     setLoading(true)
     let { confirmPassword, ...rest } = data
@@ -30,6 +31,7 @@ const ChangePassword = () => {
     }
     setLoading(false)
   }
+  
   return (
     <Form onSubmit={onSubmit}>
       <div id='form-setting'>

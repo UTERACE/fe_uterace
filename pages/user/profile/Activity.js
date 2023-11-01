@@ -18,6 +18,7 @@ const Activity = ({
   ],
 }) => {
   const [column, setColumn] = useState(3)
+  
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth
@@ -44,6 +45,7 @@ const Activity = ({
       window.removeEventListener('resize', handleResize)
     }
   }, [])
+
   useEffect(() => {
     const carouselElement = document.getElementsByClassName(
       'custom-carousel-content'
@@ -52,6 +54,7 @@ const Activity = ({
       carouselElement.style.setProperty('--num-columns', column)
     }
   }, [column])
+
   return (
       <div className='custom-carousel-content'>
         {activities.map((item) => (

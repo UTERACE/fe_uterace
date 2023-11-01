@@ -12,24 +12,24 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export async function getStaticPaths() {
-  // Giả sử bạn lấy danh sách các ID từ API hoặc cơ sở dữ liệu của mình
   const ids = await fetchUserIds()
   if (!ids) {
     return { paths: [], fallback: 'blocking' }
-  } // Chuyển đổi danh sách ID này thành định dạng mà Next.js yêu cầu
+  }
   const paths = ids.map((user) => ({
     params: { id: user.user_id.toString() },
   }))
 
   return {
     paths,
-    fallback: 'blocking', // nếu bạn đặt là false, mọi path không nằm trong danh sách sẽ trả về 404
+    fallback: 'blocking',
   }
 }
+
 async function fetchUserIds() {
   try {
     const response = await apiInstance.get(
-      '/events?current_page=0&per_page=6&ongoing=true'
+      '/events?current_page=1&per_page=6&ongoing=true'
     )
     const data = await response.data.events
     return data
@@ -38,6 +38,7 @@ async function fetchUserIds() {
     return null
   }
 }
+
 export const getStaticProps = async ({ locale, params }) => {
   const user = await getUser(params.id)
   return {
@@ -51,6 +52,7 @@ export const getStaticProps = async ({ locale, params }) => {
     },
   }
 }
+
 async function getUser(id) {
   try {
     const response = await apiInstance.get(`/events/event-detail/${id}`)
@@ -61,11 +63,8 @@ async function getUser(id) {
     return null
   }
 }
-const UserDetail = (user) => {
-  const router = useRouter()
-  const { id } = router.query
-  const { t } = useTranslation('user')
 
+const UserDetail = (user) => {
   const [current_page, setCurrentPage] = useState(1)
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(4)
@@ -78,6 +77,10 @@ const UserDetail = (user) => {
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
   const [data, setData] = useState({})
+
+  const [activeIndex, setActiveIndex] = useState(2)
+  const { t } = useTranslation('user')
+
   useEffect(() => {
     const data = {
       activities: [
@@ -203,7 +206,7 @@ const UserDetail = (user) => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const [activeIndex, setActiveIndex] = useState(2)
+
   const itemTemplate = (item) => {
     return (
       <div id='dataview-container' style={{ backgroundColor: 'white' }}>
@@ -239,6 +242,7 @@ const UserDetail = (user) => {
       </div>
     )
   }
+  
   return (
     <div className='centered-content-full'>
       <div className='centered-content-layout'>

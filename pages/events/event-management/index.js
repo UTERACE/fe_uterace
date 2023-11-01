@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
-import { SpeedDial } from 'primereact/speeddial'
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -30,76 +29,18 @@ const EventManagement = () => {
   const [deleteStatus, setDeleteStatus] = useState(false)
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
-
   const router = useRouter()
+
+  const { t } = useTranslation('event')
+
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
   console.log('hasAdminRole', hasAdminRole)
-  // const data = {
-  //   per_page: 5,
-  //   current_page: 1,
-  //   total_page: 5,
-  //   total_events: 22,
-  //   events: [
-  //     {
-  //       event_id: 127,
-  //       name: '21 DAY CHALLENGE - THE MONKEY WARRIOR ',
-  //       image:
-  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/e06bb7dc736ecb9b9920953e4.png?w=720',
-  //       total_members: 3,
-  //       total_clubs: 2,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       event_id: 1,
-  //       name: 'MID-AUTUMN CHALLENGE - TẾT TRUNG THU ĐOÀN VIÊN ',
-  //       image:
-  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
-  //       total_members: 120,
-  //       total_clubs: 19,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       event_id: 2,
-  //       name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC MƯỜNG ',
-  //       image:
-  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=720',
-  //       total_members: 60,
-  //       total_clubs: 11,
-  //       outstanding: false,
-  //     },
-  //     {
-  //       event_id: 3,
-  //       name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 13 - BẮC GIANG ',
-  //       image:
-  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=720',
-  //       total_members: 240,
-  //       total_clubs: 30,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       event_id: 4,
-  //       name: 'AZTEC LOST CHẶNG 1 - CHINH PHỤC THẦN MƯA TLALOC (THE GOD OF RAIN) ',
-  //       image:
-  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1bf678a8a67029fa1e6697c62.jpg?w=720',
-  //       total_members: 320,
-  //       total_clubs: 101,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       event_id: 5,
-  //       name: 'RACE AROUND THE WORLD - IRAN: BÍ ẨN XỨ BA TƯ ',
-  //       image:
-  //         'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/3661e301e10ee6febd38e793a.png?w=720',
-  //       total_members: 130,
-  //       total_clubs: 12,
-  //       outstanding: false,
-  //     },
-  //   ],
-  // }
+
   useEffect(() => {
     fetchEventsOnGoing()
   }, [current_page, per_page])
+
   const fetchEventsOnGoing = async () => {
     const res = await apiInstance.get(
       `/events?current_page=${current_page}&per_page=${per_page}&ongoing=true`
@@ -112,10 +53,11 @@ const EventManagement = () => {
       setPerPage(data.per_page)
     }
   }
+
   const handleClick = (url) => {
     router.push(url)
   }
-  const { t } = useTranslation('event')
+
   const itemTemplate = (item) => {
     return (
       <div id='dataview-container'>
@@ -170,14 +112,17 @@ const EventManagement = () => {
       </div>
     )
   }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
+
   const handleClickEdit = (event_id) => {
     fetchDetailEvent(event_id)
   }
+
   const fetchDetailEvent = async (event_id) => {
     try {
       const res = await apiInstance.get(`/events/${event_id}`)
@@ -190,6 +135,7 @@ const EventManagement = () => {
       showToast('error', 'Lỗi', error)
     }
   }
+
   const items = (event_id) => [
     {
       label: 'Add',
@@ -214,6 +160,7 @@ const EventManagement = () => {
       command: () => {},
     },
   ]
+
   return (
     <div className='centered-content-dataview'>
       <Title

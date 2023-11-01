@@ -1,12 +1,13 @@
-import { Button } from 'primereact/button'
 import React, { useEffect, useState } from 'react'
 import { Carousel } from 'primereact/carousel'
 import Link from 'next/link'
-import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
 import { useTranslation } from 'next-i18next'
 const Event = ({ event }) => {
   const [events, setEvents] = useState([])
+
+  const { t } = useTranslation('event')
+
   useEffect(() => {
     setEvents(event.slice(0, 6))
   }, [])
@@ -27,7 +28,7 @@ const Event = ({ event }) => {
       numScroll: 1,
     },
   ]
-  const { t } = useTranslation('event')
+
   const eventTemplate = (event) => {
     return (
       <Link

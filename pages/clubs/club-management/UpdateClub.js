@@ -21,18 +21,21 @@ const Update = ({
   const [background, setBackground] = useState(image)
 
   const [initialValues, setInitialValues] = useState({})
+
   useEffect(() => {
     setInitialValues({
       name: name,
       description: description,
     })
   }, [])
+
   const onSubmit = (data) => {
     data.club_id = parseInt(club_id)
     data.image = background
     console.log(data)
     handleUpdateClub(data)
   }
+  
   const handleUpdateClub = async (data) => {
     setLoading(true)
     try {
@@ -48,18 +51,18 @@ const Update = ({
       setLoading(false)
     }
   }
+
   const customBase64Uploader = async (event) => {
     const file = event.files[0]
     const reader = new FileReader()
-
     let blob = await fetch(file.objectURL).then((r) => r.blob())
-
     reader.readAsDataURL(blob)
     reader.onloadend = function () {
       const base64data = reader.result
       setBackground(base64data)
     }
   }
+
   return (
     <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='update-info-container'>
@@ -71,11 +74,7 @@ const Update = ({
             height={630}
             scale={1}
           />
-          {/* <img src={background} alt='background' /> */}
         </div>
-        {/* <div id='camera-upload-container'>
-          <i className='fas fa-camera'></i>
-        </div> */}
         <div id='file-upload'>
           <FileUpload
             mode='basic'

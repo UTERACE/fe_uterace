@@ -21,6 +21,7 @@ const Profile = () => {
   const [first, setFirst] = useState(1)
 
   const [visibleChange, setVisibleChange] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(2)
 
   const [dataChartWeek, setDataChartWeek] = useState({})
   const [dataChartMonth, setDataChartMonth] = useState({})
@@ -31,11 +32,13 @@ const Profile = () => {
   const [data, setData] = useState({})
   const menu = useRef(null)
   const router = useRouter()
+
   const { t } = useTranslation('user')
 
   const handleClick = (url) => {
     router.push(url)
   }
+
   const end_items = [
     {
       label: t('edit-info'),
@@ -68,6 +71,7 @@ const Profile = () => {
       command: () => handleClickLogout(),
     },
   ]
+
   useEffect(() => {
     const data = {
       activities: [
@@ -193,7 +197,7 @@ const Profile = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const [activeIndex, setActiveIndex] = useState(2)
+
   const itemTemplate = (item) => {
     return (
       <div id='dataview-container' style={{ backgroundColor: 'white' }}>
@@ -229,6 +233,7 @@ const Profile = () => {
       </div>
     )
   }
+
   return (
     <div className='centered-content-full'>
       <div className='centered-content-layout'>
@@ -430,6 +435,7 @@ const Profile = () => {
 }
 
 export default Profile
+
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {

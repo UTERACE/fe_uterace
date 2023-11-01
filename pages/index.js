@@ -9,7 +9,6 @@ import News from './landing/News'
 import Detail from '@/components/landing/Detail'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Head from 'next/head'
 
 const Homepage = () => {
   const { t } = useTranslation('home')

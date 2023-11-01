@@ -31,6 +31,7 @@ const Update = ({
     data.end_time = end
     handleUpdateEvent(data)
   }
+
   useEffect(() => {
     const start_time = new Date(start)
     start_time.setHours(start_time.getHours())
@@ -45,6 +46,7 @@ const Update = ({
       end_time: end_time,
     })
   }, [start, end])
+
   const handleUpdateEvent = async (data) => {
     setLoading(true)
     try {
@@ -73,6 +75,7 @@ const Update = ({
       setBackground(base64data)
     }
   }
+  
   return (
     <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='update-info-container'>

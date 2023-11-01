@@ -5,10 +5,13 @@ import { useTranslation } from 'next-i18next'
 
 const News = ({ data }) => {
   const [news, setNews] = useState([])
+
   const { t } = useTranslation('news')
+
   useEffect(() => {
     setNews(data.slice(0, 9))
   }, [data])
+
   const responsiveOptions = [
     {
       breakpoint: '1024px',
@@ -26,6 +29,7 @@ const News = ({ data }) => {
       numScroll: 1,
     },
   ]
+  
   const newsTemplate = (news) => {
     return (
       <Link id='link-news' href={`news/news-detail/${news.news_id}`}>

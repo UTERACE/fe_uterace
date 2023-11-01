@@ -2,7 +2,6 @@ import React from 'react'
 import Slideshow from './Slideshow'
 import Statistic from './Statistic'
 import Event from './Event'
-import Club from './Club'
 import News from './News'
 import Rank from './Rank'
 import Title from '@/components/landing/Title'
@@ -345,6 +344,7 @@ const Landing = () => {
       total_event: 500,
     },
   }
+
   return (
     <div>
       <Slideshow data={data.overview} />
@@ -380,6 +380,7 @@ const Landing = () => {
 }
 
 export default Landing
+
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {

@@ -6,7 +6,6 @@ import { InputText } from 'primereact/inputtext'
 import { Password } from 'primereact/password'
 import { Button } from 'primereact/button'
 import apiInstance from '@/api/apiInstance'
-import { useDispatch, useSelector } from 'react-redux'
 import { login } from '@/store/slices/authSlice'
 import { useRouter } from 'next/router'
 import { useToast } from '@/components/contexts/ToastContext'
@@ -28,10 +27,12 @@ const Login = () => {
   const [responseThirdParty, setResponseThirdParty] = useState({})
   const [typeThirdParty, setTypeThirdParty] = useState('')
   const [responseFacebook, setResponseFacebook] = useState({})
+  const router = useRouter()
+
   const onSubmit = (data) => {
     handleLogin(data)
   }
-  const router = useRouter()
+
   useEffect(() => {
     setLoading(true)
     setIsAuthenticated(store.getState().auth.isAuthenticated)
@@ -46,6 +47,7 @@ const Login = () => {
     }
     setLoading(false)
   }, [isAuthenticated])
+
   const handleLogin = async (data) => {
     setLoading(true)
     try {
@@ -82,6 +84,7 @@ const Login = () => {
       }
     }
   }
+
   const loginGoogle = useGoogleLogin({
     clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     redirectUri: 'http://localhost:3000',
@@ -97,6 +100,7 @@ const Login = () => {
       showToast('error', 'Đăng nhập thất bại', res.error)
     },
   })
+
   const handleLoginThirdParty = async (request) => {
     try {
       const response = await apiInstance.post(
@@ -130,6 +134,7 @@ const Login = () => {
       setLoading(false)
     }
   }
+
   useEffect(() => {
     window.fbAsyncInit = function () {
       FB.init({
@@ -149,6 +154,7 @@ const Login = () => {
       fjs.parentNode.insertBefore(js, fjs)
     })(document, 'script', 'facebook-jssdk')
   }, [])
+
   const loginFacebook = () => {
     setLoading(true)
     FB.login(
@@ -172,12 +178,15 @@ const Login = () => {
       { scope: 'email' }
     )
   }
+
   const handleClickLoginGoogle = () => {
     loginGoogle()
   }
+
   const handleClickLoginFacebook = () => {
     loginFacebook()
   }
+  
   return (
     <div className='centered-content-full'>
       <Dialog

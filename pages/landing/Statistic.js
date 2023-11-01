@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next'
 
 const Statistic = ({ statistic }) => {
   const {t}=useTranslation('home')
+
   useEffect(() => {
     const width = window.innerWidth
     if (width <= 1024) {
@@ -16,6 +17,7 @@ const Statistic = ({ statistic }) => {
       }
     }
   }, [])
+  
   return (
     <div id='target-wrapper'>
       <div className='target-container'>

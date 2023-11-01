@@ -6,7 +6,9 @@ import { Button } from 'primereact/button'
 import { useTranslation } from 'next-i18next'
 const Rank = ({ value }) => {
   const [activeIndex, setActiveIndex] = useState(2)
+
   const { t } = useTranslation('scoreboard')
+  
   return (
     <div className='centered-content-layout'>
       <div id='statistic-club' style={{ width: '100%' }}>

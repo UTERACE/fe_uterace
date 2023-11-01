@@ -1,6 +1,5 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
 import React, { useContext, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 import Link from 'next/link'
 import { InputText } from 'primereact/inputtext'
@@ -28,11 +27,12 @@ const Register = (props) => {
   } = props
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
-
   const router = useRouter()
+
   const [initialValues, setInitialValues] = useState({})
   const [checked, setChecked] = useState(true)
   const recaptcha_site_key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+
   useEffect(() => {
     setInitialValues({
       firstname: firstName || '',
@@ -43,8 +43,8 @@ const Register = (props) => {
       agree: checked,
     })
   }, [type])
+
   async function onSubmit(data) {
-    // Lấy giá trị token từ reCAPTCHA
     window.grecaptcha.ready(function () {
       window.grecaptcha
         .execute(recaptcha_site_key, {
@@ -70,6 +70,7 @@ const Register = (props) => {
         })
     })
   }
+
   const handleRegister = async (data) => {
     setLoading(true)
     try {
@@ -89,10 +90,12 @@ const Register = (props) => {
       setLoading(false)
     }
   }
+
   const genderOptions = [
     { label: 'Nam', value: 'Nam' },
     { label: 'Nữ', value: 'Nu' },
   ]
+
   return (
     <div className='centered-content-full'>
       <Helmet>
@@ -139,7 +142,6 @@ const Register = (props) => {
                   </div>
                 </div>
               ) : null}
-              {/* {type !== 'facebook' ? ( */}
               <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field name='password' label='Password' required>
@@ -151,8 +153,6 @@ const Register = (props) => {
                   </Field>
                 </div>
               </div>
-              {/* ) : null}
-              {type !== 'facebook' ? ( */}
               <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field
@@ -168,7 +168,6 @@ const Register = (props) => {
                   </Field>
                 </div>
               </div>
-              {/* ) : null} */}
               <div className='grid-form'>
                 <div className='col-6' id='width-100-center'>
                   <Field name='birthday' label='Ngày sinh' required>

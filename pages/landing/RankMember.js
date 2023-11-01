@@ -7,7 +7,9 @@ import { useTranslation } from 'next-i18next'
 
 const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
+
   const {t}=useTranslation('scoreboard')
+
   const formatRank = (rowData) => {
     return (
       <div className='customer-info-rank '>
@@ -35,6 +37,7 @@ const RankMember = ({ value }) => {
       </div>
     )
   }
+
   const fullnameWithImageTemplate = (rowData) => {
     const avatarImage = rowData.image
     const avatarLabel = rowData.first_name
@@ -56,12 +59,14 @@ const RankMember = ({ value }) => {
       </Link>
     )
   }
+
   const formatNumber = (rowData) => {
     if (rowData) {
       return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
+  
   const clubsColumns = [
     {
       field: 'ranking',

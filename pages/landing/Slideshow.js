@@ -5,12 +5,14 @@ import React, { useEffect, useState } from 'react'
 const Slideshow = ({ data, interval = 3000 }) => {
   const events = data
   const [currentSlide, setCurrentSlide] = useState(0)
+
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % events.length)
     }, interval)
     return () => clearInterval(slideInterval)
   }, [events, interval])
+  
   return (
     <div id='slideshow-container'>
       {events.map((slide, index) => (

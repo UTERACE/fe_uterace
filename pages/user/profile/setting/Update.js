@@ -29,12 +29,15 @@ const Update = () => {
     fetchProvince()
     setLoading(false)
   }, [])
+
   useEffect(() => {
     fetchDistrict(dataProvince)
   }, [dataProvince])
+
   useEffect(() => {
     fetchWard(dataDistrict, dataProvince)
   }, [dataDistrict, dataProvince])
+
   const fetchUser = async () => {
     try {
       const response = await apiInstance.get('/user')
@@ -61,6 +64,7 @@ const Update = () => {
       showToast('error', 'Lỗi!', error)
     }
   }
+
   const fetchProvince = async () => {
     try {
       const response = await apiInstance.get('/area/province')
@@ -74,6 +78,7 @@ const Update = () => {
       showToast('error', 'Lỗi!', error)
     }
   }
+
   const fetchDistrict = async (provinceId) => {
     try {
       const response = await apiInstance.get(
@@ -89,6 +94,7 @@ const Update = () => {
       showToast('error', 'Lỗi!', error)
     }
   }
+
   const fetchWard = async (districtId, provinceId) => {
     try {
       const response = await apiInstance.get(
@@ -104,9 +110,11 @@ const Update = () => {
       showToast('error', 'Lỗi!', error)
     }
   }
+
   const onSubmit = (data) => {
     handleUpdateProfile(data)
   }
+
   const handleUpdateProfile = async (data) => {
     setLoading(true)
     const date = new Date(data.birthday)
@@ -130,10 +138,12 @@ const Update = () => {
     }
     setLoading(false)
   }
+
   const gender = [
     { label: 'Nam', value: 'Nam' },
     { label: 'Nữ', value: 'Nu' },
   ]
+
   const organization = [
     { label: 'Đại học Bách Khoa Hà Nội', value: 'bk' },
     { label: 'Đại học Công Nghệ', value: 'ctu' },
@@ -144,6 +154,7 @@ const Update = () => {
     { label: 'Đại học Sư Phạm Kỹ Thuật', value: 'hcmute' },
     { label: 'Đại học Sư Phạm Thể Dục Thể Thao', value: 'hsp' },
   ]
+  
   const childOrganization = [
     { label: 'Khoa Công Nghệ Thông Tin', value: 'fit' },
     { label: 'Khoa Khoa Học và Kỹ Thuật Máy Tính', value: 'cse' },
