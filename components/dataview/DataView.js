@@ -96,7 +96,7 @@ const DataView = ({
                 <div id='info-dataview'>
                   <h4>
                     <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-                    {item.member} {t('member-join')}
+                    {item.total_member} {t('member-join')}
                   </h4>
                   <h4>
                     <i className='pi pi-map ml2-icon' aria-hidden='true'></i>

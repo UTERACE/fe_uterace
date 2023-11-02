@@ -55,17 +55,19 @@ const NewsDetail = ({ news }) => {
       <div className='centered-content-layout'>
         <div id='news-detail-container'>
           <div id='image-container-detail'>
-            <img src={news.image} alt='club1' />
+            <img src={news.image} alt={news.name} />
           </div>
           <div id='info-detail'>
             <h1>{news.name}</h1>
             <h6>{news.description}</h6>
           </div>
         </div>
-        <div
-          id='child-detail-post'
-          dangerouslySetInnerHTML={{ __html: news.content }}
-        ></div>
+        <div id='info-detail'>
+          <div
+            id='child-detail-post'
+            dangerouslySetInnerHTML={{ __html: news.content }}
+          ></div>
+        </div>
       </div>
     </div>
   )

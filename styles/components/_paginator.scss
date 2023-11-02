@@ -13,22 +13,31 @@
 }
 // custom css for paginator highlight
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background: $black-color;
-    border-color: var(--background-color);
-    color: var(--primary-color);
-    border-radius: 10px;
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-color);
+    border-radius: 0.7rem;
+}
+.p-paginator .p-paginator-pages .p-paginator-page:hover {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-color);
+    border-radius: 0.7rem;
 }
 // custom css for paginator dropdown
 .p-paginator .p-dropdown {
     margin-left: 0;
     height: 2.357rem;
-    border-radius: 10px;
+    border-radius: 0.7rem;
     justify-content: center;
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-color);
 }
 .p-dropdown-panel .p-dropdown-items {
     padding: 0;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-    color: $dialog-color;
+    color: var(--text-color);
     background: $black-color;
 }

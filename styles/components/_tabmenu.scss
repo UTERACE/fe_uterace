@@ -106,14 +106,14 @@
     height: calc(100%);
   }
 #app-menu.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    background: $white-color;
-    border-color: $dialog-color;
-    color: $dialog-color;
+    background: var(--secondary-color);
+    border-color: var(--text-color);
+    color: var(--text-color);
 }
 #app-menu.p-tabmenu .p-tabmenu-nav .p-tabmenuitem:not(.p-highlight):not(.p-disabled):hover .p-menuitem-link {
-    background: $white-color;
-    border-color: $dialog-color;
-    color: $dialog-color;
+    background: var(--secondary-color);
+    border-color: var(--text-color);
+    color: var(--text-color);
 }
 #app-menu .p-menuitem-icon {
     padding-bottom: 0.3rem;

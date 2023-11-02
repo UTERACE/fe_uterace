@@ -109,8 +109,8 @@
 #button-menu-hide {
     width: 3rem;
     height: 3rem;
-    background-color: $black-color;
-    color: $primary-color;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
     border-radius: 50%;
     position: fixed;
     top: 5.5rem;           

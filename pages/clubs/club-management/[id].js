@@ -4,7 +4,7 @@ import Activity from '@/pages/user/profile/Activity'
 import RankMember from '@/pages/scoreboard/RankMember'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import Update from './UpdateClub'
 import dynamic from 'next/dynamic'
@@ -12,6 +12,9 @@ import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
+import NewNews from '@/pages/news/new-news'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 
 export async function getStaticPaths() {
   const ids = await fetchClubIds()
@@ -80,8 +83,11 @@ const ManagementClubDetail = ({ club }) => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(1)
   const [visibleChange, setVisibleChange] = useState(false)
+  const [visibleAddNews, setVisibleAddNews] = useState(false)
   const [visibleInfo, setVisibleInfo] = useState(false)
   const [introduce, setIntroduce] = useState('')
   const [imageBackground, setImageBackground] = useState('')
@@ -376,6 +382,25 @@ const ManagementClubDetail = ({ club }) => {
       >
         <DynamicTinyMCE value={introduce} onSave={setIntroduce} />
       </Dialog>
+      <Dialog
+        header={t('add-news')}
+        visible={visibleAddNews}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleAddNews(false)}
+      >
+        <NewNews
+          club_id={club.club_id}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleAdd={setVisibleAddNews}
+        />
+      </Dialog>
       <div className='centered-content-layout'>
         <div id='detail-container'>
           <div id='image-container-detail'>
@@ -474,9 +499,15 @@ const ManagementClubDetail = ({ club }) => {
             ) : null}
           </div>
           <div id='info-detail'>
-            <Title title={t('post-clubs')}>
-              <Button />
-            </Title>
+            <Title title={t('post-clubs')} />
+            <Button
+              id='button-join'
+              icon='pi pi-calendar-plus'
+              label={t('update-info')}
+              onClick={() => {
+                setVisibleAddNews(true)
+              }}
+            />
             <News data={news} />
           </div>
           <div id='info-detail'>

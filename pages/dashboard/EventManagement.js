@@ -1,8 +1,14 @@
+import DataTable from '@/components/datatable/DataTable'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
 import Link from 'next/link'
+import { Avatar } from 'primereact/avatar'
+import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
+import { Dialog } from 'primereact/dialog'
+import { InputTextarea } from 'primereact/inputtextarea'
 
 const EventManagement = () => {
   const [events, setEvents] = useState([])
@@ -10,6 +16,12 @@ const EventManagement = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+
+  const [loading, setLoading] = useState(false)
+  const [visibleReason, setVisibleReason] = useState(false)
+  const [visibleBlock, setVisibleBlock] = useState(false)
+  const [reason, setReason] = useState('')
+
   useEffect(() => {
     const data = {
       per_page: 5,
@@ -25,6 +37,8 @@ const EventManagement = () => {
           total_members: 3,
           total_clubs: 2,
           outstanding: true,
+          status: 1,
+          reason_block: '',
         },
         {
           event_id: 1,
@@ -34,6 +48,8 @@ const EventManagement = () => {
           total_members: 120,
           total_clubs: 19,
           outstanding: true,
+          status: 0,
+          reason_block: 'Không đạt yêu cầu',
         },
         {
           event_id: 2,
@@ -43,6 +59,8 @@ const EventManagement = () => {
           total_members: 60,
           total_clubs: 11,
           outstanding: false,
+          status: 1,
+          reason_block: 'Vi phạm quy định',
         },
         {
           event_id: 3,
@@ -52,6 +70,8 @@ const EventManagement = () => {
           total_members: 240,
           total_clubs: 30,
           outstanding: true,
+          status: 0,
+          reason_block: '',
         },
         {
           event_id: 4,
@@ -61,6 +81,8 @@ const EventManagement = () => {
           total_members: 320,
           total_clubs: 101,
           outstanding: true,
+          status: 0,
+          reason_block: '',
         },
         {
           event_id: 5,
@@ -70,6 +92,8 @@ const EventManagement = () => {
           total_members: 130,
           total_clubs: 12,
           outstanding: false,
+          status: 1,
+          reason_block: 'Sai quy định',
         },
       ],
     }
@@ -151,12 +175,223 @@ const EventManagement = () => {
       command: () => {},
     },
   ]
+  const fullnameWithImageTemplate = (rowData) => {
+    const avatarImage = rowData.image
+    return (
+      <div id='info-detail-container'>
+        <div id='info-image-container'>
+          <img src={avatarImage} alt={rowData.name} />
+        </div>
+        <div id='info-name-container'>
+          <Link href={`events/detail-event/${rowData.event_id}`}>
+            <span>{rowData.name}</span>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+  const formatNumberMember = (rowData) => {
+    if (rowData) {
+      return LocaleHelper.formatNumber(rowData.total_members.toFixed(2))
+    }
+    return ''
+  }
+  const formatNumberClub = (rowData) => {
+    if (rowData) {
+      return LocaleHelper.formatNumber(rowData.total_clubs.toFixed(2))
+    }
+    return ''
+  }
+  const formatOutstanding = (rowData) => {
+    if (rowData.outstanding === true) {
+      return (
+        <div id='content-datatable-container'>
+          <i className='pi pi-check-circle' style={{ color: 'green' }} />
+          <span style={{ color: 'green' }}>Đang nổi bật</span>
+        </div>
+      )
+    } else if (rowData.outstanding === false) {
+      return (
+        <div id='content-datatable-container'>
+          <i className='pi pi-times-circle' style={{ color: 'black' }} />
+          <span style={{ color: 'black' }}>Mặc định</span>
+        </div>
+      )
+    }
+  }
+  const formatUpdate = (rowData) => {
+    if (rowData.outstanding === true) {
+      return (
+        <div id='content-datatable-container'>
+          <Button id='button-reinitialize' type='button' onClick={() => {}}>
+            Chọn nổi bật
+          </Button>
+        </div>
+      )
+    } else if (rowData.outstanding === false) {
+      return (
+        <div id='content-datatable-container'>
+          <Button id='button-reinitialize' type='button' onClick={() => {}}>
+            Nổi bật
+          </Button>
+        </div>
+      )
+    }
+  }
+  const blockEvent = (rowData) => {
+    if (rowData.status === 0) {
+      return (
+        <div id='content-datatable-container'>
+          <i
+            className='pi pi-exclamation-circle'
+            style={{ color: 'red' }}
+            title={rowData.reason_block}
+            onClick={() => setVisibleReason(true)}
+          />
+          <Dialog
+            header='Lý do chặn sự kiện'
+            visible={visibleReason}
+            position='top'
+            style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
+            onHide={() => setVisibleReason(false)}
+          >
+            <div style={{ margin: '2rem', color: 'black' }}>
+              {visibleBlock ? (
+                <div id='content-dialog-container'>
+                  <InputTextarea
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    rows={5}
+                    cols={30}
+                    autoResize
+                  />
+                  <Button
+                    id='button-reinitialize'
+                    type='submit'
+                    onClick={() => {
+                      handleBlockUser()
+                    }}
+                  >
+                    Chặn sự kiện
+                  </Button>
+                </div>
+              ) : (
+                <h4> {rowData.reason_block}</h4>
+              )}
+            </div>
+          </Dialog>
+          <Button
+            id='button-reinitialize'
+            type='button'
+            onClick={() => {
+              handleUnlockUser()
+            }}
+          >
+            Mở chặn
+          </Button>
+        </div>
+      )
+    } else if (rowData.status === 1) {
+      return (
+        <div id='content-datatable-container'>
+          <Button
+            id='button-reinitialize'
+            type='button'
+            onClick={() => {
+              setVisibleBlock(true)
+              setVisibleReason(true)
+            }}
+          >
+            Chặn
+          </Button>
+        </div>
+      )
+    }
+  }
+  const formatStatus = (rowData) => {
+    if (rowData.status === 0) {
+      return (
+        <div id='content-datatable-container'>
+          <img
+            src='/lock.png'
+            alt='lock'
+            style={{ width: '1.5rem', height: '1.5rem' }}
+          />{' '}
+          <span style={{ color: 'red' }}>Đang bị chặn</span>
+        </div>
+      )
+    } else if (rowData.status === 1) {
+      return (
+        <div id='content-datatable-container'>
+          <img
+            src='/verified.png'
+            alt='verified'
+            style={{ width: '1.5rem', height: '1.5rem' }}
+          />
+          <span style={{ color: 'green' }}>Đang hoạt động</span>
+        </div>
+      )
+    }
+  }
+  const eventColumns = [
+    {
+      field: 'event_id',
+      header: 'ID',
+      bodyClassName: 'text-center',
+    },
+    {
+      header: 'Thông tin sự kiện',
+      body: fullnameWithImageTemplate,
+    },
+    {
+      field: 'total_members',
+      header: 'Thành viên',
+      bodyClassName: 'text-center',
+      body: formatNumberMember,
+    },
+    {
+      field: 'total_clubs',
+      header: 'Câu lạc bộ',
+      body: formatNumberClub,
+      bodyClassName: 'text-center',
+    },
+    {
+      field: 'outstanding',
+      header: 'Nổi bật',
+      bodyClassName: 'text-center',
+      body: formatOutstanding,
+    },
+    {
+      field: 'updated',
+      header: 'Cập nhật',
+      bodyClassName: 'text-center',
+      body: formatUpdate,
+    },
+    {
+      field: 'status',
+      header: 'Trạng thái',
+      bodyClassName: 'text-center',
+      body: formatStatus,
+    },
+    {
+      field: 'block',
+      header: 'Chặn sự kiện',
+      bodyClassName: 'text-center',
+      body: blockEvent,
+    },
+  ]
   return (
     <div id='initial-user-container'>
-      <DataViewDashboard
+      {/* <DataViewDashboard
         data={events}
         href='/clubs/club-management/'
         itemTemplate={itemTemplate}
+      /> */}
+      <DataTable
+        data={events}
+        rows={4}
+        loading={loading}
+        columns={eventColumns}
       />
       <Paginator
         first={first}

@@ -3,7 +3,7 @@
 #outstanding-container {
     width: 4rem;
     height: 4rem;
-    background-color: --primary-color;
+    background-color: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,11 @@
+import DataTable from '@/components/datatable/DataTable'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
 import Link from 'next/link'
+import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
+import { InputTextarea } from 'primereact/inputtextarea'
 import { Paginator } from 'primereact/paginator'
 import React, { useEffect, useState } from 'react'
 
@@ -11,6 +15,11 @@ const NewsManagement = () => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+
+  const [loading, setLoading] = useState(false)
+  const [visibleReason, setVisibleReason] = useState(false)
+  const [visibleBlock, setVisibleBlock] = useState(false)
+
   useEffect(() => {
     const data = {
       per_page: 5,
@@ -27,6 +36,9 @@ const NewsManagement = () => {
             'https://mobirace.net/Upload/Images/HuongDan/dang_ky_strava.png',
           createAt: '2023-08-01T00:00:00Z',
           updateAt: '2023-09-01T00:00:00Z',
+          outstanding: true,
+          status: 1,
+          reason_block: '',
         },
         {
           news_id: 2,
@@ -36,6 +48,9 @@ const NewsManagement = () => {
           image: 'https://mobirace.net/Upload/Images/HuongDan/run_indoor.jpg',
           createAt: '2023-08-01T00:00:00Z',
           updateAt: '2023-09-01T00:00:00Z',
+          outstanding: true,
+          status: 0,
+          reason_block: 'Không đạt yêu cầu',
         },
         {
           news_id: 3,
@@ -44,6 +59,9 @@ const NewsManagement = () => {
           image: 'https://mobirace.net/Upload/Images/HuongDan/dangkygiai.png',
           createAt: '2023-08-01T00:00:00Z',
           updateAt: '2023-09-01T00:00:00Z',
+          outstanding: false,
+          status: 1,
+          reason_block: 'Vi phạm quy định',
         },
         {
           news_id: 4,
@@ -54,6 +72,9 @@ const NewsManagement = () => {
             'https://mobirace.net/Upload/Images/HuongDan/ketnoi_strava.png',
           createAt: '2023-08-01T00:00:00Z',
           updateAt: '2023-09-01T00:00:00Z',
+          outstanding: true,
+          status: 0,
+          reason_block: '',
         },
         {
           news_id: 5,
@@ -63,6 +84,9 @@ const NewsManagement = () => {
           image: 'https://picsum.photos/200/300',
           createAt: '2023-08-01T00:00:00Z',
           updateAt: '2023-09-01T00:00:00Z',
+          outstanding: true,
+          status: 0,
+          reason_block: '',
         },
         {
           news_id: 6,
@@ -72,6 +96,9 @@ const NewsManagement = () => {
           image: 'https://picsum.photos/200/300',
           createAt: '2023-08-01T00:00:00Z',
           updateAt: '2023-09-01T00:00:00Z',
+          outstanding: false,
+          status: 1,
+          reason_block: 'Sai quy định',
         },
       ],
     }
@@ -152,13 +179,219 @@ const NewsManagement = () => {
       command: () => {},
     },
   ]
+  const fullnameWithImageTemplate = (rowData) => {
+    const avatarImage = rowData.image
+    return (
+      <div id='info-detail-container'>
+        <div id='info-image-container'>
+          <img src={avatarImage} alt={rowData.name} />
+        </div>
+        <div id='info-name-container'>
+          <Link href={`events/detail-event/${rowData.event_id}`}>
+            <span>{rowData.name}</span>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+  const formatCreateAt = (rowData) => {
+    if (rowData) {
+      return LocaleHelper.formatDateTime(new Date(rowData.createAt))
+    }
+    return ''
+  }
+  const formatUpdateAt = (rowData) => {
+    if (rowData) {
+      return LocaleHelper.formatDateTime(new Date(rowData.updateAt))
+    }
+    return ''
+  }
+  const formatOutstanding = (rowData) => {
+    if (rowData.outstanding === true) {
+      return (
+        <div id='content-datatable-container'>
+          <i className='pi pi-check-circle' style={{ color: 'green' }} />
+          <span style={{ color: 'green' }}>Đang nổi bật</span>
+        </div>
+      )
+    } else if (rowData.outstanding === false) {
+      return (
+        <div id='content-datatable-container'>
+          <i className='pi pi-times-circle' style={{ color: 'black' }} />
+          <span style={{ color: 'black' }}>Mặc định</span>
+        </div>
+      )
+    }
+  }
+  const formatUpdate = (rowData) => {
+    if (rowData.outstanding === true) {
+      return (
+        <div id='content-datatable-container'>
+          <Button id='button-reinitialize' type='button' onClick={() => {}}>
+            Chọn nổi bật
+          </Button>
+        </div>
+      )
+    } else if (rowData.outstanding === false) {
+      return (
+        <div id='content-datatable-container'>
+          <Button id='button-reinitialize' type='button' onClick={() => {}}>
+            Nổi bật
+          </Button>
+        </div>
+      )
+    }
+  }
+  const blockEvent = (rowData) => {
+    if (rowData.status === 0) {
+      return (
+        <div id='content-datatable-container'>
+          <i
+            className='pi pi-exclamation-circle'
+            style={{ color: 'red' }}
+            title={rowData.reason_block}
+            onClick={() => setVisibleReason(true)}
+          />
+          <Dialog
+            header='Lý do chặn sự kiện'
+            visible={visibleReason}
+            position='top'
+            style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
+            onHide={() => setVisibleReason(false)}
+          >
+            <div style={{ margin: '2rem', color: 'black' }}>
+              {visibleBlock ? (
+                <div id='content-dialog-container'>
+                  <InputTextarea
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    rows={5}
+                    cols={30}
+                    autoResize
+                  />
+                  <Button
+                    id='button-reinitialize'
+                    type='submit'
+                    onClick={() => {
+                      handleBlockUser()
+                    }}
+                  >
+                    Chặn sự kiện
+                  </Button>
+                </div>
+              ) : (
+                <h4> {rowData.reason_block}</h4>
+              )}
+            </div>
+          </Dialog>
+          <Button
+            id='button-reinitialize'
+            type='button'
+            onClick={() => {
+              handleUnlockUser()
+            }}
+          >
+            Mở chặn
+          </Button>
+        </div>
+      )
+    } else if (rowData.status === 1) {
+      return (
+        <div id='content-datatable-container'>
+          <Button
+            id='button-reinitialize'
+            type='button'
+            onClick={() => {
+              setVisibleBlock(true)
+              setVisibleReason(true)
+            }}
+          >
+            Chặn
+          </Button>
+        </div>
+      )
+    }
+  }
+  const formatStatus = (rowData) => {
+    if (rowData.status === 0) {
+      return (
+        <div id='content-datatable-container'>
+          <img
+            src='/lock.png'
+            alt='lock'
+            style={{ width: '1.5rem', height: '1.5rem' }}
+          />{' '}
+          <span style={{ color: 'red' }}>Đang bị chặn</span>
+        </div>
+      )
+    } else if (rowData.status === 1) {
+      return (
+        <div id='content-datatable-container'>
+          <img
+            src='/verified.png'
+            alt='verified'
+            style={{ width: '1.5rem', height: '1.5rem' }}
+          />
+          <span style={{ color: 'green' }}>Đang hoạt động</span>
+        </div>
+      )
+    }
+  }
+  const newsColumns = [
+    {
+      field: 'event_id',
+      header: 'ID',
+      bodyClassName: 'text-center',
+    },
+    {
+      header: 'Thông tin sự kiện',
+      body: fullnameWithImageTemplate,
+    },
+    {
+      field: 'total_members',
+      header: 'Thành viên',
+      bodyClassName: 'text-center',
+      body: formatCreateAt,
+    },
+    {
+      field: 'total_clubs',
+      header: 'Câu lạc bộ',
+      body: formatUpdateAt,
+      bodyClassName: 'text-center',
+    },
+    {
+      field: 'outstanding',
+      header: 'Nổi bật',
+      bodyClassName: 'text-center',
+      body: formatOutstanding,
+    },
+    {
+      field: 'updated',
+      header: 'Cập nhật',
+      bodyClassName: 'text-center',
+      body: formatUpdate,
+    },
+    {
+      field: 'status',
+      header: 'Trạng thái',
+      bodyClassName: 'text-center',
+      body: formatStatus,
+    },
+    {
+      field: 'block',
+      header: 'Chặn sự kiện',
+      bodyClassName: 'text-center',
+      body: blockEvent,
+    },
+  ]
   return (
     <div id='initial-user-container'>
-      <DataViewDashboard
+      {/* <DataViewDashboard
         data={news}
         href='/clubs/club-management/'
         itemTemplate={itemTemplate}
-      />
+      /> */}
+      <DataTable data={news} rows={4} loading={loading} columns={newsColumns} />
       <Paginator
         first={first}
         rows={per_page}
