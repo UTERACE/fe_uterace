@@ -24,7 +24,7 @@ const ClubManagement = () => {
   const [visibleAdd, setVisibleAdd] = useState(false)
   const [dataClub, setDataClub] = useState({})
   const [index, setIndex] = useState(2)
-  const [deleteStatus, setDeleteStatus] = useState(false)
+  const [updateStatus, setUpdateStatus] = useState(false)
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
 
@@ -102,7 +102,7 @@ const ClubManagement = () => {
     } else if (index === 3) {
       fetchJoinedClubs()
     }
-  }, [current_page, per_page, index, visibleChange, visibleAdd, deleteStatus])
+  }, [current_page, per_page, index, visibleChange, visibleAdd, updateStatus])
   const fetchCreatedClubs = async () => {
     try {
       const res = await apiInstance.get(
@@ -218,7 +218,7 @@ const ClubManagement = () => {
       const res = await apiInstance.delete(`/clubs/${club_id}`)
       if (res.status === 200) {
         showToast('success', 'Xóa câu lạc bộ thành công')
-        setDeleteStatus(!deleteStatus)
+        setUpdateStatus(!updateStatus)
       }
     } catch (err) {
       showToast('error', 'Xóa câu lạc bộ thất bại', err)
@@ -281,6 +281,7 @@ const ClubManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleChange={setVisibleChange}
+          setUpdate={setUpdateStatus}
         />
       </Dialog>
       <Dialog
@@ -299,6 +300,7 @@ const ClubManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleAdd={setVisibleAdd}
+          setUpdate={setUpdateStatus}
         />
       </Dialog>
       <div className='centered-content-layout'>
