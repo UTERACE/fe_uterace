@@ -2,33 +2,7 @@ import apiInstance from '@/api/apiInstance'
 import React from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-export async function getStaticPaths() {
-  const ids = await fetchNewsIds()
-  if (!ids) {
-    return { paths: [], fallback: 'blocking' }
-  }
-  const paths = ids.map((news) => ({
-    params: { id: news.news_id.toString() },
-  }))
-
-  return {
-    paths,
-    fallback: 'blocking',
-  }
-}
-
-async function fetchNewsIds() {
-  try {
-    const response = await apiInstance.get('/news?current_page=1&per_page=6')
-    const data = await response.data.news
-    return data
-  } catch (error) {
-    console.error('Error fetching news IDs:', error)
-    return null
-  }
-}
-
-export const getStaticProps = async ({ locale, params }) => {
+export const getServerSideProps = async ({ locale, params }) => {
   const news = await getNews(params.id)
   return {
     props: {

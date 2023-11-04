@@ -1,11 +1,12 @@
 import Form, { Field } from '@/components/react-hook-form/Form'
-import { FileUpload } from 'primereact/fileupload'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import dynamic from 'next/dynamic'
 import apiInstance from '@/api/apiInstance'
+import Countdown from '../Countdown'
+import { Calendar } from 'primereact/calendar'
 
 const DynamicTinyMCE = dynamic(
   () => import('../../../components/editor/TinyMCEEditor'),
@@ -20,8 +21,11 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
   const [descriptionEvent, setDescriptionEvent] = useState('')
   const [background, setBackground] = useState('')
   const [introduce, setIntroduce] = useState('')
+  const [start, setStart] = useState('')
+  const [end, setEnd] = useState('')
 
   const [initialValues, setInitialValues] = useState({})
+  const inputRef = useRef()
 
   useEffect(() => {
     setInitialValues({
@@ -35,7 +39,10 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
     data.details = introduce
     data.min_pace = parseInt(data.min_pace)
     data.max_pace = parseInt(data.max_pace)
-    handleCreateClub(data)
+    data.from_date = new Date(start).toISOString()
+    data.to_date = new Date(end).toISOString()
+    console.log('data', data)
+    // handleCreateClub(data)
   }
 
   const handleCreateClub = async (data) => {
@@ -55,20 +62,34 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
   }
 
   const customBase64Uploader = async (event) => {
-    const file = event.files[0]
-    const reader = new FileReader()
-    let blob = await fetch(file.objectURL).then((r) => r.blob())
-    reader.readAsDataURL(blob)
-    reader.onloadend = function () {
-      const base64data = reader.result
-      setBackground(base64data)
+    const file = event.target.files[0]
+    if (file) {
+      if (file.size > 2000000) {
+        showToast(
+          'error',
+          'Tải ảnh lên thất bại',
+          'Kích thước ảnh tối đa là 2MB'
+        )
+        return
+      }
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const base64Data = e.target.result
+        setBackground(base64Data)
+      }
+      reader.readAsDataURL(file)
     }
   }
 
   return (
     <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='update-info-container'>
-        <div id='background-club-container'>
+        <div
+          id='background-club-container'
+          onClick={() => {
+            inputRef.current.click()
+          }}
+        >
           <AvatarEditor
             image={background}
             style={{ width: '100%', height: '100%', borderRadius: '15px' }}
@@ -76,19 +97,17 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
             height={630}
             scale={1}
           />
+          <div id='file-upload'>
+            <i className='pi pi-image p-icon-lg'></i>
+          </div>
         </div>
-        <div id='file-upload'>
-          <FileUpload
-            mode='basic'
-            name='demo[]'
-            url='/user/profile'
-            accept='image/*'
-            maxFileSize={1000000}
-            onUpload={customBase64Uploader}
-            auto
-            chooseLabel='Chọn ảnh'
-          />
-        </div>
+        <input
+          type='file'
+          accept='image/*'
+          ref={inputRef}
+          onChange={customBase64Uploader}
+          style={{ display: 'none' }}
+        />
 
         <div id='info-detail'>
           <Field name='name' label='Tên câu lạc bộ' required>
@@ -122,15 +141,42 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
               </Field>
             </div>
           </div>
+          <div className='grid-form'>
+            <div className='col-6' id='width-100-center'>
+              <Field name='from_date' label='Ngày bắt đầu' required>
+                <Calendar
+                  showTime={true}
+                  style={{ width: '100%' }}
+                  onChange={(e) => {
+                    setStart(e.target.value)
+                  }}
+                />
+              </Field>
+            </div>
+            <div className='col-6' id='width-100-center'>
+              <Field name='to_date' label='Ngày kết thúc' required>
+                <Calendar
+                  showTime={true}
+                  style={{ width: '100%' }}
+                  onChange={(e) => {
+                    setEnd(e.target.value)
+                  }}
+                />
+              </Field>
+            </div>
+          </div>
           <h1>{nameEvent}</h1>
           <h6>{descriptionEvent}</h6>
+          <div id='event-time-detail'>
+            <Countdown from_date={start} to_date={end} />
+          </div>
         </div>
         <h1>Giới thiệu</h1>
         <div id='info-detail'>
           <DynamicTinyMCE
             value={introduce}
             onSave={setIntroduce}
-            label={'Tạo câu lạc bộ của bạn'}
+            label={'Tạo giải chạy cho mọi người'}
           />
         </div>
       </div>

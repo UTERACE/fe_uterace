@@ -44,7 +44,7 @@ const ClubDetail = ({ club }) => {
   const [per_page, setPerPage] = useState(5)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(3)
+  const [activeIndex, setActiveIndex] = useState(1)
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
@@ -144,7 +144,7 @@ const ClubDetail = ({ club }) => {
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
                     <h4>{t('created-at')}</h4>
-                    <h4>{LocaleHelper.formatDateTime(new Date(club.create_at))}</h4>
+                    <h4>{LocaleHelper.formatDateTime(club.create_at)}</h4>
                   </div>
                   <div id='detail-club-container'>
                     <h4>{t('manager')}</h4>

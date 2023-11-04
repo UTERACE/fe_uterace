@@ -107,3 +107,10 @@
     background: var(--secondary-color);
 }
 // border row
+
+
+// custom border header
+.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th {
+    border-width: 1px 1px 1px 1px;
+    border-color: var(--text-color);
+}

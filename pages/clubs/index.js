@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import Title from '../../components/landing/Title'
 import DataView from '@/components/dataview/DataView'
 import apiInstance from '@/api/apiInstance'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([])
@@ -13,22 +15,32 @@ const Clubs = () => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
+
   const { t } = useTranslation('club')
 
   useEffect(() => {
     fetchClubs()
   }, [current_page, per_page])
-  
+
   const fetchClubs = async () => {
-    const res = await apiInstance.get(
-      `/clubs?current_page=${current_page}&per_page=${per_page}`
-    )
-    if (res.status == 200) {
-      const data = res.data
-      setClubs(data.clubs)
-      setTotalRecords(data.total_clubs)
-      setCurrentPage(data.current_page)
-      setPerPage(data.per_page)
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs?current_page=${current_page}&per_page=${per_page}`
+      )
+      if (res.status == 200) {
+        const data = res.data
+        setClubs(data.clubs)
+        setTotalRecords(data.total_clubs)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', 'Lấy dữ liệu thất bại', error)
+      setLoading(false)
     }
   }
 

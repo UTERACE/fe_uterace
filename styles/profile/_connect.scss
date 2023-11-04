@@ -27,10 +27,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $primary-color;
+    background-color: var(--primary-color);
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-radius: 15px;
     margin: 0 auto;
+}
+#default-container span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-color;
+    margin: 0;
 }
 #connect-container a{
     font-size: 1.5rem;

@@ -125,6 +125,9 @@ const Update = () => {
       '-' +
       date.getDate().toString().padStart(2, '0')
     data.birthday = strBirthday
+    data.telNumber = data.telNumber.replace(/[^0-9]/g, '')
+    console.log('data', data)
+
     try {
       const res = await apiInstance.put('/user/update', data)
       console.log('res', res.data)

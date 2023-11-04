@@ -1,7 +1,7 @@
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import { SlideMenu } from 'primereact/slidemenu'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Activity from './Activity'
 import { Paginator } from 'primereact/paginator'
 import { Dialog } from 'primereact/dialog'
@@ -13,6 +13,8 @@ import ChangeAvatar from './setting/ChangeAvatar'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 
 const Profile = () => {
   const [current_page, setCurrentPage] = useState(1)
@@ -32,6 +34,8 @@ const Profile = () => {
   const [data, setData] = useState({})
   const menu = useRef(null)
   const router = useRouter()
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
 
   const { t } = useTranslation('user')
 
@@ -338,7 +342,11 @@ const Profile = () => {
             style={{ width: '60%', height: '60%', borderRadius: '20px' }}
             onHide={() => setVisibleChange(false)}
           >
-            <ChangeAvatar />
+            <ChangeAvatar
+              setLoading={setLoading}
+              showToast={showToast}
+              setVisibleChange={setVisibleChange}
+            />
           </Dialog>
           <div id='profile-chart-container'>
             <div id='chart-container'>
@@ -397,7 +405,7 @@ const Profile = () => {
             </div>
             {activeIndex === 2 ? (
               <div style={{ width: '95%' }}>
-                <Title title={t('recent-activities')}/>
+                <Title title={t('recent-activities')} />
                 <Activity activities={activities} />
               </div>
             ) : activeIndex === 3 ? (

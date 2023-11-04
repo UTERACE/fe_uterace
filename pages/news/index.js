@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import DataView from '@/components/dataview/DataView'
 import Title from '@/components/landing/Title'
@@ -7,6 +7,8 @@ import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 
 const NewsPage = () => {
   const [news, setNews] = useState([])
@@ -15,13 +17,17 @@ const NewsPage = () => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
+
   const { t } = useTranslation('news')
 
   useEffect(() => {
     fetchNews()
-  }, [])
+  }, [per_page, current_page])
 
   const fetchNews = async () => {
+    setLoading(true)
     try {
       const res = await apiInstance.get(
         `/news?current_page=${current_page}&per_page=${per_page}`
@@ -32,9 +38,11 @@ const NewsPage = () => {
         setTotalRecords(data.total_news)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
+        setLoading(false)
       }
     } catch (error) {
-      console.log(error)
+      setLoading(false)
+      showToast('error', 'Lấy dữ liệu thất bại', error)
     }
   }
 

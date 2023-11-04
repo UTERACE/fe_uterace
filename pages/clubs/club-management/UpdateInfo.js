@@ -36,7 +36,7 @@ const UpdateInfo = ({
       const res = await apiInstance.put('/clubs', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Chỉnh sửa câu lạc bộ thành công')
+        showToast('success', 'Chỉnh sửa câu lạc bộ thành công', dataRes.message)
         setLoading(false)
         setVisibleInfo(false)
         setUpdate(true)

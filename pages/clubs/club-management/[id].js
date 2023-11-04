@@ -16,6 +16,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import { useRouter } from 'next/router'
 import UpdateInfo from './UpdateInfo'
+import UpdateNews from './UpdateNews'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -56,13 +57,16 @@ const ManagementClubDetail = ({ club }) => {
   const [activeIndex, setActiveIndex] = useState(1)
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleAddNews, setVisibleAddNews] = useState(false)
+  const [visibleUpdateNews, setVisibleUpdateNews] = useState(false)
   const [visibleInfo, setVisibleInfo] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
+  const [updateNewsId, setUpdateNewsId] = useState(0)
 
   const [news, setNews] = useState(club.news)
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
   const [introduce, setIntroduce] = useState(club.details)
+  const [detailsNews, setDetailsNews] = useState({})
 
   const { t } = useTranslation('detail')
 
@@ -74,6 +78,26 @@ const ManagementClubDetail = ({ club }) => {
       router.reload()
     }
   }, [updateStatus])
+
+  useEffect(() => {
+    if (updateNewsId !== 0) fetchDetailNews()
+  }, [updateNewsId])
+
+  const fetchDetailNews = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(`/news/${updateNewsId}`)
+      const data = res.data
+      if (res.status === 200) {
+        setDetailsNews(data)
+        setVisibleUpdateNews(true)
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      showToast('error', 'Lấy dữ liệu thất bại', error)
+    }
+  }
 
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -145,6 +169,32 @@ const ManagementClubDetail = ({ club }) => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleAdd={setVisibleAddNews}
+          setUpdate={setUpdateStatus}
+        />
+      </Dialog>
+      <Dialog
+        header={t('update-news')}
+        visible={visibleUpdateNews}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleUpdateNews(false)}
+      >
+        <UpdateNews
+          club_id={club.club_id}
+          news_id={detailsNews.news_id}
+          title={detailsNews.name}
+          description={detailsNews.description}
+          image={detailsNews.image}
+          content={detailsNews.content}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleUpdateNews={setVisibleUpdateNews}
+          setUpdate={setUpdateStatus}
         />
       </Dialog>
       <div className='centered-content-layout'>
@@ -187,7 +237,7 @@ const ManagementClubDetail = ({ club }) => {
                 onClick={() => {}}
               />
               <Button
-                id={!isStatistic ? 'button-tab--active' : 'button-tab'}
+                id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label={t('view-statistic')}
                 style={{ width: '35%' }}
                 iconPos='right'
@@ -248,15 +298,25 @@ const ManagementClubDetail = ({ club }) => {
           </div>
           <div id='info-detail'>
             <Title title={t('post-clubs')} />
-            <Button
-              id='button-join'
-              icon='pi pi-calendar-plus'
-              label={t('update-info')}
-              onClick={() => {
-                setVisibleAddNews(true)
-              }}
+            <div style={{width:'90%', marginBottom:'1rem'}}>
+              <Button
+                id='button-join'
+                icon='pi pi-calendar-plus'
+                label={t('new-news')}
+                onClick={() => {
+                  setVisibleAddNews(true)
+                }}
+              />
+            </div>
+
+            <News
+              data={news}
+              update
+              setUpdateNewsId={setUpdateNewsId}
+              setUpdateStatus={setUpdateStatus}
+              setLoading={setLoading}
+              showToast={showToast}
             />
-            <News data={news} />
           </div>
           <div id='info-detail'>
             <div id='statistic-club'>
@@ -317,7 +377,6 @@ const ManagementClubDetail = ({ club }) => {
                 <Button
                   icon='pi pi-pencil'
                   id='button-join'
-                  style={{ width: '30%' }}
                   label={t('update-info-detail')}
                   onClick={() => {
                     setVisibleInfo(true)

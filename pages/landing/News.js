@@ -2,8 +2,17 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Carousel from '@/components/dataview/Carousel'
 import { useTranslation } from 'next-i18next'
+import OutstandingEdit from '@/components/management/OutstandingEdit'
+import apiInstance from '@/api/apiInstance'
 
-const News = ({ data }) => {
+const News = ({
+  data,
+  update = false,
+  setUpdateNewsId,
+  setUpdateStatus,
+  setLoading,
+  showToast,
+}) => {
   const [news, setNews] = useState([])
 
   const { t } = useTranslation('news')
@@ -29,28 +38,107 @@ const News = ({ data }) => {
       numScroll: 1,
     },
   ]
-  
+
+  const items = (news_id) => [
+    {
+      label: 'Add',
+      icon: 'pi pi-plus',
+      command: () => {},
+    },
+    {
+      label: 'Update',
+      icon: 'pi pi-pencil',
+      command: () => {
+        handleClickEdit(news_id)
+      },
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-trash',
+      command: () => {
+        handleClickDelete(news_id)
+      },
+    },
+    {
+      label: 'React Website',
+      icon: 'pi pi-external-link',
+      command: () => {},
+    },
+  ]
+
+  const handleClickEdit = (news_id) => {
+    setUpdateNewsId(news_id)
+  }
+
+  const handleClickDelete = (news_id) => {
+    deleteNews(news_id)
+  }
+
+  const deleteNews = async (news_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.delete(`/news/${news_id}`)
+      if (res.status === 200) {
+        showToast('success', 'Xóa bài viết thành công', res.data.message)
+        setUpdateStatus(true)
+        setLoading(false)
+      }
+    } catch (err) {
+      showToast('error', 'Xóa bài viết thất bại', err)
+      setLoading(false)
+    }
+  }
+
   const newsTemplate = (news) => {
     return (
-      <Link id='link-news' href={`news/news-detail/${news.news_id}`}>
-        <div id='news-container'>
-          <div id='image-news-container'>
-            <img src={news.image} alt={news.name} />
-          </div>
-          <div id='name-news' title={news.name}>
-            <h4>{news.name}</h4>
-          </div>
-          <div id='share-register-content'>
-            <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
-            <div id='description-news' title={news.description}>
-              <h5>{news.description}</h5>
+      <div
+        id='link-news'
+        title={news.deleted ? 'Bài viết này đã bị quản trị viên khóa' : null}
+      >
+        <div id={news.deleted ? 'news-container-hide' : 'news-container'}>
+          <Link href={`/news/news-detail/${news.news_id}`}>
+            <div id='image-news-container'>
+              <img src={news.image} alt={news.name} />
+              {news.deleted ? (
+                <div className='lock-news'>
+                  <i
+                    id='icon-lock'
+                    className='fa fa-lock'
+                    aria-hidden='true'
+                  ></i>
+                </div>
+              ) : null}
             </div>
-            <Link id='link-event' href='/post'>
-              {t('share')} <i className='pi pi-share-alt' aria-hidden='true'></i>
-            </Link>
-          </div>
+          </Link>
+          {!update ? null : (
+            <OutstandingEdit
+              items={items(news.news_id)}
+              isOutstanding={news.outstanding}
+              id={news.news_id}
+              title='bài viết'
+            />
+          )}
+          <Link
+            id='name-news'
+            title={news.name}
+            href={`/news/news-detail/${news.news_id}`}
+          >
+            <h4>{news.name}</h4>
+          </Link>
+          <Link href={`/news/news-detail/${news.news_id}`}>
+            <div id='share-register-content'>
+              <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
+              <div id='description-news' title={news.description}>
+                <h5>{news.description}</h5>
+              </div>
+              <Link id='link-event' href='/post'>
+                {t('share')}{' '}
+                <i className='pi pi-share-alt' aria-hidden='true'></i>
+              </Link>
+            </div>
+          </Link>
         </div>
-      </Link>
+      </div>
     )
   }
 

@@ -10,34 +10,7 @@ import Activity from './profile/Activity'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-
-export async function getStaticPaths() {
-  const ids = await fetchUserIds()
-  if (!ids) {
-    return { paths: [], fallback: 'blocking' }
-  }
-  const paths = ids.map((user) => ({
-    params: { id: user.user_id.toString() },
-  }))
-
-  return {
-    paths,
-    fallback: 'blocking',
-  }
-}
-
-async function fetchUserIds() {
-  try {
-    const response = await apiInstance.get(
-      '/events?current_page=1&per_page=6&ongoing=true'
-    )
-    const data = await response.data.events
-    return data
-  } catch (error) {
-    console.error('Error fetching event IDs:', error)
-    return null
-  }
-}
+import apiInstance from '@/api/apiInstance'
 
 export const getStaticProps = async ({ locale, params }) => {
   const user = await getUser(params.id)
@@ -55,7 +28,7 @@ export const getStaticProps = async ({ locale, params }) => {
 
 async function getUser(id) {
   try {
-    const response = await apiInstance.get(`/events/event-detail/${id}`)
+    const response = await apiInstance.get(`/user/${id}`)
     const data = await response.data
     return data
   } catch (error) {

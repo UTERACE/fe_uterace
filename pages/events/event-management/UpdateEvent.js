@@ -3,13 +3,14 @@ import { Button } from 'primereact/button'
 import { FileUpload } from 'primereact/fileupload'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import Countdown from '../Countdown'
 import { Calendar } from 'primereact/calendar'
 import apiInstance from '@/api/apiInstance'
 
 const Update = ({
+  event_id,
   image,
   name,
   description,
@@ -18,18 +19,22 @@ const Update = ({
   setLoading,
   showToast,
   setVisibleChange,
+  setUpdateStatus,
 }) => {
   const [nameClub, setNameClub] = useState(name)
   const [background, setBackground] = useState(image)
   const [initialValues, setInitialValues] = useState({})
   const [start, setStart] = useState(start_time)
   const [end, setEnd] = useState(end_time)
+  const inputRef = useRef()
 
   const onSubmit = (data) => {
+    data.event_id = parseInt(event_id)
     data.image = background
-    data.start_time = start
-    data.end_time = end
-    handleUpdateEvent(data)
+    data.from_date = start
+    data.to_date = end
+    console.log('data', data)
+    // handleUpdateEvent(data)
   }
 
   useEffect(() => {
@@ -37,13 +42,12 @@ const Update = ({
     start_time.setHours(start_time.getHours())
     const end_time = new Date(end)
     end_time.setHours(end_time.getHours())
-    console.log('start', start_time)
-    console.log('end', end_time)
+
     setInitialValues({
       name: name,
       description: description,
-      start_time: start_time,
-      end_time: end_time,
+      from_date: start_time,
+      to_date: end_time,
     })
   }, [start, end])
 
@@ -56,6 +60,7 @@ const Update = ({
         showToast('success', 'Chỉnh sửa sự kiện thành công')
         setLoading(false)
         setVisibleChange(false)
+        setUpdateStatus(true)
       }
     } catch (error) {
       showToast('error', 'Chỉnh sửa sự kiện thất bại', error)
@@ -64,22 +69,34 @@ const Update = ({
   }
 
   const customBase64Uploader = async (event) => {
-    const file = event.files[0]
-    const reader = new FileReader()
-
-    let blob = await fetch(file.objectURL).then((r) => r.blob())
-
-    reader.readAsDataURL(blob)
-    reader.onloadend = function () {
-      const base64data = reader.result
-      setBackground(base64data)
+    const file = event.target.files[0]
+    if (file) {
+      if (file.size > 2000000) {
+        showToast(
+          'error',
+          'Tải ảnh lên thất bại',
+          'Kích thước ảnh tối đa là 2MB'
+        )
+        return
+      }
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const base64Data = e.target.result
+        setBackground(base64Data)
+      }
+      reader.readAsDataURL(file)
     }
   }
-  
+
   return (
     <Form onSubmit={onSubmit} initialValue={initialValues}>
       <div id='update-info-container'>
-        <div id='background-club-container'>
+        <div
+          id='background-club-container'
+          onClick={() => {
+            inputRef.current.click()
+          }}
+        >
           <AvatarEditor
             image={background}
             style={{ width: '100%', height: '100%', borderRadius: '15px' }}
@@ -87,20 +104,17 @@ const Update = ({
             height={630}
             scale={1}
           />
-          {/* <img src={background} alt='background' /> */}
+          <div id='file-upload'>
+            <i className='pi pi-image p-icon-lg'></i>
+          </div>
         </div>
-        <div id='file-upload'>
-          <FileUpload
-            mode='basic'
-            name='demo[]'
-            url='/user/profile'
-            accept='image/*'
-            maxFileSize={1000000}
-            onUpload={customBase64Uploader}
-            auto
-            chooseLabel='Chọn ảnh'
-          />
-        </div>
+        <input
+          type='file'
+          accept='image/*'
+          ref={inputRef}
+          onChange={customBase64Uploader}
+          style={{ display: 'none' }}
+        />
 
         <div id='info-detail'>
           <Field name='name' label='Tên câu lạc bộ' required>
@@ -121,7 +135,19 @@ const Update = ({
           </Field>
           <div className='grid-form'>
             <div className='col-6' id='width-100-center'>
-              <Field name='start_time' label='Ngày bắt đầu' required>
+              <Field name='min_pace' label='Tốc độ tối thiểu' required>
+                <InputText type='number' style={{ width: '100%' }} />
+              </Field>
+            </div>
+            <div className='col-6' id='width-100-center'>
+              <Field name='max_pace' label='Tốc độ tối đa' required>
+                <InputText type='number' style={{ width: '100%' }} />
+              </Field>
+            </div>
+          </div>
+          <div className='grid-form'>
+            <div className='col-6' id='width-100-center'>
+              <Field name='from_date' label='Ngày bắt đầu' required>
                 <Calendar
                   showTime={true}
                   style={{ width: '100%' }}
@@ -132,7 +158,7 @@ const Update = ({
               </Field>
             </div>
             <div className='col-6' id='width-100-center'>
-              <Field name='end_time' label='Ngày kết thúc' required>
+              <Field name='to_date' label='Ngày kết thúc' required>
                 <Calendar
                   showTime={true}
                   style={{ width: '100%' }}

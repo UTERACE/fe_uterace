@@ -4,9 +4,11 @@ import Title from '@/components/landing/Title'
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 
 const Events = () => {
   const [events, setEvents] = useState([])
@@ -14,8 +16,10 @@ const Events = () => {
   const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
-  const [onGoing, setOnGoing] = useState(true)
 
+  const [onGoing, setOnGoing] = useState(true)
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(1)
 
   const { t } = useTranslation('event')
@@ -25,15 +29,22 @@ const Events = () => {
   }, [onGoing, current_page, per_page])
 
   const fetchEvents = async () => {
-    const res = await apiInstance.get(
-      `/events?current_page=${current_page}&per_page=${per_page}&ongoing=${onGoing}`
-    )
-    if (res.status === 200) {
-      const data = res.data
-      setEvents(data.events)
-      setTotalRecords(data.total_events)
-      setCurrentPage(data.current_page)
-      setPerPage(data.per_page)
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/events?current_page=${current_page}&per_page=${per_page}&ongoing=${onGoing}`
+      )
+      if (res.status === 200) {
+        const data = res.data
+        setEvents(data.events)
+        setTotalRecords(data.total_events)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', 'Lấy dữ liệu thất bại', error)
+      setLoading(false)
     }
   }
 

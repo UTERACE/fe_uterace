@@ -117,6 +117,22 @@ const Topbar = () => {
           },
         ],
       },
+      {
+        label: t('manage-news'),
+        icon: 'pi pi-fw pi-users',
+        items: [
+          {
+            label: t('new-news'),
+            icon: 'pi pi-fw pi-plus',
+            command: () => handleClick('/news/news-management'),
+          },
+          {
+            label: t('my-news'),
+            icon: 'pi pi-fw pi-users',
+            command: () => handleClick('/news/news-management'),
+          },
+        ],
+      },
     ]
   } else {
     managementItems = [
@@ -216,11 +232,7 @@ const Topbar = () => {
             </div>
           ) : (
             <div>
-              <SlideMenu
-                ref={menuHeader}
-                model={items}
-                popup
-              ></SlideMenu>
+              <SlideMenu ref={menuHeader} model={items} popup></SlideMenu>
 
               <Button
                 type='button'

@@ -28,74 +28,8 @@ const ClubManagement = () => {
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
 
-  // const data = {
-  //   per_page: 5,
-  //   current_page: 1,
-  //   total_page: 5,
-  //   total_clubs: 22,
-  //   clubs: [
-  //     {
-  //       club_id: 1,
-  //       name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
-  //       image: 'https://picsum.photos/200/300',
-  //       total_members: 100,
-  //       total_distance: 1000,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       club_id: 2,
-  //       name: 'Dak Lak Runners',
-  //       image:
-  //         'https://mobirace.net/Upload/Images/Club/202008/IMG_20200816_094952_16082020_094942_562.jpg',
-  //       total_members: 100,
-  //       total_distance: 1000,
-  //       outstanding: false,
-  //     },
-  //     {
-  //       club_id: 3,
-  //       name: 'MOBIFONE ĐẮK LẮK - ĐẮK NÔNG',
-  //       image:
-  //         'https://mobirace.net/Upload/Images/Club/202010/dl_dn_17102020_095936_684.jpg',
-  //       total_members: 100,
-  //       total_distance: 1000,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       club_id: 4,
-  //       name: 'XOSOKIENTHIETQUANGBINH RUNNERS CLUB',
-  //       image:
-  //         'https://mobirace.net/Upload/Images/Club/202103/IMG_20200913_114028_18032021_152058_637.jpg',
-  //       total_members: 100,
-  //       total_distance: 1000,
-  //       outstanding: true,
-  //     },
-  //     {
-  //       club_id: 5,
-  //       name: 'Đài Viễn Thông Đông HCM - TT MLMN',
-  //       image:
-  //         'https://mobirace.net/Upload/Images/Club/202009/FN_29092020_130940_125.png',
-  //       total_members: 100,
-  //       total_distance: 1000,
-  //       outstanding: false,
-  //     },
-  //     {
-  //       club_id: 6,
-  //       name: 'MLMN Win Together',
-  //       image:
-  //         'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-  //       total_members: 100,
-  //       total_distance: 1000,
-  //       outstanding: true,
-  //     },
-  //   ],
-  // }
-  // const dataDetail = {
-  //   image:
-  //     'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-  //   name: 'CLB ĐỒNG HÀNH CÙNG CÁC THIÊN THẦN',
-  //   description:
-  //     'Giải chạy online “E-run for the heart I” do Đoàn khoa Quản trị kinh doanh (Đoàn trường Đại học Quốc tế Miền Đông) tổ chức với mong muốn thúc đẩy tinh thần tập luyện thể dục thể thao cho mọi người, đặc biệt là các bạn trẻ, hướng tới ngày tim mạch thế giới 29/9 và tuyên truyền, phổ biến, nâng cao nhận thức của cộng đồng về tăng cường sức khỏe tim mạch, phòng ngừa và tránh những rủi ro về sức khỏe tim mạch.',
-  // }
+  const { t } = useTranslation('club')
+
   useEffect(() => {
     if (index === 2) {
       fetchCreatedClubs()
@@ -103,7 +37,9 @@ const ClubManagement = () => {
       fetchJoinedClubs()
     }
   }, [current_page, per_page, index, visibleChange, visibleAdd, updateStatus])
+
   const fetchCreatedClubs = async () => {
+    setLoading(true)
     try {
       const res = await apiInstance.get(
         `/clubs/created-club?current_page=${current_page}&per_page=${per_page}`
@@ -114,12 +50,16 @@ const ClubManagement = () => {
         setTotalRecords(data.total_clubs)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
+        setLoading(false)
       }
     } catch (err) {
       showToast('error', 'Lỗi', err)
+      setLoading(false)
     }
   }
+
   const fetchJoinedClubs = async () => {
+    setLoading(true)
     try {
       const res = await apiInstance.get(
         `/clubs/joined-club?current_page=${current_page}&per_page=${per_page}`
@@ -130,20 +70,26 @@ const ClubManagement = () => {
         setTotalRecords(data.total_clubs)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
+        setLoading(false)
       }
     } catch (err) {
       showToast('error', 'Lỗi', err)
+      setLoading(false)
     }
   }
+
   const fetchDetailClub = async (club_id) => {
+    setLoading(true)
     try {
       const res = await apiInstance.get(`/clubs/${club_id}`)
       if (res.status === 200) {
         setDataClub(res.data)
         setVisibleChange(true)
+        setLoading(false)
       }
     } catch (err) {
       showToast('error', 'Lỗi', err)
+      setLoading(false)
     }
   }
 
@@ -152,7 +98,7 @@ const ClubManagement = () => {
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const { t } = useTranslation('club')
+
   const itemTemplate = (item) => {
     return (
       <div id='dataview-container'>
@@ -207,23 +153,30 @@ const ClubManagement = () => {
       </div>
     )
   }
+
   const handleClickEdit = (club_id) => {
     fetchDetailClub(club_id)
   }
+
   const handleClickDelete = (club_id) => {
     deleteClub(club_id)
   }
+
   const deleteClub = async (club_id) => {
+    setLoading(true)
     try {
       const res = await apiInstance.delete(`/clubs/${club_id}`)
       if (res.status === 200) {
         showToast('success', 'Xóa câu lạc bộ thành công')
         setUpdateStatus(!updateStatus)
+        setLoading(false)
       }
     } catch (err) {
       showToast('error', 'Xóa câu lạc bộ thất bại', err)
+      setLoading(false)
     }
   }
+
   const items = (club_id) => [
     {
       label: 'Add',
@@ -250,6 +203,7 @@ const ClubManagement = () => {
       command: () => {},
     },
   ]
+
   return (
     <div className='centered-content-dataview'>
       <Title

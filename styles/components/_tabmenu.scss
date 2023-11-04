@@ -104,6 +104,7 @@
     transition: box-shadow 0.2s;
     margin: 0 0 0 0;
     height: calc(100%);
+    gap: 0.3rem;
   }
 #app-menu.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
     background: var(--secondary-color);
