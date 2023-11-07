@@ -1,0 +1,19 @@
+{
+    "login": "Sign in",
+    "username_or_email": "Username or email address",
+    "enter_username_or_email": "Enter username or email address",
+    "password": "Password (min 8 characters)",
+    "enter_password": "Enter password",
+    "login_with_facebook": "Continue with Facebook",
+    "login_with_google": "Continue with Google",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?",
+    "dont_have_account": "Don't have an account?",
+    "sign_up_now": "Sign up now",
+    "sign_up_with": "Sign up with",
+    "or_login_with": "Or login with",
+    "login_success": "Sign in successfully",
+    "login_failed": "Sign in failed",
+    "error_login": "Error login",
+    "login_failed_message": "Username or password is incorrect"
+}

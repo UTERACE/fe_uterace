@@ -432,7 +432,7 @@ const EventDetail = ({ event }) => {
             <h1>{name}</h1>
             <h6>{description}</h6>
             <div id='event-time-detail'>
-              <Countdown from_date={start_time} to_date={end_time} />
+              <Countdown from_date={start_time} to_date={end_time} t={t}/>
             </div>
             <Button id='button-join' label={t('join-now')} onClick={() => {}} />
           </div>

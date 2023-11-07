@@ -14,6 +14,8 @@ import { Dialog } from 'primereact/dialog'
 import NewNews from '../new-news'
 import UpdateNews from '@/pages/clubs/club-management/UpdateNews'
 import { Button } from 'primereact/button'
+import { useRouter } from 'next/router'
+import store from '@/store/store'
 
 const ManagementNews = () => {
   const [news, setNews] = useState([])
@@ -32,6 +34,19 @@ const ManagementNews = () => {
   const [index, setIndex] = useState(1)
 
   const { t } = useTranslation('news')
+
+  const router = useRouter()
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+  useEffect(() => {
+    if (!hasAdminRole) {
+      router.push('/news')
+    }
+  }, [hasAdminRole])
+
+  if (!hasAdminRole) {
+    return null
+  }
 
   useEffect(() => {
     if (index == 1) {
@@ -57,7 +72,7 @@ const ManagementNews = () => {
       }
     } catch (error) {
       setLoading(false)
-      showToast('error', 'Lấy dữ liệu thất bại', error)
+      showToast('error', t('get_news_fail'), error)
     }
   }
 
@@ -77,7 +92,7 @@ const ManagementNews = () => {
       }
     } catch (error) {
       setLoading(false)
-      showToast('error', 'Lấy dữ liệu thất bại', error)
+      showToast('error', t('get_news_fail'), error)
     }
   }
 
@@ -166,7 +181,7 @@ const ManagementNews = () => {
   ]
 
   useEffect(() => {
-    fetchDetailNews()
+    if (updateNewsId != 0) fetchDetailNews()
   }, [updateNewsId])
 
   const fetchDetailNews = async () => {
@@ -178,7 +193,7 @@ const ManagementNews = () => {
         setVisibleUpdateNews(true)
       }
     } catch (error) {
-      console.log(error)
+      showToast('error', t('get_news_fail'), error)
     }
   }
 
@@ -199,12 +214,12 @@ const ManagementNews = () => {
     try {
       const res = await apiInstance.delete(`/news/${news_id}`)
       if (res.status === 200) {
-        showToast('success', 'Xóa bài viết thành công', res.data.message)
+        showToast('success', t('delete_news_success'), res.data.message)
         setUpdateStatus(!updateStatus)
         setLoading(false)
       }
     } catch (err) {
-      showToast('error', 'Xóa bài viết thất bại', err)
+      showToast('error', t('delete_news_fail'), err)
       setLoading(false)
     }
   }
@@ -214,12 +229,12 @@ const ManagementNews = () => {
     try {
       const res = await apiInstance.put(`/news/hide/${news_id}`)
       if (res.status === 200) {
-        showToast('success', 'Ẩn bài viết thành công', res.data.message)
+        showToast('success', t('hide_news_success'), res.data.message)
         setUpdateStatus(!updateStatus)
         setLoading(false)
       }
     } catch (err) {
-      showToast('error', 'Ẩn bài viết thất bại', err)
+      showToast('error', t('hide_news_fail'), err)
       setLoading(false)
     }
   }
@@ -243,6 +258,7 @@ const ManagementNews = () => {
           showToast={showToast}
           setVisibleAdd={setVisibleAddNews}
           setUpdate={setUpdateStatus}
+          t={t}
         />
       </Dialog>
       <Dialog

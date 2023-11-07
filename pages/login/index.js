@@ -14,6 +14,16 @@ import store from '@/store/store'
 import { useGoogleLogin } from '@react-oauth/google'
 import { Dialog } from 'primereact/dialog'
 import Register from '../register'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
+
+export const getServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['topbar', 'login'])),
+    },
+  }
+}
 
 const Login = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -28,6 +38,8 @@ const Login = () => {
   const [typeThirdParty, setTypeThirdParty] = useState('')
   const [responseFacebook, setResponseFacebook] = useState({})
   const router = useRouter()
+  
+  const { t } = useTranslation('login')
 
   const onSubmit = (data) => {
     handleLogin(data)
@@ -61,25 +73,28 @@ const Login = () => {
       let { remember, ...rest } = data
       const response = await apiInstance.post('/auth/login', rest)
       if (response.status === 200) {
-        const { accessToken, refreshToken, firstname, image, roles } =
+        const { accessToken, refreshToken, firstname, lastname, image, roles } =
           response.data
         store.dispatch(
-          login({ accessToken, refreshToken, image, firstname, roles })
+          login({
+            accessToken,
+            refreshToken,
+            image,
+            firstname,
+            lastname,
+            roles,
+          })
         )
         setIsAuthenticated(store.getState().auth.isAuthenticated)
-        showToast('success', 'Đăng nhập thành công ', response.data.detail)
+        showToast('success', t('login_success'), response.data.message)
         setLoading(false)
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        showToast('error', 'Đăng nhập thất bại', error.response.data.detail)
+      if (error.response && error.response.status === 500) {
+        showToast('error', t('login_failed'), t('login_failed_message'))
         setLoading(false)
       } else {
-        showToast(
-          'error',
-          'Lỗi trong quá trình đăng nhập',
-          `Vui lòng đăng nhập lại ${error}`
-        )
+        showToast('error', t('login_failed'), `${t('error_login')} ${error}`)
         setLoading(false)
       }
     }
@@ -97,7 +112,7 @@ const Login = () => {
       handleLoginThirdParty(request)
     },
     onFailure: (res) => {
-      showToast('error', 'Đăng nhập thất bại', res.error)
+      showToast('error', t('login_failed'), res.error)
     },
   })
 
@@ -116,21 +131,24 @@ const Login = () => {
         setResponseThirdParty(response.data)
         setVisibleThirdParty(true)
       } else {
-        const { accessToken, refreshToken, firstname, image, roles } =
+        const { accessToken, refreshToken, firstname, lastname, image, roles } =
           response.data
         store.dispatch(
-          login({ accessToken, refreshToken, image, firstname, roles })
+          login({
+            accessToken,
+            refreshToken,
+            image,
+            firstname,
+            lastname,
+            roles,
+          })
         )
         setIsAuthenticated(store.getState().auth.isAuthenticated)
-        showToast('success', 'Đăng nhập thành công ', response.data.detail)
+        showToast('success', t('login_success'), response.data.detail)
         setLoading(false)
       }
     } catch (error) {
-      showToast(
-        'error',
-        'Lỗi trong quá trình đăng nhập',
-        `Vui lòng đăng nhập lại ${error}`
-      )
+      showToast('error', t('login_failed'), `${t('error_login')} ${error}`)
       setLoading(false)
     }
   }
@@ -168,11 +186,7 @@ const Login = () => {
           setTypeThirdParty('facebook')
           handleLoginThirdParty(request)
         } else {
-          showToast(
-            'warn',
-            'Đăng nhập thất bại',
-            'Người dùng hủy đăng nhập hoặc không đăng nhập đầy đủ.'
-          )
+          showToast('error', t('login_failed'), t('error_login'))
         }
       },
       { scope: 'email' }
@@ -186,11 +200,11 @@ const Login = () => {
   const handleClickLoginFacebook = () => {
     loginFacebook()
   }
-  
+
   return (
     <div className='centered-content-full'>
       <Dialog
-        header={`Đăng ký tài khoản với ${
+        header={`${t('sign_up_with')} ${
           typeThirdParty === 'facebook' ? 'Facebook' : 'Google'
         }`}
         visible={visibleThirdParty}
@@ -215,7 +229,7 @@ const Login = () => {
       <div id='form-container'>
         <div id='form-card'>
           <div id='form-title'>
-            <h1>Sign in</h1>
+            <h1>{t('login')}</h1>
           </div>
           <Form onSubmit={onSubmit} initialValue={initialValues}>
             <div id='form'>
@@ -223,13 +237,13 @@ const Login = () => {
                 <div className='col-12' id='width-100-center'>
                   <Field
                     name='username'
-                    label='Username or email address'
+                    label={t('username_or_email')}
                     required
                   >
                     <InputText
                       type='text'
                       style={{ width: '100%' }}
-                      tooltip='Enter your username or email address'
+                      tooltip={t('enter_username_or_email')}
                       tooltipOptions={{ event: 'focus' }}
                     />
                   </Field>
@@ -237,16 +251,12 @@ const Login = () => {
               </div>
               <div className='grid-form'>
                 <div className='col-12' id='width-100-center'>
-                  <Field
-                    name='password'
-                    label='Password(8 characters minimum)'
-                    required
-                  >
+                  <Field name='password' label={t('password')} required>
                     <Password
                       type='password'
                       style={{ width: '100%' }}
                       toggleMask
-                      tooltip='Enter your password'
+                      tooltip={t('enter_password')}
                       tooltipOptions={{ event: 'focus' }}
                     />
                   </Field>
@@ -254,7 +264,7 @@ const Login = () => {
               </div>
               <div className='grid-form' id='remember-forgot-container'>
                 <div className='col-6' id='checkbox'>
-                  <Field name='remember' label='Remember me'>
+                  <Field name='remember' label={t('remember_me')}>
                     <Checkbox
                       inputId='remember'
                       checked={checked}
@@ -263,14 +273,14 @@ const Login = () => {
                   </Field>
                 </div>
                 <div className='col-6' id='forgot-title'>
-                  <Link href='/landing'>Forgot password?</Link>
+                  <Link href='/landing'>{t('forgot_password')}</Link>
                 </div>
               </div>
               <div className='grid-form'>
                 <Button
                   icon='pi pi-sign-in'
                   type='submit'
-                  label='Sign in'
+                  label={t('login')}
                   severity='secondary'
                   raised
                   id='button-detail'
@@ -285,27 +295,27 @@ const Login = () => {
                   marginTop: '2rem',
                 }}
               >
-                Or Using
+                {t('or_login_with')}
               </div>
               <div className='grid-form'>
                 <div className='col-12' id='border-form'>
                   <Button
-                    label='Continue with Facebook'
+                    label={t('login_with_facebook')}
                     icon='pi pi-facebook'
-                    id='login-google'
+                    id='login-facebook'
                     type='button'
                     onClick={() => {
                       handleClickLoginFacebook()
                     }}
                   />
                 </div>
+              </div>
+              <div className='grid-form'>
                 <div className='col-12' id='border-form'>
                   <Button
-                    label='Continue with Google'
+                    label={t('login_with_google')}
                     icon='pi pi-google'
-                    severity='secondary'
-                    raised
-                    id='button-dark'
+                    id='login-google'
                     type='button'
                     onClick={() => {
                       handleClickLoginGoogle()
@@ -316,8 +326,8 @@ const Login = () => {
 
               <div className='grid-form' id='top-8'>
                 <div className='col-12' id='signin-signup-title'>
-                  Don't have an account?
-                  <Link href='/register'> Sign up now</Link>
+                  {t('dont_have_account')}
+                  <Link href='/register'> {t('sign_up_now')}</Link>
                 </div>
               </div>
             </div>

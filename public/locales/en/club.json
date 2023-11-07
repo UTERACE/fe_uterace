@@ -1,10 +1,25 @@
 {
     "all-clubs": "All Clubs",
+    "get_club_fail": "Get Club Fail",
     "created-clubs": "Created Clubs",
     "joined-clubs": "Joined Clubs",
     "update-clubs": "Update Clubs",
+    "update_club_success": "Update Club Success",
+    "update_club_fail": "Update Club Fail",
     "new-club": "New Club",
+    "create_club_success": "Create Club Success",
+    "create_club_fail": "Create Club Fail",
     "member-join":"Members",
     "club-join":"Join Club",
-    "share":"Share"
+    "share":"Share",
+    "upload_image_fail": "Upload image fail",
+    "max_size_image": "Max size image 2MB",
+    "name_club": "Name Club",
+    "name_club_placeholder": "Nhập tên câu lạc bộ",
+    "description_club": "Description Club",
+    "description_club_placeholder": "Nhập mô tả câu lạc bộ",
+    "min_pace": "Min Pace",
+    "max_pace": "Max Pace",
+    "intro_club": "Introduce Club",
+    "create_club": "Create Club"
 }

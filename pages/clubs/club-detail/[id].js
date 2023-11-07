@@ -4,13 +4,16 @@ import Activity from '@/pages/user/profile/Activity'
 import RankMember from '@/pages/scoreboard/RankMember'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
+import { useRouter } from 'next/router'
+import store from '@/store/store'
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -45,9 +48,14 @@ const ClubDetail = ({ club }) => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(1)
+  const [visible, setVisible] = useState(false)
+  const buttonEl = useRef(null)
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
+  const router = useRouter()
+  const roles = store.getState().auth.roles
+  const hasUserRole = roles ? roles.some((role) => role.roleId === 2) : false
 
   const [introduce, setIntroduce] = useState(club.details)
   const [news, setNews] = useState(club.news)
@@ -56,17 +64,50 @@ const ClubDetail = ({ club }) => {
 
   const { t } = useTranslation('detail')
 
+  const acceptJoin = () => {
+    handleJoinClub()
+  }
+
+  const acceptLeave = () => {
+    handleLeaveClub()
+  }
+
+  const reject = () => {
+    showToast('info', t('rejected'), t('you_are_rejected'))
+  }
+
   const handleJoinClub = async () => {
     setLoading(true)
+    if (!hasUserRole) {
+      router.push('/login')
+      setLoading(false)
+      showToast('error', t('join_club_fail'), t('not_login'))
+    } else {
+      try {
+        const res = await apiInstance.post(`/clubs/join-club/${club.club_id}`)
+        const dataRes = res.data
+        if (res.status == 200) {
+          showToast('success', t('join_club_success'), dataRes.message)
+          setLoading(false)
+        }
+      } catch (error) {
+        showToast('error', t('join_club_fail'), error)
+        setLoading(false)
+      }
+    }
+  }
+
+  const handleLeaveClub = async () => {
+    setLoading(true)
     try {
-      const res = await apiInstance.post(`/clubs/join-club/${club.club_id}`)
+      const res = await apiInstance.delete(`/clubs/leave-club/${club.club_id}`)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Tham gia câu lạc bộ thành công', dataRes.message)
+        showToast('success', t('leave_club_success'), dataRes.message)
         setLoading(false)
       }
     } catch (error) {
-      showToast('error', 'Tham gia câu lạc bộ thất bại', error)
+      showToast('error', t('leave_club_fail'), error)
       setLoading(false)
     }
   }
@@ -88,12 +129,21 @@ const ClubDetail = ({ club }) => {
             <img id='info-detail-img' src={club.image} alt='logo' />
             <h1>{club.name}</h1>
             <h6>{club.description}</h6>
-
+            <ConfirmPopup
+              target={buttonEl.current}
+              visible={visible}
+              onHide={() => setVisible(false)}
+              message={t('confirm_join_club')}
+              icon='pi pi-exclamation-triangle'
+              accept={acceptJoin}
+              reject={reject}
+            />
             <Button
+              ref={buttonEl}
               id='button-join'
               label={t('join-now')}
               onClick={() => {
-                handleJoinClub()
+                setVisible(true)
               }}
             />
           </div>

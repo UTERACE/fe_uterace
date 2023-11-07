@@ -17,5 +17,8 @@
     "manage-events":"Manage events",
     "new-event":"New event",
     "my-events":"My events",
-    "join-event":"Join event"
+    "join-event":"Join event",
+    "manage-news":"Manage news",
+    "new-news":"New news",
+    "my-news":"My news"
 }

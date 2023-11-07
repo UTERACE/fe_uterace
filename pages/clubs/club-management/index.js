@@ -109,12 +109,14 @@ const ClubManagement = () => {
           >
             <img src={item.image} alt={item.name} />
           </Link>
-          <OutstandingEdit
-            items={items(item.club_id)}
-            isOutstanding={item.outstanding}
-            id={item.club_id}
-            title='câu lạc bộ'
-          />
+          {index == 3 ? null : (
+            <OutstandingEdit
+              items={items(item.club_id)}
+              isOutstanding={item.outstanding}
+              id={item.club_id}
+              title='câu lạc bộ'
+            />
+          )}
         </div>
         <Link
           id='link-dataview-container'
@@ -236,6 +238,7 @@ const ClubManagement = () => {
           showToast={showToast}
           setVisibleChange={setVisibleChange}
           setUpdate={setUpdateStatus}
+          t={t}
         />
       </Dialog>
       <Dialog
@@ -255,6 +258,7 @@ const ClubManagement = () => {
           showToast={showToast}
           setVisibleAdd={setVisibleAdd}
           setUpdate={setUpdateStatus}
+          t={t}
         />
       </Dialog>
       <div className='centered-content-layout'>

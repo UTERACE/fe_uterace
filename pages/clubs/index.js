@@ -39,7 +39,7 @@ const Clubs = () => {
         setLoading(false)
       }
     } catch (error) {
-      showToast('error', 'Lấy dữ liệu thất bại', error)
+      showToast('error', t('get_club_fail'), error)
       setLoading(false)
     }
   }

@@ -15,6 +15,7 @@ const Update = ({
   showToast,
   setVisibleChange,
   setUpdate,
+  t,
 }) => {
   const [nameEvent, setNameEvent] = useState(name)
   const [descriptionEvent, setDescriptionEvent] = useState(description)
@@ -42,13 +43,13 @@ const Update = ({
       const res = await apiInstance.put('/clubs', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Chỉnh sửa câu lạc bộ thành công', dataRes.message)
+        showToast('success', t('update_club_success'), dataRes.message)
         setLoading(false)
         setVisibleChange(false)
         setUpdate(true)
       }
     } catch (error) {
-      showToast('error', 'Chỉnh sửa câu lạc bộ thất bại', error)
+      showToast('error', t('update_club_fail'), error)
       setLoading(false)
     }
   }
@@ -57,11 +58,7 @@ const Update = ({
     const file = event.target.files[0]
     if (file) {
       if (file.size > 2000000) {
-        showToast(
-          'error',
-          'Tải ảnh lên thất bại',
-          'Kích thước ảnh tối đa là 2MB'
-        )
+        showToast('error', t('upload_image_fail'), t('max_size_image'))
         return
       }
       const reader = new FileReader()
@@ -102,20 +99,24 @@ const Update = ({
         />
 
         <div id='info-detail'>
-          <Field name='name' label='Tên câu lạc bộ' required>
+          <Field name='name' label={t('name_club')} required>
             <InputText
               type='text'
               style={{ width: '100%' }}
+              tooltip={t('name_club_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setNameEvent(e.target.value)
               }}
             />
           </Field>
           <div style={{ height: '1.5rem' }}></div>
-          <Field name='description' label='Mô tả' required>
+          <Field name='description' label={t('description_club')} required>
             <InputTextarea
               type='text'
               style={{ width: '100%', height: '8rem' }}
+              tooltip={t('description_club_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setDescriptionEvent(e.target.value)
               }}
@@ -133,7 +134,7 @@ const Update = ({
             height: '3rem',
             fontWeight: 'bold',
           }}
-          label='Cập nhật thông tin'
+          label={t('update-clubs')}
           severity='secondary'
           raised
           icon='pi pi-pencil'

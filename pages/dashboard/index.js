@@ -11,6 +11,17 @@ import ClubManagement from './ClubManagement'
 import NewsManagement from './NewsManagement'
 import UserManagement from './UserManagement'
 import { Button } from 'primereact/button'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+export const getServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        'topbar',
+      ])),
+    },
+  }
+}
 
 const DashboardPage = () => {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -23,12 +34,17 @@ const DashboardPage = () => {
   const router = useRouter()
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
-  console.log('hasAdminRole', hasAdminRole)
+
   useEffect(() => {
     if (!hasAdminRole) {
       router.push('/landing')
     }
   }, [hasAdminRole])
+
+  if (!hasAdminRole) {
+    return null
+  }
+
   const model = [
     {
       label: 'Dashboard',
@@ -61,7 +77,9 @@ const DashboardPage = () => {
       to: '/profile',
     },
   ]
+
   const [isCollapsed, setIsCollapsed] = useState(true)
+
   return (
     <div id='dashboard-container'>
       <Button

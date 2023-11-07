@@ -14,7 +14,7 @@ const DynamicTinyMCE = dynamic(
   }
 )
 
-const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate}) => {
+const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate, t }) => {
   const [nameClub, setNameClub] = useState('')
   const [descriptionClub, setDescriptionClub] = useState('')
   const [background, setBackground] = useState('')
@@ -44,13 +44,13 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate}) => {
       const res = await apiInstance.post('/clubs', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Tạo câu lạc bộ thành công', dataRes.message)
+        showToast('success', t('create_club_success'), dataRes.message)
         setLoading(false)
         setVisibleAdd(false)
         setUpdate(true)
       }
     } catch (error) {
-      showToast('error', 'Tạo câu lạc bộ thất bại', error)
+      showToast('error', t('create_club_fail'), error)
       setLoading(false)
     }
   }
@@ -59,11 +59,7 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate}) => {
     const file = event.target.files[0]
     if (file) {
       if (file.size > 2000000) {
-        showToast(
-          'error',
-          'Tải ảnh lên thất bại',
-          'Kích thước ảnh tối đa là 2MB'
-        )
+        showToast('error', t('upload_image_fail'), t('max_size_image'))
         return
       }
       const reader = new FileReader()
@@ -104,20 +100,24 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate}) => {
         />
 
         <div id='info-detail'>
-          <Field name='name' label='Tên câu lạc bộ' required>
+          <Field name='name' label={t('name_club')} required>
             <InputText
               type='text'
               style={{ width: '100%' }}
+              tooltip={t('name_club_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setNameClub(e.target.value)
               }}
             />
           </Field>
           <div style={{ height: '1.5rem' }}></div>
-          <Field name='description' label='Mô tả' required>
+          <Field name='description' label={t('description_club')} required>
             <InputTextarea
               type='text'
               style={{ width: '100%', height: '8rem' }}
+              tooltip={t('description_club_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setDescriptionClub(e.target.value)
               }}
@@ -125,12 +125,12 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate}) => {
           </Field>
           <div className='grid-form'>
             <div className='col-6' id='width-100-center'>
-              <Field name='min_pace' label='Tốc độ tối thiểu' required>
+              <Field name='min_pace' label={t('min_pace')} required>
                 <InputText type='number' style={{ width: '100%' }} />
               </Field>
             </div>
             <div className='col-6' id='width-100-center'>
-              <Field name='max_pace' label='Tốc độ tối đa' required>
+              <Field name='max_pace' label={t('max_pace')} required>
                 <InputText type='number' style={{ width: '100%' }} />
               </Field>
             </div>
@@ -138,12 +138,12 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate}) => {
           <h1>{nameClub}</h1>
           <h6>{descriptionClub}</h6>
         </div>
-        <h1>Giới thiệu</h1>
+        <h1>{t('intro_club')}</h1>
         <div id='info-detail'>
           <DynamicTinyMCE
             value={introduce}
             onSave={setIntroduce}
-            label={'Tạo câu lạc bộ của bạn'}
+            label={t('create_club')}
           />
         </div>
       </div>

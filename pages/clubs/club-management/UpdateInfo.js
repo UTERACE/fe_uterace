@@ -19,6 +19,7 @@ const UpdateInfo = ({
   showToast,
   setVisibleInfo,
   setUpdate,
+  t,
 }) => {
   const [descriptionEvent, setDescriptionEvent] = useState(description)
 
@@ -36,13 +37,13 @@ const UpdateInfo = ({
       const res = await apiInstance.put('/clubs', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Chỉnh sửa câu lạc bộ thành công', dataRes.message)
+        showToast('success', t('update_info_club_success'), dataRes.message)
         setLoading(false)
         setVisibleInfo(false)
         setUpdate(true)
       }
     } catch (error) {
-      showToast('error', 'Chỉnh sửa câu lạc bộ thất bại', error)
+      showToast('error', t('update_info_club_fail'), error)
       setLoading(false)
     }
   }
@@ -53,7 +54,7 @@ const UpdateInfo = ({
         <DynamicTinyMCE
           value={descriptionEvent}
           onSave={setDescriptionEvent}
-          label={'Cập nhật thông tin'}
+          label={t('update-info')}
         />
       </div>
     </Form>

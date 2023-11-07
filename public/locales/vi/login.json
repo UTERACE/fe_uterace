@@ -1,0 +1,19 @@
+{
+    "login": "Đăng nhập",
+    "username_or_email": "Tên đăng nhập hoặc email",
+    "enter_username_or_email": "Nhập tên đăng nhập hoặc email",
+    "password": "Mật khẩu (ít nhất 8 ký tự)",
+    "enter_password": "Nhập mật khẩu",
+    "login_with_facebook": "Đăng nhập với Facebook",
+    "login_with_google": "Đăng nhập với Google",
+    "remember_me": "Ghi nhớ đăng nhập",
+    "forgot_password": "Quên mật khẩu?",
+    "dont_have_account": "Chưa có tài khoản?",
+    "sign_up_now": "Đăng ký ngay",
+    "sign_up_with": "Đăng ký tài khoản với",
+    "or_login_with": "Hoặc đăng nhập với",
+    "login_success": "Đăng nhập thành công",
+    "login_failed": "Đăng nhập thất bại",
+    "error_login": "Lỗi trong quá trình đăng nhập",
+    "login_failed_message": "Tên đăng nhập hoặc mật khẩu không đúng"
+}

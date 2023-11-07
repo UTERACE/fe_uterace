@@ -1,0 +1,16 @@
+{
+    "sign_up": "Đăng ký",
+    "first_name": "Tên",
+    "last_name": "Họ",
+    "username": "Tên đăng nhập",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "birthday": "Ngày sinh",
+    "sex":"Giới tính",
+    "policy": "Tôi đồng ý với các điều khoản và điều kiện",
+    "already_have_account": "Bạn đã có tài khoản?",
+    "sign_in_now": "Đăng nhập ngay",
+    "sign_up_success": "Đăng ký thành công",
+    "sign_up_failed": "Đăng ký thất bại"
+}

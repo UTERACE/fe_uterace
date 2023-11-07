@@ -19,6 +19,7 @@ const NewNews = ({
   showToast,
   setVisibleAdd,
   setUpdate,
+  t,
 }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
@@ -48,13 +49,13 @@ const NewNews = ({
       const res = await apiInstance.post('/news', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Tạo bài viết thành công', dataRes.message)
+        showToast('success', t('hide_news_success'), dataRes.message)
         setLoading(false)
         setVisibleAdd(false)
         setUpdate(true)
       }
     } catch (error) {
-      showToast('error', 'Tạo bài viết thất bại', error)
+      showToast('error', t('add_news_fail'), error)
       setLoading(false)
     }
   }
@@ -63,11 +64,7 @@ const NewNews = ({
     const file = event.target.files[0]
     if (file) {
       if (file.size > 2000000) {
-        showToast(
-          'error',
-          'Tải ảnh lên thất bại',
-          'Kích thước ảnh tối đa là 2MB'
-        )
+        showToast('error', t('upload_image_fail'), t('max_size_image'))
         return
       }
       const reader = new FileReader()
@@ -108,20 +105,24 @@ const NewNews = ({
         />
 
         <div id='info-detail'>
-          <Field name='title' label='Tiêu đề bài viết' required>
+          <Field name='title' label={t('title')} required>
             <InputText
               type='text'
               style={{ width: '100%' }}
+              tooltip={t('title_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setTitle(e.target.value)
               }}
             />
           </Field>
           <div style={{ height: '1.5rem' }}></div>
-          <Field name='description' label='Mô tả bài viết' required>
+          <Field name='description' label={t('description')} required>
             <InputTextarea
               type='text'
               style={{ width: '100%', height: '8rem' }}
+              tooltip={t('description_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setDescription(e.target.value)
               }}
@@ -130,7 +131,7 @@ const NewNews = ({
         </div>
         <div id='info-detail'>
           <DynamicTinyMCE
-            label='Thêm bài viết'
+            label={t('add-news')}
             value={content}
             onSave={(newContent) => {
               setContent(newContent)

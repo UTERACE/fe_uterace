@@ -132,3 +132,35 @@
     background-color: var(--primary-color);
     border-radius: 1rem;
 }
+#topbar-profile-menu {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0.5rem 0;
+    background-color: var(--secondary-color);
+    border-radius: 1rem;
+}
+#topbar-profile-avatar {
+    width: 3rem;
+    height: 3rem;
+}
+#topbar-profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+#topbar-profile-info h1{
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0 auto;
+}
+#topbar-profile-info h4{
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-color);
+    margin: 0 auto;
+}

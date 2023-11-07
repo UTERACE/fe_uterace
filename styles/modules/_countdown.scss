@@ -19,14 +19,14 @@
 #countdown-item {
     background-color: $black-color;
     color: $white-color;
-    width: 5rem;
+    width: 7rem;
     height: auto;
     text-align: center;
     font-weight: 600;
     font-size: 1.5rem;
     padding: 0.3rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 0.7rem;
+    box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.5);
 }
 #countdown-subtitle {
     display: flex;

@@ -16,6 +16,7 @@ import ThemeProvider from '@/components/contexts/ThemeProvider'
 import { appWithTranslation } from 'next-i18next'
 import nextI18nextConfig from '@/next-i18next.config'
 import Head from 'next/head'
+import ScrollContext from '@/components/contexts/ScrollContext'
 
 export default appWithTranslation(function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)
@@ -34,16 +35,11 @@ export default appWithTranslation(function MyApp({ Component, pageProps }) {
       router.events.off('routeChangeError', handleComplete)
     }
   }, [router])
-  
+
   return (
     <>
       <Head>
-        <title>UTE Race</title>
-        <meta
-          name='description'
-          content='Trang web tổ chức gỉai chạy bộ online'
-        />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -53,6 +49,7 @@ export default appWithTranslation(function MyApp({ Component, pageProps }) {
             <Layout>
               <ToastProvider>
                 <LoadingProvider>
+                  <ScrollContext />
                   <ThemeProvider />
                   {loading && (
                     <div className='loading-overlay'>

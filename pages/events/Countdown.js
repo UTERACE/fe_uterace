@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const Countdown = ({ from_date, to_date }) => {
+const Countdown = ({ from_date, to_date, t }) => {
   const [time, setTime] = useState({
     days: 0,
     hours: 0,
@@ -44,19 +44,31 @@ const Countdown = ({ from_date, to_date }) => {
     const minutes = String(date.getUTCMinutes()).padStart(2, '0')
     return `${hours}:${minutes} ${day}/${month}/${year}`
   }
-  
+
   return (
     <div id='countdown'>
-      <div id='countdown-title'>Thời gian còn lại</div>
+      <div id='countdown-title'>{t('time-remining')}</div>
       <div id='countdown-container'>
-        <div id='countdown-item'>{formatNumber(time.days)} Ngày</div>
-        <div id='countdown-item'>{formatNumber(time.hours)} Giờ</div>
-        <div id='countdown-item'>{formatNumber(time.minutes)} Phút</div>
-        <div id='countdown-item'>{formatNumber(time.seconds)} Giây</div>
+        <div id='countdown-item'>
+          {formatNumber(time.days)}
+          <br /> {t('days')}
+        </div>
+        <div id='countdown-item'>
+          {formatNumber(time.hours)}
+          <br /> {t('hours')}
+        </div>
+        <div id='countdown-item'>
+          {formatNumber(time.minutes)} <br />
+          {t('minutes')}
+        </div>
+        <div id='countdown-item'>
+          {formatNumber(time.seconds)} <br />
+          {t('seconds')}
+        </div>
       </div>
       <div id='countdown-subtitle'>
         <div>
-          <h4 id='text-from-date'>Từ ngày</h4>
+          <h4 id='text-from-date'>{t('from_day')}</h4>
         </div>
         <div>
           <h5>{formatDate(from_date)}</h5>

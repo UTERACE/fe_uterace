@@ -35,7 +35,6 @@ const EventManagement = () => {
 
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
-  console.log('hasAdminRole', hasAdminRole)
 
   useEffect(() => {
     fetchEventsOnGoing()

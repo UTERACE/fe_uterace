@@ -9,6 +9,7 @@ import { Avatar } from 'primereact/avatar'
 import { Badge } from 'primereact/badge'
 import store from '@/store/store'
 import { useTranslation } from 'next-i18next'
+import { Menu } from 'primereact/menu'
 
 const Topbar = () => {
   const isAuthenticated = store.getState().auth.isAuthenticated
@@ -16,6 +17,9 @@ const Topbar = () => {
   const avatarLabel = store.getState().auth.firstname
     ? store.getState().auth.firstname[0].toUpperCase()
     : 'B'
+  const fullname = store.getState().auth.firstname
+    ? store.getState().auth.firstname + ' ' + store.getState().auth.lastname
+    : ''
   const router = useRouter()
   const handleClick = (url) => {
     router.push(url)
@@ -160,10 +164,41 @@ const Topbar = () => {
   const menuHeader = useRef(null)
   const end_items = [
     {
-      label: t('profile'),
-      icon: 'pi pi-fw pi-user',
-      command: () => handleClick('/user/profile'),
+      command: () => {
+        toast.current.show({
+          severity: 'info',
+          summary: 'Info',
+          detail: 'Item Selected',
+          life: 3000,
+        })
+      },
+      template: (item, options) => {
+        return (
+          <Link href='/user/profile' id='link-dataview-container'>
+            <div id='topbar-profile-menu'>
+              <div id='topbar-profile-avatar'>
+                <Avatar
+                  style={{ border: '0.1rem solid #ffffff' }}
+                  size='large'
+                  shape='circle'
+                  label={!avatarImage ? avatarLabel : null}
+                  image={avatarImage}
+                />
+              </div>
+              <div id='topbar-profile-info'>
+                <h1>{fullname}</h1>
+                <h4>
+                  {hasAdminRole
+                    ? 'Quản trị viên hệ thống'
+                    : 'Người dùng hệ thống'}
+                </h4>
+              </div>
+            </div>
+          </Link>
+        )
+      },
     },
+    { separator: true },
     {
       label: t('change-password'),
       icon: 'pi pi-fw pi-key',
@@ -298,40 +333,15 @@ const Topbar = () => {
                 >
                   <Badge value='1'></Badge>
                 </i>
-                <Link href='/user/profile'>
-                  <Avatar
-                    style={{ border: '0.1rem solid #ffffff' }}
-                    size='large'
-                    shape='circle'
-                    label={!avatarImage ? avatarLabel : null}
-                    image={avatarImage}
-                  />
-                </Link>
-                <div>
-                  <SlideMenu
-                    ref={menu}
-                    model={end_items}
-                    popup
-                    viewportHeight={284}
-                    menuWidth={250}
-                  ></SlideMenu>
-
-                  <i
-                    className='pi pi-spin pi-cog'
-                    title='Settings menu'
-                    style={{
-                      fontSize: '2rem',
-                      paddingTop: '0.5rem',
-                      width: '3rem',
-                      height: '3rem',
-                      textAlign: 'center',
-                      backgroundColor: 'var(--secondary-color)',
-                      borderRadius: '50%',
-                      color: 'var(--text-color)',
-                    }}
-                    onClick={(event) => menu.current.toggle(event)}
-                  ></i>
-                </div>
+                <Avatar
+                  style={{ border: '0.1rem solid #ffffff' }}
+                  size='large'
+                  shape='circle'
+                  label={!avatarImage ? avatarLabel : null}
+                  image={avatarImage}
+                  onClick={(event) => menu.current.toggle(event)}
+                />
+                <Menu ref={menu} model={end_items} popup></Menu>
               </div>
             )}
             <div className='custom-dropdown' onClick={toggleDropdown}>

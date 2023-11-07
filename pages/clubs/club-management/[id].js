@@ -69,6 +69,7 @@ const ManagementClubDetail = ({ club }) => {
   const [detailsNews, setDetailsNews] = useState({})
 
   const { t } = useTranslation('detail')
+  const { t: tNews } = useTranslation('news')
 
   useEffect(() => {
     // setNews(club.news)
@@ -95,7 +96,7 @@ const ManagementClubDetail = ({ club }) => {
       }
     } catch (error) {
       setLoading(false)
-      showToast('error', 'Lấy dữ liệu thất bại', error)
+      showToast('error', t('get_info_news_fail'), error)
     }
   }
 
@@ -150,10 +151,11 @@ const ManagementClubDetail = ({ club }) => {
           showToast={showToast}
           setVisibleInfo={setVisibleInfo}
           setUpdate={setUpdateStatus}
+          t={t}
         />
       </Dialog>
       <Dialog
-        header={t('add-news')}
+        header={tNews('add-news')}
         visible={visibleAddNews}
         position='top'
         style={{
@@ -170,10 +172,11 @@ const ManagementClubDetail = ({ club }) => {
           showToast={showToast}
           setVisibleAdd={setVisibleAddNews}
           setUpdate={setUpdateStatus}
+          t={tNews}
         />
       </Dialog>
       <Dialog
-        header={t('update-news')}
+        header={tNews('update-news')}
         visible={visibleUpdateNews}
         position='top'
         style={{
@@ -195,6 +198,7 @@ const ManagementClubDetail = ({ club }) => {
           showToast={showToast}
           setVisibleUpdateNews={setVisibleUpdateNews}
           setUpdate={setUpdateStatus}
+          t={tNews}
         />
       </Dialog>
       <div className='centered-content-layout'>
@@ -298,11 +302,11 @@ const ManagementClubDetail = ({ club }) => {
           </div>
           <div id='info-detail'>
             <Title title={t('post-clubs')} />
-            <div style={{width:'90%', marginBottom:'1rem'}}>
+            <div style={{ width: '90%', marginBottom: '1rem' }}>
               <Button
                 id='button-join'
                 icon='pi pi-calendar-plus'
-                label={t('new-news')}
+                label={tNews('add-news')}
                 onClick={() => {
                   setVisibleAddNews(true)
                 }}
