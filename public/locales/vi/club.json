@@ -21,5 +21,6 @@
     "min_pace": "Tốc độ tối thiểu (phút/km)",
     "max_pace": "Tốc độ tối đa (phút/km)",
     "intro_club": "Giới thiệu câu lạc bộ",
-    "create_club": "Tạo câu lạc bộ"
+    "create_club": "Tạo câu lạc bộ",
+    "search": "Tìm kiếm câu lạc bộ"
 }

@@ -11,6 +11,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { Dialog } from 'primereact/dialog'
+import { AutoComplete } from 'primereact/autocomplete'
 import NewNews from '../new-news'
 import UpdateNews from '@/pages/clubs/club-management/UpdateNews'
 import { Button } from 'primereact/button'
@@ -23,6 +24,8 @@ const ManagementNews = () => {
   const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
@@ -54,13 +57,13 @@ const ManagementNews = () => {
     } else if (index == 2) {
       fetchAllNews()
     }
-  }, [per_page, current_page, updateStatus, index])
+  }, [per_page, current_page, updateStatus, index, search])
 
   const fetchMyNews = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/news/user?current_page=${current_page}&per_page=${per_page}`
+        `/news/user?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -80,7 +83,7 @@ const ManagementNews = () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/news?current_page=${current_page}&per_page=${per_page}`
+        `/news?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -123,10 +126,12 @@ const ManagementNews = () => {
             {LocaleHelper.formatDateTime(new Date(item.updated_at))}
           </h4>
         </div>
+        <div id='info-title-dataview' title={item.name}>
+          <h4>{item.name}</h4>
+        </div>
         <div id='name-dataview'>
           <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
           <div id='share-register-container'>
-            <h4>{item.name}</h4>
             <h6>{item.description}</h6>
             <div id='share-register-content'>
               <Link
@@ -285,6 +290,14 @@ const ManagementNews = () => {
           setUpdate={setUpdateStatus}
         />
       </Dialog>
+      <div id='search-container'>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={t('search')}
+        />
+      </div>
       <Title title={t('news')} />
       <div className='centered-content-layout'>
         <div

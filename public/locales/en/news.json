@@ -1,7 +1,7 @@
 {
     "news": "News sport",
-    "created-at": "Date of creation",
-    "updated-at": "Date of last update",
+    "created-at": "Created at",
+    "updated-at": "Updated at",
     "watch-now": "Watch now",
     "share":"Share",
     "created-news": "Created news",
@@ -22,5 +22,6 @@
     "description": "Description of news",
     "description_placeholder": "Enter description of news",
     "upload_image_fail": "Upload image fail",
-    "max_size_image": "Max size of image is 2MB"
+    "max_size_image": "Max size of image is 2MB",
+    "search": "Search news"
 }

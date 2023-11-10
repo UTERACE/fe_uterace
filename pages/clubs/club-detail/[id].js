@@ -194,7 +194,9 @@ const ClubDetail = ({ club }) => {
                 <div id='info-club-detail'>
                   <div id='detail-club-container'>
                     <h4>{t('created-at')}</h4>
-                    <h4>{LocaleHelper.formatDateTime(club.create_at)}</h4>
+                    <h4>
+                      {LocaleHelper.formatDateTime(new Date(club.created_at))}
+                    </h4>
                   </div>
                   <div id='detail-club-container'>
                     <h4>{t('manager')}</h4>

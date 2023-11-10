@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
+import { AutoComplete } from 'primereact/autocomplete'
 import DataView from '@/components/dataview/DataView'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
@@ -16,6 +17,8 @@ const NewsPage = () => {
   const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
@@ -24,13 +27,13 @@ const NewsPage = () => {
 
   useEffect(() => {
     fetchNews()
-  }, [per_page, current_page])
+  }, [per_page, current_page, search])
 
   const fetchNews = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/news?current_page=${current_page}&per_page=${per_page}`
+        `/news?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -66,10 +69,12 @@ const NewsPage = () => {
               {LocaleHelper.formatDateTime(new Date(item.updated_at))}
             </h4>
           </div>
+          <div id='info-title-dataview' title={item.name}>
+            <h4>{item.name}</h4>
+          </div>
           <div id='name-dataview'>
             <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
             <div id='share-register-container'>
-              <h4>{item.name}</h4>
               <h6>{item.description}</h6>
               <div id='share-register-content'>
                 <Link
@@ -99,6 +104,14 @@ const NewsPage = () => {
 
   return (
     <div className='centered-content-dataview'>
+      <div id='search-container'>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={t('search')}
+        />
+      </div>
       <Title title={t('news')} />
       <DataView
         data={news}

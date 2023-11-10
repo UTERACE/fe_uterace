@@ -4,6 +4,7 @@ import Title from '@/components/landing/Title'
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
+import { AutoComplete } from 'primereact/autocomplete'
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -16,6 +17,8 @@ const Events = () => {
   const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
   const [onGoing, setOnGoing] = useState(true)
   const setLoading = useContext(LoadingContext)
@@ -26,13 +29,13 @@ const Events = () => {
 
   useEffect(() => {
     fetchEvents()
-  }, [onGoing, current_page, per_page])
+  }, [onGoing, current_page, per_page, search])
 
   const fetchEvents = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events?current_page=${current_page}&per_page=${per_page}&ongoing=${onGoing}`
+        `/events?current_page=${current_page}&per_page=${per_page}&ongoing=${onGoing}&search_name=${search_name}`
       )
       if (res.status === 200) {
         const data = res.data
@@ -100,6 +103,14 @@ const Events = () => {
 
   return (
     <div className='centered-content-dataview'>
+      <div id='search-container'>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={t('search')}
+        />
+      </div>
       <Title
         title={activeIndex === 1 ? t('on-going-event') : t('finished-event')}
       />

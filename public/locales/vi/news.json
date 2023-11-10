@@ -1,7 +1,7 @@
 {
     "news": "Các tin tức thể thao",
     "created-at": "Ngày tạo",
-    "updated-at": "Ngày cập nhật",
+    "updated-at": "Ngày sửa",
     "watch-now": "Xem ngay",
     "share":"Chia sẻ",
     "created-news": "Tin tức mới",
@@ -22,5 +22,6 @@
     "description": "Mô tả tin tức",
     "description_placeholder": "Nhập mô tả tin tức",
     "upload_image_fail": "Tải ảnh thất bại",
-    "max_size_image": "Kích thước ảnh tối đa là 2MB"
+    "max_size_image": "Kích thước ảnh tối đa là 2MB",
+    "search": "Tìm kiếm tin tức"
 }

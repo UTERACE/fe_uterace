@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
+import { AutoComplete } from 'primereact/autocomplete'
 import Title from '../../components/landing/Title'
 import DataView from '@/components/dataview/DataView'
 import apiInstance from '@/api/apiInstance'
@@ -14,6 +15,8 @@ const Clubs = () => {
   const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
@@ -22,13 +25,13 @@ const Clubs = () => {
 
   useEffect(() => {
     fetchClubs()
-  }, [current_page, per_page])
+  }, [current_page, per_page, search])
 
   const fetchClubs = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/clubs?current_page=${current_page}&per_page=${per_page}`
+        `/clubs?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       if (res.status == 200) {
         const data = res.data
@@ -52,6 +55,14 @@ const Clubs = () => {
 
   return (
     <div className='centered-content-dataview'>
+      <div id='search-container'>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={t('search')}
+        />
+      </div>
       <Title title={t('all-clubs')} />
       <DataView data={clubs} href='/clubs/club-detail/' />
       <Paginator

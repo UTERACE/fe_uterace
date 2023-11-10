@@ -17,8 +17,8 @@ function formatDate(date, locale = defaultLocale) {
 function formatDateTime(date, locale = defaultLocale) {
   if (date instanceof Date && !isNaN(date.getTime())) {
     return new Intl.DateTimeFormat(locale, {
-      dateStyle: 'short',
-      timeStyle: 'short',
+      dateStyle: 'medium',
+      timeStyle: 'medium',
     }).format(date)
   }
   return date

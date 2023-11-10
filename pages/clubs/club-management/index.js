@@ -7,6 +7,7 @@ import { Paginator } from 'primereact/paginator'
 import React, { useContext, useEffect, useState } from 'react'
 import Update from './UpdateClub'
 import { Dialog } from 'primereact/dialog'
+import { AutoComplete } from 'primereact/autocomplete'
 import AddClub from './AddClub'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -20,6 +21,9 @@ const ClubManagement = () => {
   const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
+
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleAdd, setVisibleAdd] = useState(false)
   const [dataClub, setDataClub] = useState({})
@@ -36,13 +40,21 @@ const ClubManagement = () => {
     } else if (index === 3) {
       fetchJoinedClubs()
     }
-  }, [current_page, per_page, index, visibleChange, visibleAdd, updateStatus])
+  }, [
+    current_page,
+    per_page,
+    index,
+    visibleChange,
+    visibleAdd,
+    updateStatus,
+    search,
+  ])
 
   const fetchCreatedClubs = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/clubs/created-club?current_page=${current_page}&per_page=${per_page}`
+        `/clubs/created-club?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -62,7 +74,7 @@ const ClubManagement = () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/clubs/joined-club?current_page=${current_page}&per_page=${per_page}`
+        `/clubs/joined-club?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -208,6 +220,14 @@ const ClubManagement = () => {
 
   return (
     <div className='centered-content-dataview'>
+      <div id='search-container'>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={t('search')}
+        />
+      </div>
       <Title
         title={
           index === 3
