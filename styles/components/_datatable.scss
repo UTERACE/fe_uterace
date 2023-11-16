@@ -96,6 +96,9 @@
 .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
     border-width: 0 0 0 0;
 }
+.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr:last-child > td:last-child {
+    border-width: 0 0 0 0;
+}
 .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr:last-child > td {
     border-width: 0 0 0 0;
 }

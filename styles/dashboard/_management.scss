@@ -67,3 +67,12 @@
     width: 100%;
     transition: color 0.3s ease;
 }
+
+// distance
+#distance-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    width: 100%;
+}

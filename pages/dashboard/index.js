@@ -12,6 +12,7 @@ import NewsManagement from './NewsManagement'
 import UserManagement from './UserManagement'
 import { Button } from 'primereact/button'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import DistanceManagement from './DistanceManagement'
 
 export const getServerSideProps = async ({ locale }) => {
   return {
@@ -60,6 +61,11 @@ const DashboardPage = () => {
       label: 'Quản lí giải chạy ',
       icon: 'pi pi-fw pi-calendar',
       to: '/events',
+    },
+    {
+      label: 'Quản lí cự ly',
+      icon: 'pi pi-fw pi-map-marker',
+      to: '/distances',
     },
     {
       label: 'Quản lí câu lạc bộ',
@@ -122,10 +128,12 @@ const DashboardPage = () => {
       ) : activeIndex === 2 ? (
         <EventManagement />
       ) : activeIndex === 3 ? (
-        <ClubManagement />
+        <DistanceManagement />
       ) : activeIndex === 4 ? (
-        <NewsManagement />
+        <ClubManagement />
       ) : activeIndex === 5 ? (
+        <NewsManagement />
+      ) : activeIndex === 6 ? (
         <UserManagement />
       ) : null}
     </div>
