@@ -34,7 +34,7 @@ const ManagementNews = () => {
   const [visibleUpdateNews, setVisibleUpdateNews] = useState(false)
   const [detailsNews, setDetailsNews] = useState({})
   const [updateStatus, setUpdateStatus] = useState(false)
-  const [index, setIndex] = useState(1)
+  const [index, setIndex] = useState(2)
 
   const { t } = useTranslation('news')
 
@@ -288,6 +288,7 @@ const ManagementNews = () => {
           showToast={showToast}
           setVisibleUpdateNews={setVisibleUpdateNews}
           setUpdate={setUpdateStatus}
+          t={t}
         />
       </Dialog>
       <div id='search-container'>
@@ -318,6 +319,7 @@ const ManagementNews = () => {
             iconPos='right'
             onClick={() => {
               setIndex(1)
+              setVisibleAddNews(true)
             }}
           />
           <Button

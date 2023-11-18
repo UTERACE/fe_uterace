@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import apiInstance from '@/api/apiInstance'
 import Countdown from '../Countdown'
 import { Calendar } from 'primereact/calendar'
+import { MultiSelect } from 'primereact/multiselect'
 
 const DynamicTinyMCE = dynamic(
   () => import('../../../components/editor/TinyMCEEditor'),
@@ -16,18 +17,28 @@ const DynamicTinyMCE = dynamic(
   }
 )
 
-const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
+const AddEvent = ({
+  setLoading,
+  showToast,
+  setVisibleAdd,
+  setUpdateStatus,
+  t,
+  tDetail,
+}) => {
   const [nameEvent, setNameEvent] = useState('')
   const [descriptionEvent, setDescriptionEvent] = useState('')
   const [background, setBackground] = useState('')
   const [introduce, setIntroduce] = useState('')
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
+  const [distances, setDistances] = useState([])
+  const [selectedCities, setSelectedCities] = useState(null)
 
   const [initialValues, setInitialValues] = useState({})
   const inputRef = useRef()
 
   useEffect(() => {
+    fetchDistance()
     setInitialValues({
       name: '',
       description: '',
@@ -41,35 +52,50 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
     data.max_pace = parseInt(data.max_pace)
     data.from_date = new Date(start).toISOString()
     data.to_date = new Date(end).toISOString()
+    data.distance = selectedCities
     console.log('data', data)
-    // handleCreateClub(data)
+    handleCreateEvent(data)
   }
 
-  const handleCreateClub = async (data) => {
+  const handleCreateEvent = async (data) => {
     setLoading(true)
     try {
-      const res = await apiInstance.post('/clubs', data)
+      const res = await apiInstance.post('/events', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Tạo câu lạc bộ thành công', dataRes.message)
+        showToast('success', t('create_event_success'), dataRes.message)
         setLoading(false)
         setVisibleAdd(false)
+        setUpdateStatus(true)
       }
     } catch (error) {
-      showToast('error', 'Tạo câu lạc bộ thất bại', error)
+      showToast('error', t('create_event_fail'), error)
       setLoading(false)
+    }
+  }
+
+  const fetchDistance = async () => {
+    try {
+      const res = await apiInstance.get('/distance')
+      const data = res.data
+      if (res.status === 200) {
+        const options = data.map((item) => ({
+          name: item.runningCategoryName,
+          id: item.runningCategoryID,
+          distance: item.runningCategoryDistance,
+        }))
+        setDistances(options)
+      }
+    } catch (error) {
+      showToast('error', t('get_distance_fail'), error)
     }
   }
 
   const customBase64Uploader = async (event) => {
     const file = event.target.files[0]
     if (file) {
-      if (file.size > 2000000) {
-        showToast(
-          'error',
-          'Tải ảnh lên thất bại',
-          'Kích thước ảnh tối đa là 2MB'
-        )
+      if (file.size > 3048576) {
+        showToast('error', t('upload_image_fail'), t('max_size_image'))
         return
       }
       const reader = new FileReader()
@@ -110,20 +136,24 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
         />
 
         <div id='info-detail'>
-          <Field name='name' label='Tên câu lạc bộ' required>
+          <Field name='name' label={t('name_event')} required>
             <InputText
               type='text'
               style={{ width: '100%' }}
+              tooltip={t('name_event_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setNameEvent(e.target.value)
               }}
             />
           </Field>
           <div style={{ height: '1.5rem' }}></div>
-          <Field name='description' label='Mô tả' required>
+          <Field name='description' label={t('description')} required>
             <InputTextarea
               type='text'
               style={{ width: '100%', height: '8rem' }}
+              tooltip={t('description_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setDescriptionEvent(e.target.value)
               }}
@@ -131,19 +161,29 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
           </Field>
           <div className='grid-form'>
             <div className='col-6' id='width-100-center'>
-              <Field name='min_pace' label='Tốc độ tối thiểu' required>
-                <InputText type='number' style={{ width: '100%' }} />
+              <Field name='min_pace' label={t('min_pace')} required>
+                <InputText
+                  type='number'
+                  style={{ width: '100%' }}
+                  tooltip={t('min_pace_placeholder')}
+                  tooltipOptions={{ event: 'focus' }}
+                />
               </Field>
             </div>
             <div className='col-6' id='width-100-center'>
-              <Field name='max_pace' label='Tốc độ tối đa' required>
-                <InputText type='number' style={{ width: '100%' }} />
+              <Field name='max_pace' label={t('max_pace')} required>
+                <InputText
+                  type='number'
+                  style={{ width: '100%' }}
+                  tooltip={t('max_pace_placeholder')}
+                  tooltipOptions={{ event: 'focus' }}
+                />
               </Field>
             </div>
           </div>
           <div className='grid-form'>
             <div className='col-6' id='width-100-center'>
-              <Field name='from_date' label='Ngày bắt đầu' required>
+              <Field name='from_date' label={t('from_date')} required>
                 <Calendar
                   showTime={true}
                   style={{ width: '100%' }}
@@ -154,7 +194,7 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
               </Field>
             </div>
             <div className='col-6' id='width-100-center'>
-              <Field name='to_date' label='Ngày kết thúc' required>
+              <Field name='to_date' label={t('to_date')} required>
                 <Calendar
                   showTime={true}
                   style={{ width: '100%' }}
@@ -165,18 +205,32 @@ const AddEvent = ({ setLoading, showToast, setVisibleAdd }) => {
               </Field>
             </div>
           </div>
+          <div className='grid-form'>
+            <div className='col-6' id='width-100-center'>
+              <MultiSelect
+                value={selectedCities}
+                onChange={(e) => setSelectedCities(e.value)}
+                options={distances}
+                optionLabel='name'
+                display='chip'
+                placeholder='Select Cities'
+                maxSelectedLabels={3}
+                className='w-full md:w-20rem'
+              />
+            </div>
+          </div>
           <h1>{nameEvent}</h1>
           <h6>{descriptionEvent}</h6>
           <div id='event-time-detail'>
-            <Countdown from_date={start} to_date={end} />
+            <Countdown from_date={start} to_date={end} t={tDetail} />
           </div>
         </div>
-        <h1>Giới thiệu</h1>
+        <h1>{t('intro')}</h1>
         <div id='info-detail'>
           <DynamicTinyMCE
             value={introduce}
             onSave={setIntroduce}
-            label={'Tạo giải chạy cho mọi người'}
+            label={t('button_create')}
           />
         </div>
       </div>

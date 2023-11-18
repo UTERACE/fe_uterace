@@ -1,6 +1,7 @@
 {
     "on-going-event":"Các sự kiện đang diễn ra",
     "finished-event":"Các sự kiện đã kết thúc",
+    "upcoming-event":"Các sự kiện sắp diễn ra",
     "created-event":"Sự kiện đã tạo",
     "joined-event":"Sự kiện đã tham gia",
     "new-event":"Tạo sự kiện mới",
@@ -8,5 +9,24 @@
     "club-join":"Câu lạc bộ",
     "event-join":"Tham gia sự kiện",
     "share":"Chia sẻ",
-    "search":"Tìm kiếm sự kiện"
+    "search":"Tìm kiếm sự kiện",
+    "upload_image_fail": "Tải ảnh thất bại",
+    "max_size_image": "Kích thước ảnh tối đa là 2MB",
+    "create_event_success": "Thêm sự kiện mới thành công",
+    "create_event_fail": "Thêm sự kiện mới thất bại",
+    "update_event_success": "Cập nhật sự kiện thành công",
+    "update_event_fail": "Cập nhật sự kiện thất bại",
+    "name_event": "Tên sự kiện",
+    "name_event_placeholder": "Nhập tên sự kiện",
+    "description": "Mô tả",
+    "description_placeholder": "Nhập mô tả sự kiện",
+    "min_pace": "Tốc độ tối thiểu",
+    "min_pace_placeholder": "Nhập tốc độ tối thiểu",
+    "max_pace": "Tốc độ tối đa",
+    "max_pace_placeholder": "Nhập tốc độ tối đa",
+    "from_date": "Ngày bắt đầu",
+    "to_date": "Ngày kết thúc",
+    "intro": "Giới thiệu",
+    "button_create": "Tạo giải chạy cho mọi người",
+    "button_update": "Cập nhật sự kiện"
 }

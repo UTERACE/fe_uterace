@@ -1,6 +1,7 @@
 {
     "on-going-event": "On Going Events",
     "finished-event": "Finished Events",
+    "upcoming-event": "Upcoming Events",
     "created-event": "Created Events",
     "joined-event": "Joined Events",
     "new-event": "New Event",
@@ -8,5 +9,25 @@
     "club-join":"Clubs",    
     "event-join":"Join Event",
     "share":"Share",
-    "search":"Search event"
+    "search":"Search event",
+    "upload_image_fail": "Upload image fail",
+    "max_size_image": "Max size image is 2MB",
+    "create_event_success": "Create event success",
+    "create_event_fail": "Create event fail",
+    "update_event_success": "Update event success",
+    "update_event_fail": "Update event fail",
+    "name_event": "Name event",
+    "name_event_placeholder": "Enter name event",
+    "description": "Description",
+    "description_placeholder": "Enter description",
+    "min_pace": "Min pace",
+    "min_pace_placeholder": "Enter min pace",
+    "max_pace": "Max pace",
+    "max_pace_placeholder": "Enter max pace",
+    "from_date": "From date",
+    "to_date": "To date",
+    "intro": "Introduce",
+    "button_create": "Create event",
+    "button_update": "Update event"
+
 }

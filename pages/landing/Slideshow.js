@@ -11,23 +11,23 @@ const Slideshow = ({ data, interval = 3000 }) => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % events.length)
     }, interval)
     return () => clearInterval(slideInterval)
-  }, [events, interval])
-  
+  }, [interval])
+
   return (
     <div id='slideshow-container'>
       {events.map((slide, index) => (
         <div
-          key={slide.id}
+          key={slide.event_id}
           id='slide'
           style={{ display: index === currentSlide ? 'block' : 'none' }}
         >
           <img src={slide.image} alt={slide.title} />
           <div id='slide-caption-content'>
-            <div id='slide-name'>{slide.name}</div>
+            <div id='slide-name'>{slide.title}</div>
             <div>{slide.content}</div>
             <div id='slide-detail-container'>
               <div id='slide-detail'>
-                <Detail link={`/events/event-detail/${slide.id}`} />
+                <Detail link={`/events/event-detail/${slide.event_id}`} />
               </div>
 
               <div id='overview-slide'>

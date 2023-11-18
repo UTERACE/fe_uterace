@@ -12,6 +12,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
+import { useRouter } from 'next/router'
+import { MultiSelect } from 'primereact/multiselect'
+import UpdateInfo from './UpdateInfo'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -20,7 +23,7 @@ export const getServerSideProps = async ({ locale, params }) => {
       event,
       ...(await serverSideTranslations(locale, [
         'detail',
-        'news',
+        'event',
         'scoreboard',
         'topbar',
       ])),
@@ -56,12 +59,16 @@ const EventDetail = ({ event }) => {
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
+  const router = useRouter()
   const [activeIndex, setActiveIndex] = useState(0)
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleIntroduce, setVisibleIntroduce] = useState(false)
   const [visiblePrize, setVisiblePrize] = useState(false)
   const [visibleRole, setVisibleRole] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
+  const [distances, setDistances] = useState([])
+  const [selectedCities, setSelectedCities] = useState(null)
+  const [visibleAddDistance, setVisibleAddDistance] = useState(false)
 
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
@@ -72,14 +79,72 @@ const EventDetail = ({ event }) => {
   const [role, setRole] = useState(event.regulations)
 
   const { t } = useTranslation('detail')
+  const { t: tEvent } = useTranslation('event')
 
   useEffect(() => {
     // setActivities(event.activities)
     // setRankMember(event.ranking_member)
     // setRankClub(event.ranking_club)
-    // setDistance(event.distance)
+    if (updateStatus) {
+      //wait 1s to update
+      setTimeout(() => {
+        router.reload()
+      }, 1000)
+    }
+    fetchDistance()
   }, [updateStatus])
-  
+
+  const fetchDistance = async () => {
+    try {
+      const res = await apiInstance.get('/distance')
+      const data = res.data
+      if (res.status === 200) {
+        const options = data.map((item) => ({
+          name: item.runningCategoryName,
+          id: item.runningCategoryID,
+          distance: item.runningCategoryDistance,
+        }))
+        setDistances(options)
+      }
+    } catch (error) {
+      showToast('error', t('get_distance_fail'), error)
+    }
+  }
+
+  const fetchAddDistance = async (distance_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(
+        `/events/${event.event_id}/add-distance/${distance_id}`
+      )
+      if (res.status === 200) {
+        showToast('success', t('add_distance_success'), res.data.message)
+        setLoading(false)
+        setUpdateStatus(true)
+      }
+    } catch (error) {
+      showToast('error', t('add_distance_fail'))
+      setLoading(false)
+    }
+  }
+
+  const fetchDeleteDistance = async (distance_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.delete(
+        `/events/${event.event_id}/delete-distance/${distance_id}`
+      )
+      if (res.status === 200) {
+        showToast('success', t('delete_distance_success'), res.data.message)
+        setLoading(false)
+        setUpdateStatus(true)
+      }
+    } catch (error) {
+      showToast('error', t('delete_distance_fail'))
+      setLoading(false)
+    }
+  }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
@@ -107,10 +172,14 @@ const EventDetail = ({ event }) => {
           description={event.description}
           start_time={event.from_date}
           end_time={event.to_date}
+          min_pace={event.min_pace}
+          max_pace={event.max_pace}
           setLoading={setLoading}
           showToast={showToast}
           setVisibleChange={setVisibleChange}
           setUpdateStatus={setUpdateStatus}
+          t={tEvent}
+          tDetail={t}
         />
       </Dialog>
       <Dialog
@@ -125,11 +194,20 @@ const EventDetail = ({ event }) => {
         }}
         onHide={() => setVisibleIntroduce(false)}
       >
-        <DynamicTinyMCE
+        <UpdateInfo
+          event_id={event.event_id}
+          details={introduce}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleIntroduce={setVisibleIntroduce}
+          setUpdateStatus={setUpdateStatus}
+          t={tEvent}
+        />
+        {/* <DynamicTinyMCE
           value={introduce}
           onSave={setIntroduce}
           label='Chỉnh sửa'
-        />
+        /> */}
       </Dialog>
       <Dialog
         header={t('update-info-award')}
@@ -143,7 +221,16 @@ const EventDetail = ({ event }) => {
         }}
         onHide={() => setVisiblePrize(false)}
       >
-        <DynamicTinyMCE value={prize} onSave={setPrize} label='Chỉnh sửa' />
+        <UpdateInfo
+          event_id={event.event_id}
+          prize={prize}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisiblePrize={setVisiblePrize}
+          setUpdateStatus={setUpdateStatus}
+          t={tEvent}
+        />
+        {/* <DynamicTinyMCE value={prize} onSave={setPrize} label='Chỉnh sửa' /> */}
       </Dialog>
       <Dialog
         header={t('update-info-rules')}
@@ -157,7 +244,17 @@ const EventDetail = ({ event }) => {
         }}
         onHide={() => setVisibleRole(false)}
       >
-        <DynamicTinyMCE value={role} onSave={setRole} label='Chỉnh sửa' />
+        <UpdateInfo
+          event_id={event.event_id}
+          regulations={role}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleRole={setVisibleRole}
+          setUpdateStatus={setUpdateStatus}
+          t={tEvent}
+        />
+
+        {/* <DynamicTinyMCE value={role} onSave={setRole} label='Chỉnh sửa' /> */}
       </Dialog>
       <div className='centered-content-layout'>
         <div id='event-detail-container'>
@@ -181,7 +278,11 @@ const EventDetail = ({ event }) => {
             <h1>{event.name}</h1>
             <h6>{event.description}</h6>
             <div id='event-time-detail'>
-              <Countdown from_date={event.from_date} to_date={event.to_date} />
+              <Countdown
+                from_date={event.from_date}
+                to_date={event.to_date}
+                t={t}
+              />
             </div>
             <Button
               id='button-join'
@@ -201,12 +302,63 @@ const EventDetail = ({ event }) => {
                 }}
               >
                 {t('race-distances')}
+                <div
+                  id='add-distance-container'
+                  onClick={() => {
+                    setVisibleAddDistance(true)
+                  }}
+                >
+                  <i className='pi pi-plus'></i>
+                </div>
+                <Dialog
+                  header='Thêm khoảng cách'
+                  visible={visibleAddDistance}
+                  onHide={() => setVisibleAddDistance(false)}
+                >
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                      gap: '1rem',
+                      padding: '1rem',
+                    }}
+                  >
+                    <MultiSelect
+                      value={selectedCities}
+                      onChange={(e) => setSelectedCities(e.value)}
+                      options={distances}
+                      optionLabel='name'
+                      display='chip'
+                      placeholder='Select Cities'
+                      maxSelectedLabels={1}
+                      className='w-full md:w-20rem'
+                    />
+                    <Button
+                      label='Thêm'
+                      onClick={() => {
+                        fetchAddDistance(selectedCities[0].id)
+                        setVisibleAddDistance(false)
+                      }}
+                    />
+                  </div>
+                </Dialog>
               </div>
               <div id='event-distance-detail'>
                 {distance.map((item, index) => (
                   <div id='distance-event'>
                     <i className='pi pi-map-marker'></i>
                     <h4>{item.name}</h4>
+                    <div
+                      id='delete-distance-container'
+                      onClick={() => {
+                        fetchDeleteDistance(item.id)
+                      }}
+                    >
+                      <i className='pi pi-minus'></i>
+                    </div>
                   </div>
                 ))}
               </div>

@@ -16,13 +16,18 @@ const Update = ({
   description,
   start_time,
   end_time,
+  min_pace,
+  max_pace,
   setLoading,
   showToast,
   setVisibleChange,
   setUpdateStatus,
+  t,
+  tDetail,
 }) => {
   const [nameClub, setNameClub] = useState(name)
   const [background, setBackground] = useState(image)
+  const [descriptionEvent, setDescriptionEvent] = useState(description)
   const [initialValues, setInitialValues] = useState({})
   const [start, setStart] = useState(start_time)
   const [end, setEnd] = useState(end_time)
@@ -33,8 +38,7 @@ const Update = ({
     data.image = background
     data.from_date = start
     data.to_date = end
-    console.log('data', data)
-    // handleUpdateEvent(data)
+    handleUpdateEvent(data)
   }
 
   useEffect(() => {
@@ -48,8 +52,10 @@ const Update = ({
       description: description,
       from_date: start_time,
       to_date: end_time,
+      min_pace: min_pace,
+      max_pace: max_pace,
     })
-  }, [start, end])
+  }, [])
 
   const handleUpdateEvent = async (data) => {
     setLoading(true)
@@ -57,13 +63,13 @@ const Update = ({
       const res = await apiInstance.put('/events', data)
       const dataRes = res.data
       if (res.status == 200) {
-        showToast('success', 'Chỉnh sửa sự kiện thành công')
+        showToast('success', t('update_event_success'), dataRes.message)
         setLoading(false)
         setVisibleChange(false)
         setUpdateStatus(true)
       }
     } catch (error) {
-      showToast('error', 'Chỉnh sửa sự kiện thất bại', error)
+      showToast('error', t('update_event_fail'), error)
       setLoading(false)
     }
   }
@@ -71,12 +77,8 @@ const Update = ({
   const customBase64Uploader = async (event) => {
     const file = event.target.files[0]
     if (file) {
-      if (file.size > 2000000) {
-        showToast(
-          'error',
-          'Tải ảnh lên thất bại',
-          'Kích thước ảnh tối đa là 2MB'
-        )
+      if (file.size > 3048576) {
+        showToast('error', t('upload_image_fail'), t('max_size_image'))
         return
       }
       const reader = new FileReader()
@@ -117,37 +119,54 @@ const Update = ({
         />
 
         <div id='info-detail'>
-          <Field name='name' label='Tên câu lạc bộ' required>
+          <Field name='name' label={t('name_event')} required>
             <InputText
               type='text'
               style={{ width: '100%' }}
+              tooltip={t('name_event_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
               onChange={(e) => {
                 setNameClub(e.target.value)
               }}
             />
           </Field>
           <div style={{ height: '1.5rem' }}></div>
-          <Field name='description' label='Mô tả' required>
+          <Field name='description' label={t('description')} required>
             <InputTextarea
               type='text'
               style={{ width: '100%', height: '8rem' }}
+              tooltip={t('description_placeholder')}
+              tooltipOptions={{ event: 'focus' }}
+              onChange={(e) => {
+                setDescriptionEvent(e.target.value)
+              }}
             />
           </Field>
           <div className='grid-form'>
             <div className='col-6' id='width-100-center'>
-              <Field name='min_pace' label='Tốc độ tối thiểu' required>
-                <InputText type='number' style={{ width: '100%' }} />
+              <Field name='min_pace' label={t('min_pace')} required>
+                <InputText
+                  type='number'
+                  style={{ width: '100%' }}
+                  tooltip={t('min_pace_placeholder')}
+                  tooltipOptions={{ event: 'focus' }}
+                />
               </Field>
             </div>
             <div className='col-6' id='width-100-center'>
-              <Field name='max_pace' label='Tốc độ tối đa' required>
-                <InputText type='number' style={{ width: '100%' }} />
+              <Field name='max_pace' label={t('max_pace')} required>
+                <InputText
+                  type='number'
+                  style={{ width: '100%' }}
+                  tooltip={t('max_pace_placeholder')}
+                  tooltipOptions={{ event: 'focus' }}
+                />
               </Field>
             </div>
           </div>
           <div className='grid-form'>
             <div className='col-6' id='width-100-center'>
-              <Field name='from_date' label='Ngày bắt đầu' required>
+              <Field name='from_date' label={t('from_date')} required>
                 <Calendar
                   showTime={true}
                   style={{ width: '100%' }}
@@ -158,7 +177,7 @@ const Update = ({
               </Field>
             </div>
             <div className='col-6' id='width-100-center'>
-              <Field name='to_date' label='Ngày kết thúc' required>
+              <Field name='to_date' label={t('to_date')} required>
                 <Calendar
                   showTime={true}
                   style={{ width: '100%' }}
@@ -170,9 +189,9 @@ const Update = ({
             </div>
           </div>
           <h1>{nameClub}</h1>
-          <h6>{description}</h6>
+          <h6>{descriptionEvent}</h6>
           <div id='event-time-detail'>
-            <Countdown from_date={start} to_date={end} />
+            <Countdown from_date={start} to_date={end} t={tDetail} />
           </div>
         </div>
         <Button
@@ -184,7 +203,7 @@ const Update = ({
             height: '3rem',
             fontWeight: 'bold',
           }}
-          label='Cập nhật thông tin'
+          label={t('button_update')}
           severity='secondary'
           raised
           icon='pi pi-pencil'

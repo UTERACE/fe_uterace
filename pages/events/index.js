@@ -20,7 +20,7 @@ const Events = () => {
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
 
-  const [onGoing, setOnGoing] = useState(true)
+  const [onGoing, setOnGoing] = useState('1')
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(1)
@@ -64,11 +64,11 @@ const Events = () => {
           <div id='info-dataview'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.member} {t('member-join')}
+              {item.total_members} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.club} {t('club-join')}
+              {item.total_clubs} {t('club-join')}
             </h4>
           </div>
           <div id='name-dataview'>
@@ -125,16 +125,25 @@ const Events = () => {
             label={t('on-going-event')}
             onClick={() => {
               setActiveIndex(1)
-              setOnGoing(true)
+              setOnGoing('1')
             }}
           />
           <Button
             id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
-            icon='pi pi-chart-line'
-            label={t('finished-event')}
+            icon='pi pi-calendar-plus'
+            label={t('upcoming-event')}
             onClick={() => {
               setActiveIndex(2)
-              setOnGoing(false)
+              setOnGoing('-1')
+            }}
+          />
+          <Button
+            id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
+            icon='pi pi-calendar-minus'
+            label={t('finished-event')}
+            onClick={() => {
+              setActiveIndex(3)
+              setOnGoing('0')
             }}
           />
         </div>
@@ -161,7 +170,7 @@ export default Events
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['event', 'topbar'])),
+      ...(await serverSideTranslations(locale, ['event', 'topbar', 'detail'])),
     },
   }
 }

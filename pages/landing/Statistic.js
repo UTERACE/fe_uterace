@@ -23,7 +23,7 @@ const Statistic = ({ statistic }) => {
       <div className='target-container'>
         <div id='target-item'>
           <img src='/statistic/run_member.png' alt='member' />
-          <span>{LocaleHelper.formatNumber(statistic.total_member)}</span>
+          <span>{LocaleHelper.formatNumber(statistic.total_members)}</span>
           <p>{t('total-member')}</p>
         </div>
         <div
@@ -36,7 +36,7 @@ const Statistic = ({ statistic }) => {
         </div>
         <div id='target-item'>
           <img src='/statistic/run_club.png' alt='club' />
-          <span>{LocaleHelper.formatNumber(statistic.total_club)}</span>
+          <span>{LocaleHelper.formatNumber(statistic.total_clubs)}</span>
           <p>{t('total-club')}</p>
         </div>
         <div id='target-item'>

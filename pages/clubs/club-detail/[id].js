@@ -49,6 +49,8 @@ const ClubDetail = ({ club }) => {
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(1)
   const [visible, setVisible] = useState(false)
+  const [checkJoin, setCheckJoin] = useState(false)
+  const [updateStatus, setUpdateStatus] = useState(false)
   const buttonEl = useRef(null)
 
   const setLoading = useContext(LoadingContext)
@@ -63,6 +65,24 @@ const ClubDetail = ({ club }) => {
   const [rankMember, setRankMember] = useState({})
 
   const { t } = useTranslation('detail')
+
+  useEffect(() => {
+    checkJoinClub()
+  }, [updateStatus])
+
+  const checkJoinClub = async () => {
+    try {
+      const res = await apiInstance.get(
+        `/clubs/check-join-club/${club.club_id}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setCheckJoin(data)
+      }
+    } catch (error) {
+      showToast('error', t('get_info_fail'), error)
+    }
+  }
 
   const acceptJoin = () => {
     handleJoinClub()
@@ -89,6 +109,7 @@ const ClubDetail = ({ club }) => {
         if (res.status == 200) {
           showToast('success', t('join_club_success'), dataRes.message)
           setLoading(false)
+          setUpdateStatus(true)
         }
       } catch (error) {
         showToast('error', t('join_club_fail'), error)
@@ -105,6 +126,7 @@ const ClubDetail = ({ club }) => {
       if (res.status == 200) {
         showToast('success', t('leave_club_success'), dataRes.message)
         setLoading(false)
+        setUpdateStatus(true)
       }
     } catch (error) {
       showToast('error', t('leave_club_fail'), error)
@@ -133,15 +155,17 @@ const ClubDetail = ({ club }) => {
               target={buttonEl.current}
               visible={visible}
               onHide={() => setVisible(false)}
-              message={t('confirm_join_club')}
+              message={
+                checkJoin ? t('confirm_leave_club') : t('confirm_join_club')
+              }
               icon='pi pi-exclamation-triangle'
-              accept={acceptJoin}
+              accept={checkJoin ? acceptLeave : acceptJoin}
               reject={reject}
             />
             <Button
               ref={buttonEl}
               id='button-join'
-              label={t('join-now')}
+              label={checkJoin ? t('leave_club') : t('join-now')}
               onClick={() => {
                 setVisible(true)
               }}

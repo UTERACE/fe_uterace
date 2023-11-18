@@ -30,23 +30,36 @@ const EventManagement = () => {
   const [index, setIndex] = useState(2)
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleAdd, setVisibleAdd] = useState(false)
-  const [deleteStatus, setDeleteStatus] = useState(false)
+  const [updateStatus, setUpdateStatus] = useState(false)
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const router = useRouter()
 
   const { t } = useTranslation('event')
+  const { t: tDetail } = useTranslation('detail')
 
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
 
   useEffect(() => {
-    fetchEventsOnGoing()
-  }, [current_page, per_page, search])
+    if (index === 3) {
+      fetchEventsOnGoing()
+    } else if (index === 2) {
+      fetchEventsCreated()
+    }
+  }, [
+    current_page,
+    per_page,
+    search,
+    index,
+    visibleAdd,
+    visibleChange,
+    updateStatus,
+  ])
 
   const fetchEventsOnGoing = async () => {
     const res = await apiInstance.get(
-      `/events?current_page=${current_page}&per_page=${per_page}&ongoing=true&search_name=${search_name}`
+      `/events?current_page=${current_page}&per_page=${per_page}&ongoing=1&search_name=${search_name}`
     )
     if (res.status === 200) {
       const data = res.data
@@ -54,6 +67,23 @@ const EventManagement = () => {
       setTotalRecords(data.total_events)
       setCurrentPage(data.current_page)
       setPerPage(data.per_page)
+    }
+  }
+
+  const fetchEventsCreated = async () => {
+    try {
+      const res = await apiInstance.get(
+        `/events/created-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res.status === 200) {
+        const data = res.data
+        setEvents(data.events)
+        setTotalRecords(data.total_events)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+      }
+    } catch (error) {
+      showToast('error', 'Lỗi', error)
     }
   }
 
@@ -184,7 +214,7 @@ const EventManagement = () => {
         }
       />
       <Dialog
-        header={t('update-events')}
+        header={t('button_update')}
         visible={visibleChange}
         position='top'
         style={{
@@ -196,15 +226,20 @@ const EventManagement = () => {
         onHide={() => setVisibleChange(false)}
       >
         <Update
-          club_id={dataEvent.event_id}
+          event_id={dataEvent.event_id}
           image={dataEvent.image}
           name={dataEvent.name}
           description={dataEvent.description}
           start_time={dataEvent.from_date}
           end_time={dataEvent.to_date}
+          min_pace={dataEvent.min_pace}
+          max_pace={dataEvent.max_pace}
           setLoading={setLoading}
           showToast={showToast}
           setVisibleChange={setVisibleChange}
+          setUpdateStatus={setUpdateStatus}
+          t={t}
+          tDetail={tDetail}
         />
       </Dialog>
       <Dialog
@@ -223,6 +258,9 @@ const EventManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleAdd={setVisibleAdd}
+          setUpdateStatus={setUpdateStatus}
+          t={t}
+          tDetail={tDetail}
         />
       </Dialog>
       <div className='centered-content-layout'>
@@ -327,7 +365,7 @@ export default EventManagement
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['event', 'topbar'])),
+      ...(await serverSideTranslations(locale, ['event', 'topbar', 'detail'])),
     },
   }
 }

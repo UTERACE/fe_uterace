@@ -90,11 +90,13 @@ const Register = (props) => {
       if (response.data.status === 201) {
         showToast('success', t('sign_up_success'), response.data.message)
         setVisibleThirdParty(false)
-        router.push('/login')
         setLoading(false)
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000)
       }
     } catch (error) {
-      showToast('error', t('sign_up_failed'), error.response.data.message)
+      showToast('error', t('sign_up_failed'))
       setLoading(false)
     }
   }

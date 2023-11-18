@@ -126,6 +126,7 @@ const Update = () => {
       date.getDate().toString().padStart(2, '0')
     data.birthday = strBirthday
     data.telNumber = data.telNumber.replace(/[^0-9]/g, '')
+    data.image = ''
     console.log('data', data)
 
     try {
@@ -157,7 +158,7 @@ const Update = () => {
     { label: 'Đại học Sư Phạm Kỹ Thuật', value: 'hcmute' },
     { label: 'Đại học Sư Phạm Thể Dục Thể Thao', value: 'hsp' },
   ]
-  
+
   const childOrganization = [
     { label: 'Khoa Công Nghệ Thông Tin', value: 'fit' },
     { label: 'Khoa Khoa Học và Kỹ Thuật Máy Tính', value: 'cse' },

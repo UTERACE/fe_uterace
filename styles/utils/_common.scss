@@ -103,3 +103,21 @@
     background: var(--secondary-color);
     border-radius: 1rem;
 }
+
+//multi select
+.p-multiselect .p-multiselect-label {
+    height: auto;
+    padding: 0.5rem 0.5rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.p-multiselect {
+    display: inline-flex;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    height: 3rem;
+    border-radius: 1rem;
+    text-align: center;
+    align-items: center;
+}
