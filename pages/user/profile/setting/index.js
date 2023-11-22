@@ -1,5 +1,5 @@
 import AppMenu from '@/components/dashboard/AppMenu'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Title from '@/components/landing/Title'
 import Update from './Update'
 import Connect from './Connect'
@@ -11,16 +11,12 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 const SettingPage = () => {
   const router = useRouter()
   const { connect } = router.query
-  const showToast = useToast().showToast
-  const setLoading = useContext(LoadingContext)
   const index = connect == 1 ? 1 : connect == 2 ? 2 : 0
   const [activeIndex, setActiveIndex] = useState(index)
-  const [provinceOptions, setProvinceOptions] = useState([])
-  const [districtOptions, setDistrictOptions] = useState([])
-  const [wardOptions, setWardOptions] = useState([])
-  const [organizationOptions, setOrganizationOptions] = useState([])
-  const [childOrganizationOptions, setChildOrganizationOptions] = useState([])
 
+  useEffect(() => {
+    setActiveIndex(index)
+  }, [connect])
   const model = [
     {
       label: 'Cập nhật hồ sơ',
@@ -38,7 +34,7 @@ const SettingPage = () => {
       to: '/connect',
     },
   ]
-  
+
   return (
     <div className='centered-content-full'>
       <div className='centered-content-layout'>

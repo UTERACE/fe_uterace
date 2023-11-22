@@ -1,8 +1,16 @@
 import apiInstance from '@/api/apiInstance'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
+import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const Connect = () => {
+  const showToast = useToast().showToast
+  const setLoading = useContext(LoadingContext)
+  const router = useRouter()
+  const [update, setUpdate] = useState(false)
+
   let strava_client_id = process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID,
     strava_response_type = process.env.NEXT_PUBLIC_STRAVA_REPONSE_TYPE,
     strava_redirect_uri = process.env.NEXT_PUBLIC_STRAVA_REDIRECT_URI,
@@ -31,10 +39,61 @@ const Connect = () => {
       </a>
     )
   }
-  
+
+  const handleConnectStrava = async (authorizationCode) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/strava/connect`, {
+        code: authorizationCode,
+      })
+      if (res.status === 200) {
+        if (res.data.status === 201) {
+          showToast('warn', 'Kết nối Strava thất bại', res.data.detail)
+          setLoading(false)
+          return
+        }
+        if (res.data.status === 400) {
+          showToast('error', 'Kết nối Strava thất bại', res.data.detail)
+          setLoading(false)
+          return
+        }
+        showToast('success', 'Kết nối Strava thành công', res.data.detail)
+        setUpdate(!update)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Kết nối Strava thất bại')
+      setLoading(false)
+    }
+  }
+
+  const handleDisconnectStrava = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/strava/disconnect`)
+      if (res.status === 200) {
+        showToast('success', 'Hủy kết nối Strava thành công', res.data.detail)
+        setUpdate(!update)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Hủy kết nối Strava thất bại')
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    const authorizationCode = router.query.code
+
+    if (authorizationCode) {
+      // Gọi hàm xử lý authorization code
+      handleConnectStrava(authorizationCode)
+    }
+  }, [router.query.code])
+
   useEffect(() => {
     fetchStatus()
-  }, [])
+  }, [update])
 
   const fetchStatus = async () => {
     const res = await apiInstance.get(`/strava/status`)
@@ -80,7 +139,13 @@ const Connect = () => {
         icon='pi pi-paperclip'
         iconPos='right'
         label={status ? 'Hủy kết nối Strava' : 'Kết nối Strava'}
-        onClick={handleAuth}
+        onClick={() => {
+          if (status) {
+            handleDisconnectStrava()
+          } else {
+            handleAuth()
+          }
+        }}
       />
     </div>
   )
