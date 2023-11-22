@@ -1,141 +1,93 @@
+import apiInstance from '@/api/apiInstance'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import Link from 'next/link'
+import { AutoComplete } from 'primereact/autocomplete'
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Paginator } from 'primereact/paginator'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const UserManagement = () => {
-  const [loading, setLoading] = useState(false)
   const [user, setUser] = useState([])
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(10)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [visibleReason, setVisibleReason] = useState(false)
   const [visibleBlock, setVisibleBlock] = useState(false)
 
   const [reason, setReason] = useState('')
+  const showToast = useToast().showToast
+  const setLoading = useContext(LoadingContext)
+  const [search_name, setSearchName] = useState('')
+  const [user_id, setUserId] = useState()
+  const [reasonBlock, setReasonBlock] = useState('')
+  const [search, setSearch] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
-    const data = {
-      per_page: 10,
-      total_user: 25,
-      current_page: 1,
-      total_page: 3,
-      ranking_user: [
-        {
-          user_id: 119,
-          first_name: 'Can',
-          last_name: 'Lê',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
-          total_distance: 15.02,
-          pace: 10.082677841186523,
-          organization: 'Tổng công ty Viễn thông MobiFone',
-          gender: 'Nam',
-          status: 1,
-          reason_block: '',
-        },
-        {
-          user_id: 2,
-          first_name: 'Nguyễn',
-          last_name: 'Sinh Hùng',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
-          total_distance: 2.42,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 6.15,
-          gender: 'Nam',
-          status: 0,
-          reason_block: 'Không đạt yêu cầu',
-        },
-        {
-          user_id: 1,
-          first_name: 'Nguyễn',
-          last_name: 'Văn A',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=1800',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 0.0,
-          gender: 'Nam',
-          status: 1,
-          reason_block: '',
-        },
-        {
-          user_id: 3,
-          first_name: 'Nguyễn',
-          last_name: 'Văn B',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 0.0,
-          gender: 'Nam',
-          status: 1,
-          reason_block: '',
-        },
-        {
-          user_id: 4,
-          first_name: 'Trần',
-          last_name: 'Thiện',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 0.0,
-          gender: 'Nam',
-          status: 0,
-          reason_block: 'Không đạt yêu cầu',
-        },
-        {
-          user_id: 5,
-          first_name: 'Nguyễn',
-          last_name: 'Văn C',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 0.0,
-          gender: 'Nam',
-          status: 1,
-          reason_block: '',
-        },
-        {
-          user_id: 6,
-          first_name: 'Nguyễn',
-          last_name: 'Văn D',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 0.0,
-          gender: 'Nam',
-          status: 0,
-          reason_block: 'Không đạt yêu cầu',
-        },
-        {
-          user_id: 21,
-          first_name: 'Nguyễn',
-          last_name: 'Văn E',
-          image: '',
-          total_distance: 0.0,
-          organization: 'Công ty DV MobiFone KV2',
-          pace: 0.0,
-          gender: 'Nam',
-          status: 1,
-          reason_block: '',
-        },
-      ],
-    }
-    setUser(data.ranking_user)
-    setPerPage(data.per_page)
-    setTotalRecords(data.total_user)
-    setCurrentPage(data.current_page)
+    fetchUserManagement()
+  }, [per_page, current_page, search])
 
-    setLoading(false)
-  }, [])
+  const fetchUserManagement = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/manage-user?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res.status === 200) {
+        setUser(res.data.users)
+        setCurrentPage(res.data.current_page)
+        setPerPage(res.data.per_page)
+        setTotalRecords(res.data.total_user)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleBlockUser = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-user/lock/${user_id}`, {
+        reason: reason,
+      })
+      if (res.status === 200) {
+        setVisibleReason(false)
+        setVisibleBlock(false)
+        showToast('success', 'Successfully', res.data.message)
+        setUserId(null)
+        setReason('')
+        fetchUserManagement()
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleUnlockUser = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-user/unlock/${user_id}`)
+      if (res.status === 200) {
+        showToast('success', 'Successfully', res.data.message)
+        fetchUserManagement()
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
   const fullnameWithImageTemplate = (rowData) => {
     const avatarImage = rowData.image
     const avatarLabel = rowData.first_name
@@ -158,13 +110,20 @@ const UserManagement = () => {
     )
   }
   const formatNumber = (rowData) => {
-    if (rowData) {
-      return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
+    if (rowData && rowData.totalDistance != null) {
+      return LocaleHelper.formatNumber(rowData.totalDistance.toFixed(2))
     }
     return ''
   }
+  const formatPace = (rowData) => {
+    if (rowData && rowData.pace != null) {
+      return LocaleHelper.formatNumber(rowData.pace.toFixed(2))
+    }
+    return ''
+  }
+
   const formatStatus = (rowData) => {
-    if (rowData.status === 0) {
+    if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
           <img
@@ -175,7 +134,7 @@ const UserManagement = () => {
           <span style={{ color: 'red' }}>Đang bị khóa</span>
         </div>
       )
-    } else if (rowData.status === 1) {
+    } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
           <img
@@ -189,47 +148,18 @@ const UserManagement = () => {
     }
   }
   const blockUser = (rowData) => {
-    if (rowData.status === 0) {
+    if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
           <i
             className='pi pi-exclamation-circle'
             style={{ color: 'red' }}
             title={rowData.reason_block}
-            onClick={() => setVisibleReason(true)}
+            onClick={() => {
+              setVisibleReason(true)
+              setReasonBlock(rowData.reason_block)
+            }}
           />
-          <Dialog
-            header='Lý do khóa tài khoản'
-            visible={visibleReason}
-            position='top'
-            style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
-            onHide={() => setVisibleReason(false)}
-          >
-            <div style={{ margin: '2rem', color: 'black' }}>
-              {visibleBlock ? (
-                <div id='content-dialog-container'>
-                  <InputTextarea
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
-                    rows={5}
-                    cols={30}
-                    autoResize
-                  />
-                  <Button
-                    id='button-reinitialize'
-                    type='submit'
-                    onClick={() => {
-                      handleBlockUser()
-                    }}
-                  >
-                    Khóa tài khoản
-                  </Button>
-                </div>
-              ) : (
-                <h4> {rowData.reason_block}</h4>
-              )}
-            </div>
-          </Dialog>
           <Button
             id='button-reinitialize'
             type='button'
@@ -241,7 +171,7 @@ const UserManagement = () => {
           </Button>
         </div>
       )
-    } else if (rowData.status === 1) {
+    } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
           <Button
@@ -250,6 +180,7 @@ const UserManagement = () => {
             onClick={() => {
               setVisibleBlock(true)
               setVisibleReason(true)
+              setUserId(rowData.user_id)
             }}
           >
             Khóa
@@ -269,7 +200,7 @@ const UserManagement = () => {
       body: fullnameWithImageTemplate,
     },
     {
-      field: 'total_distance',
+      field: 'totalDistance',
       header: 'Tổng quảng đường (km)',
       bodyClassName: 'text-center',
       body: formatNumber,
@@ -277,7 +208,7 @@ const UserManagement = () => {
     {
       field: 'pace',
       header: 'Pace (phút/km)',
-      body: formatNumber,
+      body: formatPace,
       bodyClassName: 'text-center',
     },
     {
@@ -303,24 +234,65 @@ const UserManagement = () => {
       body: blockUser,
     },
   ]
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
+
   return (
     <div id='initial-user-container'>
-      <DataTable
-        data={user}
-        rows={4}
-        loading={loading}
-        columns={memberColumns}
-      />
+      <Dialog
+        header='Lý do khóa tài khoản'
+        visible={visibleReason}
+        position='top'
+        style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
+        onHide={() => {
+          setUserId(null)
+          setReason('')
+          setVisibleReason(false)
+        }}
+      >
+        <div style={{ margin: '2rem', color: 'black' }}>
+          {visibleBlock ? (
+            <div id='content-dialog-container'>
+              <InputTextarea
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                rows={5}
+                cols={30}
+                autoResize
+              />
+              <Button
+                id='button-reinitialize'
+                type='submit'
+                onClick={() => {
+                  handleBlockUser(user_id)
+                }}
+              >
+                Khóa tài khoản
+              </Button>
+            </div>
+          ) : (
+            <h4> {reasonBlock}</h4>
+          )}
+        </div>
+      </Dialog>
+      <DataTable data={user} rows={4} columns={memberColumns} />
+      <div>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={'Tìm kiếm thành viên'}
+        />
+      </div>
       <Paginator
         first={first}
         rows={per_page}
         totalRecords={totalRecords}
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[10, 15, 20]}
         onPageChange={onPageChange}
         page={current_page}
       />

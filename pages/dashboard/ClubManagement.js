@@ -1,187 +1,129 @@
+import apiInstance from '@/api/apiInstance'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 import DataTable from '@/components/datatable/DataTable'
-import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import LocaleHelper from '@/components/locale/LocaleHelper'
-import OutstandingEdit from '@/components/management/OutstandingEdit'
 import Link from 'next/link'
+import { AutoComplete } from 'primereact/autocomplete'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Paginator } from 'primereact/paginator'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const ClubManagement = () => {
   const [clubs, setClubs] = useState([])
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(10)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
   const [visibleReason, setVisibleReason] = useState(false)
   const [visibleBlock, setVisibleBlock] = useState(false)
   const [reason, setReason] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [dataClub, setDataClub] = useState({})
+  const showToast = useToast().showToast
+  const setLoading = useContext(LoadingContext)
+  const [search_name, setSearchName] = useState('')
+  const [club_id, setClubId] = useState()
+  const [reasonBlock, setReasonBlock] = useState('')
+  const [search, setSearch] = useState(false)
 
   useEffect(() => {
-    const data = {
-      per_page: 5,
-      current_page: 1,
-      total_page: 5,
-      total_clubs: 22,
-      clubs: [
-        {
-          club_id: 1,
-          name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
-          image: 'https://picsum.photos/200/300',
-          total_members: 100,
-          total_distance: 1000,
-          outstanding: true,
-          status: 1,
-          reason_block: '',
-        },
-        {
-          club_id: 2,
-          name: 'Dak Lak Runners',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202008/IMG_20200816_094952_16082020_094942_562.jpg',
-          total_members: 100,
-          total_distance: 1000,
-          outstanding: false,
-          status: 0,
-          reason_block: '',
-        },
-        {
-          club_id: 3,
-          name: 'MOBIFONE ĐẮK LẮK - ĐẮK NÔNG',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202010/dl_dn_17102020_095936_684.jpg',
-          total_members: 100,
-          total_distance: 1000,
-          outstanding: true,
-          status: 0,
-          reason_block: 'Không đạt yêu cầu',
-        },
-        {
-          club_id: 4,
-          name: 'XOSOKIENTHIETQUANGBINH RUNNERS CLUB',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202103/IMG_20200913_114028_18032021_152058_637.jpg',
-          total_members: 100,
-          total_distance: 1000,
-          outstanding: true,
-          status: 1,
-          reason_block: 'Vi phạm quy định',
-        },
-        {
-          club_id: 5,
-          name: 'Đài Viễn Thông Đông HCM - TT MLMN',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202009/FN_29092020_130940_125.png',
-          total_members: 100,
-          total_distance: 1000,
-          outstanding: false,
-          status: 0,
-          reason_block: '',
-        },
-        {
-          club_id: 6,
-          name: 'MLMN Win Together',
-          image:
-            'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-          total_members: 100,
-          total_distance: 1000,
-          outstanding: true,
-          status: 1,
-          reason_block: 'Sai quy định',
-        },
-      ],
+    fetchClubManagement()
+  }, [per_page, current_page, search])
+
+  const fetchClubManagement = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/manage-club?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res.status === 200) {
+        setClubs(res.data.clubs)
+        setCurrentPage(res.data.current_page)
+        setPerPage(res.data.per_page)
+        setTotalRecords(res.data.total_clubs)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
     }
-    setClubs(data.clubs)
-    setCurrentPage(data.current_page)
-    setPerPage(data.per_page)
-    setTotalRecords(data.total_clubs)
-  }, [])
+  }
+
+  const handleBlockClub = async (club_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-club/lock/${club_id}`, {
+        reason: reason,
+      })
+      if (res.status === 200) {
+        setVisibleReason(false)
+        setVisibleBlock(false)
+        showToast('success', 'Successfully', res.data.message)
+        setClubId(null)
+        setReason('')
+        fetchClubManagement()
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleUnlockClub = async (club_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-club/unlock/${club_id}`)
+      if (res.status === 200) {
+        showToast('success', 'Successfully', res.data.message)
+        fetchClubManagement()
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleOutstandingClub = async (club_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-club/outstanding/${club_id}`)
+      if (res.status === 200) {
+        showToast('success', 'Successfully', res.data.message)
+        fetchClubManagement()
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleNotOutstandingClub = async (club_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(
+        `/manage-club/not-outstanding/${club_id}`
+      )
+      if (res.status === 200) {
+        showToast('success', 'Successfully', res.data.message)
+        fetchClubManagement()
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
   }
-  const itemTemplate = (item) => {
-    return (
-      <div id='dataview-container'>
-        <div id='image-container-dataview'>
-          <Link
-            id='link-dataview'
-            href={`/clubs/club-management/${item.club_id}`}
-          >
-            <img src={item.image} alt={item.name} />
-          </Link>
-          <OutstandingEdit
-            items={items(item.club_id)}
-            isOutstanding={item.outstanding}
-            id={item.club_id}
-            title='câu lạc bộ'
-          />
-        </div>
-        <Link
-          id='link-dataview'
-          href={`/clubs/club-management/${item.club_id}`}
-        >
-          <div id='info-dataview'>
-            <h4>
-              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.member} Thành viên
-            </h4>
-            <h4>
-              <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
-              {item.total_distance} Km
-            </h4>
-          </div>
-          <div id='name-dataview'>
-            <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
-            <div id='share-register-container'>
-              <h4>{item.name}</h4>
-            </div>
-          </div>
-        </Link>
-      </div>
-    )
-  }
-  const handleClickEdit = (club_id) => {
-    if (club_id == 1) {
-      setDataClub(dataDetail)
-    } else {
-      setDataClub({})
-    }
-    setVisibleChange(true)
-  }
-  const items = (club_id) => [
-    {
-      label: 'Add',
-      icon: 'pi pi-plus',
-      command: () => {},
-      title: 'Thêm câu lạc bộ mới',
-    },
-    {
-      label: 'Update',
-      icon: 'pi pi-pencil',
-      command: () => {
-        handleClickEdit(club_id)
-      },
-      title: 'Cập nhật câu lạc bộ',
-    },
-    {
-      label: 'Delete',
-      icon: 'pi pi-trash',
-      command: () => {},
-      title: 'Xóa câu lạc bộ',
-    },
-    {
-      label: 'React Website',
-      icon: 'pi pi-external-link',
-      command: () => {},
-    },
-  ]
+
   const fullnameWithImageTemplate = (rowData) => {
     const avatarImage = rowData.image
     return (
@@ -197,27 +139,30 @@ const ClubManagement = () => {
       </div>
     )
   }
+
   const formatNumberMember = (rowData) => {
     if (rowData) {
       return LocaleHelper.formatNumber(rowData.total_members.toFixed(2))
     }
     return ''
   }
+
   const formatNumberDistance = (rowData) => {
     if (rowData) {
       return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
+
   const formatOutstanding = (rowData) => {
-    if (rowData.outstanding === true) {
+    if (rowData.outstanding === '1') {
       return (
         <div id='content-datatable-container'>
           <i className='pi pi-check-circle' style={{ color: 'green' }} />
           <span style={{ color: 'green' }}>Đang nổi bật</span>
         </div>
       )
-    } else if (rowData.outstanding === false) {
+    } else if (rowData.outstanding === '0') {
       return (
         <div id='content-datatable-container'>
           <i className='pi pi-times-circle' style={{ color: 'black' }} />
@@ -226,79 +171,64 @@ const ClubManagement = () => {
       )
     }
   }
+
   const formatUpdate = (rowData) => {
-    if (rowData.outstanding === true) {
+    if (rowData.outstanding === '1') {
       return (
         <div id='content-datatable-container'>
-          <Button id='button-reinitialize' type='button' onClick={() => {}}>
-            Chọn nổi bật
+          <Button
+            id='button-reinitialize'
+            type='button'
+            onClick={() => {
+              handleNotOutstandingClub(rowData.club_id)
+            }}
+          >
+            Hủy nổi bật
           </Button>
         </div>
       )
-    } else if (rowData.outstanding === false) {
+    } else if (rowData.outstanding === '0') {
       return (
         <div id='content-datatable-container'>
-          <Button id='button-reinitialize' type='button' onClick={() => {}}>
-            Nổi bật
+          <Button
+            id='button-reinitialize'
+            type='button'
+            onClick={() => {
+              handleOutstandingClub(rowData.club_id)
+            }}
+          >
+            Chọn nổi bật
           </Button>
         </div>
       )
     }
   }
+
   const blockClub = (rowData) => {
-    if (rowData.status === 0) {
+    if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
           <i
             className='pi pi-exclamation-circle'
             style={{ color: 'red' }}
             title={rowData.reason_block}
-            onClick={() => setVisibleReason(true)}
+            onClick={() => {
+              setVisibleReason(true)
+              setReasonBlock(rowData.reason_block)
+            }}
           />
-          <Dialog
-            header='Lý do chặn sự kiện'
-            visible={visibleReason}
-            position='top'
-            style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
-            onHide={() => setVisibleReason(false)}
-          >
-            <div style={{ margin: '2rem', color: 'black' }}>
-              {visibleBlock ? (
-                <div id='content-dialog-container'>
-                  <InputTextarea
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
-                    rows={5}
-                    cols={30}
-                    autoResize
-                  />
-                  <Button
-                    id='button-reinitialize'
-                    type='submit'
-                    onClick={() => {
-                      handleBlockUser()
-                    }}
-                  >
-                    Chặn sự kiện
-                  </Button>
-                </div>
-              ) : (
-                <h4> {rowData.reason_block}</h4>
-              )}
-            </div>
-          </Dialog>
           <Button
             id='button-reinitialize'
             type='button'
             onClick={() => {
-              handleUnlockUser()
+              handleUnlockClub(rowData.club_id)
             }}
           >
             Mở chặn
           </Button>
         </div>
       )
-    } else if (rowData.status === 1) {
+    } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
           <Button
@@ -307,6 +237,7 @@ const ClubManagement = () => {
             onClick={() => {
               setVisibleBlock(true)
               setVisibleReason(true)
+              setClubId(rowData.club_id)
             }}
           >
             Chặn
@@ -315,8 +246,9 @@ const ClubManagement = () => {
       )
     }
   }
+
   const formatStatus = (rowData) => {
-    if (rowData.status === 0) {
+    if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
           <img
@@ -327,7 +259,7 @@ const ClubManagement = () => {
           <span style={{ color: 'red' }}>Đang bị chặn</span>
         </div>
       )
-    } else if (rowData.status === 1) {
+    } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
           <img
@@ -340,6 +272,7 @@ const ClubManagement = () => {
       )
     }
   }
+
   const clubColumns = [
     {
       field: 'club_id',
@@ -387,24 +320,59 @@ const ClubManagement = () => {
       body: blockClub,
     },
   ]
+
   return (
     <div id='initial-user-container'>
-      {/* <DataViewDashboard
-        data={clubs}
-        href='/clubs/club-management/'
-        itemTemplate={itemTemplate}
-      /> */}
-      <DataTable
-        data={clubs}
-        rows={4}
-        loading={loading}
-        columns={clubColumns}
-      />
+      <Dialog
+        header='Lý do chặn sự kiện'
+        visible={visibleReason}
+        position='top'
+        style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
+        onHide={() => {
+          setClubId(null)
+          setReason('')
+          setVisibleReason(false)
+        }}
+      >
+        <div style={{ margin: '2rem', color: 'black' }}>
+          {visibleBlock ? (
+            <div id='content-dialog-container'>
+              <InputTextarea
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                rows={5}
+                cols={30}
+                autoResize
+              />
+              <Button
+                id='button-reinitialize'
+                type='submit'
+                onClick={() => {
+                  handleBlockClub(club_id)
+                }}
+              >
+                Chặn sự kiện
+              </Button>
+            </div>
+          ) : (
+            <h4> {reasonBlock}</h4>
+          )}
+        </div>
+      </Dialog>
+      <DataTable data={clubs} rows={4} columns={clubColumns} />
+      <div>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={'Tìm kiếm câu lạc bộ'}
+        />
+      </div>
       <Paginator
         first={first}
         rows={per_page}
         totalRecords={totalRecords}
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[10, 15, 20]}
         onPageChange={onPageChange}
         page={current_page}
       />

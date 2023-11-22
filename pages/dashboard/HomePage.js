@@ -1,102 +1,78 @@
+import apiInstance from '@/api/apiInstance'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
 import DataTable from '@/components/datatable/DataTable'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 import Link from 'next/link'
+import { AutoComplete } from 'primereact/autocomplete'
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const HomePage = () => {
-  const [loading, setLoading] = useState(false)
   const [userInit, setUserInit] = useState([])
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(10)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
-  useEffect(() => {
-    setLoading(true)
-    const data = {
-      per_page: 10,
-      total_user: 25,
-      current_page: 1,
-      total_page: 3,
-      users: [
-        {
-          user_id: 119,
-          first_name: 'Can',
-          last_name: 'Lê',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
-          last_sync: '2021-06-01 10:00:00',
-          status: 1,
-        },
-        {
-          user_id: 2,
-          first_name: 'Nguyễn',
-          last_name: 'Sinh Hùng',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
-          last_sync: '2021-06-01 10:00:00',
-          status: 0,
-        },
-        {
-          user_id: 1,
-          first_name: 'Nguyễn',
-          last_name: 'Văn A',
-          image:
-            'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=1800',
-          last_sync: '2021-06-01 10:00:00',
-          status: 0,
-        },
-        {
-          user_id: 3,
-          first_name: 'Nguyễn',
-          last_name: 'Văn B',
-          image: '',
-          last_sync: '2021-06-01 10:00:00',
-          status: 1,
-        },
-        {
-          user_id: 4,
-          first_name: 'Trần',
-          last_name: 'Thiện',
-          image: '',
-          last_sync: '2021-06-01 10:00:00',
-          status: -1,
-        },
-        {
-          user_id: 5,
-          first_name: 'Nguyễn',
-          last_name: 'Văn C',
-          image: '',
-          last_sync: '2021-06-01 10:00:00',
-          status: 0,
-        },
-        {
-          user_id: 6,
-          first_name: 'Nguyễn',
-          last_name: 'Văn D',
-          image: '',
-          last_sync: '2021-06-01 10:00:00',
-          status: 0,
-        },
-        {
-          user_id: 21,
-          first_name: 'Nguyễn',
-          last_name: 'Văn E',
-          image: '',
-          last_sync: '2021-06-01 10:00:00',
-          status: 1,
-        },
-      ],
-    }
-    setUserInit(data.users)
-    setPerPage(data.per_page)
-    setTotalRecords(data.total_user)
-    setCurrentPage(data.current_page)
+  const showToast = useToast().showToast
+  const setLoading = useContext(LoadingContext)
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
-    setLoading(false)
-  }, [])
+  useEffect(() => {
+    fetchUserInitialize()
+  }, [per_page, current_page, search])
+
+  const fetchUserInitialize = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/manage-user/initialize?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res.status === 200) {
+        setUserInit(res.data.user_initialize)
+        setCurrentPage(res.data.current_page)
+        setPerPage(res.data.per_page)
+        setTotalRecords(res.data.total_user)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleReInitialize = async (user_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-user/initialize/${user_id}`)
+      if (res.status === 200) {
+        showToast('success', 'Đồng bộ thành công', res.data.message)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const handleReInitializeAll = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/manage-user/initialize`)
+      if (res.status === 200) {
+        showToast('success', 'Đồng bộ thành công', res.data.message)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
   const fullnameWithImageTemplate = (rowData) => {
     const avatarImage = rowData.image
     const avatarLabel = rowData.first_name
@@ -119,16 +95,19 @@ const HomePage = () => {
     )
   }
   const formatStatus = (rowData) => {
-    if (rowData.status === 1) {
+    if (rowData.status === '1') {
       return <span style={{ color: 'green' }}>Đã đồng bộ</span>
-    } else if (rowData.status === 0) {
+    } else if (rowData.status === '0') {
       return <span style={{ color: 'red' }}>Chưa đồng bộ</span>
-    } else {
+    } else if (rowData.status === '-1') {
       return <span style={{ color: 'blue' }}>Đang đồng bộ</span>
-    }
+    } else return <span style={{ color: 'red' }}>Lỗi</span>
   }
   const formatDateTime = (rowData) => {
-    return rowData.last_sync
+    if (rowData.last_sync != null) {
+      return LocaleHelper.formatDateTime(new Date(rowData.last_sync))
+    }
+    return 'Not available'
   }
   const handleInitUser = (rowData) => {
     return (
@@ -179,21 +158,23 @@ const HomePage = () => {
   }
   return (
     <div id='initial-user-container'>
-      <DataTable
-        data={userInit}
-        rows={4}
-        loading={loading}
-        columns={userInitColumns}
-      />
+      <DataTable data={userInit} rows={4} columns={userInitColumns} />
       <div id='button-reinitialize-container'>
         <Button label='Đồng bộ tất cả' id='button-reinitialize' />
       </div>
-
+      <div>
+        <AutoComplete
+          value={search_name}
+          onChange={(e) => setSearchName(e.target.value)}
+          completeMethod={(e) => setSearch(!search)}
+          placeholder={'Tìm kiếm thành viên'}
+        />
+      </div>
       <Paginator
         first={first}
         rows={per_page}
         totalRecords={totalRecords}
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[10, 15, 20]}
         onPageChange={onPageChange}
         page={current_page}
       />
