@@ -15,6 +15,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
+import apiInstance from '@/api/apiInstance'
 
 const Profile = () => {
   const [current_page, setCurrentPage] = useState(1)
@@ -25,6 +26,7 @@ const Profile = () => {
   const [visibleChange, setVisibleChange] = useState(false)
   const [activeIndex, setActiveIndex] = useState(2)
 
+  const [polyline, setPolyline] = useState([])
   const [dataChartWeek, setDataChartWeek] = useState({})
   const [dataChartMonth, setDataChartMonth] = useState({})
   const [activities, setActivities] = useState([])
@@ -195,6 +197,19 @@ const Profile = () => {
     setAvatarLabel(data.first_name[0])
     setData(data)
   }, [])
+
+  const fetchDataMap = async (activity_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(`/decode_polyline/${activity_id}`)
+      if (res.status === 200) {
+        setPolyline(res.data)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+    }
+  }
 
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -406,7 +421,11 @@ const Profile = () => {
             {activeIndex === 2 ? (
               <div style={{ width: '95%' }}>
                 <Title title={t('recent-activities')} />
-                <Activity activities={activities} />
+                <Activity
+                  activities={activities}
+                  setLoading={setLoading}
+                  showToast={showToast}
+                />
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>

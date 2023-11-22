@@ -17,6 +17,7 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "i18next": "^23.5.1",
+    "leaflet": "^1.9.4",
     "next": "13.4.19",
     "next-i18next": "^14.0.3",
     "primeicons": "^6.0.1",
@@ -27,6 +28,7 @@
     "react-google-recaptcha": "^3.1.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.45.4",
+    "react-leaflet": "^4.2.1",
     "react-redux": "^8.1.2",
     "redux-persist": "^6.0.0",
     "sass": "^1.66.1"
