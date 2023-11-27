@@ -8,7 +8,7 @@ const Club = ({ club }) => {
     <div className='centered-content-layout'>
       <div className='custom-carousel-content'>
         {club.map((item) => (
-          <div id='club-container'>
+          <div key={item.club_id} id='club-container'>
             <div id='image-container-club'>
               <Image src={item.image} alt={item.name} width={20} height={20} />
             </div>

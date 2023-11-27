@@ -81,7 +81,7 @@ const Activity = ({
   return (
     <div className='custom-carousel-content'>
       {activities.map((item) => (
-        <div id='activities-container'>
+        <div id='activities-container' key={item.activity_id}>
           <div id='info-activities'>
             <h4>
               <i className='pi pi-calendar ml2-icon' aria-hidden='true'></i>
