@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 const DataView = ({
   data,
@@ -91,7 +92,7 @@ const DataView = ({
             <Link id='link-dataview-container' href={href + item.club_id}>
               <div id='dataview-container'>
                 <div id='image-container-dataview'>
-                  <img src={item.image} alt={item.name} />
+                  <Image src={item.image} alt={item.name} width={800} height={800}/>
                 </div>
                 <div id='info-dataview'>
                   <h4>

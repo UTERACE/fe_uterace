@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import LeafletMap from './LeafletMap'
 import apiInstance from '@/api/apiInstance'
 import { Dialog } from 'primereact/dialog'
+import LocaleHelper from '@/components/locale/LocaleHelper'
+import Image from 'next/image'
 
 const Activity = ({
   activities = [],
@@ -65,13 +67,14 @@ const Activity = ({
   const fetchDataMap = async (activity_id) => {
     setLoading(true)
     try {
-      const res = await apiInstance.get(`/decode_polyline/269`)
+      const res = await apiInstance.get(`/decode_polyline/${activity_id}`)
       if (res.status === 200) {
         setPolyline(res.data)
         setLoading(false)
       }
     } catch (e) {
       showToast('error', 'Error')
+      setLoading(false)
     }
   }
 
@@ -82,7 +85,7 @@ const Activity = ({
           <div id='info-activities'>
             <h4>
               <i className='pi pi-calendar ml2-icon' aria-hidden='true'></i>
-              {item.day}
+              {LocaleHelper.formatDateTime(new Date(item.activity_start_date))}
             </h4>
           </div>
           <div id='name-activities'>
@@ -90,31 +93,45 @@ const Activity = ({
               <i class='fa fa-running icon-run' aria-hidden='true'></i>
             </div>
             <div>
-              <h4>{item.name}</h4>
+              <h4>{item.activity_name}</h4>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <img src={'/googlemap-icon.png'} alt='avatar' />
-              <img
+              <Image
+                src={'/googlemap-icon.png'}
+                alt='avatar'
+                onClick={() => {
+                  fetchDataMap(item.activity_id)
+                  setVisibleMap(true)
+                }}
+                title='Xem bản đồ'
+                width={50}
+                height={50}
+              />
+              <Image
                 src={'/strava-icon.png'}
                 alt='avatar'
                 onClick={() => {
-                  fetchDataMap(item.id)
-                  setVisibleMap(true)
+                  window.open(item.activity_link_strava, '_blank')
                 }}
+                title='Xem trên Strava'
+                width={50}
+                height={50}
               />
             </div>
           </div>
           <div id='name-activities'>
             <a id='link-activities'>
-              <i className='pi pi-map' aria-hidden='true'></i> {item.distance}
+              <i className='pi pi-map' aria-hidden='true'></i>{' '}
+              {LocaleHelper.formatMtoKm(item.activity_distance)}
               km
             </a>
             <a id='link-activities'>
-              <i className='pi pi-chart-bar' aria-hidden='true'></i> {item.pace}
-              /km
+              <i className='pi pi-chart-bar' aria-hidden='true'></i>{' '}
+              {LocaleHelper.formatPace(item.activity_pace)} min/km
             </a>
             <a id='link-activities'>
-              <i className='pi pi-stopwatch' aria-hidden='true'></i> {item.time}
+              <i className='pi pi-stopwatch' aria-hidden='true'></i>{' '}
+              {item.activity_duration}
             </a>
           </div>
         </div>

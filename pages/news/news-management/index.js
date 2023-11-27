@@ -17,6 +17,7 @@ import UpdateNews from '@/pages/clubs/club-management/UpdateNews'
 import { Button } from 'primereact/button'
 import { useRouter } from 'next/router'
 import store from '@/store/store'
+import Image from 'next/image'
 
 const ManagementNews = () => {
   const [news, setNews] = useState([])
@@ -107,7 +108,7 @@ const ManagementNews = () => {
             id='link-dataview-container'
             href={`/news/news-detail/${item.news_id}`}
           >
-            <img src={item.image} alt={item.name} />
+            <Image src={item.image} alt={item.name} width={800} height={500} />
           </Link>
           <OutstandingEdit
             items={items(item.news_id)}

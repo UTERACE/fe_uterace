@@ -12,6 +12,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import apiInstance from '@/api/apiInstance'
 import { AutoComplete } from 'primereact/autocomplete'
+import Image from 'next/image'
 
 const EventManagement = () => {
   const [events, setEvents] = useState([])
@@ -128,7 +129,7 @@ const EventManagement = () => {
     return (
       <div id='info-detail-container'>
         <div id='info-image-container'>
-          <img src={avatarImage} alt={rowData.name} />
+          <Image src={avatarImage} alt={rowData.name} width={20} height={20} />
         </div>
         <div id='info-name-container'>
           <Link href={`events/detail-event/${rowData.event_id}`}>
@@ -247,10 +248,12 @@ const EventManagement = () => {
     if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
-          <img
+          <Image
             src='/lock.png'
             alt='lock'
             style={{ width: '1.5rem', height: '1.5rem' }}
+            width={20}
+            height={20}
           />{' '}
           <span style={{ color: 'red' }}>Đang bị chặn</span>
         </div>
@@ -258,10 +261,12 @@ const EventManagement = () => {
     } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
-          <img
+          <Image
             src='/verified.png'
             alt='verified'
             style={{ width: '1.5rem', height: '1.5rem' }}
+            width={20}
+            height={20}
           />
           <span style={{ color: 'green' }}>Đang hoạt động</span>
         </div>

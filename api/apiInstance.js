@@ -26,8 +26,8 @@ apiInstance.interceptors.request.use(
 
 apiInstance.interceptors.response.use(
   function (response) {
-    console.log('response interceptor')
     console.log('response', response)
+    console.log('response interceptor')
     return response
   },
   async function (error) {
@@ -36,22 +36,27 @@ apiInstance.interceptors.response.use(
       error.response.status === 401 &&
       !error.config._retry
     ) {
-      error._retry = true
+      console.log('Attempting token refresh...')
+      error.config._retry = true
       const state = store.getState()
       const refreshToken = state.auth.refreshToken
+      const data = {
+        refreshToken: refreshToken,
+      }
+      const jsonString = JSON.stringify(data)
       return await apiInstance
-        .post('/auth/refresh-token', { refreshToken: refreshToken })
+        .post('/auth/refresh-token', jsonString)
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status === 200) {
             store.dispatch({
               type: 'auth/login',
               payload: {
                 accessToken: res.data.accessToken,
-                refreshToken: refreshToken,
+                refreshToken: res.data.refreshToken,
               },
             })
             console.log('Access token refreshed!')
-            return apiInstance(originalRequest)
+            return apiInstance.request(error.config)
           }
         })
         .catch((err) => {

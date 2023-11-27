@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import Detail from '@/components/landing/Detail'
+import Image from 'next/image'
 
 const Club = ({ club }) => {
   return (
@@ -9,7 +10,7 @@ const Club = ({ club }) => {
         {club.map((item) => (
           <div id='club-container'>
             <div id='image-container-club'>
-              <img src={item.image} alt={item.name} />
+              <Image src={item.image} alt={item.name} width={20} height={20} />
             </div>
             <div id='info-club'>
               <h4>

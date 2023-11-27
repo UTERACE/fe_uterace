@@ -4,6 +4,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
+import Image from 'next/image'
 import Link from 'next/link'
 import { AutoComplete } from 'primereact/autocomplete'
 import { Button } from 'primereact/button'
@@ -139,7 +140,7 @@ const NewsManagement = () => {
     return (
       <div id='info-detail-container'>
         <div id='info-image-container'>
-          <img src={avatarImage} alt={rowData.name} />
+          <Image src={avatarImage} alt={rowData.name} width={20} height={20} />
         </div>
         <div id='info-name-container'>
           <Link href={`events/detail-event/${rowData.news_id}`}>
@@ -255,10 +256,12 @@ const NewsManagement = () => {
     if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
-          <img
+          <Image
             src='/lock.png'
             alt='lock'
             style={{ width: '1.5rem', height: '1.5rem' }}
+            width={20}
+            height={20}
           />{' '}
           <span style={{ color: 'red' }}>Đang bị chặn</span>
         </div>
@@ -266,10 +269,12 @@ const NewsManagement = () => {
     } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
-          <img
+          <Image
             src='/verified.png'
             alt='verified'
             style={{ width: '1.5rem', height: '1.5rem' }}
+            width={20}
+            height={20}
           />
           <span style={{ color: 'green' }}>Đang hoạt động</span>
         </div>
@@ -346,9 +351,13 @@ const NewsManagement = () => {
                 cols={30}
                 autoResize
               />
-              <Button id='button-reinitialize' type='submit' onClick={() => {
-                handleBlockNews(news_id)
-              }}>
+              <Button
+                id='button-reinitialize'
+                type='submit'
+                onClick={() => {
+                  handleBlockNews(news_id)
+                }}
+              >
                 Chặn sự kiện
               </Button>
             </div>

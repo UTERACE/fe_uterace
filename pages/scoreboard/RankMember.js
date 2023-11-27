@@ -4,11 +4,12 @@ import { Avatar } from 'primereact/avatar'
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 
 const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
   const [rankMember, setRankMember] = useState(value)
-  
+
   const { t } = useTranslation('scoreboard')
 
   useEffect(() => {
@@ -21,22 +22,28 @@ const RankMember = ({ value }) => {
     return (
       <div id='member-ranking'>
         {rowData.ranking === 1 ? (
-          <img
+          <Image
             src='/no1.png'
             alt='rank1'
             className='customer-rank'
+            width={20}
+            height={20}
           />
         ) : rowData.ranking === 2 ? (
-          <img
+          <Image
             src='/no2.png'
             alt='rank2'
             className='customer-rank'
+            width={20}
+            height={20}
           />
         ) : rowData.ranking === 3 ? (
-          <img
+          <Image
             src='/no3.png'
             alt='rank3'
             className='customer-rank'
+            width={20}
+            height={20}
           />
         ) : (
           <div>{rowData.ranking}</div>

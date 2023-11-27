@@ -1,6 +1,7 @@
 import apiInstance from '@/api/apiInstance'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import React, { useContext, useEffect, useState } from 'react'
@@ -32,10 +33,12 @@ const Connect = () => {
         target='_blank'
         href={`https://www.strava.com/activities/${rowData.activity_link_stava}`}
       >
-        <img
+        <Image
           style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+          width={20}
+          height={20}
           src='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/323_Strava_logo-512.png'
-        ></img>
+        ></Image>
       </a>
     )
   }
@@ -113,12 +116,24 @@ const Connect = () => {
     <div id='connect-container'>
       <div id='avatar-connect-container'>
         <div>
-          <img src='/strava-icon.png' alt='Strava' id='strava-icon' />
+          <Image
+            src='/strava-icon.png'
+            alt='Strava'
+            id='strava-icon'
+            width={20}
+            height={20}
+          />
         </div>
         {status ? <i className='pi pi-link' aria-hidden='true'></i> : null}
         {status ? (
           <div>
-            <img src={stravaImage} alt='Strava' id='strava-icon' />
+            <Image
+              src={stravaImage}
+              alt='Strava'
+              id='strava-icon'
+              width={20}
+              height={20}
+            />
           </div>
         ) : null}
       </div>

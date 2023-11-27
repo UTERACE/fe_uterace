@@ -1,6 +1,7 @@
 import apiInstance from '@/api/apiInstance'
 import React from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Image from 'next/image'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const news = await getNews(params.id)
@@ -29,7 +30,7 @@ const NewsDetail = ({ news }) => {
       <div className='centered-content-layout'>
         <div id='news-detail-container'>
           <div id='image-container-detail'>
-            <img src={news.image} alt={news.name} />
+            <Image src={news.image} alt={news.name} width={1080} height={780} />
           </div>
           <div id='info-detail'>
             <h1>{news.name}</h1>

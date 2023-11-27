@@ -58,6 +58,10 @@
 #overview-slide :first-child :first-child, 
 #overview-slide :last-child :first-child {
     font-size: 4rem;
+    text-align: center;
+}
+#overview-slide span {
+  text-align: center;
 }
 .overlay-content {
   position: absolute; 

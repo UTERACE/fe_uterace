@@ -17,6 +17,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import { useRouter } from 'next/router'
 import UpdateInfo from './UpdateInfo'
 import UpdateNews from './UpdateNews'
+import Image from 'next/image'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -204,7 +205,7 @@ const ManagementClubDetail = ({ club }) => {
       <div className='centered-content-layout'>
         <div id='detail-container'>
           <div id='image-container-detail'>
-            <img src={club.image} alt='club' />
+            <Image src={club.image} alt='club' width={1080} height={780} />
           </div>
           <div id='info-detail'>
             <div
@@ -219,7 +220,13 @@ const ManagementClubDetail = ({ club }) => {
                 }}
               />
             </div>
-            <img id='info-detail-img' src={club.image} alt='logo' />
+            <Image
+              id='info-detail-img'
+              src={club.image}
+              alt='logo'
+              width={200}
+              height={200}
+            />
             <h1>{club.name}</h1>
             <h6>{club.description}</h6>
             <Button

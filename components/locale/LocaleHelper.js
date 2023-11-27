@@ -23,8 +23,19 @@ function formatDateTime(date, locale = defaultLocale) {
   }
   return date
 }
+
+function formatMtoKm(distance, locale = defaultLocale) {
+  return new Intl.NumberFormat(locale).format(distance / 1000)
+}
+
+function formatPace(pace, locale = defaultLocale) {
+  return new Intl.NumberFormat(locale).format(pace)
+}
+
 export default {
   formatNumber,
   formatDate,
   formatDateTime,
+  formatMtoKm,
+  formatPace,
 }

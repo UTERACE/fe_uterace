@@ -1,35 +1,40 @@
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import DataTable from '@/components/datatable/DataTable'
 import { Avatar } from 'primereact/avatar'
 import { useTranslation } from 'next-i18next'
+import React from 'react'
+import Image from 'next/image'
 
 const RankMember = ({ value }) => {
-  const [loading, setLoading] = useState(false)
-
-  const {t}=useTranslation('scoreboard')
+  const { t } = useTranslation('scoreboard')
 
   const formatRank = (rowData) => {
     return (
       <div className='customer-info-rank '>
         {rowData.ranking === 1 ? (
-          <img
+          <Image
             src='/no1.png'
             alt='rank1'
             className='customer-rank'
+            width={20}
+            height={20}
           />
         ) : rowData.ranking === 2 ? (
-          <img
+          <Image
             src='/no2.png'
             alt='rank2'
             className='customer-rank'
+            width={20}
+            height={20}
           />
         ) : rowData.ranking === 3 ? (
-          <img
+          <Image
             src='/no3.png'
             alt='rank3'
             className='customer-rank'
+            width={20}
+            height={20}
           />
         ) : (
           <div>{rowData.ranking}</div>
@@ -66,7 +71,7 @@ const RankMember = ({ value }) => {
     }
     return ''
   }
-  
+
   const clubsColumns = [
     {
       field: 'ranking',
@@ -102,8 +107,6 @@ const RankMember = ({ value }) => {
     },
   ]
 
-  return (
-    <DataTable data={value} rows={4} loading={loading} columns={clubsColumns} />
-  )
+  return <DataTable data={value} rows={4} columns={clubsColumns} />
 }
 export default RankMember

@@ -10,6 +10,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
+import Image from 'next/image'
 
 const NewsPage = () => {
   const [news, setNews] = useState([])
@@ -57,7 +58,7 @@ const NewsPage = () => {
       >
         <div id='dataview-container'>
           <div id='image-container-dataview'>
-            <img src={item.image} alt={item.name} />
+            <Image src={item.image} alt={item.name} width={800} height={500} />
           </div>
           <div id='info-dataview'>
             <h4>

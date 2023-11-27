@@ -6,7 +6,7 @@ import Activity from './Activity'
 import { Paginator } from 'primereact/paginator'
 import { Dialog } from 'primereact/dialog'
 import Title from '@/components/landing/Title'
-import ChartActivity from './ChartActivity'
+import ChartActivity, { ChartDaily, ChartMonthly } from './ChartActivity'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ChangeAvatar from './setting/ChangeAvatar'
@@ -16,28 +16,38 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import apiInstance from '@/api/apiInstance'
+import { AutoComplete } from 'primereact/autocomplete'
+import Image from 'next/image'
 
 const Profile = () => {
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
-  const [totalRecords, setTotalRecords] = useState(4)
-  const [first, setFirst] = useState(1)
+  const [per_page, setPerPage] = useState(6)
+  const [totalRecords, setTotalRecords] = useState(1)
+  const [first, setFirst] = useState(0)
 
   const [visibleChange, setVisibleChange] = useState(false)
   const [activeIndex, setActiveIndex] = useState(2)
 
   const [polyline, setPolyline] = useState([])
-  const [dataChartWeek, setDataChartWeek] = useState({})
-  const [dataChartMonth, setDataChartMonth] = useState({})
+  const [chartDateTime, setChartDateTime] = useState([])
+  const [chartDatePace, setChartDatePace] = useState([])
+  const [chartDateDistance, setChartDateDistance] = useState()
+  const [chartMonthTime, setChartMonthTime] = useState([])
+  const [chartMonthPace, setChartMonthPace] = useState([])
+  const [chartMonthDistance, setChartMonthDistance] = useState([])
   const [activities, setActivities] = useState([])
+  const [search_name, setSearchName] = useState('')
+  const [hour, setHour] = useState(2500)
   const [clubs, setClubs] = useState([])
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
   const [data, setData] = useState({})
+  const [user_id, setUserId] = useState()
   const menu = useRef(null)
   const router = useRouter()
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
+  const [search, setSearch] = useState(false)
 
   const { t } = useTranslation('user')
 
@@ -79,124 +89,33 @@ const Profile = () => {
   ]
 
   useEffect(() => {
-    const data = {
-      activities: [
-        {
-          name: 'Morning Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Afternoon Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Afternoon Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Lunch Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Lunch Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Morning Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-      ],
-      club: [
-        {
-          name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 2',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 3',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 4',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 5',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 6',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-      ],
-      activities_chart_month: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        dataLine: [50, 25, 12, 48, 56, 76, 42],
-        dataBar: [65, 59, 80, 81, 56, 55, 40],
-      },
-      activities_chart_week: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        dataLine: [21, 84, 24, 75, 37, 65, 34],
-        dataBar: [35, 34, 80, 45, 56, 55, 23],
-      },
-      total_distance: 107.5,
-      pace: 5.52,
-      total_activities: 20,
-      total_clubs: 2,
-      total_events: 3,
-      ranking: 112,
-      first_name: 'A',
-      last_name: 'Nguyễn Văn',
-      image: '',
-      connect_strava: false,
-    }
-    setDataChartMonth(data.activities_chart_month)
-    setDataChartWeek(data.activities_chart_week)
-    setActivities(data.activities)
-    setClubs(data.club)
-    setAvatarImage(data.image)
-    setAvatarLabel(data.first_name[0])
-    setData(data)
+    fetchProfile()
   }, [])
+
+  useEffect(() => {
+    fetchActivities()
+  }, [current_page, per_page, search, hour])
+
+  const fetchProfile = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get('/user/profile')
+      if (res.status === 200) {
+        setData(res.data)
+        setUserId(res.data.user_id)
+        setChartDateTime(data.map((time) => time.date_time))
+        setChartDateDistance(data.map((distance) => distance.date_distance))
+        setChartDatePace(data.map((pace) => pace.date_pace))
+        setChartMonthTime(data.map((time) => time.month_time))
+        setChartMonthDistance(data.map((distance) => distance.month_distance))
+        setChartMonthPace(data.map((pace) => pace.month_pace))
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
 
   const fetchDataMap = async (activity_id) => {
     setLoading(true)
@@ -208,6 +127,29 @@ const Profile = () => {
       }
     } catch (e) {
       showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  const fetchActivities = async () => {
+    setLoading(true)
+    try {
+      if (user_id === undefined) {
+        await fetchProfile()
+      }
+      const res = await apiInstance.get(
+        `/user/recent-active/${user_id}?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=${hour}`
+      )
+      if (res.status === 200) {
+        setPerPage(res.data.per_page)
+        setTotalRecords(res.data.total_activities)
+        setCurrentPage(res.data.current_page)
+        setActivities(res.data.activities)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
     }
   }
 
@@ -225,7 +167,7 @@ const Profile = () => {
             id='link-dataview'
             href={`/events/event-management/${item.event_id}`}
           >
-            <img src={item.image} alt={item.name} />
+            <Image src={item.image} alt={item.name} />
           </Link>
         </div>
         <Link
@@ -264,7 +206,7 @@ const Profile = () => {
                 <h4>{t('total-distance')}</h4>
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
-                <h1>{data.pace}</h1>
+                <h1>{data.avg_pace}</h1>
                 <h4>{t('pace-agv')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
@@ -277,7 +219,7 @@ const Profile = () => {
                 <h4>{t('total-clubs')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số sự kiện đã tham gia'>
-                <h1>{data.total_events}</h1>
+                <h1>{data.total_event}</h1>
                 <h4>{t('total-events')}</h4>
               </div>
               <div id='statistic-card' title='Hạng của bạn trong hệ thống'>
@@ -305,23 +247,43 @@ const Profile = () => {
                 <div id='info-profile-container'>
                   <div id='name-container'>
                     <h1>{data.last_name + ' ' + data.first_name}</h1>
-                    <img src='/verified.png' alt='verified' />
+                    <Image
+                      src='/verified.png'
+                      alt='verified'
+                      width={20}
+                      height={20}
+                    />
                     <i className='fas icon-large fa-edit'></i>
                   </div>
                   <div>
                     <h4>
-                      {t('user-id')} {170347}{' '}
+                      {t('user-id')} {data.user_id}{' '}
                     </h4>
                   </div>
                   <div style={{ display: 'flex' }}>
-                    <img
+                    <Image
                       src='/strava-icon.png'
                       alt='Connected Strava'
                       style={{ width: '3rem', height: '3rem' }}
+                      width={20}
+                      height={20}
+                      title={
+                        data.strava_user_link !== null
+                          ? data.strava_user_link
+                          : null
+                      }
+                      onClick={() => {
+                        window.open(
+                          data.strava_user_link !== null
+                            ? data.strava_user_link
+                            : null,
+                          '_blank'
+                        )
+                      }}
                     />
                     <Link href='/user/profile/setting?connect=2'>
                       <h5 style={{ marginTop: '1rem' }}>
-                        {data.connect_strava
+                        {data.strava_user_link !== null
                           ? t('connected-strava')
                           : t('not-connected-strava')}
                       </h5>
@@ -365,17 +327,15 @@ const Profile = () => {
           </Dialog>
           <div id='profile-chart-container'>
             <div id='chart-container'>
-              <ChartActivity
-                label={dataChartWeek.labels}
-                dataColumn={dataChartWeek.dataBar}
-                dataLine={dataChartWeek.dataLine}
+              <ChartDaily
+                labels={chartDateTime}
+                seriesData={chartDateDistance}
               />
             </div>
             <div id='chart-container'>
-              <ChartActivity
-                label={dataChartMonth.labels}
-                dataColumn={dataChartMonth.dataBar}
-                dataLine={dataChartMonth.dataLine}
+              <ChartMonthly
+                labels={chartMonthTime}
+                seriesData={chartMonthDistance}
               />
             </div>
           </div>
@@ -426,6 +386,14 @@ const Profile = () => {
                   setLoading={setLoading}
                   showToast={showToast}
                 />
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={'Tìm kiếm hoạt động'}
+                  />
+                </div>
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>

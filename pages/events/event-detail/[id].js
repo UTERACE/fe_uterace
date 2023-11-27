@@ -12,6 +12,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import { useRouter } from 'next/router'
 import store from '@/store/store'
 import { ConfirmPopup } from 'primereact/confirmpopup'
+import Image from 'next/image'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -152,10 +153,16 @@ const EventDetail = ({ event }) => {
       <div className='centered-content-layout'>
         <div id='event-detail-container'>
           <div id='event-image-container-detail'>
-            <img src={event.image} alt='event' />
+            <Image src={event.image} alt='event' width={1080} height={780} />
           </div>
           <div id='event-info-detail'>
-            <img id='event-info-detail-img' src={event.image} alt='logo' />
+            <Image
+              id='event-info-detail-img'
+              src={event.image}
+              alt='logo'
+              width={200}
+              height={200}
+            />
             <h1>{event.name}</h1>
             <h6>{event.description}</h6>
             <div id='event-time-detail'>

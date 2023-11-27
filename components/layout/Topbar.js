@@ -10,6 +10,7 @@ import { Badge } from 'primereact/badge'
 import store from '@/store/store'
 import { useTranslation } from 'next-i18next'
 import { Menu } from 'primereact/menu'
+import Image from 'next/image'
 
 const Topbar = () => {
   const isAuthenticated = store.getState().auth.isAuthenticated
@@ -253,7 +254,13 @@ const Topbar = () => {
         <div id='topbar-container'>
           <div id='logo-container'>
             <Link href='/'>
-              <img src='/logo.png' alt='logo' style={{ marginTop: '1rem' }} />
+              <Image
+                src='/logo.png'
+                alt='logo'
+                style={{ marginTop: '1rem' }}
+                width={20}
+                height={20}
+              />
             </Link>
           </div>
           {windowWidth > 500 ? (
@@ -346,19 +353,24 @@ const Topbar = () => {
             )}
             <div className='custom-dropdown' onClick={toggleDropdown}>
               {currentLanguage === 'en' ? (
-                <img src='/en.png' alt='English' />
+                <Image src='/en.png' alt='English' width={20} height={20} />
               ) : (
-                <img src='/vn.png' alt='Tiếng Việt' />
+                <Image src='/vn.png' alt='Tiếng Việt' width={20} height={20} />
               )}
               <i className='pi pi-chevron-down'></i>
               {showOptions && (
                 <div className='options'>
                   <div className='option' onClick={() => changeLanguage('en')}>
-                    <img src='/en.png' alt='English' />
+                    <Image src='/en.png' alt='English' width={20} height={20} />
                     <span>English</span>
                   </div>
                   <div className='option' onClick={() => changeLanguage('vi')}>
-                    <img src='/vn.png' alt='Tiếng Việt' />
+                    <Image
+                      src='/vn.png'
+                      alt='Tiếng Việt'
+                      width={20}
+                      height={20}
+                    />
                     <span>Tiếng Việt</span>
                   </div>
                 </div>

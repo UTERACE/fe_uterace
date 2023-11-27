@@ -1,18 +1,22 @@
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import ChartActivity from './profile/ChartActivity'
+import { ChartDaily, ChartMonthly } from './profile/ChartActivity'
 import Activity from './profile/Activity'
 import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
+import Image from 'next/image'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import { useToast } from '@/components/contexts/ToastContext'
+import { AutoComplete } from 'primereact/autocomplete'
 
-export const getStaticProps = async ({ locale, params }) => {
+export const getServerSideProps = async ({ locale, params }) => {
   const user = await getUser(params.id)
   return {
     props: {
@@ -32,147 +36,86 @@ async function getUser(id) {
     const data = await response.data
     return data
   } catch (error) {
-    console.error('Error fetching event details:', error)
+    console.error('Error fetching user details:', error)
     return null
   }
 }
 
-const UserDetail = (user) => {
+const UserDetail = ({ user }) => {
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
-  const [totalRecords, setTotalRecords] = useState(4)
-  const [first, setFirst] = useState(1)
+  const [per_page, setPerPage] = useState(6)
+  const [totalRecords, setTotalRecords] = useState(1)
+  const [first, setFirst] = useState(0)
 
-  const [dataChartWeek, setDataChartWeek] = useState({})
-  const [dataChartMonth, setDataChartMonth] = useState({})
   const [activities, setActivities] = useState([])
+  const [chartDateTime, setChartDateTime] = useState([])
+  const [chartDatePace, setChartDatePace] = useState([])
+  const [chartDateDistance, setChartDateDistance] = useState()
+  const [chartMonthTime, setChartMonthTime] = useState([])
+  const [chartMonthPace, setChartMonthPace] = useState([])
+  const [chartMonthDistance, setChartMonthDistance] = useState([])
   const [clubs, setClubs] = useState([])
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
-  const [data, setData] = useState({})
+  const [search_name, setSearchName] = useState('')
+  const [hour, setHour] = useState(25000)
+  const [search, setSearch] = useState(false)
 
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(2)
+
   const { t } = useTranslation('user')
 
   useEffect(() => {
-    const data = {
-      activities: [
-        {
-          name: 'Morning Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Afternoon Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Afternoon Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Lunch Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Lunch Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-        {
-          name: 'Morning Run',
-          image: 'https://picsum.photos/200/300',
-          day: '23:04, 14/10/2022',
-          distance: 2.49,
-          pace: 5.0,
-          time: '00:12:45',
-        },
-      ],
-      club: [
-        {
-          name: 'DONG HANH CUNG CAC THIEN THAN - ANGELS RUN',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 2',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 3',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 4',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 5',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-        {
-          name: 'Club 6',
-          image: 'https://picsum.photos/200/300',
-          member: 100,
-          total_distance: 1000,
-        },
-      ],
-      activities_chart_month: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        dataLine: [50, 25, 12, 48, 56, 76, 42],
-        dataBar: [65, 59, 80, 81, 56, 55, 40],
-      },
-      activities_chart_week: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        dataLine: [21, 84, 24, 75, 37, 65, 34],
-        dataBar: [35, 34, 80, 45, 56, 55, 23],
-      },
-      total_distance: 107.5,
-      pace: 5.52,
-      total_activities: 20,
-      total_clubs: 2,
-      total_events: 3,
-      ranking: 112,
-      first_name: 'A',
-      last_name: 'Nguyễn Văn',
-      image: '',
-      connect_strava: false,
-    }
-    setDataChartMonth(data.activities_chart_month)
-    setDataChartWeek(data.activities_chart_week)
-    setActivities(data.activities)
-    setClubs(data.club)
-    setAvatarImage(data.image)
-    setAvatarLabel(data.first_name[0])
-    setData(data)
+    setChartDateTime(user.chart_date.map((time) => time.date_time))
+    setChartDateDistance(
+      user.chart_date.map((distance) => distance.date_distance)
+    )
+    setChartDatePace(user.chart_date.map((pace) => pace.date_pace))
+    setChartMonthTime(user.chart_month.map((time) => time.month_time))
+    setChartMonthDistance(
+      user.chart_month.map((distance) => distance.month_distance)
+    )
+    setChartMonthPace(user.chart_month.map((pace) => pace.month_pace))
   }, [])
+
+  useEffect(() => {
+    fetchActivities()
+  }, [current_page, per_page, search, hour])
+
+  const fetchDataMap = async (activity_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(`/decode_polyline/${activity_id}`)
+      if (res.status === 200) {
+        setPolyline(res.data)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error Polyline')
+      setLoading(false)
+    }
+  }
+
+  const fetchActivities = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/user/recent-active/${user.user_id}?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=${hour}`
+      )
+      if (res.status === 200) {
+        setPerPage(res.data.per_page)
+        setTotalRecords(res.data.total_activities)
+        setCurrentPage(res.data.current_page)
+        setActivities(res.data.activities)
+        setLoading(false)
+      }
+    } catch (e) {
+      showToast('error', 'Error Activities')
+      setLoading(false)
+    }
+  }
 
   const onPageChange = (event) => {
     setFirst(event.first)
@@ -188,7 +131,7 @@ const UserDetail = (user) => {
             id='link-dataview'
             href={`/events/event-management/${item.event_id}`}
           >
-            <img src={item.image} alt={item.name} />
+            <Image src={item.image} alt={item.name} />
           </Link>
         </div>
         <Link
@@ -215,7 +158,7 @@ const UserDetail = (user) => {
       </div>
     )
   }
-  
+
   return (
     <div className='centered-content-full'>
       <div className='centered-content-layout'>
@@ -223,28 +166,28 @@ const UserDetail = (user) => {
           <div id='statistic-container'>
             <div id='statistic-content'>
               <div id='statistic-card' title='Tổng quãng đường đã chạy'>
-                <h1>{data.total_distance}</h1>
+                <h1>{user.total_distance}</h1>
                 <h4>{t('total-distance')}</h4>
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
-                <h1>{data.pace}</h1>
+                <h1>{user.avg_pace}</h1>
                 <h4>{t('pace-agv')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
-                <h1>{data.total_activities}</h1>
+                <h1>{user.total_activities}</h1>
                 <h4>{t('total-activities')}</h4>
               </div>
 
               <div id='statistic-card' title='Tổng số câu lạc bộ đã tham gia'>
-                <h1>{data.total_clubs}</h1>
+                <h1>{user.total_clubs}</h1>
                 <h4>{t('total-clubs')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số sự kiện đã tham gia'>
-                <h1>{data.total_events}</h1>
+                <h1>{user.total_event}</h1>
                 <h4>{t('total-events')}</h4>
               </div>
               <div id='statistic-card' title='Hạng của bạn trong hệ thống'>
-                <h1>{data.ranking}</h1>
+                <h1>{user.ranking}</h1>
                 <h4>{t('rank')}</h4>
               </div>
             </div>
@@ -267,23 +210,43 @@ const UserDetail = (user) => {
                 />
                 <div id='info-profile-container'>
                   <div id='name-container'>
-                    <h1>{data.last_name + ' ' + data.first_name}</h1>
-                    <img src='/verified.png' alt='verified' />
+                    <h1>{user.last_name + ' ' + user.first_name}</h1>
+                    <Image
+                      src='/verified.png'
+                      alt='verified'
+                      width={15}
+                      height={15}
+                    />
                   </div>
                   <div>
                     <h4>
-                      {t('user-id')} {170347}{' '}
+                      {t('user-id')} {user.user_id}{' '}
                     </h4>
                   </div>
                   <div style={{ display: 'flex' }}>
-                    <img
+                    <Image
                       src='/strava-icon.png'
                       alt='Connected Strava'
                       style={{ width: '3rem', height: '3rem' }}
+                      width={30}
+                      height={30}
+                      title={
+                        user.strava_user_link !== null
+                          ? user.strava_user_link
+                          : null
+                      }
+                      onClick={() => {
+                        window.open(
+                          user.strava_user_link !== null
+                            ? user.strava_user_link
+                            : null,
+                          '_blank'
+                        )
+                      }}
                     />
                     <Link href='/user/profile/setting?connect=2'>
                       <h5 style={{ marginTop: '1rem' }}>
-                        {data.connect_strava
+                        {user.strava_user_link !== null
                           ? t('connected-strava')
                           : t('not-connected-strava')}
                       </h5>
@@ -295,17 +258,15 @@ const UserDetail = (user) => {
           </div>
           <div id='profile-chart-container'>
             <div id='chart-container'>
-              <ChartActivity
-                label={dataChartWeek.labels}
-                dataColumn={dataChartWeek.dataBar}
-                dataLine={dataChartWeek.dataLine}
+              <ChartDaily
+                labels={chartDateTime}
+                seriesData={chartDateDistance}
               />
             </div>
             <div id='chart-container'>
-              <ChartActivity
-                label={dataChartMonth.labels}
-                dataColumn={dataChartMonth.dataBar}
-                dataLine={dataChartMonth.dataLine}
+              <ChartMonthly
+                labels={chartMonthTime}
+                seriesData={chartMonthDistance}
               />
             </div>
           </div>
@@ -351,7 +312,19 @@ const UserDetail = (user) => {
             {activeIndex === 2 ? (
               <div style={{ width: '95%' }}>
                 <Title title={t('recent-activities')} />
-                <Activity activities={activities} />
+                <Activity
+                  activities={activities}
+                  setLoading={setLoading}
+                  showToast={showToast}
+                />
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={'Tìm kiếm hoạt động'}
+                  />
+                </div>
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>

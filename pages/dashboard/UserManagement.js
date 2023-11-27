@@ -3,6 +3,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import Image from 'next/image'
 import Link from 'next/link'
 import { AutoComplete } from 'primereact/autocomplete'
 import { Avatar } from 'primereact/avatar'
@@ -126,10 +127,12 @@ const UserManagement = () => {
     if (rowData.status === '0') {
       return (
         <div id='content-datatable-container'>
-          <img
+          <Image
             src='/lock.png'
             alt='lock'
             style={{ width: '1.5rem', height: '1.5rem' }}
+            width={20}
+            height={20}
           />{' '}
           <span style={{ color: 'red' }}>Đang bị khóa</span>
         </div>
@@ -137,10 +140,12 @@ const UserManagement = () => {
     } else if (rowData.status === '1') {
       return (
         <div id='content-datatable-container'>
-          <img
+          <Image
             src='/verified.png'
             alt='verified'
             style={{ width: '1.5rem', height: '1.5rem' }}
+            width={20}
+            height={20}
           />
           <span style={{ color: 'green' }}>Đang hoạt động</span>
         </div>

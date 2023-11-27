@@ -2,6 +2,7 @@ import store from '@/store/store'
 import React, { useRef, useState } from 'react'
 import { Button } from 'primereact/button'
 import apiInstance from '@/api/apiInstance'
+import Image from 'next/image'
 
 const ChangeAvatar = ({ setLoading, showToast, setVisibleChange }) => {
   const [background, setBackground] = useState('/bg1.png')
@@ -66,13 +67,13 @@ const ChangeAvatar = ({ setLoading, showToast, setVisibleChange }) => {
   return (
     <div id='change-avatar-container'>
       <div id='background-container'>
-        <img src={background} alt='background' />
+        <Image src={background} alt='background' width={20} height={20} />
         <div id='camera-container-background'>
           <i className='pi pi-camera p-icon-lg'></i>
         </div>
       </div>
       <div id='avatar-container'>
-        <img src={avatar} alt='avatar' />
+        <Image src={avatar} alt='avatar' width={20} height={20} />
         <div
           id='camera-container-avatar'
           onClick={() => {

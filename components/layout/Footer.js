@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import React, { useEffect } from 'react'
+import Image from 'next/image'
 
 const Footer = () => {
   useEffect(() => {
@@ -72,19 +72,34 @@ const Footer = () => {
             }}
           >
             <i id='container-icon'>
-              <img src='/garmin-icon.png' alt='garmin'></img>
+              <Image
+                src='/garmin-icon.png'
+                alt='garmin'
+                width={20}
+                height={20}
+              ></Image>
             </i>
             <i id='container-icon'>
-              <img src='/logo_suunto.png' alt='garmin'></img>
+              <Image
+                src='/logo_suunto.png'
+                alt='garmin'
+                width={20}
+                height={20}
+              ></Image>
             </i>
             <a href='http://www.vietmap.vn' target='_blank'>
               <i id='container-icon'>
-                <img src='/logo_vietmap.png' alt='vietmap'></img>
+                <Image
+                  src='/logo_vietmap.png'
+                  alt='vietmap'
+                  width={20}
+                  height={20}
+                ></Image>
               </i>
             </a>
           </div>
           <div id='strava-footer'>
-            <img src='/strava_cptblWith.png'></img>
+            <Image src='/strava_cptblWith.png' width={20} height={20}></Image>
           </div>
         </div>
       </div>

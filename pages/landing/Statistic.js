@@ -3,9 +3,10 @@ import Title from '../../components/landing/Title'
 import Detail from '@/components/landing/Detail'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 
 const Statistic = ({ statistic }) => {
-  const {t}=useTranslation('home')
+  const { t } = useTranslation('home')
 
   useEffect(() => {
     const width = window.innerWidth
@@ -17,12 +18,17 @@ const Statistic = ({ statistic }) => {
       }
     }
   }, [])
-  
+
   return (
     <div id='target-wrapper'>
       <div className='target-container'>
         <div id='target-item'>
-          <img src='/statistic/run_member.png' alt='member' />
+          <Image
+            src='/statistic/run_member.png'
+            alt='member'
+            width={100}
+            height={100}
+          />
           <span>{LocaleHelper.formatNumber(statistic.total_members)}</span>
           <p>{t('total-member')}</p>
         </div>
@@ -30,17 +36,32 @@ const Statistic = ({ statistic }) => {
           id='target-item'
           style={{ backgroundColor: '#DB2D33', color: 'white' }}
         >
-          <img src='/statistic/running.png' alt='running' />
+          <Image
+            src='/statistic/running.png'
+            alt='running'
+            width={100}
+            height={100}
+          />
           <span>{LocaleHelper.formatNumber(statistic.total_distance)}</span>
           <p>{t('total-distance')}</p>
         </div>
         <div id='target-item'>
-          <img src='/statistic/run_club.png' alt='club' />
+          <Image
+            src='/statistic/run_club.png'
+            alt='club'
+            width={100}
+            height={100}
+          />
           <span>{LocaleHelper.formatNumber(statistic.total_clubs)}</span>
           <p>{t('total-club')}</p>
         </div>
         <div id='target-item'>
-          <img src='/statistic/run_event.png' alt='event' />
+          <Image
+            src='/statistic/run_event.png'
+            alt='event'
+            width={100}
+            height={100}
+          />
           <span>{LocaleHelper.formatNumber(statistic.total_event)}</span>
           <p>{t('total-event')}</p>
         </div>

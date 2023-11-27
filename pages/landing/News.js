@@ -4,6 +4,7 @@ import Carousel from '@/components/dataview/Carousel'
 import { useTranslation } from 'next-i18next'
 import OutstandingEdit from '@/components/management/OutstandingEdit'
 import apiInstance from '@/api/apiInstance'
+import Image from 'next/image'
 
 const News = ({
   data,
@@ -98,7 +99,7 @@ const News = ({
         <div id={news.deleted ? 'news-container-hide' : 'news-container'}>
           <Link href={`/news/news-detail/${news.news_id}`}>
             <div id='image-news-container'>
-              <img src={news.image} alt={news.name} />
+              <Image src={news.image} alt={news.name} width={800} height={500} />
               {news.deleted ? (
                 <div className='lock-news'>
                   <i

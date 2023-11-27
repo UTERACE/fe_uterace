@@ -16,6 +16,7 @@ import Update from './UpdateEvent'
 import AddEvent from './AddEvent'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
+import Image from 'next/image'
 
 const EventManagement = () => {
   const [events, setEvents] = useState([])
@@ -99,7 +100,7 @@ const EventManagement = () => {
             id='link-dataview'
             href={`/events/event-management/${item.event_id}`}
           >
-            <img src={item.image} alt={item.name} />
+            <Image src={item.image} alt={item.name} width={800} height={500} />
           </Link>
           <OutstandingEdit
             items={items(item.event_id)}

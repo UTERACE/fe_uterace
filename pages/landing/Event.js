@@ -3,6 +3,7 @@ import { Carousel } from 'primereact/carousel'
 import Link from 'next/link'
 import Detail from '@/components/landing/Detail'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 const Event = ({ event }) => {
   const [events, setEvents] = useState([])
 
@@ -37,16 +38,16 @@ const Event = ({ event }) => {
       >
         <div id='event-container'>
           <div id='image-event-container'>
-            <img src={event.image} alt={event.name} />
+            <Image src={event.image} alt={event.name} width={800} height={500} />
           </div>
           <div id='info-event'>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {event.member} {t('member-join')}
+              {event.total_members} {t('member-join')}
             </h4>
             <h4>
               <i className='pi pi-briefcase ml2-icon' aria-hidden='true'></i>
-              {event.club} {t('club-join')}
+              {event.total_activities} {t('club-join')}
             </h4>
           </div>
           <div id='name-event'>

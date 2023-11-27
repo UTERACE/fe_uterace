@@ -14,6 +14,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import apiInstance from '@/api/apiInstance'
+import Image from 'next/image'
 
 const ClubManagement = () => {
   const [clubs, setClubs] = useState([])
@@ -119,7 +120,7 @@ const ClubManagement = () => {
             id='link-dataview'
             href={`/clubs/club-management/${item.club_id}`}
           >
-            <img src={item.image} alt={item.name} />
+            <Image src={item.image} alt={item.name} width={800} height={500} />
           </Link>
           {index == 3 ? null : (
             <OutstandingEdit
