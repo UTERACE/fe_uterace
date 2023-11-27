@@ -397,19 +397,19 @@ const Profile = () => {
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>
-                <DataViewDashboard
+                {/* <DataViewDashboard
                   data={data.club}
                   href='/clubs/club-management/'
                   itemTemplate={itemTemplate}
-                />
+                /> */}
               </div>
             ) : activeIndex === 1 ? (
               <div style={{ width: '95%' }}>
-                <DataViewDashboard
+                {/* <DataViewDashboard
                   data={data.club}
                   href='/clubs/club-management/'
                   itemTemplate={itemTemplate}
-                />
+                /> */}
               </div>
             ) : activeIndex === 4 ? null : null}
             <div>

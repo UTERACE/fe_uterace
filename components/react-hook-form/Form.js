@@ -126,9 +126,6 @@ export const Field = (props) => {
           )
         }}
       />
-      <small className='text-red-700'>
-        {errors && errors[name] && errors[name].message}
-      </small>
     </div>
   )
 }

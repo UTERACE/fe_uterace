@@ -76,7 +76,7 @@ const RankMember = ({ value }) => {
 
   const formatNumber = (rowData) => {
     if (rowData) {
-      return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
+      return LocaleHelper.formatMtoKm(rowData.total_distance.toFixed(2))
     }
     return ''
   }
