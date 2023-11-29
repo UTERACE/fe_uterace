@@ -102,7 +102,7 @@ const Login = () => {
 
   const loginGoogle = useGoogleLogin({
     clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-    redirectUri: 'http://localhost:3000',
+    redirectUri: 'https://fe-uterace.vercel.app',
     onSuccess: (res) => {
       const request = JSON.stringify({
         accessToken: res.access_token,
