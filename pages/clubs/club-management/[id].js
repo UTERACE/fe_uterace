@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 import UpdateInfo from './UpdateInfo'
 import UpdateNews from './UpdateNews'
 import Image from 'next/image'
+import { AutoComplete } from 'primereact/autocomplete'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -68,6 +69,8 @@ const ManagementClubDetail = ({ club }) => {
   const [rankMember, setRankMember] = useState({})
   const [introduce, setIntroduce] = useState(club.details)
   const [detailsNews, setDetailsNews] = useState({})
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
   const { t } = useTranslation('detail')
   const { t: tNews } = useTranslation('news')
@@ -77,13 +80,63 @@ const ManagementClubDetail = ({ club }) => {
     // setActivities(data.activities)
     // setRankMember(data.ranking_member)
     if (updateStatus) {
-      router.reload()
+      setTimeout(() => {
+        router.reload()
+      }, 1000)
     }
   }, [updateStatus])
 
   useEffect(() => {
     if (updateNewsId !== 0) fetchDetailNews()
   }, [updateNewsId])
+
+  useEffect(() => {
+    if (activeIndex === 3) {
+      fetchRankMember()
+    } else if (activeIndex === 2) {
+      fetchActivities()
+    }
+  }, [current_page, per_page, search, activeIndex])
+
+  const fetchRankMember = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setRankMember(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_user)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
+
+  const fetchActivities = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=2500`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setActivities(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_activities)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
 
   const fetchDetailNews = async () => {
     setLoading(true)
@@ -363,26 +416,46 @@ const ManagementClubDetail = ({ club }) => {
             </div>
             {activeIndex === 2 ? (
               <div style={{ width: '95%' }}>
-                <Activity activities={activities.items} />
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={t('search_activities')}
+                  />
+                </div>
+                <Activity
+                  activities={activities.activities}
+                  setLoading={setLoading}
+                  showToast={showToast}
+                />
                 <Paginator
                   first={first}
-                  rows={activities.per_page}
-                  totalRecords={activities.total_activity}
+                  rows={per_page}
+                  totalRecords={totalRecords}
                   rowsPerPageOptions={[6, 12, 18]}
                   onPageChange={onPageChange}
-                  page={activities.current_page}
+                  page={current_page}
                 />
               </div>
             ) : activeIndex === 3 ? (
               <div>
-                <RankMember value={rankMember.items} />
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={t('search_members')}
+                  />
+                </div>
+                <RankMember value={rankMember.ranking_user} />
                 <Paginator
                   first={first}
-                  rows={rankMember.per_page}
-                  totalRecords={rankMember.total_activity}
+                  rows={per_page}
+                  totalRecords={totalRecords}
                   rowsPerPageOptions={[6, 12, 18]}
                   onPageChange={onPageChange}
-                  page={rankMember.current_page}
+                  page={current_page}
                 />
               </div>
             ) : (

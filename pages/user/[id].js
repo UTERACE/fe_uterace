@@ -68,6 +68,7 @@ const UserDetail = ({ user }) => {
   const { t } = useTranslation('user')
 
   useEffect(() => {
+    setAvatarImage(user.image)
     setChartDateTime(user.chart_date.map((time) => time.date_time))
     setChartDateDistance(
       user.chart_date.map((distance) => distance.date_distance)

@@ -42,23 +42,26 @@ const ManagementNews = () => {
   const router = useRouter()
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+
   useEffect(() => {
     if (!hasAdminRole) {
       router.push('/news')
+    } else {
+      fetchDataBasedOnIndex(index, per_page, current_page, updateStatus, search);
     }
-  }, [hasAdminRole])
-
+  }, [hasAdminRole, index, per_page, current_page, updateStatus, search]);
+  
   if (!hasAdminRole) {
-    return null
+    return null;
   }
-
-  useEffect(() => {
-    if (index == 1) {
-      fetchMyNews()
-    } else if (index == 2) {
-      fetchAllNews()
+  
+  function fetchDataBasedOnIndex(index, perPage, currentPage, updateStatus, search) {
+    if (index === 1) {
+      fetchMyNews();
+    } else if (index === 2) {
+      fetchAllNews();
     }
-  }, [per_page, current_page, updateStatus, index, search])
+  }
 
   const fetchMyNews = async () => {
     setLoading(true)
@@ -186,13 +189,9 @@ const ManagementNews = () => {
     },
   ]
 
-  useEffect(() => {
-    if (updateNewsId != 0) fetchDetailNews()
-  }, [updateNewsId])
-
-  const fetchDetailNews = async () => {
+  const fetchDetailNews = async (news_id) => {
     try {
-      const res = await apiInstance.get(`/news/${updateNewsId}`)
+      const res = await apiInstance.get(`/news/${news_id}`)
       const data = res.data
       if (res.status === 200) {
         setDetailsNews(data)
@@ -204,7 +203,7 @@ const ManagementNews = () => {
   }
 
   const handleClickEdit = (news_id) => {
-    setUpdateNewsId(news_id)
+    fetchDetailNews(news_id)
   }
 
   const handleClickDelete = (news_id) => {
@@ -304,13 +303,24 @@ const ManagementNews = () => {
       <div className='centered-content-layout'>
         <div
           style={{
-            width: '50%',
+            width: '70%',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             gap: '2rem',
           }}
         >
+          <Button 
+            id={index == 0 ? 'button-tab--active' : 'button-tab'}
+            type='button'
+            style={{ width: '100%' }}
+            label={t('add-news')}
+            icon='pi pi-list'
+            iconPos='right'
+            onClick={() => {
+              setVisibleAddNews(true)
+            }}
+          />
           <Button
             id={index == 1 ? 'button-tab--active' : 'button-tab'}
             type='button'
@@ -320,7 +330,6 @@ const ManagementNews = () => {
             iconPos='right'
             onClick={() => {
               setIndex(1)
-              setVisibleAddNews(true)
             }}
           />
           <Button

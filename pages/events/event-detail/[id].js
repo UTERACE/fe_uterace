@@ -13,6 +13,8 @@ import { useRouter } from 'next/router'
 import store from '@/store/store'
 import { ConfirmPopup } from 'primereact/confirmpopup'
 import Image from 'next/image'
+import Activity from '@/pages/user/profile/Activity'
+import { AutoComplete } from 'primereact/autocomplete'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -43,7 +45,7 @@ async function getEvent(id) {
 const EventDetail = ({ event }) => {
   const [isStatistic, setIsStatistic] = useState(false)
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(2)
@@ -60,7 +62,8 @@ const EventDetail = ({ event }) => {
   const showToast = useToast().showToast
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
-  const [rankClub, setRankClub] = useState({})
+  const [search_name, setSearchName] = useState('')
+  const [search, setSearch] = useState(false)
 
   const { t } = useTranslation('detail')
 
@@ -70,6 +73,54 @@ const EventDetail = ({ event }) => {
     // setRankClub(event.ranking_club)
     checkJoinEvent()
   }, [updateStatus])
+
+  useEffect(() => {
+    if (activeIndex === 3) {
+      fetchRankMember()
+    } else if (activeIndex === 4) {
+      fetchActivities()
+    }
+  }, [current_page, per_page, search, activeIndex])
+
+  const fetchRankMember = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/events/rank-member/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setRankMember(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_user)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
+
+  const fetchActivities = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=2500`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setActivities(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_activities)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
 
   const checkJoinEvent = async () => {
     setLoading(true)
@@ -206,7 +257,7 @@ const EventDetail = ({ event }) => {
               </div>
               <div id='event-distance-detail'>
                 {event.distance.map((item, index) => (
-                  <div id='distance-event'>
+                  <div id='distance-event' key={item.id}>
                     <i className='pi pi-map-marker'></i>
                     <h4>{item.name}</h4>
                   </div>
@@ -343,15 +394,17 @@ const EventDetail = ({ event }) => {
                 label={t('scoreboard-member')}
                 onClick={() => {
                   setActiveIndex(3)
+                  setSearchName('')
                 }}
               />
               <Button
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 style={{ width: '20%' }}
                 icon='pi pi-chart-line'
-                label={t('scoreboard-club')}
+                label={t('recent_activities')}
                 onClick={() => {
                   setActiveIndex(4)
+                  setSearchName('')
                 }}
               />
             </div>
@@ -367,26 +420,47 @@ const EventDetail = ({ event }) => {
               ></div>
             ) : activeIndex === 3 ? (
               <div>
-                <RankMember value={rankMember.items} />
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={t('search_members')}
+                  />
+                </div>
+                <RankMember value={rankMember.ranking_user} />
                 <Paginator
                   first={first}
-                  rows={rankMember.per_page}
-                  totalRecords={rankMember.total_activity}
+                  rows={per_page}
+                  totalRecords={totalRecords}
                   rowsPerPageOptions={[6, 12, 18]}
                   onPageChange={onPageChange}
-                  page={rankMember.current_page}
+                  page={current_page}
                 />
               </div>
             ) : activeIndex === 4 ? (
               <div>
-                <RankClub value={rankClub.items} />
+                {/* <RankClub value={rankClub.items} /> */}
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={t('search_activities')}
+                  />
+                </div>
+                <Activity
+                  activities={activities.activities}
+                  setLoading={setLoading}
+                  showToast={showToast}
+                />
                 <Paginator
                   first={first}
-                  rows={rankClub.per_page}
-                  totalRecords={rankClub.total_activity}
+                  rows={per_page}
+                  totalRecords={totalRecords}
                   rowsPerPageOptions={[6, 12, 18]}
                   onPageChange={onPageChange}
-                  page={rankClub.current_page}
+                  page={current_page}
                 />
               </div>
             ) : (

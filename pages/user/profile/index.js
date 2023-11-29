@@ -42,7 +42,6 @@ const Profile = () => {
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
   const [data, setData] = useState({})
-  const [user_id, setUserId] = useState()
   const menu = useRef(null)
   const router = useRouter()
   const setLoading = useContext(LoadingContext)
@@ -100,19 +99,24 @@ const Profile = () => {
     setLoading(true)
     try {
       const res = await apiInstance.get('/user/profile')
+      const data = res.data
       if (res.status === 200) {
-        setData(res.data)
-        setUserId(res.data.user_id)
-        setChartDateTime(data.map((time) => time.date_time))
-        setChartDateDistance(data.map((distance) => distance.date_distance))
-        setChartDatePace(data.map((pace) => pace.date_pace))
-        setChartMonthTime(data.map((time) => time.month_time))
-        setChartMonthDistance(data.map((distance) => distance.month_distance))
-        setChartMonthPace(data.map((pace) => pace.month_pace))
+        setData(data)
+        setAvatarImage(data.image)
+        setChartDateTime(data.chart_date.map((time) => time.date_time))
+        setChartDateDistance(
+          data.chart_date.map((distance) => distance.date_distance)
+        )
+        setChartDatePace(data.chart_date.map((pace) => pace.date_pace))
+        setChartMonthTime(data.chart_month.map((time) => time.month_time))
+        setChartMonthDistance(
+          data.chart_month.map((distance) => distance.month_distance)
+        )
+        setChartMonthPace(data.chart_month.map((pace) => pace.month_pace))
         setLoading(false)
       }
-    } catch (e) {
-      showToast('error', 'Error')
+    } catch (error) {
+      showToast('error', 'Error', error.toString())
       setLoading(false)
     }
   }
@@ -134,11 +138,8 @@ const Profile = () => {
   const fetchActivities = async () => {
     setLoading(true)
     try {
-      if (user_id === undefined) {
-        await fetchProfile()
-      }
       const res = await apiInstance.get(
-        `/user/recent-active/${user_id}?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=${hour}`
+        `/user/recent-active?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=${hour}`
       )
       if (res.status === 200) {
         setPerPage(res.data.per_page)

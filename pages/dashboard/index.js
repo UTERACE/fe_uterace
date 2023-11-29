@@ -31,16 +31,18 @@ const DashboardPage = () => {
     ? store.getState().auth.firstname[0].toUpperCase()
     : 'B'
   const firstname = store.getState().auth.firstname || ''
-  const lastname = store.getState().auth.last_name || ''
+  const lastname = store.getState().auth.lastname || ''
   const router = useRouter()
   const roles = store.getState().auth.roles
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+  const [isCollapsed, setIsCollapsed] = useState(true)
+
 
   useEffect(() => {
     if (!hasAdminRole) {
       router.push('/landing')
     }
-  }, [hasAdminRole])
+  }, [])
 
   if (!hasAdminRole) {
     return null
@@ -83,8 +85,6 @@ const DashboardPage = () => {
       to: '/profile',
     },
   ]
-
-  const [isCollapsed, setIsCollapsed] = useState(true)
 
   return (
     <div id='dashboard-container'>

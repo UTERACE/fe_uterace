@@ -65,7 +65,7 @@ const RankMember = ({ value }) => {
           size='xlarge'
           shape='circle'
         />
-        <Link href={`club/detail-club/${rowData.id}`}>
+        <Link href={`/user/${rowData.user_id}`}>
           <span id='member-name'>
             {rowData.last_name + ' ' + rowData.first_name}
           </span>
