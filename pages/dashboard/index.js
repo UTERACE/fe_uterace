@@ -14,7 +14,7 @@ import { Button } from 'primereact/button'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import DistanceManagement from './DistanceManagement'
 
-export const getServerSideProps = async ({ locale }) => {
+export const getStaticProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
