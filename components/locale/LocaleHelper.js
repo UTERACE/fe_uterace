@@ -7,7 +7,8 @@ if (isBrowser) {
 }
 
 function formatNumber(number, locale = defaultLocale) {
-  return new Intl.NumberFormat(locale).format(number)
+  const roundedNumber = Number(number).toFixed(2)
+  return new Intl.NumberFormat(locale).format(roundedNumber)
 }
 
 function formatDate(date, locale = defaultLocale) {
@@ -25,11 +26,17 @@ function formatDateTime(date, locale = defaultLocale) {
 }
 
 function formatMtoKm(distance, locale = defaultLocale) {
-  return new Intl.NumberFormat(locale).format(distance / 1000)
+  const distanceInKm = (distance / 1000).toFixed(2)
+  return new Intl.NumberFormat(locale).format(distanceInKm)
 }
 
 function formatPace(pace, locale = defaultLocale) {
-  return new Intl.NumberFormat(locale).format(pace)
+  // return new Intl.NumberFormat(locale).format(pace)
+  const minPerKm = pace / 1.60934;
+  const minutes = Math.floor(minPerKm);
+  const seconds = Math.round((minPerKm % 1) * 60);
+  const formattedPace = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  return formattedPace;
 }
 
 export default {

@@ -19,18 +19,19 @@ import UpdateInfo from './UpdateInfo'
 import UpdateNews from './UpdateNews'
 import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
+import Head from 'next/head'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
   return {
     props: {
-      club,
       ...(await serverSideTranslations(locale, [
         'detail',
         'news',
         'scoreboard',
         'topbar',
       ])),
+      club,
     },
   }
 }
@@ -122,7 +123,7 @@ const ManagementClubDetail = ({ club }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=2500`
+        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
       )
       const data = res.data
       if (res.status === 200) {
@@ -162,6 +163,10 @@ const ManagementClubDetail = ({ club }) => {
 
   return (
     <div className='centered-content-detailpage'>
+      <Head>
+        <title>{club.name}</title>
+        <meta name='description' content={club.description} />
+      </Head>
       <Dialog
         header={t('update-info-club')}
         visible={visibleChange}

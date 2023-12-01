@@ -15,17 +15,19 @@ import Image from 'next/image'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import { AutoComplete } from 'primereact/autocomplete'
+import Head from 'next/head'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const user = await getUser(params.id)
   return {
     props: {
-      user,
       ...(await serverSideTranslations(locale, [
         'user',
         'scoreboard',
         'topbar',
       ])),
+      user,
     },
   }
 }
@@ -58,7 +60,7 @@ const UserDetail = ({ user }) => {
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
   const [search_name, setSearchName] = useState('')
-  const [hour, setHour] = useState(25000)
+  const [hour, setHour] = useState(48)
   const [search, setSearch] = useState(false)
 
   const setLoading = useContext(LoadingContext)
@@ -162,16 +164,20 @@ const UserDetail = ({ user }) => {
 
   return (
     <div className='centered-content-full'>
+      <Head>
+        <title>Profile - {user.last_name + ' ' + user.first_name}</title>
+        <meta name='description' content={user.user_id} />
+      </Head>
       <div className='centered-content-layout'>
         <div id='profile-container'>
           <div id='statistic-container'>
             <div id='statistic-content'>
               <div id='statistic-card' title='Tổng quãng đường đã chạy'>
-                <h1>{user.total_distance}</h1>
+                <h1>{LocaleHelper.formatNumber(user.total_distance)}</h1>
                 <h4>{t('total-distance')}</h4>
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
-                <h1>{user.avg_pace}</h1>
+                <h1>{LocaleHelper.formatPace(user.avg_pace)}</h1>
                 <h4>{t('pace-agv')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>

@@ -18,18 +18,19 @@ import UpdateInfo from './UpdateInfo'
 import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
 import Activity from '@/pages/user/profile/Activity'
+import Head from 'next/head'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
   return {
     props: {
-      event,
       ...(await serverSideTranslations(locale, [
         'detail',
         'event',
         'scoreboard',
         'topbar',
       ])),
+      event,
     },
   }
 }
@@ -130,7 +131,7 @@ const EventDetail = ({ event }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=2500`
+        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
       )
       const data = res.data
       if (res.status === 200) {
@@ -205,6 +206,10 @@ const EventDetail = ({ event }) => {
 
   return (
     <div className='centered-content-detailpage'>
+      <Head>
+        <title>{event.name}</title>
+        <meta name='description' content={event.description} />
+      </Head>
       <Dialog
         header={t('update-info-event')}
         visible={visibleChange}

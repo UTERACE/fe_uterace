@@ -2,13 +2,14 @@ import apiInstance from '@/api/apiInstance'
 import React from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Image from 'next/image'
+import Head from 'next/head'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const news = await getNews(params.id)
   return {
     props: {
-      news,
       ...(await serverSideTranslations(locale, ['news', 'topbar'])),
+      news,
     },
   }
 }
@@ -27,6 +28,10 @@ async function getNews(id) {
 const NewsDetail = ({ news }) => {
   return (
     <div className='centered-content-detailpage'>
+      <Head>
+        <title>{news.name}</title>
+        <meta name='description' content={news.description} />
+      </Head>
       <div className='centered-content-layout'>
         <div id='news-detail-container'>
           <div id='image-container-detail'>

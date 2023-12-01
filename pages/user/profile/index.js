@@ -18,6 +18,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import apiInstance from '@/api/apiInstance'
 import { AutoComplete } from 'primereact/autocomplete'
 import Image from 'next/image'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 
 const Profile = () => {
   const [current_page, setCurrentPage] = useState(1)
@@ -139,7 +140,7 @@ const Profile = () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/user/recent-active?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=${hour}`
+        `/user/recent-active?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=25000`
       )
       if (res.status === 200) {
         setPerPage(res.data.per_page)
@@ -203,11 +204,11 @@ const Profile = () => {
           <div id='statistic-container'>
             <div id='statistic-content'>
               <div id='statistic-card' title='Tổng quãng đường đã chạy'>
-                <h1>{data.total_distance}</h1>
+                <h1>{LocaleHelper.formatNumber(data.total_distance)}</h1>
                 <h4>{t('total-distance')}</h4>
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
-                <h1>{data.avg_pace}</h1>
+                <h1>{LocaleHelper.formatPace(data.avg_pace)}</h1>
                 <h4>{t('pace-agv')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>

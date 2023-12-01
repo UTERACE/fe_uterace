@@ -40,6 +40,7 @@ export default appWithTranslation(function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <title>UTE Race - Tổ chức giải chạy bộ online</title>
       </Head>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

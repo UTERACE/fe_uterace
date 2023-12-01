@@ -2,6 +2,7 @@ import store from '@/store/store'
 import axios from 'axios'
 const apiInstance = axios.create({
   baseURL: 'https://be-uterace.onrender.com/api',
+  // baseURL: 'http://localhost:8080/api',
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',

@@ -16,18 +16,19 @@ import store from '@/store/store'
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup'
 import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
+import Head from 'next/head'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
   return {
     props: {
-      club,
       ...(await serverSideTranslations(locale, [
         'detail',
         'news',
         'scoreboard',
         'topbar',
       ])),
+      club,
     },
   }
 }
@@ -106,7 +107,7 @@ const ClubDetail = ({ club }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=2500`
+        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
       )
       const data = res.data
       if (res.status === 200) {
@@ -194,6 +195,10 @@ const ClubDetail = ({ club }) => {
 
   return (
     <div className='centered-content-detailpage'>
+      <Head>
+        <title>{club.name}</title>
+        <meta name='description' content={club.description} />
+      </Head>
       <div className='centered-content-layout'>
         <div id='detail-container'>
           <div id='image-container-detail'>
