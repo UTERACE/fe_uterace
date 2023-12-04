@@ -141,21 +141,27 @@ main {
         width: 100%;
     }
     html {
-        font-size: 12px;
+        font-size: 13px;
     }
 
 }
 @media (max-width: 768px) {
+    .custom-carousel-content {
+        grid-template-columns: repeat(1, 1fr); 
+    }
+    .centered-content-dashboard {
+        grid-template-columns: repeat(1, 1fr); 
+    }
     .p-menuitem-icon {
         font-size: 1.5rem;
     }
     html {
-        font-size: 10px;
+        font-size: 12px;
     }
 }
 @media (max-width: 500px) {
     html {
-        font-size: 8px;
+        font-size: 11px;
     }
 }
 

@@ -10,6 +10,16 @@ const apiInstance = axios.create({
   },
 })
 
+const refreshTokenInstance = axios.create({
+  baseURL: 'https://be-uterace.onrender.com/api',
+  // baseURL: 'http://localhost:8080/api',
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+})
+
 apiInstance.interceptors.request.use(
   function (config) {
     const state = store.getState()
@@ -45,7 +55,7 @@ apiInstance.interceptors.response.use(
         refreshToken: refreshToken,
       }
       const jsonString = JSON.stringify(data)
-      return await apiInstance
+      return await refreshTokenInstance
         .post('/auth/refresh-token', jsonString)
         .then((res) => {
           if (res.status === 200) {

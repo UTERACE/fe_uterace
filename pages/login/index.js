@@ -110,10 +110,16 @@ const Login = () => {
       })
       setTypeThirdParty('google')
       handleLoginThirdParty(request)
+      setLoading(false)
     },
     onFailure: (res) => {
-      showToast('error', t('login_failed'), res.error)
+      showToast('error', t('login_failed'), t('error_login'))
+      setLoading(false)
     },
+    onNonOAuthError: (err) => {
+      showToast('error', t('login_failed'), t('error_login'))
+      setLoading(false)
+    }
   })
 
   const handleLoginThirdParty = async (request) => {
@@ -185,8 +191,10 @@ const Login = () => {
           })
           setTypeThirdParty('facebook')
           handleLoginThirdParty(request)
+          setLoading(false)
         } else {
           showToast('error', t('login_failed'), t('error_login'))
+          setLoading(false)
         }
       },
       { scope: 'email' }
@@ -194,6 +202,7 @@ const Login = () => {
   }
 
   const handleClickLoginGoogle = () => {
+    setLoading(true)
     loginGoogle()
   }
 

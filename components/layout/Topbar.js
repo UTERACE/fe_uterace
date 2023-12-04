@@ -14,6 +14,13 @@ import Image from 'next/image'
 
 const Topbar = () => {
   const isAuthenticated = store.getState().auth.isAuthenticated
+  //if (isAuthenticated) logout()
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login')
+    }
+  }, [isAuthenticated])
+
   const avatarImage = store.getState().auth.image
   const avatarLabel = store.getState().auth.firstname
     ? store.getState().auth.firstname[0].toUpperCase()
