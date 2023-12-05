@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SlideMenu } from 'primereact/slidemenu'
 import { logout } from '@/store/slices/authSlice'
-import { Avatar } from 'primereact/avatar'
 import { Badge } from 'primereact/badge'
 import store from '@/store/store'
 import { useTranslation } from 'next-i18next'
@@ -22,9 +21,6 @@ const Topbar = () => {
   }, [isAuthenticated])
 
   const avatarImage = store.getState().auth.image
-  const avatarLabel = store.getState().auth.firstname
-    ? store.getState().auth.firstname[0].toUpperCase()
-    : 'B'
   const fullname = store.getState().auth.firstname
     ? store.getState().auth.firstname + ' ' + store.getState().auth.lastname
     : ''
@@ -185,12 +181,11 @@ const Topbar = () => {
           <Link href='/user/profile' id='link-dataview-container'>
             <div id='topbar-profile-menu'>
               <div id='topbar-profile-avatar'>
-                <Avatar
+                <Image
                   style={{ border: '0.1rem solid #ffffff' }}
-                  size='large'
-                  shape='circle'
-                  label={!avatarImage ? avatarLabel : null}
-                  image={avatarImage}
+                  src={avatarImage ? avatarImage : '/default-avatar.png'}
+                  width={50}
+                  height={50}
                 />
               </div>
               <div id='topbar-profile-info'>
@@ -265,8 +260,8 @@ const Topbar = () => {
                 src='/logo.png'
                 alt='logo'
                 style={{ marginTop: '1rem' }}
-                width={20}
-                height={20}
+                width={80}
+                height={80}
               />
             </Link>
           </div>
@@ -347,12 +342,11 @@ const Topbar = () => {
                 >
                   <Badge value='1'></Badge>
                 </i>
-                <Avatar
+                <Image
                   style={{ border: '0.1rem solid #ffffff' }}
-                  size='large'
-                  shape='circle'
-                  label={!avatarImage ? avatarLabel : null}
-                  image={avatarImage}
+                  src={avatarImage ? avatarImage : '/default-avatar.png'}
+                  width={50}
+                  height={50}
                   onClick={(event) => menu.current.toggle(event)}
                 />
                 <Menu ref={menu} model={end_items} popup></Menu>

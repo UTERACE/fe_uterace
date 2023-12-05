@@ -22,24 +22,6 @@ const News = ({
     setNews(data.slice(0, 9))
   }, [data])
 
-  const responsiveOptions = [
-    {
-      breakpoint: '1024px',
-      numVisible: 3,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '960px',
-      numVisible: 2,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '800px',
-      numVisible: 1,
-      numScroll: 1,
-    },
-  ]
-
   const items = (news_id) => [
     {
       label: 'Add',
@@ -146,12 +128,11 @@ const News = ({
   return (
     <div className='centered-content-layout'>
       <Carousel
-        id='custom-carousel-product'
         value={news}
         numVisible={3}
         numScroll={1}
-        // responsiveOptions={responsiveOptions}
         itemTemplate={newsTemplate}
+        circular={true}
       />
     </div>
   )

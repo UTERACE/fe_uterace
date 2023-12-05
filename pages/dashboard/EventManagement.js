@@ -1,8 +1,6 @@
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
-import OutstandingEdit from '@/components/management/OutstandingEdit'
 import Link from 'next/link'
-import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
 import React, { useContext, useEffect, useState } from 'react'

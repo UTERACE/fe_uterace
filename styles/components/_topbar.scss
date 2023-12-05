@@ -28,6 +28,12 @@
     gap: 1.5rem;
     height: 3rem;
 }
+#login-container img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
 #topbar-button-login {
     background-color: var(--background-color);
     color: var(--text-color);
@@ -145,6 +151,12 @@
 #topbar-profile-avatar {
     width: 3rem;
     height: 3rem;
+}
+#topbar-profile-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 #topbar-profile-info {
     display: flex;

@@ -137,6 +137,14 @@ main {
     .centered-content-dashboard {
         grid-template-columns: repeat(2, 1fr); 
     }
+    #custom-carousel-product .p-carousel-item-start {
+        transform: scale(1)translateX(0%);
+        z-index: 0;
+    }
+    #custom-carousel-product .p-carousel-item-end {
+        transform: scale(1)translateX(0%);
+        z-index: 0;
+    } 
     .footer {
         width: 100%;
     }
@@ -157,6 +165,18 @@ main {
     }
     html {
         font-size: 12px;
+    }
+    #slide-name h {
+        font-size: 2.5rem;
+        -webkit-line-clamp: 5;
+    }
+    #member-info {
+        gap: 0.3rem;
+        margin-left: 0rem;
+    }
+    #member-info #member-name{
+        font-size: 1rem;
+
     }
 }
 @media (max-width: 500px) {

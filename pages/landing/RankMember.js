@@ -1,12 +1,11 @@
 import Link from 'next/link'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import DataTable from '@/components/datatable/DataTable'
-import { Avatar } from 'primereact/avatar'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
 import Image from 'next/image'
 
-const RankMember = ({ value }) => {
+const RankMember = ({ value, isMobile = false }) => {
   const { t } = useTranslation('scoreboard')
 
   const formatRank = (rowData) => {
@@ -44,28 +43,34 @@ const RankMember = ({ value }) => {
   }
 
   const fullnameWithImageTemplate = (rowData) => {
-    const avatarImage = rowData.image
-    const avatarLabel = rowData.first_name
-      ? rowData.first_name[0].toUpperCase()
-      : 'B'
+    const avatarImage = rowData.image ? rowData.image : '/default-avatar.png'
     return (
       <Link href={`/user/${rowData.user_id}`}>
         <div id='member-info'>
-          <Avatar
-            label={!avatarImage ? avatarLabel : null}
-            image={avatarImage}
-            size='xlarge'
-            shape='circle'
+          <Image
+            src={avatarImage}
+            width={isMobile ? 50 : 80}
+            height={isMobile ? 50 : 80}
+            alt='avatar'
           />
-          <span id='member-name'>
-            {rowData.last_name + ' ' + rowData.first_name}
-          </span>
+          <div id='member-name-container'>
+            <span id='member-name'>
+              {rowData.last_name + ' ' + rowData.first_name}
+            </span>
+          </div>
         </div>
       </Link>
     )
   }
 
-  const formatNumber = (rowData) => {
+  const formatPace = (rowData) => {
+    if (rowData) {
+      return LocaleHelper.formatPace(rowData.pace)
+    }
+    return ''
+  }
+
+  const formatNumberKm = (rowData) => {
     if (rowData) {
       return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
@@ -86,9 +91,16 @@ const RankMember = ({ value }) => {
       className: 'text-name',
     },
     {
+      field: 'total_distance',
+      header: t('total-distance'),
+      bodyClassName: 'text-center',
+      className: 'text-km',
+      body: formatNumberKm,
+    },
+    {
       field: 'pace',
       header: t('pace'),
-      body: formatNumber,
+      body: formatPace,
       bodyClassName: 'text-center',
       className: 'text-km',
     },
@@ -97,13 +109,6 @@ const RankMember = ({ value }) => {
       header: t('organization'),
       bodyClassName: 'text-center',
       className: 'text-km',
-    },
-    {
-      field: 'total_distance',
-      header: t('total-distance'),
-      bodyClassName: 'text-center',
-      className: 'text-km',
-      body: formatNumber,
     },
   ]
 

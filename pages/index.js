@@ -17,8 +17,16 @@ const Homepage = () => {
   const [data, setData] = useState()
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('home')
+
+  useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
+  }, [])
 
   useEffect(() => {
     fetchHomepage()
@@ -45,7 +53,7 @@ const Homepage = () => {
       <Slideshow data={data.overview} />
       <div className='centered-content-scoreboard'>
         <Title title={t('scoreboard')} />
-        <Rank value={data} />
+        <Rank value={data} isMobile={isMobile} />
       </div>
 
       <div className='centered-content-event'>
@@ -56,7 +64,7 @@ const Homepage = () => {
         <Title title={t('club-popular')} />
         <DataView
           data={data.clubs}
-          href={`/clubs/club-detail/${data.clubs.club_id}`}
+          href={`/clubs/club-detail/`}
         />
         <Detail link={'/clubs'} />
       </div>

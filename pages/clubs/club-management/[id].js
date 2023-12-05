@@ -325,7 +325,7 @@ const ManagementClubDetail = ({ club }) => {
                   </div>
                   <div id='detail-club-container'>
                     <h4>{t('total-distance')}</h4>
-                    <h4>{club.total_distance}</h4>
+                    <h4>{LocaleHelper.formatNumber(club.total_distance)}</h4>
                   </div>
                   <div id='detail-club-container'>
                     <h4>{t('total-activities')}</h4>
@@ -337,7 +337,7 @@ const ManagementClubDetail = ({ club }) => {
                   </div>
                   <div id='detail-club-container'>
                     <h4>{t('min-pace')}</h4>
-                    <h4>{club.min_pace}</h4>
+                    <h4>{LocaleHelper.formatPace(club.min_pace)}</h4>
                   </div>
                 </div>
                 <div id='info-club-detail'>
@@ -361,7 +361,7 @@ const ManagementClubDetail = ({ club }) => {
                   </div>
                   <div id='detail-club-container'>
                     <h4>{t('max-pace')}</h4>
-                    <h4>{club.max_pace}</h4>
+                    <h4>{LocaleHelper.formatPace(club.max_pace)}</h4>
                   </div>
                 </div>
               </div>

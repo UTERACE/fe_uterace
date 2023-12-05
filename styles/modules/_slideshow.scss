@@ -30,8 +30,25 @@
   padding: 0 0 0 2rem;
 }
 #slide-name {
+  // font-size: 5rem;
+  // margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  width: 80%;
+  height: auto;
+  color: var(--text-color);
+}
+
+#slide-name h1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 5rem;
-  margin-bottom: 1rem;
+  width: 100%;
+  margin: 0.5rem 0 0.5rem 0; 
+  transition: color 0.3s ease;
 }
 
 #button-slide{
@@ -76,6 +93,7 @@
   align-items: center;
   flex-direction: column;
   height: auto;
+  color: var(--text-color);
 }
 #slide-detail {
   display: flex;

@@ -89,10 +89,19 @@ const DataView = ({
           itemTemplate ? (
             itemTemplate(item, index)
           ) : (
-            <Link id='link-dataview-container' href={href + item.club_id} key={item.club_id}>
+            <Link
+              id='link-dataview-container'
+              href={href + item.club_id}
+              key={item.club_id}
+            >
               <div id='dataview-container'>
                 <div id='image-container-dataview'>
-                  <Image src={item.image} alt={item.name} width={800} height={800}/>
+                  <Image
+                    src={item.image ? item.image : '/logo.png'}
+                    alt={item.name}
+                    width={800}
+                    height={800}
+                  />
                 </div>
                 <div id='info-dataview'>
                   <h4>

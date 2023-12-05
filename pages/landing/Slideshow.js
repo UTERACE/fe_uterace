@@ -22,9 +22,16 @@ const Slideshow = ({ data, interval = 3000 }) => {
           id='slide'
           style={{ display: index === currentSlide ? 'block' : 'none' }}
         >
-          <Image src={slide.image} alt={slide.title} width={1920} height={1080} />
+          <Image
+            src={slide.image}
+            alt={slide.title}
+            width={1920}
+            height={1080}
+          />
           <div id='slide-caption-content'>
-            <div id='slide-name'>{slide.title}</div>
+            <div id='slide-name'>
+              <h1>{slide.title}</h1>
+            </div>
             <div>{slide.content}</div>
             <div id='slide-detail-container'>
               <div id='slide-detail'>
@@ -34,11 +41,11 @@ const Slideshow = ({ data, interval = 3000 }) => {
               <div id='overview-slide'>
                 <div>
                   <span>{slide.total_members}</span>
-                  <h>Thành viên </h>
+                  <h1>Thành viên </h1>
                 </div>
                 <div>
                   <span>{slide.total_activities}</span>
-                  <h>Hoạt động </h>
+                  <h1>Hoạt động </h1>
                 </div>
               </div>
             </div>

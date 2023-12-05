@@ -1,4 +1,3 @@
-import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import { SlideMenu } from 'primereact/slidemenu'
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -6,11 +5,10 @@ import Activity from './Activity'
 import { Paginator } from 'primereact/paginator'
 import { Dialog } from 'primereact/dialog'
 import Title from '@/components/landing/Title'
-import ChartActivity, { ChartDaily, ChartMonthly } from './ChartActivity'
+import { ChartDaily, ChartMonthly } from './ChartActivity'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ChangeAvatar from './setting/ChangeAvatar'
-import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
@@ -28,6 +26,7 @@ const Profile = () => {
 
   const [visibleChange, setVisibleChange] = useState(false)
   const [activeIndex, setActiveIndex] = useState(2)
+  const [isMobile, setIsMobile] = useState(false)
 
   const [polyline, setPolyline] = useState([])
   const [chartDateTime, setChartDateTime] = useState([])
@@ -40,8 +39,6 @@ const Profile = () => {
   const [search_name, setSearchName] = useState('')
   const [hour, setHour] = useState(2500)
   const [clubs, setClubs] = useState([])
-  const [avatarImage, setAvatarImage] = useState('')
-  const [avatarLabel, setAvatarLabel] = useState('A')
   const [data, setData] = useState({})
   const menu = useRef(null)
   const router = useRouter()
@@ -89,6 +86,13 @@ const Profile = () => {
   ]
 
   useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
+  }, [])
+
+  useEffect(() => {
     fetchProfile()
   }, [])
 
@@ -103,7 +107,6 @@ const Profile = () => {
       const data = res.data
       if (res.status === 200) {
         setData(data)
-        setAvatarImage(data.image)
         setChartDateTime(data.chart_date.map((time) => time.date_time))
         setChartDateDistance(
           data.chart_date.map((distance) => distance.date_distance)
@@ -140,7 +143,7 @@ const Profile = () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/user/recent-active?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=25000`
+        `/user/recent-active?per_page=${per_page}&current_page=${current_page}&search_name=${search_name}&hour=25000`
       )
       if (res.status === 200) {
         setPerPage(res.data.per_page)
@@ -233,30 +236,36 @@ const Profile = () => {
           <div id='profile-image-container'>
             <div style={{ height: '8rem' }}>
               <div id='profile-image-overlay'>
-                <Avatar
+                <Image
                   style={{
                     border: '1px solid #ffffff',
                     marginTop: '2rem',
+                    marginLeft: '1rem',
                     width: '10rem',
                     height: '10rem',
-                    fontSize: '5rem',
                   }}
-                  size='xlarge'
-                  shape='circle'
-                  label={!avatarImage ? avatarLabel : null}
-                  image={avatarImage}
+                  src={data.image ? data.image : '/default-avatar.png'}
+                  width={100}
+                  height={100}
                 />
                 <div id='info-profile-container'>
-                  <div id='name-container'>
-                    <h1>{data.last_name + ' ' + data.first_name}</h1>
-                    <Image
-                      src='/verified.png'
-                      alt='verified'
-                      width={20}
-                      height={20}
-                    />
-                    <i className='fas icon-large fa-edit'></i>
-                  </div>
+                  {isMobile ? (
+                    <div id='name-container'>
+                      <h1>{data.last_name + ' ' + data.first_name}</h1>
+                    </div>
+                  ) : (
+                    <div id='name-container'>
+                      <h1>{data.last_name + ' ' + data.first_name}</h1>
+                      <Image
+                        src='/verified.png'
+                        alt='verified'
+                        width={20}
+                        height={20}
+                      />
+                      <i className='fas icon-large fa-edit'></i>
+                    </div>
+                  )}
+
                   <div>
                     <h4>
                       {t('user-id')} {data.user_id}{' '}

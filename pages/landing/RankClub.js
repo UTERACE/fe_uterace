@@ -1,12 +1,11 @@
 import Link from 'next/link'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import DataTable from '@/components/datatable/DataTable'
-import { Avatar } from 'primereact/avatar'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
 import Image from 'next/image'
 
-const RankClub = ({ value }) => {
+const RankClub = ({ value, isMobile = false }) => {
   const { t } = useTranslation('scoreboard')
 
   const formatRank = (rowData) => {
@@ -47,8 +46,15 @@ const RankClub = ({ value }) => {
     return (
       <Link href={`clubs/club-detail/${rowData.club_id}`}>
         <div id='member-info'>
-          <Avatar image={rowData.image} size='xlarge' shape='circle' />
-          <span id='member-name'>{rowData.name}</span>
+          <Image
+            src={rowData.image ? rowData.image : '/logo.png'}
+            width={isMobile ? 50 : 80}
+            height={isMobile ? 50 : 80}
+            alt='avatar'
+          />
+          <div id='member-name-container'>
+            <span id='member-name'>{rowData.name}</span>
+          </div>
         </div>
       </Link>
     )

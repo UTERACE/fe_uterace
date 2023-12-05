@@ -1,7 +1,7 @@
 #event-container {
     background-color: var(--secondary-color);
     padding: 1rem;
-    margin: 0.3rem;
+    margin: 0rem;
     border-radius: 2rem;
     width: 100%;
     height: auto;
@@ -84,7 +84,7 @@
     margin: 0;
 }
 #custom-carousel-product.p-carousel .p-highlight button {
-    background-color: $black-color;
+    background-color: var(--text-color);
     border-radius: 50px;
     width: 1.2rem;
 }

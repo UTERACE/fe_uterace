@@ -492,7 +492,7 @@ const EventDetail = ({ event }) => {
                   </div>
                   <div id='detail-event-container'>
                     <h4>{t('min-pace')}</h4>
-                    <h4>{event.min_pace}</h4>
+                    <h4>{LocaleHelper.formatPace(event.min_pace)}</h4>
                   </div>
                 </div>
                 <div id='info-event-detail'>
@@ -514,7 +514,7 @@ const EventDetail = ({ event }) => {
                   </div>
                   <div id='detail-event-container'>
                     <h4>{t('max-pace')}</h4>
-                    <h4>{event.max_pace}</h4>
+                    <h4>{LocaleHelper.formatPace(event.max_pace)}</h4>
                   </div>
                 </div>
               </div>

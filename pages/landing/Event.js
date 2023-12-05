@@ -19,12 +19,12 @@ const Event = ({ event }) => {
       numScroll: 1,
     },
     {
-      breakpoint: '960px',
-      numVisible: 3,
+      breakpoint: '1024px',
+      numVisible: 2,
       numScroll: 1,
     },
     {
-      breakpoint: '500px',
+      breakpoint: '768px',
       numVisible: 1,
       numScroll: 1,
     },
@@ -38,7 +38,12 @@ const Event = ({ event }) => {
       >
         <div id='event-container'>
           <div id='image-event-container'>
-            <Image src={event.image} alt={event.name} width={800} height={500} />
+            <Image
+              src={event.image}
+              alt={event.name}
+              width={800}
+              height={500}
+            />
           </div>
           <div id='info-event'>
             <h4>

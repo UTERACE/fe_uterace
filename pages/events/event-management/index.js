@@ -100,7 +100,12 @@ const EventManagement = () => {
             id='link-dataview'
             href={`/events/event-management/${item.event_id}`}
           >
-            <Image src={item.image} alt={item.name} width={800} height={500} />
+            <Image
+              src={item.image ? item.image : '/logo.png'}
+              alt={item.name}
+              width={800}
+              height={500}
+            />
           </Link>
           <OutstandingEdit
             items={items(item.event_id)}

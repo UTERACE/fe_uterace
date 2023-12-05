@@ -1,13 +1,10 @@
-import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'
 import React, { useContext, useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import Title from '@/components/landing/Title'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { ChartDaily, ChartMonthly } from './profile/ChartActivity'
 import Activity from './profile/Activity'
-import DataViewDashboard from '@/components/dataview/DataViewDashboard'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import apiInstance from '@/api/apiInstance'
@@ -66,6 +63,7 @@ const UserDetail = ({ user }) => {
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(2)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('user')
 
@@ -81,6 +79,13 @@ const UserDetail = ({ user }) => {
       user.chart_month.map((distance) => distance.month_distance)
     )
     setChartMonthPace(user.chart_month.map((pace) => pace.month_pace))
+  }, [])
+
+  useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -105,7 +110,7 @@ const UserDetail = ({ user }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/user/recent-active/${user.user_id}?per_page=${per_page}&page=${current_page}&search_name=${search_name}&hour=${hour}`
+        `/user/recent-active/${user.user_id}?per_page=${per_page}&current_page=${current_page}&search_name=${search_name}&hour=${hour}`
       )
       if (res.status === 200) {
         setPerPage(res.data.per_page)
@@ -202,29 +207,35 @@ const UserDetail = ({ user }) => {
           <div id='profile-image-container'>
             <div style={{ height: '8rem' }}>
               <div id='profile-image-overlay'>
-                <Avatar
+                <Image
                   style={{
                     border: '1px solid #ffffff',
                     marginTop: '2rem',
+                    marginLeft: '1rem',
                     width: '10rem',
                     height: '10rem',
-                    fontSize: '5rem',
                   }}
-                  size='xlarge'
-                  shape='circle'
-                  label={!avatarImage ? avatarLabel : null}
-                  image={avatarImage}
+                  src={user.image ? user.image : '/default-avatar.png'}
+                  width={100}
+                  height={100}
                 />
                 <div id='info-profile-container'>
-                  <div id='name-container'>
-                    <h1>{user.last_name + ' ' + user.first_name}</h1>
-                    <Image
-                      src='/verified.png'
-                      alt='verified'
-                      width={15}
-                      height={15}
-                    />
-                  </div>
+                  {isMobile ? (
+                    <div id='name-container'>
+                      <h1>{user.last_name + ' ' + user.first_name}</h1>
+                    </div>
+                  ) : (
+                    <div id='name-container'>
+                      <h1>{user.last_name + ' ' + user.first_name}</h1>
+                      <Image
+                        src='/verified.png'
+                        alt='verified'
+                        width={20}
+                        height={20}
+                      />
+                      <i className='fas icon-large fa-edit'></i>
+                    </div>
+                  )}
                   <div>
                     <h4>
                       {t('user-id')} {user.user_id}{' '}

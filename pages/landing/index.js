@@ -56,7 +56,7 @@ const Landing = () => {
         <Title title={t('club-popular')} />
         <DataView
           data={data.clubs}
-          href={`/clubs/club-detail/${data.clubs.club_id}`}
+          href={`/clubs/club-detail/`}
         />
         <Detail link={'/clubs'} />
       </div>

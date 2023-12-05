@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Avatar } from 'primereact/avatar'
 import DataTable from '@/components/datatable/DataTable'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
@@ -9,6 +8,7 @@ import Image from 'next/image'
 const RankMember = ({ value }) => {
   const [loading, setLoading] = useState(false)
   const [rankMember, setRankMember] = useState(value)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('scoreboard')
 
@@ -17,6 +17,13 @@ const RankMember = ({ value }) => {
     setRankMember(value)
     setLoading(false)
   }, [value])
+
+  useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
+  }, [])
 
   const formatRank = (rowData) => {
     return (
@@ -53,30 +60,31 @@ const RankMember = ({ value }) => {
   }
 
   const fullnameWithImageTemplate = (rowData) => {
-    const avatarImage = rowData.image
-    const avatarLabel = rowData.first_name
-      ? rowData.first_name[0].toUpperCase()
-      : 'B'
+    const avatarImage = rowData.image ? rowData.image : '/default-avatar.png'
     return (
-      <div id='member-info'>
-        <Avatar
-          label={!avatarImage ? avatarLabel : null}
-          image={avatarImage}
-          size='xlarge'
-          shape='circle'
-        />
-        <Link href={`/user/${rowData.user_id}`}>
-          <span id='member-name'>
-            {rowData.last_name + ' ' + rowData.first_name}
-          </span>
-        </Link>
-      </div>
+      <Link href={`/user/${rowData.user_id}`}>
+        <div id='member-info'>
+          <Image src={avatarImage} width={80} height={80} alt='avatar' />
+          <div id='member-name-container'>
+            <span id='member-name'>
+              {rowData.last_name + ' ' + rowData.first_name}
+            </span>
+          </div>
+        </div>
+      </Link>
     )
   }
 
-  const formatNumber = (rowData) => {
+  const formatPace = (rowData) => {
     if (rowData) {
-      return LocaleHelper.formatMtoKm(rowData.total_distance.toFixed(2))
+      return LocaleHelper.formatPace(rowData.pace)
+    }
+    return ''
+  }
+
+  const formatNumberKm = (rowData) => {
+    if (rowData) {
+      return LocaleHelper.formatNumber(rowData.total_distance.toFixed(2))
     }
     return ''
   }
@@ -96,12 +104,12 @@ const RankMember = ({ value }) => {
       field: 'total_distance',
       header: t('total-distance'),
       bodyClassName: 'text-center',
-      body: formatNumber,
+      body: formatNumberKm,
     },
     {
       field: 'pace',
       header: t('pace'),
-      body: formatNumber,
+      body: formatPace,
       bodyClassName: 'text-center',
     },
     {
@@ -116,12 +124,42 @@ const RankMember = ({ value }) => {
     },
   ]
 
+  const memberResponsiveMobile = [
+    {
+      field: 'ranking',
+      header: t('rank'),
+      body: formatRank,
+      bodyClassName: 'text-center',
+    },
+    {
+      header: t('member'),
+      body: fullnameWithImageTemplate,
+    },
+    {
+      field: 'total_distance',
+      header: t('total-distance'),
+      bodyClassName: 'text-center',
+      body: formatNumberKm,
+    },
+    {
+      field: 'pace',
+      header: t('pace'),
+      body: formatPace,
+      bodyClassName: 'text-center',
+    },
+    {
+      field: 'organization',
+      header: t('organization'),
+      bodyClassName: 'text-center',
+    },
+  ]
+
   return (
     <DataTable
       data={rankMember}
       rows={4}
       loading={loading}
-      columns={memberColumns}
+      columns={isMobile ? memberResponsiveMobile : memberColumns}
     />
   )
 }
