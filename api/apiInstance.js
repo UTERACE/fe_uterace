@@ -1,9 +1,9 @@
 import store from '@/store/store'
 import axios from 'axios'
 const apiInstance = axios.create({
-  // baseURL: 'https://be-uterace.onrender.com/api',
+  baseURL: 'https://be-uterace.onrender.com/api',
   // baseURL: 'http://localhost:8080/api',
-  baseURL: 'http://192.168.1.6:8080/api',
+  // baseURL: 'http://192.168.1.6:8080/api',
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
@@ -12,9 +12,9 @@ const apiInstance = axios.create({
 })
 
 const refreshTokenInstance = axios.create({
-  // baseURL: 'https://be-uterace.onrender.com/api',
+  baseURL: 'https://be-uterace.onrender.com/api',
   // baseURL: 'http://localhost:8080/api',
-  baseURL: 'http://192.168.1.6:8080/api',
+  // baseURL: 'http://192.168.1.6:8080/api',
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
