@@ -159,3 +159,11 @@
     height: 3rem;
     border-radius: 1rem;
 }
+.p-inputtext:enabled:hover {
+    border-color: var(--primary-color);
+    border: 0.1rem solid var(--primary-color);
+}
+.p-inputtext:enabled:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgb(247, 245, 236);
+}

@@ -34,7 +34,7 @@ const Rank = ({ value, isMobile = false }) => {
       {activeIndex === 1 ? (
         <div>
           <RankClub value={value.ranking_club} isMobile={isMobile}></RankClub>
-          <Detail link='/club' />
+          <Detail link='/scoreboard' />
         </div>
       ) : (
         <div>
@@ -42,7 +42,7 @@ const Rank = ({ value, isMobile = false }) => {
             value={value.ranking_user}
             isMobile={isMobile}
           ></RankMember>
-          <Detail link='/member' />
+          <Detail link='/scoreboard' />
         </div>
       )}
     </div>
