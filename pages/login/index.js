@@ -38,7 +38,7 @@ const Login = () => {
   const [typeThirdParty, setTypeThirdParty] = useState('')
   const [responseFacebook, setResponseFacebook] = useState({})
   const router = useRouter()
-  
+
   const { t } = useTranslation('login')
 
   const onSubmit = (data) => {
@@ -73,13 +73,21 @@ const Login = () => {
       let { remember, ...rest } = data
       const response = await apiInstance.post('/auth/login', rest)
       if (response.status === 200) {
-        const { accessToken, refreshToken, firstname, lastname, image, roles } =
-          response.data
+        const {
+          accessToken,
+          refreshToken,
+          firstname,
+          lastname,
+          image,
+          roles,
+          email,
+        } = response.data
         store.dispatch(
           login({
             accessToken,
             refreshToken,
             image,
+            email,
             firstname,
             lastname,
             roles,
@@ -119,7 +127,7 @@ const Login = () => {
     onNonOAuthError: (err) => {
       showToast('error', t('login_failed'), t('error_login'))
       setLoading(false)
-    }
+    },
   })
 
   const handleLoginThirdParty = async (request) => {
@@ -137,13 +145,21 @@ const Login = () => {
         setResponseThirdParty(response.data)
         setVisibleThirdParty(true)
       } else {
-        const { accessToken, refreshToken, firstname, lastname, image, roles } =
-          response.data
+        const {
+          accessToken,
+          refreshToken,
+          firstname,
+          lastname,
+          image,
+          roles,
+          email,
+        } = response.data
         store.dispatch(
           login({
             accessToken,
             refreshToken,
             image,
+            email,
             firstname,
             lastname,
             roles,

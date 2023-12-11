@@ -89,6 +89,13 @@ const RankMember = ({ value }) => {
     return ''
   }
 
+  const formatOrganization = (rowData) => {
+    if (rowData.organization) {
+      return rowData.organization
+    }
+    return 'Cá nhân, tự do'
+  }
+
   const memberColumns = [
     {
       field: 'ranking',
@@ -116,6 +123,7 @@ const RankMember = ({ value }) => {
       field: 'organization',
       header: t('organization'),
       bodyClassName: 'text-center',
+      body: formatOrganization,
     },
     {
       field: 'gender',

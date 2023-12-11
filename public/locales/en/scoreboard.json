@@ -13,5 +13,7 @@
     "organization":"Organization",
     "gender":"Gender",
     "total-activities":"Total Activities",
-    "total-members":"Total Members"
+    "total-members":"Total Members",
+    "search_club":"Search Club",
+    "search_member":"Search Member"
 }

@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import apiInstance from '@/api/apiInstance'
+import { AutoComplete } from 'primereact/autocomplete'
 
 const Scoreboard = () => {
   const [scoreboard, setScoreboard] = useState([])
@@ -29,194 +30,6 @@ const Scoreboard = () => {
 
   const { t } = useTranslation('scoreboard')
 
-  const data = {
-    per_page: 10,
-    total_user: 25,
-    current_page: 1,
-    total_page: 3,
-    ranking_user: [
-      {
-        user_id: 119,
-        first_name: 'Can',
-        last_name: 'Lê',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/cad906c5a3d5c8d0ef85aa523.jpg?w=1800',
-        total_distance: 15.02,
-        ranking: 1,
-        pace: 10.082677841186523,
-        organization: 'Tổng công ty Viễn thông MobiFone',
-        gender: 'Nam',
-      },
-      {
-        user_id: 2,
-        ranking: 2,
-        first_name: 'Nguyễn',
-        last_name: 'Sinh Hùng',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f9f.png?w=1800',
-        total_distance: 2.42,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 6.15,
-        gender: 'Nam',
-      },
-      {
-        user_id: 1,
-        ranking: 3,
-        first_name: 'Nguyễn',
-        last_name: 'Văn A',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/1980f3931a315b785bf629f56.png?w=1800',
-        total_distance: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 0.0,
-        gender: 'Nam',
-      },
-      {
-        user_id: 3,
-        ranking: 4,
-        first_name: 'Nguyễn',
-        last_name: 'Văn B',
-        image: '',
-        total_distance: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 0.0,
-        gender: 'Nam',
-      },
-      {
-        user_id: 4,
-        ranking: 5,
-        first_name: 'Trần',
-        last_name: 'Thiện',
-        image: '',
-        total_distance: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 0.0,
-        gender: 'Nam',
-      },
-      {
-        user_id: 5,
-        ranking: 6,
-        first_name: 'Nguyễn',
-        last_name: 'Văn C',
-        image: '',
-        total_distance: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 0.0,
-        gender: 'Nam',
-      },
-      {
-        user_id: 6,
-        ranking: 7,
-        first_name: 'Nguyễn',
-        last_name: 'Văn D',
-        image: '',
-        total_distance: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 0.0,
-        gender: 'Nam',
-      },
-      {
-        user_id: 21,
-        ranking: 8,
-        first_name: 'Nguyễn',
-        last_name: 'Văn E',
-        image: '',
-        total_distance: 0.0,
-        organization: 'Công ty DV MobiFone KV2',
-        pace: 0.0,
-        gender: 'Nam',
-      },
-    ],
-  }
-  const data_club = {
-    per_page: 10,
-    total_user: 25,
-    current_page: 1,
-    total_page: 3,
-    ranking_club: [
-      {
-        club_id: 127,
-        ranking: 1,
-        name: '21 DAY CHALLENGE - THE MONKEY WARRIOR',
-        image:
-          'https://vietrace365.vn/uploads/f_5ce61e1be601fa1e66398287/964dc49a82e49a098b089ec7e.jpg?w=1800',
-        total_distance: 2.4822000511921942,
-        total_members: 3,
-        total_activities: 234,
-      },
-      {
-        club_id: 5,
-        ranking: 2,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 9 - BẮC KẠN',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        total_distance: 0.1409999979659915,
-        total_members: 1,
-        total_activities: 6,
-      },
-      {
-        club_id: 23,
-        ranking: 3,
-        name: '54 DÂN TỘC VIỆT NAM - DÂN TỘC TÀY',
-        PICTURE_PATH:
-          'https://mobirace.net/Upload/Images/Club/202009/FB_IMG_1601010618787_25092020_121355_804.jpg',
-        total_distance: 0.0,
-        total_members: 0,
-        total_activities: 0,
-      },
-      {
-        club_id: 133,
-        ranking: 4,
-        name: 'HÀNH TRÌNH XUYÊN VIỆT CHẶNG 8 - HÀ GIANG',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202009/5DE60CEF-1902-4660-ACD5-2C5559B69664_30092020_171158_841.jpeg',
-        total_distance: 0.0,
-        total_members: 0,
-        total_activities: 0,
-      },
-      {
-        club_id: 131,
-        ranking: 5,
-        name: '21 Day Challenge - The Horse Warrior',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        total_distance: 0.0,
-        total_members: 0,
-        total_activities: 44,
-      },
-      {
-        club_id: 121,
-        ranking: 5,
-        name: '21 Day Challenge - The Horse Warrior',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        total_distance: 0.0,
-        total_members: 0,
-        total_activities: 44,
-      },
-      {
-        club_id: 117,
-        ranking: 5,
-        name: '21 Day Challenge - The Horse Warrior',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        total_distance: 0.0,
-        total_members: 0,
-        total_activities: 44,
-      },
-      {
-        club_id: 116,
-        ranking: 5,
-        name: '21 Day Challenge - The Horse Warrior',
-        image:
-          'https://mobirace.net/Upload/Images/Club/202008/dulichquangtri1-752x400_17082020_084033_166.jpg',
-        total_distance: 0.0,
-        total_members: 0,
-        total_activities: 44,
-      },
-    ],
-  }
-
   useEffect(() => {
     fetchRanking()
   }, [month, year, search, ranking, current_page, per_page])
@@ -231,11 +44,12 @@ const Scoreboard = () => {
       if (res.status === 200) {
         setCurrentPage(res.data.current_page)
         setPerPage(res.data.per_page)
-        setTotalRecords(res.data.total_user)
+        activeIndex === 1
+          ? setTotalRecords(res.data.total_user)
+          : setTotalRecords(res.data.total_club)
         if (activeIndex === 1) {
           setScoreboard(res.data.ranking_user)
-        }
-        else {
+        } else {
           setScoreboard(res.data.ranking_club)
         }
         setLoading(false)
@@ -321,14 +135,22 @@ const Scoreboard = () => {
                 }}
               />
             </div>
+            <div id='search-container'>
+              <AutoComplete
+                value={search_name}
+                onChange={(e) => setSearchName(e.target.value)}
+                completeMethod={(e) => setSearch(!search)}
+                placeholder={t('search_member')}
+              />
+            </div>
             <RankMember value={scoreboard}></RankMember>
             <Paginator
               first={first}
-              rows={data.per_page}
-              totalRecords={data.total_user}
+              rows={per_page}
+              totalRecords={totalRecords}
               rowsPerPageOptions={[10, 25, 50]}
               onPageChange={onPageChange}
-              page={data.current_page}
+              page={current_page}
             />
           </div>
         ) : (
@@ -370,14 +192,22 @@ const Scoreboard = () => {
                 }}
               />
             </div>
+            <div id='search-container'>
+              <AutoComplete
+                value={search_name}
+                onChange={(e) => setSearchName(e.target.value)}
+                completeMethod={(e) => setSearch(!search)}
+                placeholder={t('search_club')}
+              />
+            </div>
             <RankClub value={scoreboard}></RankClub>
             <Paginator
               first={first}
-              rows={data.per_page}
-              totalRecords={data.total_user}
+              rows={per_page}
+              totalRecords={totalRecords}
               rowsPerPageOptions={[10, 25, 50]}
               onPageChange={onPageChange}
-              page={data.current_page}
+              page={current_page}
             />
           </div>
         )}

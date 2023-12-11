@@ -77,6 +77,13 @@ const RankMember = ({ value, isMobile = false }) => {
     return ''
   }
 
+  const formatOrganization = (rowData) => {
+    if (rowData.organization) {
+      return rowData.organization
+    }
+    return 'Cá nhân, tự do'
+  }
+
   const clubsColumns = [
     {
       field: 'ranking',
@@ -109,6 +116,7 @@ const RankMember = ({ value, isMobile = false }) => {
       header: t('organization'),
       bodyClassName: 'text-center',
       className: 'text-km',
+      body: formatOrganization,
     },
   ]
 

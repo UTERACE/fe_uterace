@@ -190,7 +190,7 @@ const NewsManagement = () => {
               handleNotOutstandingNews(rowData.news_id)
             }}
           >
-            Chọn nổi bật
+            Hủy nổi bật
           </Button>
         </div>
       )
@@ -204,7 +204,7 @@ const NewsManagement = () => {
               handleOutstandingNews(rowData.news_id)
             }}
           >
-            Nổi bật
+            Chọn nổi bật
           </Button>
         </div>
       )

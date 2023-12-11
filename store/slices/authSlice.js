@@ -7,6 +7,7 @@ const initialState = {
   firstname: null,
   lastname: null,
   roles: null,
+  email: null,
   isAuthenticated: false,
 }
 const authSlice = createSlice({
@@ -21,6 +22,7 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken
       state.refreshToken = action.payload.refreshToken
       state.image = action.payload.image
+      state.email = action.payload.email
       state.firstname = action.payload.firstname
       state.lastname = action.payload.lastname
       state.roles = action.payload.roles
@@ -30,6 +32,7 @@ const authSlice = createSlice({
       state.accessToken = null
       state.refreshToken = null
       state.image = null
+      state.email = null
       state.firstname = null
       state.lastname = null
       state.roles = null

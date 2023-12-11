@@ -5,36 +5,50 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SlideMenu } from 'primereact/slidemenu'
 import { logout } from '@/store/slices/authSlice'
-import { Badge } from 'primereact/badge'
 import store from '@/store/store'
 import { useTranslation } from 'next-i18next'
 import { Menu } from 'primereact/menu'
 import Image from 'next/image'
+import { io } from 'socket.io-client'
+import apiInstance from '@/api/apiInstance'
 
 const Topbar = () => {
   const isAuthenticated = store.getState().auth.isAuthenticated
-  //if (isAuthenticated) logout()
+  const avatarImage = store.getState().auth.image
+  const fullname = store.getState().auth.firstname
+    ? store.getState().auth.firstname + ' ' + store.getState().auth.lastname
+    : ''
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+  const email = store.getState().auth.email
+
+  const router = useRouter()
+  const [windowWidth, setWindowWidth] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [showOptions, setShowOptions] = useState(false)
+  const [currentLanguage, setCurrentLanguage] = useState(router.locale)
+  const [showNotification, setShowNotification] = useState(false)
+  const [notifications, setNotifications] = useState([])
+
+  const menu = useRef(null)
+  const menuHeader = useRef(null)
+  const { t } = useTranslation('topbar')
+
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/login')
     }
   }, [isAuthenticated])
 
-  const avatarImage = store.getState().auth.image
-  const fullname = store.getState().auth.firstname
-    ? store.getState().auth.firstname + ' ' + store.getState().auth.lastname
-    : ''
-  const router = useRouter()
   const handleClick = (url) => {
     router.push(url)
   }
+
   const handleClickLogout = () => {
     store.dispatch(logout())
     router.push('/login')
   }
-  const roles = store.getState().auth.roles
-  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
-  const [windowWidth, setWindowWidth] = useState(0)
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth)
@@ -45,7 +59,7 @@ const Topbar = () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-  const [activeIndex, setActiveIndex] = useState(0)
+
   useEffect(() => {
     if (router.pathname === '/') {
       setActiveIndex(0)
@@ -67,7 +81,7 @@ const Topbar = () => {
       setActiveIndex(8)
     }
   }, [router.pathname])
-  const { t } = useTranslation('topbar')
+
   const items = [
     {
       label: t('homepage'),
@@ -100,6 +114,7 @@ const Topbar = () => {
       to: '/news',
     },
   ]
+
   let managementItems
   if (hasAdminRole) {
     items.push({
@@ -151,6 +166,7 @@ const Topbar = () => {
       },
     ]
   }
+
   const item = (model) => {
     model.map((item, i) => {
       let menuitem = {
@@ -164,8 +180,7 @@ const Topbar = () => {
     })
     return model
   }
-  const menu = useRef(null)
-  const menuHeader = useRef(null)
+
   const end_items = [
     {
       command: () => {
@@ -238,8 +253,6 @@ const Topbar = () => {
       command: () => handleClickLogout(),
     },
   ]
-  const [showOptions, setShowOptions] = useState(false)
-  const [currentLanguage, setCurrentLanguage] = useState(router.locale)
 
   const toggleDropdown = () => {
     setShowOptions(!showOptions)
@@ -250,6 +263,44 @@ const Topbar = () => {
     setCurrentLanguage(lang)
     setShowOptions(false)
   }
+
+  const toggleNotification = () => {
+    setShowNotification(!showNotification)
+  }
+  //hover notification-button-container or notification-container => show notification
+  useEffect(() => {
+    const notificationButtonContainer = document.getElementById(
+      'notification-button-container'
+    )
+    const notificationContainer = document.getElementById(
+      'notification-container'
+    )
+    notificationButtonContainer?.addEventListener('mouseover', () => {
+      setShowNotification(true)
+    })
+    notificationContainer?.addEventListener('mouseout', () => {
+      setShowNotification(false)
+    })
+  }, [])
+
+  const [socket, setSocket] = useState(null)
+
+  useEffect(() => {
+    // const socket = io('localhost:8080')
+
+    // socket.on('connect', () => {
+    //   console.log('Connected to WebSocket')
+    // })
+
+    // socket.on('/topic/receiveMessage', (message) => {
+    //   console.log('Received message from server:', message)
+    // })
+
+    // return () => {
+    //   socket.disconnect()
+    // }
+  }, [email, isAuthenticated])
+
   return (
     <div id='topbar'>
       <div className='centered-content-layout'>
@@ -329,19 +380,57 @@ const Topbar = () => {
               <div id='login-container'>
                 <i
                   className='pi pi-bell p-overlay-badge'
-                  style={{
-                    fontSize: '2rem',
-                    paddingTop: '0.5rem',
-                    width: '3rem',
-                    height: '3rem',
-                    textAlign: 'center',
-                    backgroundColor: 'var(--secondary-color)',
-                    borderRadius: '50%',
-                    color: 'var(--text-color)',
-                  }}
+                  id='notification-button-container'
+                  onClick={toggleNotification}
                 >
-                  <Badge value='1'></Badge>
+                  {notifications.length > 0 && (
+                    <i id='notification-number'>{notifications.length}</i>
+                  )}
                 </i>
+                {showNotification && (
+                  <div id='notification-container'>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          width: '100%',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <h3>Thông báo</h3>
+                        <i
+                          className='pi pi-times'
+                          style={{ fontSize: '2rem' }}
+                          onClick={toggleNotification}
+                        ></i>
+                      </div>
+                      <div id='notification-user-container'>
+                        <div id='notification-user'>
+                          <div>
+                            <Image
+                              src='/default-avatar.png'
+                              width={50}
+                              height={50}
+                            />
+                          </div>
+
+                          <div>
+                            <h4>Nguyễn Văn A</h4>
+                          </div>
+                        </div>
+                        <p>Đã tham gia sự kiện: Hà Nội Marathon 2021</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <Image
                   style={{ border: '0.1rem solid #ffffff' }}
                   src={avatarImage ? avatarImage : '/default-avatar.png'}

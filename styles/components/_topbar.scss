@@ -176,3 +176,59 @@
     color: var(--text-color);
     margin: 0 auto;
 }
+#notification-button-container {
+    font-size: 2rem;
+    padding-top: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    color: var(--text-color);
+}
+#notification-number {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--third-color);
+    border-radius: 50%;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+#notification-container {
+    position: absolute;
+    top: 4rem;
+    right: 1rem;
+    background-color: var(--secondary-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 20rem;
+    height: 20rem;
+    overflow: auto;
+}
+#notification-user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: var(--primary-color);
+    padding: 0 0.5rem 0.5rem 0.5rem;
+}
+#notification-user {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+#notification-user-container p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin: 0 auto;
+}
