@@ -12,5 +12,12 @@
     "already_have_account": "Already have an account?",
     "sign_in_now": "Sign in now",
     "sign_up_success": "Sign up success",
-    "sign_up_failed": "Sign up failed"
+    "sign_up_failed": "Sign up failed",
+    "server_error": "Server error, please try again 3 minutes later",
+    "email_existed": "Email existed",
+    "username_existed": "Username existed",
+    "invalid_username": "Username is at least 12 characters, lowercase, special characters and number",
+    "invalid_password": "Password is at least 8 characters, including uppercase, lowercase and number",
+    "invalid_recaptcha": "Captcha invalid",
+    "are_you_a_robot": "Are you a robot?"
 }

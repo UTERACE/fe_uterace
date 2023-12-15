@@ -106,7 +106,7 @@
     margin-top: 2rem;
 }
 #remember-forgot-container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,4 +166,11 @@
 .p-inputtext:enabled:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgb(247, 245, 236);
+}
+.p-float-label {
+    display: block;
+    position: relative;
+    width: 100%;
+    display: flex;
+    
 }

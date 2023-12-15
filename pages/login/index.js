@@ -20,7 +20,11 @@ import { useTranslation } from 'next-i18next'
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['topbar', 'login'])),
+      ...(await serverSideTranslations(locale, [
+        'topbar',
+        'login',
+        'register',
+      ])),
     },
   }
 }
@@ -40,6 +44,7 @@ const Login = () => {
   const router = useRouter()
 
   const { t } = useTranslation('login')
+  const { t: tRegister } = useTranslation('register')
 
   const onSubmit = (data) => {
     handleLogin(data)
@@ -72,6 +77,7 @@ const Login = () => {
       }
       let { remember, ...rest } = data
       const response = await apiInstance.post('/auth/login', rest)
+      console.log(response.status)
       if (response.status === 200) {
         const {
           accessToken,
@@ -95,16 +101,17 @@ const Login = () => {
         )
         setIsAuthenticated(store.getState().auth.isAuthenticated)
         showToast('success', t('login_success'), response.data.message)
-        setLoading(false)
       }
+      setLoading(false)
     } catch (error) {
-      if (error.response && error.response.status === 500) {
-        showToast('error', t('login_failed'), t('login_failed_message'))
-        setLoading(false)
+      if (error.response.status === 404) {
+        showToast('error', t('login_failed'), t('user_not_found'))
+      } else if (error.response.status === 401) {
+        showToast('error', t('login_failed'), t('wrong_password'))
       } else {
-        showToast('error', t('login_failed'), `${t('error_login')} ${error}`)
-        setLoading(false)
+        showToast('error', t('login_failed'), t('server_error'))
       }
+      setLoading(false)
     }
   }
 
@@ -249,6 +256,7 @@ const Login = () => {
           image={responseThirdParty.image}
           type={typeThirdParty}
           setVisibleThirdParty={setVisibleThirdParty}
+          tRegister={tRegister}
         />
       </Dialog>
       <div id='form-container'>

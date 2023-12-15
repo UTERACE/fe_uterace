@@ -15,5 +15,8 @@
     "login_success": "Sign in successfully",
     "login_failed": "Sign in failed",
     "error_login": "Error login",
-    "login_failed_message": "Username or password is incorrect"
+    "login_failed_message": "Username or password is incorrect",
+    "server_error": "Server error, please try again after a 3 minutes",
+    "user_not_found": "Username not found",
+    "wrong_password": "Password incorrect"
 }

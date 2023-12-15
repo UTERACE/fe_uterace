@@ -8,7 +8,8 @@ const nextConfig = {
       'localhost',
       'be-uterace.onrender.com',
       'platform-lookaside.fbsbx.com',
-      'res.cloudinary.com'
+      'res.cloudinary.com',
+      'lh3.googleusercontent.com'
     ],
   },
 }

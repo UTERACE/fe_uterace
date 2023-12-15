@@ -34,6 +34,7 @@ const Register = (props) => {
     image,
     type = 'default',
     setVisibleThirdParty = false,
+    tRegister,
   } = props
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
@@ -87,16 +88,33 @@ const Register = (props) => {
     setLoading(true)
     try {
       const response = await apiInstance.post('/auth/register', data)
-      if (response.data.status === 201) {
-        showToast('success', t('sign_up_success'), response.data.message)
-        setVisibleThirdParty(false)
+      const res = response.data
+      if (response.status === 201) {
+        if (res.status === 200 && res.message === 'Registration successful!') {
+          showToast('success', t('sign_up_success'), res.message)
+          if (setVisibleThirdParty) {
+            setVisibleThirdParty(false)
+          }
+          setTimeout(() => {
+            router.push('/login')
+          }, 1000)
+        } else if (res.message === 'Username is already in use') {
+          showToast('error', t('sign_up_failed'), t('username_existed'))
+        } else if (res.message === 'Username is not valid') {
+          showToast('error', t('sign_up_failed'), t('invalid_username'))
+        } else if (res.message === 'Email is already in use') {
+          showToast('error', t('sign_up_failed'), t('email_existed'))
+        } else if (res.message === 'Password is not valid') {
+          showToast('error', t('sign_up_failed'), t('invalid_password'))
+        } else if (res.message === 'Captcha is not valid') {
+          showToast('error', t('sign_up_failed'), t('invalid_recaptcha'))
+        } else if (res.message === 'Are you a robot?') {
+          showToast('error', t('sign_up_failed'), t('are_you_a_robot'))
+        }
         setLoading(false)
-        setTimeout(() => {
-          router.push('/login')
-        }, 1000)
       }
     } catch (error) {
-      showToast('error', t('sign_up_failed'))
+      showToast('error', t('sign_up_failed'), t('server_error'))
       setLoading(false)
     }
   }

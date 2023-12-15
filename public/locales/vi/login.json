@@ -15,5 +15,8 @@
     "login_success": "Đăng nhập thành công",
     "login_failed": "Đăng nhập thất bại",
     "error_login": "Lỗi trong quá trình đăng nhập",
-    "login_failed_message": "Tên đăng nhập hoặc mật khẩu không đúng"
+    "login_failed_message": "Tên đăng nhập hoặc mật khẩu không đúng",
+    "server_error": "Lỗi máy chủ, vui lòng thử lại sau 3 phút",
+    "user_not_found": "Tên đăng nhập không tồn tại",
+    "wrong_password": "Mật khẩu không đúng"
 }
