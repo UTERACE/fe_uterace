@@ -7,6 +7,7 @@ import Image from 'next/image'
 
 const Activity = ({
   activities = [],
+  language = 'vi',
   responsiveOptions = [
     {
       breakpoint: 1920,
@@ -122,12 +123,15 @@ const Activity = ({
           <div id='name-activities'>
             <a id='link-activities'>
               <i className='pi pi-map' aria-hidden='true'></i>{' '}
-              {LocaleHelper.formatMtoKm(item.activity_distance)}
-              km
+              {language === 'vi'
+                ? LocaleHelper.formatKm(item.activity_distance)
+                : LocaleHelper.formatKmToMiles(item.activity_distance)}
             </a>
             <a id='link-activities'>
               <i className='pi pi-chart-bar' aria-hidden='true'></i>{' '}
-              {LocaleHelper.formatPace(item.activity_pace)} min/km
+              {language === 'vi'
+                ? LocaleHelper.formatPace(item.activity_pace)
+                : LocaleHelper.formatMinutesKmToMilesKm(item.activity_pace)}
             </a>
             <a id='link-activities'>
               <i className='pi pi-stopwatch' aria-hidden='true'></i>{' '}

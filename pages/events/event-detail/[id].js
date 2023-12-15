@@ -425,7 +425,7 @@ const EventDetail = ({ event }) => {
                 dangerouslySetInnerHTML={{ __html: event.prize }}
               ></div>
             ) : activeIndex === 3 ? (
-              <div>
+              <div style={{ width: '100%' }}>
                 <div>
                   <AutoComplete
                     value={search_name}

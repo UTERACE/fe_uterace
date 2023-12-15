@@ -1,7 +1,7 @@
 import { Chart } from 'primereact/chart'
 import React, { useEffect, useState } from 'react'
 
-export const ChartDaily = ({ labels, seriesData }) => {
+export const ChartDaily = ({ labels, seriesData, t }) => {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -59,13 +59,13 @@ export const ChartDaily = ({ labels, seriesData }) => {
   }, [labels, seriesData]);
   return (
     <div id='card-chart'>
-      <h4 className="text-center">Biểu đồ theo ngày</h4>
+      <h4 className="text-center">{t('chart_daily')}</h4>
       <Chart type="line" data={chartData} options={chartOptions} />
     </div>
   );
 };
 
-export const ChartMonthly = ({ labels, seriesData }) => {
+export const ChartMonthly = ({ labels, seriesData, t }) => {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -128,7 +128,7 @@ export const ChartMonthly = ({ labels, seriesData }) => {
 
   return (
     <div id='card-chart'>
-      <h4 className="text-center">Biểu đồ theo tháng</h4>
+      <h4 className="text-center">{t('chart_monthly')}</h4>
       <Chart type="bar" data={chartData} options={chartOptions} />
     </div>
   );

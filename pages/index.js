@@ -62,10 +62,7 @@ const Homepage = () => {
       </div>
       <div className='centered-content-club'>
         <Title title={t('club-popular')} />
-        <DataView
-          data={data.clubs}
-          href={`/clubs/club-detail/`}
-        />
+        <DataView data={data.clubs} href={`/clubs/club-detail/`} />
         <Detail link={'/clubs'} />
       </div>
       <div className='centered-content-statistic'>
@@ -75,7 +72,9 @@ const Homepage = () => {
 
       <div className='centered-content-news'>
         <Title title={t('news-popular')} />
-        <News data={data.news} />
+        <div className='centered-content-layout'>
+          <News data={data.news} />
+        </div>
         <Detail link={'/news'} />
       </div>
     </div>

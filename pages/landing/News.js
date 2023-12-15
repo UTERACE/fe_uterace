@@ -81,7 +81,12 @@ const News = ({
         <div id={news.deleted ? 'news-container-hide' : 'news-container'}>
           <Link href={`/news/news-detail/${news.news_id}`}>
             <div id='image-news-container'>
-              <Image src={news.image} alt={news.name} width={800} height={500} />
+              <Image
+                src={news.image}
+                alt={news.name}
+                width={800}
+                height={500}
+              />
               {news.deleted ? (
                 <div className='lock-news'>
                   <i
@@ -126,15 +131,13 @@ const News = ({
   }
 
   return (
-    <div className='centered-content-layout'>
-      <Carousel
-        value={news}
-        numVisible={3}
-        numScroll={1}
-        itemTemplate={newsTemplate}
-        circular={true}
-      />
-    </div>
+    <Carousel
+      value={news}
+      numVisible={3}
+      numScroll={1}
+      itemTemplate={newsTemplate}
+      circular={true}
+    />
   )
 }
 

@@ -28,7 +28,7 @@ const EventManagement = () => {
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
 
-  const [index, setIndex] = useState(2)
+  const [index, setIndex] = useState(3)
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleAdd, setVisibleAdd] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
@@ -43,11 +43,7 @@ const EventManagement = () => {
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
 
   useEffect(() => {
-    if (index === 3) {
-      fetchEventsOnGoing()
-    } else if (index === 2) {
-      fetchEventsCreated()
-    }
+    fetchEvents()
   }, [
     current_page,
     per_page,
@@ -58,33 +54,34 @@ const EventManagement = () => {
     updateStatus,
   ])
 
-  const fetchEventsOnGoing = async () => {
-    const res = await apiInstance.get(
-      `/events?current_page=${current_page}&per_page=${per_page}&ongoing=1&search_name=${search_name}`
-    )
-    if (res.status === 200) {
-      const data = res.data
-      setEvents(data.events)
-      setTotalRecords(data.total_events)
-      setCurrentPage(data.current_page)
-      setPerPage(data.per_page)
-    }
-  }
-
-  const fetchEventsCreated = async () => {
+  const fetchEvents = async () => {
+    setLoading(true)
     try {
-      const res = await apiInstance.get(
-        `/events/created-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-      )
-      if (res.status === 200) {
+      let res
+      if (index === 4) {
+        res = await apiInstance.get(
+          `/events?current_page=${current_page}&per_page=${per_page}&ongoing=1&search_name=${search_name}`
+        )
+      } else if (index === 3) {
+        res = await apiInstance.get(
+          `/events/joined-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+        )
+      } else if (index === 2) {
+        res = await apiInstance.get(
+          `/events/created-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+        )
+      }
+      if (res && res.status === 200) {
         const data = res.data
         setEvents(data.events)
         setTotalRecords(data.total_events)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
       }
+      setLoading(false)
     } catch (error) {
       showToast('error', 'Lỗi', error)
+      setLoading(false)
     }
   }
 
@@ -98,7 +95,11 @@ const EventManagement = () => {
         <div id='image-container-dataview'>
           <Link
             id='link-dataview'
-            href={`/events/event-management/${item.event_id}`}
+            href={
+              !hasAdminRole
+                ? `/events/event-detail/${item.event_id}`
+                : `/events/event-management/${item.event_id}`
+            }
           >
             <Image
               src={item.image ? item.image : '/logo.png'}
@@ -116,7 +117,11 @@ const EventManagement = () => {
         </div>
         <Link
           id='link-dataview-container'
-          href={`/events/event-management/${item.event_id}`}
+          href={
+            !hasAdminRole
+              ? `/events/event-detail/${item.event_id}`
+              : `/events/event-management/${item.event_id}`
+          }
         >
           <div id='info-dataview'>
             <h4>
@@ -135,7 +140,11 @@ const EventManagement = () => {
               <div id='share-register-content'>
                 <Link
                   id='link-dataview'
-                  href={`/events/event-management/${item.event_id}`}
+                  href={
+                    !hasAdminRole
+                      ? `/events/event-detail/${item.event_id}`
+                      : `/events/event-management/${item.event_id}`
+                  }
                 >
                   {t('event-join')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
@@ -212,11 +221,11 @@ const EventManagement = () => {
       </div>
       <Title
         title={
-          index === 3
-            ? t('on-going-event')
-            : index === 2
+          index === 2
             ? t('created-event')
-            : null
+            : index === 3
+            ? t('joined-event')
+            : t('on-going-event')
         }
       />
       <Dialog
@@ -273,11 +282,11 @@ const EventManagement = () => {
         {hasAdminRole ? (
           <div
             style={{
-              width: '75%',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              gap: '2rem',
+              gap: '1rem',
+              marginBottom: '1rem',
             }}
           >
             <Button
@@ -307,11 +316,22 @@ const EventManagement = () => {
               id={index == 3 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
-              label={t('on-going-event')}
+              label={t('joined-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
                 setIndex(3)
+              }}
+            />
+            <Button
+              id={index == 4 ? 'button-tab--active' : 'button-tab'}
+              type='button'
+              style={{ width: '100%' }}
+              label={t('on-going-event')}
+              icon='pi pi-list'
+              iconPos='right'
+              onClick={() => {
+                setIndex(4)
               }}
             />
           </div>
@@ -323,38 +343,35 @@ const EventManagement = () => {
               justifyContent: 'start',
               alignItems: 'center',
               gap: '2rem',
+              marginBottom: '1rem',
             }}
           >
             <Button
-              id={index == 2 ? 'button-tab--active' : 'button-tab'}
+              id={index == 3 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label={t('joined-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(2)
+                setIndex(3)
               }}
             />
             <Button
-              id={index == 3 ? 'button-tab--active' : 'button-tab'}
+              id={index == 4 ? 'button-tab--active' : 'button-tab'}
               type='button'
               style={{ width: '100%' }}
               label={t('on-going-event')}
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(3)
+                setIndex(4)
               }}
             />
           </div>
         )}
       </div>
-      <DataView
-        data={events}
-        href='/clubs/club-management/'
-        itemTemplate={itemTemplate}
-      />
+      <DataView data={events} itemTemplate={itemTemplate} />
       <Paginator
         first={first}
         rows={per_page}

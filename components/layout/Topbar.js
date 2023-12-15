@@ -267,21 +267,6 @@ const Topbar = () => {
   const toggleNotification = () => {
     setShowNotification(!showNotification)
   }
-  //hover notification-button-container or notification-container => show notification
-  useEffect(() => {
-    const notificationButtonContainer = document.getElementById(
-      'notification-button-container'
-    )
-    const notificationContainer = document.getElementById(
-      'notification-container'
-    )
-    notificationButtonContainer?.addEventListener('mouseover', () => {
-      setShowNotification(true)
-    })
-    notificationContainer?.addEventListener('mouseout', () => {
-      setShowNotification(false)
-    })
-  }, [])
 
   const [socket, setSocket] = useState(null)
 
@@ -289,11 +274,9 @@ const Topbar = () => {
     // const socket = io('localhost:8080')
 
     // socket.on('connect', () => {
-    //   console.log('Connected to WebSocket')
     // })
 
     // socket.on('/topic/receiveMessage', (message) => {
-    //   console.log('Received message from server:', message)
     // })
 
     // return () => {
@@ -408,7 +391,7 @@ const Topbar = () => {
                         <h3>Thông báo</h3>
                         <i
                           className='pi pi-times'
-                          style={{ fontSize: '2rem' }}
+                          style={{ fontSize: '1rem' }}
                           onClick={toggleNotification}
                         ></i>
                       </div>

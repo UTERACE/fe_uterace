@@ -213,7 +213,7 @@ const AddEvent = ({
                 options={distances}
                 optionLabel='name'
                 display='chip'
-                placeholder='Select Cities'
+                placeholder={t('select_distance')}
                 maxSelectedLabels={3}
                 className='w-full md:w-20rem'
               />

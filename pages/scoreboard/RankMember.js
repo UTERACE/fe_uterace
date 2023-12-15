@@ -5,18 +5,11 @@ import LocaleHelper from '@/components/locale/LocaleHelper'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 
-const RankMember = ({ value }) => {
+const RankMember = ({ value, isRankingUser = false }) => {
   const [loading, setLoading] = useState(false)
-  const [rankMember, setRankMember] = useState(value)
   const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('scoreboard')
-
-  useEffect(() => {
-    setLoading(true)
-    setRankMember(value)
-    setLoading(false)
-  }, [value])
 
   useEffect(() => {
     //responsive window
@@ -96,7 +89,14 @@ const RankMember = ({ value }) => {
     return 'Cá nhân, tự do'
   }
 
-  const memberColumns = [
+  const formatDate = (rowData) => {
+    if (rowData.join_date) {
+      return LocaleHelper.formatDateTime(new Date(rowData.join_date))
+    }
+    return ''
+  }
+
+  const rankingUserColumns = [
     {
       field: 'ranking',
       header: t('rank'),
@@ -132,7 +132,7 @@ const RankMember = ({ value }) => {
     },
   ]
 
-  const memberResponsiveMobile = [
+  const memberColumns = [
     {
       field: 'ranking',
       header: t('rank'),
@@ -159,15 +159,64 @@ const RankMember = ({ value }) => {
       field: 'organization',
       header: t('organization'),
       bodyClassName: 'text-center',
+      body: formatOrganization,
+    },
+    {
+      field: 'gender',
+      header: t('gender'),
+      bodyClassName: 'text-center',
+    },
+    {
+      field: 'join_date',
+      header: t('join-date'),
+      bodyClassName: 'text-center',
+      body: formatDate,
+    },
+  ]
+
+  const memberResponsiveMobile = [
+    {
+      field: 'ranking',
+      header: t('rank'),
+      body: formatRank,
+      bodyClassName: 'text-center',
+    },
+    {
+      header: t('member'),
+      body: fullnameWithImageTemplate,
+    },
+    {
+      field: 'total_distance',
+      header: t('total-distance'),
+      bodyClassName: 'text-center',
+      body: formatNumberKm,
+    },
+    {
+      field: 'pace',
+      header: t('pace'),
+      body: formatPace,
+      bodyClassName: 'text-center',
+    },
+    {
+      field: 'join_date',
+      header: t('join-date'),
+      bodyClassName: 'text-center',
+      body: formatDate,
     },
   ]
 
   return (
     <DataTable
-      data={rankMember}
+      data={value}
       rows={4}
       loading={loading}
-      columns={isMobile ? memberResponsiveMobile : memberColumns}
+      columns={
+        isMobile
+          ? memberResponsiveMobile
+          : isRankingUser
+          ? rankingUserColumns
+          : memberColumns
+      }
     />
   )
 }

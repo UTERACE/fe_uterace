@@ -44,7 +44,6 @@ const TinyMCEEditor = (props) => {
 
   const log = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent())
     }
   }
 
@@ -55,7 +54,6 @@ const TinyMCEEditor = (props) => {
     setEditorContent(content)
   }
   const handleSaveClick = () => {
-    console.log('editor',editorContent)
     props.onSave(editorContent)
   }
   return (

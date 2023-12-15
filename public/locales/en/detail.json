@@ -64,5 +64,6 @@
     "hours": "Hours",
     "minutes": "Minutes",
     "seconds": "Seconds",
-    "from_day": "From day"
+    "from_day": "From day",
+    "join-date": "Join date"
 }

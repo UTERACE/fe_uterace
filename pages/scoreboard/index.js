@@ -143,7 +143,7 @@ const Scoreboard = () => {
                 placeholder={t('search_member')}
               />
             </div>
-            <RankMember value={scoreboard}></RankMember>
+            <RankMember value={scoreboard} isRankingUser={true}></RankMember>
             <Paginator
               first={first}
               rows={per_page}

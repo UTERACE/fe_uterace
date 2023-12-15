@@ -81,6 +81,7 @@ const Carousel = ({
       carouselElement.style.setProperty('--num-columns', column)
     }
   }, [column])
+  
   return (
     <div id='carousel-container-wrapper'>
       <div id='carousel-container'>

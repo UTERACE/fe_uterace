@@ -99,7 +99,12 @@ const Footer = () => {
             </a>
           </div>
           <div id='strava-footer'>
-            <Image src='/strava_cptblWith.png' width={200} height={20}></Image>
+            <Image
+              src='/strava_cptblWith.png'
+              alt='strava'
+              width={200}
+              height={20}
+            ></Image>
           </div>
         </div>
       </div>

@@ -19,6 +19,7 @@ import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
 import Activity from '@/pages/user/profile/Activity'
 import Head from 'next/head'
+import store from '@/store/store'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -85,6 +86,15 @@ const EventDetail = ({ event }) => {
 
   const { t } = useTranslation('detail')
   const { t: tEvent } = useTranslation('event')
+
+  const roles = store.getState().auth.roles
+  const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
+
+  useEffect(() => {
+    if (!hasAdminRole) {
+      router.push('/')
+    }
+  }, [hasAdminRole])
 
   useEffect(() => {
     // setActivities(event.activities)
@@ -597,7 +607,7 @@ const EventDetail = ({ event }) => {
                 <div dangerouslySetInnerHTML={{ __html: prize }}></div>
               </div>
             ) : activeIndex === 3 ? (
-              <div>
+              <div style={{ width: '100%' }}>
                 <div>
                   <AutoComplete
                     value={search_name}

@@ -25,17 +25,19 @@ const DataView = ({
   ],
 }) => {
   const [visible, setVisible] = useState(false)
-  const [url, setUrl] = useState('https://example.com/')
-  const [title, setTitle] = useState('Tiêu đề bài viết hoặc trang')
-  const [image, setImage] = useState('https://example.com/image.jpg')
-  const [caption, setCaption] = useState('Mô tả bài viết hoặc trang')
+  const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('T')
+  const [image, setImage] = useState('')
+  const [caption, setCaption] = useState('')
   const { t } = useTranslation('club')
 
   const onClickShare = () => {
-    // Mở một cửa sổ mới với URL chia sẻ Facebook
-    const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?caption=${encodeURIComponent(
+      caption
+    )}&description=${encodeURIComponent(caption)}&u=${encodeURIComponent(
       url
-    )}&quote=${encodeURIComponent(title)}`
+    )}&picture=${encodeURIComponent(image)}`
+
     window.open(fbShareUrl, 'facebook-share-dialog', 'width=1080,height=720')
   }
 
@@ -78,12 +80,31 @@ const DataView = ({
     <div className='centered-content-layout'>
       <div className='custom-carousel-content'>
         <Dialog visible={visible} onHide={() => setVisible(false)}>
-          <Button label='Copy link chia sẻ' className='p-button-success' />
-          <Button
-            label='Chia sẻ lên Facebook'
-            className='p-button-success'
-            onClick={() => onClickShare()}
-          />
+          <div id='share-facebook-container'>
+            <Button
+              label='Copy link chia sẻ'
+              icon='pi pi-copy'
+              id='button-detail'
+              onClick={() => {
+                navigator.clipboard.writeText(url)
+                setVisible(false)
+              }}
+            />
+            <Button
+              label='Chia sẻ lên Facebook'
+              icon='pi pi-facebook'
+              style={{
+                backgroundColor: '#3b5998',
+                color: 'white',
+                height: '3rem',
+                borderRadius: '3rem',
+              }}
+              onClick={() => {
+                onClickShare()
+                setVisible(false)
+              }}
+            />
+          </div>
         </Dialog>
         {data.map((item, index) =>
           itemTemplate ? (
@@ -125,7 +146,11 @@ const DataView = ({
                       <a
                         onClick={(e) => {
                           e.preventDefault()
-                          setUrl(`https://example.com/${href + item.club_id}}`)
+                          setUrl(
+                            `https://fe-uterace.vercel.app${
+                              href + item.club_id
+                            }`
+                          )
                           setCaption(item.name)
                           setTitle(item.name)
                           setImage(item.image)

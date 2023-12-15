@@ -32,11 +32,32 @@ function formatMtoKm(distance, locale = defaultLocale) {
 
 function formatPace(pace, locale = defaultLocale) {
   // return new Intl.NumberFormat(locale).format(pace)
-  const minPerKm = pace / 1.60934;
-  const minutes = Math.floor(minPerKm);
-  const seconds = Math.round((minPerKm % 1) * 60);
-  const formattedPace = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  return formattedPace;
+  const minutes = Math.floor(pace)
+  const seconds = Math.round((pace % 1) * 60)
+  const formattedPace = `${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`
+  return formattedPace + ' /km'
+}
+
+function formatKm(distance, locale = defaultLocale) {
+  const distanceInKm = distance.toFixed(2)
+  return new Intl.NumberFormat(locale).format(distanceInKm) + ' km'
+}
+
+function formatKmToMiles(distance, locale = defaultLocale) {
+  const distanceInMiles = (distance / 1.609).toFixed(2)
+  return new Intl.NumberFormat(locale).format(distanceInMiles) + ' mi'
+}
+
+function formatMinutesKmToMilesKm(pace, locale = defaultLocale) {
+  const paceInMiles = (pace * 1.609).toFixed(2)
+  const minutes = Math.floor(paceInMiles)
+  const seconds = Math.round((paceInMiles % 1) * 60)
+  const formattedPace = `${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`
+  return formattedPace + ' /mi'
 }
 
 export default {
@@ -45,4 +66,7 @@ export default {
   formatDateTime,
   formatMtoKm,
   formatPace,
+  formatKm,
+  formatKmToMiles,
+  formatMinutesKmToMilesKm,
 }

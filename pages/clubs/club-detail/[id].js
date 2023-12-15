@@ -76,47 +76,37 @@ const ClubDetail = ({ club }) => {
   }, [updateStatus])
 
   useEffect(() => {
-    if (activeIndex === 3) {
-      fetchRankMember()
-    } else if (activeIndex === 2) {
-      fetchActivities()
-    }
+    fetchData()
   }, [current_page, per_page, search, activeIndex])
 
-  const fetchRankMember = async () => {
+  const fetchData = async () => {
     setLoading(true)
     try {
-      const res = await apiInstance.get(
-        `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-      )
-      const data = res.data
-      if (res.status === 200) {
-        setRankMember(data)
-        setCurrentPage(data.current_page)
-        setPerPage(data.per_page)
-        setTotalRecords(data.total_user)
-        setLoading(false)
+      let res
+      if (activeIndex === 3) {
+        res = await apiInstance.get(
+          `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+        )
+        if (res && res.status === 200) {
+          const data = res.data
+          setRankMember(data)
+          setCurrentPage(data.current_page)
+          setPerPage(data.per_page)
+          setTotalRecords(data.total_user)
+        }
+      } else if (activeIndex === 2) {
+        res = await apiInstance.get(
+          `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
+        )
+        if (res && res.status === 200) {
+          const data = res.data
+          setActivities(data)
+          setCurrentPage(data.current_page)
+          setPerPage(data.per_page)
+          setTotalRecords(data.total_activities)
+        }
       }
-    } catch (error) {
-      showToast('error', error)
       setLoading(false)
-    }
-  }
-
-  const fetchActivities = async () => {
-    setLoading(true)
-    try {
-      const res = await apiInstance.get(
-        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
-      )
-      const data = res.data
-      if (res.status === 200) {
-        setActivities(data)
-        setCurrentPage(data.current_page)
-        setPerPage(data.per_page)
-        setTotalRecords(data.total_activities)
-        setLoading(false)
-      }
     } catch (error) {
       showToast('error', error)
       setLoading(false)
@@ -369,7 +359,7 @@ const ClubDetail = ({ club }) => {
                 />
               </div>
             ) : (
-              <div>
+              <div style={{ width: '100%' }}>
                 <div>
                   <AutoComplete
                     value={search_name}

@@ -14,6 +14,8 @@ import { useToast } from '@/components/contexts/ToastContext'
 import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import DataView from '@/components/dataview/DataView'
+import { useRouter } from 'next/router'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const user = await getUser(params.id)
@@ -46,6 +48,11 @@ const UserDetail = ({ user }) => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
+  const [current_page_event, setCurrentPageEvent] = useState(1)
+  const [per_page_event, setPerPageEvent] = useState(3)
+  const [totalRecordsEvent, setTotalRecordsEvent] = useState(1)
+  const [firstEvent, setFirstEvent] = useState(0)
+
   const [activities, setActivities] = useState([])
   const [chartDateTime, setChartDateTime] = useState([])
   const [chartDatePace, setChartDatePace] = useState([])
@@ -57,6 +64,7 @@ const UserDetail = ({ user }) => {
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
   const [search_name, setSearchName] = useState('')
+  const [searchEvent, setSearchEvent] = useState('')
   const [hour, setHour] = useState(48)
   const [search, setSearch] = useState(false)
 
@@ -64,6 +72,9 @@ const UserDetail = ({ user }) => {
   const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(2)
   const [isMobile, setIsMobile] = useState(false)
+  const router = useRouter()
+  const language = router.locale
+  const [event, setEvents] = useState([])
 
   const { t } = useTranslation('user')
 
@@ -92,20 +103,6 @@ const UserDetail = ({ user }) => {
     fetchActivities()
   }, [current_page, per_page, search, hour])
 
-  const fetchDataMap = async (activity_id) => {
-    setLoading(true)
-    try {
-      const res = await apiInstance.get(`/decode_polyline/${activity_id}`)
-      if (res.status === 200) {
-        setPolyline(res.data)
-        setLoading(false)
-      }
-    } catch (e) {
-      showToast('error', 'Error Polyline')
-      setLoading(false)
-    }
-  }
-
   const fetchActivities = async () => {
     setLoading(true)
     try {
@@ -125,10 +122,47 @@ const UserDetail = ({ user }) => {
     }
   }
 
+  useEffect(() => {
+    fetchEvents()
+  }, [current_page_event, per_page_event, search, activeIndex])
+
+  const fetchEvents = async () => {
+    setLoading(true)
+    try {
+      let res
+      if (activeIndex === 1) {
+        res = await apiInstance.get(
+          `/events/joined-event?current_page=${current_page_event}&per_page=${per_page_event}&search_name=${searchEvent}`
+        )
+      } else if (activeIndex === 3) {
+        res = await apiInstance.get(
+          `/events?current_page=${current_page_event}&per_page=${per_page_event}&ongoing=1&search_name=${searchEvent}`
+        )
+      }
+      if (res && res.status === 200) {
+        const data = res.data
+        setEvents(data.events)
+        setPerPageEvent(data.per_page)
+        setTotalRecordsEvent(data.total_events)
+        setCurrentPageEvent(data.current_page)
+      }
+      setLoading(false)
+    } catch (e) {
+      showToast('error', 'Errorrrr')
+      setLoading(false)
+    }
+  }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
+  }
+
+  const onPageChangeEvent = (event) => {
+    setFirstEvent(event.first)
+    setCurrentPageEvent(event.page + 1)
+    setPerPageEvent(event.rows)
   }
 
   const itemTemplate = (item) => {
@@ -157,13 +191,62 @@ const UserDetail = ({ user }) => {
             </h4>
           </div>
           <div id='name-dataview'>
-            <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
+            <i className='fa fa-briefcase icon-run' aria-hidden='true'></i>
             <div id='share-register-container'>
               <h4>{item.name}</h4>
             </div>
           </div>
         </Link>
       </div>
+    )
+  }
+
+  const itemTemplateEvent = (item) => {
+    return (
+      <Link
+        id='link-dataview-container'
+        href={`/events/event-detail/${item.event_id}`}
+      >
+        <div id='dataview-container'>
+          <div id='image-container-dataview'>
+            <Image
+              src={item.image ? item.image : '/logo.png'}
+              alt={item.name}
+              width={800}
+              height={500}
+            />
+          </div>
+          <div id='info-dataview'>
+            <h4>
+              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
+              {item.total_members} {t('member-join')}
+            </h4>
+            <h4>
+              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
+              {item.total_activities} {t('club-join')}
+            </h4>
+          </div>
+          <div id='name-dataview'>
+            <i className='fa fa-running icon-run' aria-hidden='true'></i>
+            <div id='share-register-container'>
+              <h4>{item.name}</h4>
+              <div id='share-register-content'>
+                <Link
+                  id='link-dataview'
+                  href={`/events/event-detail/${item.event_id}`}
+                >
+                  {t('event-join')}{' '}
+                  <i className='pi pi-arrow-right' aria-hidden='true'></i>
+                </Link>
+                <Link id='link-dataview' href='/share'>
+                  {t('share')}{' '}
+                  <i className='pi pi-share-alt' aria-hidden='true'></i>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
     )
   }
 
@@ -182,7 +265,11 @@ const UserDetail = ({ user }) => {
                 <h4>{t('total-distance')}</h4>
               </div>
               <div id='statistic-card' title='Tốc độ trung bình'>
-                <h1>{LocaleHelper.formatPace(user.avg_pace)}</h1>
+                <h1>
+                  {language === 'vi'
+                    ? LocaleHelper.formatPace(user.avg_pace)
+                    : LocaleHelper.formatMinutesKmToMilesKm(user.avg_pace)}
+                </h1>
                 <h4>{t('pace-agv')}</h4>
               </div>
               <div id='statistic-card' title='Tổng số hoạt động đã tham gia'>
@@ -216,6 +303,7 @@ const UserDetail = ({ user }) => {
                     height: '10rem',
                   }}
                   src={user.image ? user.image : '/default-avatar.png'}
+                  alt='Profile image'
                   width={100}
                   height={100}
                 />
@@ -279,12 +367,14 @@ const UserDetail = ({ user }) => {
               <ChartDaily
                 labels={chartDateTime}
                 seriesData={chartDateDistance}
+                t={t}
               />
             </div>
             <div id='chart-container'>
               <ChartMonthly
                 labels={chartMonthTime}
                 seriesData={chartMonthDistance}
+                t={t}
               />
             </div>
           </div>
@@ -332,6 +422,7 @@ const UserDetail = ({ user }) => {
                 <Title title={t('recent-activities')} />
                 <Activity
                   activities={activities}
+                  language={language}
                   setLoading={setLoading}
                   showToast={showToast}
                 />
@@ -343,34 +434,40 @@ const UserDetail = ({ user }) => {
                     placeholder={'Tìm kiếm hoạt động'}
                   />
                 </div>
+                <Paginator
+                  first={first}
+                  rows={per_page}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[6, 12, 18]}
+                  onPageChange={onPageChange}
+                  page={current_page}
+                />
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>
-                {/* <DataViewDashboard
-                  data={data.club}
-                  href='/clubs/club-management/'
-                  itemTemplate={itemTemplate}
-                /> */}
+                <DataView data={event} itemTemplate={itemTemplateEvent} />
+                <Paginator
+                  first={firstEvent}
+                  rows={per_page_event}
+                  totalRecords={totalRecordsEvent}
+                  rowsPerPageOptions={[3, 6, 9]}
+                  onPageChange={onPageChangeEvent}
+                  page={current_page_event}
+                />
               </div>
             ) : activeIndex === 1 ? (
               <div style={{ width: '95%' }}>
-                {/* <DataViewDashboard
-                  data={data.club}
-                  href='/clubs/club-management/'
-                  itemTemplate={itemTemplate}
-                /> */}
+                <DataView data={event} itemTemplate={itemTemplateEvent} />
+                <Paginator
+                  first={firstEvent}
+                  rows={per_page_event}
+                  totalRecords={totalRecordsEvent}
+                  rowsPerPageOptions={[3, 6, 9]}
+                  onPageChange={onPageChangeEvent}
+                  page={current_page_event}
+                />
               </div>
             ) : activeIndex === 4 ? null : null}
-            <div>
-              <Paginator
-                first={first}
-                rows={per_page}
-                totalRecords={totalRecords}
-                rowsPerPageOptions={[6, 12, 18]}
-                onPageChange={onPageChange}
-                page={current_page}
-              />
-            </div>
           </div>
         </div>
       </div>
