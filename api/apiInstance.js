@@ -45,6 +45,7 @@ apiInstance.interceptors.response.use(
       error.response &&
       error.response.status === 401 &&
       !error.config._retry
+      && error.response.data.message === 'JWT token is expired'
     ) {
       console.log('Attempting token refresh...')
       error.config._retry = true
