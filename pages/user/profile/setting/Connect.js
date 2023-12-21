@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import React, { useContext, useEffect, useState } from 'react'
 
-const Connect = () => {
+const Connect = ({ t }) => {
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const router = useRouter()
@@ -51,21 +51,21 @@ const Connect = () => {
       })
       if (res.status === 200) {
         if (res.data.status === 201) {
-          showToast('warn', 'Kết nối Strava thất bại', res.data.detail)
+          showToast('warn', t('connect_strava_fail'), res.data.detail)
           setLoading(false)
           return
         }
         if (res.data.status === 400) {
-          showToast('error', 'Kết nối Strava thất bại', res.data.detail)
+          showToast('error', t('connect_strava_fail'), res.data.detail)
           setLoading(false)
           return
         }
-        showToast('success', 'Kết nối Strava thành công', res.data.detail)
+        showToast('success', t('connect_strava_success'), res.data.detail)
         setUpdate(!update)
         setLoading(false)
       }
     } catch (e) {
-      showToast('error', 'Kết nối Strava thất bại')
+      showToast('error', t('connect_strava_fail'))
       setLoading(false)
     }
   }
@@ -75,12 +75,12 @@ const Connect = () => {
     try {
       const res = await apiInstance.post(`/strava/disconnect`)
       if (res.status === 200) {
-        showToast('success', 'Hủy kết nối Strava thành công', res.data.detail)
+        showToast('success', t('disconnect_strava_success'), res.data.detail)
         setUpdate(!update)
         setLoading(false)
       }
     } catch (e) {
-      showToast('error', 'Hủy kết nối Strava thất bại')
+      showToast('error', t('disconnect_strava_fail'))
       setLoading(false)
     }
   }
@@ -139,7 +139,7 @@ const Connect = () => {
       </div>
 
       <div id='default-container'>
-        <span>{detail}</span>
+        <span>{status ? t('strava_connected') : t('not_connected')}</span>
       </div>
       <a
         id='connect-container'
@@ -153,7 +153,7 @@ const Connect = () => {
         raised
         icon='pi pi-paperclip'
         iconPos='right'
-        label={status ? 'Hủy kết nối Strava' : 'Kết nối Strava'}
+        label={status ? t('disconnect_strava') : t('connect_strava')}
         onClick={() => {
           if (status) {
             handleDisconnectStrava()

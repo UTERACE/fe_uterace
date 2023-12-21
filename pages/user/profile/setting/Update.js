@@ -9,7 +9,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import apiInstance from '@/api/apiInstance'
 
-const Update = () => {
+const Update = ({ t }) => {
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const [provinceOptions, setProvinceOptions] = useState([])
@@ -133,12 +133,12 @@ const Update = () => {
       const res = await apiInstance.put('/user/update', data)
       console.log('res', res.data)
       if (res.data.status === 200) {
-        showToast('success', 'Cập nhật hồ sơ thành công!', res.data.message)
+        showToast('success', t('update_success'), res.data.message)
       } else {
-        showToast('error', 'Cập nhật hồ sơ thất bại!', res.data.message)
+        showToast('error', t('update_fail'), res.data.message)
       }
     } catch (err) {
-      showToast('error', 'Cập nhật hồ sơ thất bại!', err)
+      showToast('error', t('update_fail'), err)
     }
     setLoading(false)
   }
@@ -183,24 +183,24 @@ const Update = () => {
       <div id='form-setting'>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='firstname' label='Tên' required>
+            <Field name='firstname' label={t('first_name')} required>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
           <div className='col-6' id='width-100-center'>
-            <Field name='lastname' label='Họ' required>
+            <Field name='lastname' label={t('last_name')} required>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='email' label='Email' required>
+            <Field name='email' label={t('email')} required>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
           <div className='col-6' id='width-100-center'>
-            <Field name='telNumber' label='Số điện thoại'>
+            <Field name='telNumber' label={t('phone')}>
               <InputMask
                 mask='(999) 999-9999'
                 placeholder='(999) 999-9999'
@@ -211,7 +211,7 @@ const Update = () => {
         </div>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='gender' label='Giới tính'>
+            <Field name='gender' label={t('sex')}>
               <Dropdown
                 options={gender}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -219,14 +219,14 @@ const Update = () => {
             </Field>
           </div>
           <div className='col-6' id='width-100-center'>
-            <Field name='birthday' label='Ngày sinh'>
+            <Field name='birthday' label={t('dob')}>
               <Calendar style={{ width: '100%' }}></Calendar>
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-12' id='width-100-center'>
-            <Field name='organization' label='Danh sách tổ chức'>
+            <Field name='organization' label={t('organization')}>
               <Dropdown
                 options={organization}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -237,7 +237,7 @@ const Update = () => {
             </Field>
           </div>
           <div className='col-12' id='width-100-center'>
-            <Field name='childOrganization' label='Danh sách đơn vị'>
+            <Field name='childOrganization' label={t('child_org')}>
               <Dropdown
                 options={childOrganization}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -247,7 +247,7 @@ const Update = () => {
         </div>
         <div className='grid-form'>
           <div className='col-12' id='width-100-center'>
-            <Field name='province' label='Tỉnh/Thành phố'>
+            <Field name='province' label={t('province')}>
               <Dropdown
                 options={provinceOptions}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -260,7 +260,7 @@ const Update = () => {
             </Field>
           </div>
           <div className='col-12' id='width-100-center'>
-            <Field name='district' label='Quận/Huyện'>
+            <Field name='district' label={t('district')}>
               <Dropdown
                 options={districtOptions}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -275,7 +275,7 @@ const Update = () => {
         </div>
         <div className='grid-form'>
           <div className='col-12' id='width-100-center'>
-            <Field name='ward' label='Phường/Xã'>
+            <Field name='ward' label={t('ward')}>
               <Dropdown
                 options={wardOptions}
                 style={{ width: '100%', borderRadius: '10px' }}
@@ -283,7 +283,7 @@ const Update = () => {
             </Field>
           </div>
           <div className='col-12' id='width-100-center'>
-            <Field name='address' label='Địa chỉ chi tiết'>
+            <Field name='address' label={t('address')}>
               <InputText type='text' style={{ width: '100%' }} />
             </Field>
           </div>
@@ -297,7 +297,7 @@ const Update = () => {
               raised
               icon='pi pi-pencil'
               iconPos='right'
-              label='Cập nhật'
+              label={t('update')}
             />
           </div>
         </div>

@@ -6,7 +6,7 @@ import { Button } from 'primereact/button'
 import { Password } from 'primereact/password'
 import React, { useContext } from 'react'
 
-const ChangePassword = () => {
+const ChangePassword = ({ t }) => {
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
 
@@ -22,36 +22,40 @@ const ChangePassword = () => {
       const res = await apiInstance.put('/user/change-password', rest)
       console.log('res', res.data)
       if (res.data.status === 200) {
-        showToast('success', 'Đổi mật khẩu thành công!', res.data.message)
+        showToast('success', t('change_password_success'), res.data.message)
       } else {
-        showToast('error', 'Đổi mật khẩu thất bại!', res.data.message)
+        showToast('error', t('change_password_fail'), res.data.message)
       }
     } catch (err) {
-      showToast('error', 'Đổi mật khẩu thất bại!', err.response.data.message)
+      showToast('error', t('change_password_fail'), err.response.data.message)
     }
     setLoading(false)
   }
-  
+
   return (
     <Form onSubmit={onSubmit}>
       <div id='form-setting'>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='old_password' label='Mật khẩu cũ' required>
+            <Field name='old_password' label={t('old_password')} required>
               <Password type='password' style={{ width: '100%' }} toggleMask />
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='new_password' label='Mật khẩu mới' required>
+            <Field name='new_password' label={t('new_password')} required>
               <Password type='password' style={{ width: '100%' }} toggleMask />
             </Field>
           </div>
         </div>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
-            <Field name='confirmPassword' label='Xác nhận mật khẩu' required>
+            <Field
+              name='confirmPassword'
+              label={t('confirm_password')}
+              required
+            >
               <Password type='password' style={{ width: '100%' }} toggleMask />
             </Field>
           </div>
@@ -65,7 +69,7 @@ const ChangePassword = () => {
               raised
               icon='pi pi-pencil'
               iconPos='right'
-              label='Cập nhật'
+              label={t('update')}
             />
           </div>
         </div>
