@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { Button } from 'primereact/button'
 import React, { useContext, useEffect, useState } from 'react'
 
-const Connect = ({ t }) => {
+const Connect = ({ t, isMobile = false }) => {
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const router = useRouter()
@@ -143,9 +143,10 @@ const Connect = ({ t }) => {
       </div>
       <a
         id='connect-container'
+        style={isMobile ? { fontSize: '0.8rem' } : {}}
         href={`https://www.strava.com/athletes/${stravaId}`}
       >
-        {`https://www.strava.com/athletes/${stravaId}`}
+        {stravaId !== null ? `https://www.strava.com/athletes/${stravaId}` : ''}
       </a>
       <Button
         id='button-detail'

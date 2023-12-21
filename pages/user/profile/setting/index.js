@@ -15,6 +15,8 @@ const SettingPage = () => {
   const { connect } = router.query
   const index = connect == 1 ? 1 : connect == 2 ? 2 : 0
   const [activeIndex, setActiveIndex] = useState(index)
+  const [isMobile, setIsMobile] = useState(false)
+
   const { t } = useTranslation('setting')
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const SettingPage = () => {
     },
     {
       label: t('change_password'),
-      icon: 'pi pi-pencil',
+      icon: 'pi pi-lock',
       to: '/change-password',
     },
     {
@@ -37,6 +39,28 @@ const SettingPage = () => {
       to: '/connect',
     },
   ]
+
+  const modelMobile = [
+    {
+      icon: 'pi pi-fw pi-user-edit',
+      to: '/setting',
+    },
+    {
+      icon: 'pi pi-lock',
+      to: '/change-password',
+    },
+    {
+      icon: 'pi pi-fw pi-paperclip',
+      to: '/connect',
+    },
+  ]
+
+  useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
+  }, [])
 
   return (
     <div className='centered-content-full'>
@@ -47,16 +71,16 @@ const SettingPage = () => {
             <AppMenu
               activeIndex={activeIndex}
               setActiveIndex={setActiveIndex}
-              model={model}
+              model={isMobile ? modelMobile : model}
             />
           </div>
           <div id='setting-profile-container'>
             {activeIndex === 0 ? (
-              <Update t={t} />
+              <Update t={t} isMobile={isMobile} />
             ) : activeIndex === 2 ? (
-              <Connect t={t} />
+              <Connect t={t} isMobile={isMobile} />
             ) : (
-              <ChangePassword t={t} />
+              <ChangePassword t={t} isMobile={isMobile} />
             )}
           </div>
         </div>

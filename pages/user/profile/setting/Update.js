@@ -9,7 +9,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import apiInstance from '@/api/apiInstance'
 
-const Update = ({ t }) => {
+const Update = ({ t, isMobile = false }) => {
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const [provinceOptions, setProvinceOptions] = useState([])
@@ -180,7 +180,7 @@ const Update = ({ t }) => {
 
   return (
     <Form onSubmit={onSubmit} initialValue={initialValues}>
-      <div id='form-setting'>
+      <div id='form-setting' style={isMobile ? { width: 'auto' } : null}>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
             <Field name='firstname' label={t('first_name')} required>

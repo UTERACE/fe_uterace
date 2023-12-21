@@ -6,7 +6,7 @@ import { Button } from 'primereact/button'
 import { Password } from 'primereact/password'
 import React, { useContext } from 'react'
 
-const ChangePassword = ({ t }) => {
+const ChangePassword = ({ t, isMobile = false }) => {
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
 
@@ -34,7 +34,7 @@ const ChangePassword = ({ t }) => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div id='form-setting'>
+      <div id='form-setting' style={isMobile ? { width: 'auto' } : null}>
         <div className='grid-form'>
           <div className='col-6' id='width-100-center'>
             <Field name='old_password' label={t('old_password')} required>
