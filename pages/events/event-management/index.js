@@ -130,7 +130,7 @@ const EventManagement = () => {
             </h4>
             <h4>
               <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_clubs} {t('club-join')}
+              {item.total_activities} {t('club-join')}
             </h4>
           </div>
           <div id='name-dataview'>
