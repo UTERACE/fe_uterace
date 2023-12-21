@@ -297,7 +297,7 @@ const Topbar = () => {
           }
         }
       } catch (e) {
-        router.push('/login')
+        console.log(e)
       }
     }
   }
