@@ -18,7 +18,13 @@
     "joining-events": "Sự kiện đang tham gia",
     "recent-activities": "Hoạt động gần đây",
     "completed-events": "Sự kiện đã hoàn thành",
+    "clubs-created": "Câu lạc bộ đã tạo",
+    "join-clubs": "Tham gia câu lạc bộ",
+    "join-events": "Tham gia sự kiện",
+    "share": "Chia sẻ",
     "collection": "Bộ sưu tập",
     "member-join":"Thành viên",
-    "club-join":"Câu lạc bộ"
+    "club-join":"Câu lạc bộ",
+    "search_activity": "Tìm kiếm hoạt động",
+    "search_event": "Tìm kiếm sự kiện"
 }

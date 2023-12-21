@@ -18,6 +18,7 @@ import { AutoComplete } from 'primereact/autocomplete'
 import Image from 'next/image'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import DataView from '@/components/dataview/DataView'
+import { InputNumber } from 'primereact/inputnumber'
 
 const Profile = () => {
   const [current_page, setCurrentPage] = useState(1)
@@ -29,6 +30,16 @@ const Profile = () => {
   const [per_page_event, setPerPageEvent] = useState(3)
   const [totalRecordsEvent, setTotalRecordsEvent] = useState(1)
   const [firstEvent, setFirstEvent] = useState(0)
+
+  const [current_page_event_joined, setCurrentPageEventJoined] = useState(1)
+  const [per_page_event_joined, setPerPageEventJoined] = useState(3)
+  const [totalRecordsEventJoined, setTotalRecordsEventJoined] = useState(1)
+  const [firstEventJoined, setFirstEventJoined] = useState(0)
+
+  const [current_page_club, setCurrentPageClub] = useState(1)
+  const [per_page_club, setPerPageClub] = useState(3)
+  const [totalRecordsClub, setTotalRecordsClub] = useState(1)
+  const [firstClub, setFirstClub] = useState(0)
 
   const [visibleChange, setVisibleChange] = useState(false)
   const [activeIndex, setActiveIndex] = useState(2)
@@ -43,8 +54,10 @@ const Profile = () => {
   const [chartMonthDistance, setChartMonthDistance] = useState([])
   const [activities, setActivities] = useState([])
   const [search_name, setSearchName] = useState('')
-  const [searchEvent, setSearchEvent] = useState('')
-  const [hour, setHour] = useState(2500)
+  const [search_name_event, setSearch_NameEvent] = useState('')
+  const [search_name_event_joined, setSearch_NameEventJoined] = useState('')
+  const [search_name_club, setSearch_NameClub] = useState('')
+  const [hour, setHour] = useState(48)
   const [clubs, setClubs] = useState([])
   const [data, setData] = useState({})
   const menu = useRef(null)
@@ -52,10 +65,16 @@ const Profile = () => {
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const [search, setSearch] = useState(false)
+  const [searchClub, setSearchClub] = useState(false)
+  const [searchEvent, setSearchEvent] = useState(false)
+  const [searchEventJoined, setSearchEventJoined] = useState(false)
   const language = router.locale
   const [event, setEvents] = useState([])
+  const [clubsCreated, setClubsCreated] = useState([])
+  const [eventsJoined, setEventsJoined] = useState([])
 
   const { t } = useTranslation('user')
+  const { t: tClub } = useTranslation('club')
 
   const handleClick = (url) => {
     router.push(url)
@@ -107,7 +126,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchActivities()
-  }, [current_page, per_page, search, hour])
+  }, [current_page, per_page, hour])
 
   const fetchProfile = async () => {
     setLoading(true)
@@ -138,7 +157,7 @@ const Profile = () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/user/recent-active?per_page=${per_page}&current_page=${current_page}&search_name=${search_name}&hour=25000`
+        `/user/recent-active?per_page=${per_page}&current_page=${current_page}&search_name=${search_name}&hour=${hour}`
       )
       if (res.status === 200) {
         setPerPage(res.data.per_page)
@@ -154,23 +173,39 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    fetchEvents()
-  }, [current_page_event, per_page_event, search, activeIndex])
+    fetchEventsJoined()
+  }, [current_page_event_joined, per_page_event_joined, searchEventJoined])
 
-  const fetchEvents = async () => {
+  const fetchEventsJoined = async () => {
     setLoading(true)
     try {
-      let res
-      if (activeIndex === 1) {
-        res = await apiInstance.get(
-          `/events/joined-event?current_page=${current_page_event}&per_page=${per_page_event}&search_name=${searchEvent}`
-        )
-      } else if (activeIndex === 3) {
-        res = await apiInstance.get(
-          `/events?current_page=${current_page_event}&per_page=${per_page_event}&ongoing=1&search_name=${searchEvent}`
-        )
-      }
+      const res = await apiInstance.get(
+        `/events/joined-event?current_page=${current_page_event_joined}&per_page=${per_page_event_joined}&search_name=${search_name_event_joined}`
+      )
       if (res && res.status === 200) {
+        const data = res.data
+        setEventsJoined(data.events)
+        setPerPageEventJoined(data.per_page)
+        setTotalRecordsEventJoined(data.total_events)
+        setCurrentPageEventJoined(data.current_page)
+      }
+      setLoading(false)
+    } catch (e) {
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchEventCompleted()
+  }, [current_page_event, per_page_event, searchEvent])
+  const fetchEventCompleted = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/events?current_page=${current_page_event}&per_page=${per_page_event}&ongoing=1&search_name=${search_name_event}`
+      )
+      if (res.status === 200) {
         const data = res.data
         setEvents(data.events)
         setPerPageEvent(data.per_page)
@@ -179,7 +214,31 @@ const Profile = () => {
       }
       setLoading(false)
     } catch (e) {
-      showToast('error', 'Errorrrr')
+      showToast('error', 'Error')
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchClubsCreated()
+  }, [current_page_club, per_page_club, searchClub])
+
+  const fetchClubsCreated = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs/created-club?current_page=${current_page_club}&per_page=${per_page_club}&search_name=${search_name_club}`
+      )
+      if (res.status === 200) {
+        const data = res.data
+        setClubsCreated(data.clubs)
+        setPerPageClub(data.per_page)
+        setTotalRecordsClub(data.total_clubs)
+        setCurrentPageClub(data.current_page)
+      }
+      setLoading(false)
+    } catch (e) {
+      showToast('error', 'Error')
       setLoading(false)
     }
   }
@@ -196,40 +255,16 @@ const Profile = () => {
     setPerPageEvent(event.rows)
   }
 
-  const itemTemplate = (item) => {
-    return (
-      <div id='dataview-container' style={{ backgroundColor: 'white' }}>
-        <div id='image-container-dataview'>
-          <Link
-            id='link-dataview'
-            href={`/events/event-management/${item.event_id}`}
-          >
-            <Image src={item.image} alt={item.name} />
-          </Link>
-        </div>
-        <Link
-          id='link-dataview'
-          href={`/events/event-management/${item.event_id}`}
-        >
-          <div id='info-dataview'>
-            <h4>
-              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_members} {t('member-join')}
-            </h4>
-            <h4>
-              <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
-              {item.total_clubs} {t('club-join')}
-            </h4>
-          </div>
-          <div id='name-dataview'>
-            <i className='fa fa-briefcase icon-run' aria-hidden='true'></i>
-            <div id='share-register-container'>
-              <h4>{item.name}</h4>
-            </div>
-          </div>
-        </Link>
-      </div>
-    )
+  const onPageChangeEventJoined = (event) => {
+    setFirstEventJoined(event.first)
+    setCurrentPageEventJoined(event.page + 1)
+    setPerPageEventJoined(event.rows)
+  }
+
+  const onPageChangeClub = (event) => {
+    setFirstClub(event.first)
+    setCurrentPageClub(event.page + 1)
+    setPerPageClub(event.rows)
   }
 
   const itemTemplateEvent = (item) => {
@@ -267,7 +302,7 @@ const Profile = () => {
                   id='link-dataview'
                   href={`/events/event-detail/${item.event_id}`}
                 >
-                  {t('event-join')}{' '}
+                  {t('join-events')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <Link id='link-dataview' href='/share'>
@@ -471,7 +506,8 @@ const Profile = () => {
               <Button
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-images'
-                label={t('collection')}
+                // label={t('collection')}
+                label={t('clubs-created')}
                 style={{ width: '25%' }}
                 onClick={() => {
                   setActiveIndex(4)
@@ -487,14 +523,19 @@ const Profile = () => {
                   setLoading={setLoading}
                   showToast={showToast}
                 />
-                <div>
+                {/* <div>
                   <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={'Tìm kiếm hoạt động'}
                   />
-                </div>
+                </div> */}
+                <InputNumber
+                  value={hour}
+                  onValueChange={(e) => setHour(e.value)}
+                  prefix='Hour '
+                />
                 <Paginator
                   first={first}
                   rows={per_page}
@@ -504,34 +545,39 @@ const Profile = () => {
                   page={current_page}
                 />
               </div>
-            ) : activeIndex === 3 ? (
-              <div style={{ width: '95%' }}>
-                <div style={{ marginBottom: '1rem' }}>
-                  <AutoComplete
-                    value={search_name}
-                    onChange={(e) => setSearchName(e.target.value)}
-                    completeMethod={(e) => setSearch(!search)}
-                    placeholder={'Tìm kiếm hoạt động'}
-                  />
-                </div>
-                <DataView data={event} itemTemplate={itemTemplateEvent} />
-                <Paginator
-                  first={firstEvent}
-                  rows={per_page_event}
-                  totalRecords={totalRecordsEvent}
-                  rowsPerPageOptions={[3, 6, 9]}
-                  onPageChange={onPageChangeEvent}
-                  page={current_page_event}
-                />
-              </div>
             ) : activeIndex === 1 ? (
               <div style={{ width: '95%' }}>
                 <div style={{ marginBottom: '1rem' }}>
                   <AutoComplete
-                    value={search_name}
-                    onChange={(e) => setSearchName(e.target.value)}
-                    completeMethod={(e) => setSearch(!search)}
-                    placeholder={'Tìm kiếm hoạt động'}
+                    value={search_name_event_joined}
+                    onChange={(e) => setSearch_NameEventJoined(e.target.value)}
+                    completeMethod={(e) =>
+                      setSearchEventJoined(!searchEventJoined)
+                    }
+                    placeholder={t('search_event')}
+                  />
+                </div>
+                <DataView
+                  data={eventsJoined}
+                  itemTemplate={itemTemplateEvent}
+                />
+                <Paginator
+                  first={firstEventJoined}
+                  rows={per_page_event_joined}
+                  totalRecords={totalRecordsEventJoined}
+                  rowsPerPageOptions={[3, 6, 9]}
+                  onPageChange={onPageChangeEventJoined}
+                  page={current_page_event_joined}
+                />
+              </div>
+            ) : activeIndex === 3 ? (
+              <div style={{ width: '95%' }}>
+                <div style={{ marginBottom: '1rem' }}>
+                  <AutoComplete
+                    value={search_name_event}
+                    onChange={(e) => setSearch_NameEvent(e.target.value)}
+                    completeMethod={(e) => setSearchEvent(!searchEvent)}
+                    placeholder={t('search_event')}
                   />
                 </div>
                 <DataView data={event} itemTemplate={itemTemplateEvent} />
@@ -544,7 +590,31 @@ const Profile = () => {
                   page={current_page_event}
                 />
               </div>
-            ) : activeIndex === 4 ? null : null}
+            ) : activeIndex === 4 ? (
+              <div style={{ width: '95%' }}>
+                <div style={{ marginBottom: '1rem' }}>
+                  <AutoComplete
+                    value={search_name_club}
+                    onChange={(e) => setSearch_NameClub(e.target.value)}
+                    completeMethod={(e) => setSearchClub(!searchClub)}
+                    placeholder={tClub('search')}
+                  />
+                </div>
+                <DataView
+                  data={clubsCreated}
+                  href='/clubs/club-detail/'
+                  t={tClub}
+                />
+                <Paginator
+                  first={firstClub}
+                  rows={per_page_club}
+                  totalRecords={totalRecordsClub}
+                  rowsPerPageOptions={[3, 6, 9]}
+                  onPageChange={onPageChangeClub}
+                  page={current_page_club}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
@@ -559,6 +629,7 @@ export const getStaticProps = async ({ locale }) => {
     props: {
       ...(await serverSideTranslations(locale, [
         'user',
+        'club',
         'scoreboard',
         'topbar',
       ])),

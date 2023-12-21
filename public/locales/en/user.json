@@ -18,7 +18,13 @@
     "joining-events": "Joining events",
     "recent-activities": "Recent activities",
     "completed-events": "Completed events",
+    "clubs-created": "Clubs created",
+    "join-clubs": "Join clubs",
+    "join-events": "Join events",
+    "share": "Share",
     "collection": "Collection",
     "member-join":"Members",
-    "club-join":"Clubs"
+    "club-join":"Clubs",
+    "search_activity": "Search recent activity",
+    "search_event": "Search event"
 }
