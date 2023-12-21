@@ -26,5 +26,9 @@
     "member-join":"Thành viên",
     "club-join":"Câu lạc bộ",
     "search_activity": "Tìm kiếm hoạt động",
-    "search_event": "Tìm kiếm sự kiện"
+    "search_event": "Tìm kiếm sự kiện",
+    "joined": "Đang tham gia",
+    "recent": "Gần đây",
+    "completed": "Đã hoàn thành",
+    "clubs": "Câu lạc bộ"
 }

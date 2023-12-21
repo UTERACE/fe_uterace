@@ -33,14 +33,14 @@
     "total-news": "Tổng số bài viết:",
     "min-pace":  "Tốc độ trung bình tối thiểu (phút/km):",
     "max-pace":  "Tốc độ trung bình tối đa (phút/km):",
-    "created-at": "Ngày thành lập câu lạc bộ:",
+    "created-at": "Ngày thành lập:",
     "manager": "Quản lý câu lạc bộ:",
     "athlete-male": "VĐV Nam:",
     "athlete-female": "VĐV Nữ:",
     "detail": "Giới thiệu",
     "post-clubs": "Bài viết của câu lạc bộ",
     "recent-activities": "Hoạt động gần đây",
-    "scoreboard-member": "Bảng xếp hạng thành viên",
+    "scoreboard-member": "Xếp hạng thành viên",
     "race-distances": "Cự ly tham gia",
     "qualifying-activities": "Hoạt động hợp lệ",
     "running": "Chạy bộ",
@@ -65,5 +65,7 @@
     "minutes": "Phút",
     "seconds": "Giây",
     "from_day": "Từ ngày",
-    "join-date": "Ngày tham gia"
+    "join-date": "Ngày tham gia",
+    "mobile_activities": "Hoạt động",
+    "mobile_members": "Thành viên"
 }

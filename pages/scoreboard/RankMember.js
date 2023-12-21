@@ -104,7 +104,7 @@ const RankMember = ({ value, isRankingUser = false }) => {
       bodyClassName: 'text-center',
     },
     {
-      header: t('member'),
+      header: t('member-name'),
       body: fullnameWithImageTemplate,
     },
     {
@@ -140,7 +140,7 @@ const RankMember = ({ value, isRankingUser = false }) => {
       bodyClassName: 'text-center',
     },
     {
-      header: t('member'),
+      header: t('member-name'),
       body: fullnameWithImageTemplate,
     },
     {
@@ -187,7 +187,7 @@ const RankMember = ({ value, isRankingUser = false }) => {
     },
     {
       field: 'total_distance',
-      header: t('total-distance'),
+      header: t('mobile_distance'),
       bodyClassName: 'text-center',
       body: formatNumberKm,
     },
@@ -205,16 +205,49 @@ const RankMember = ({ value, isRankingUser = false }) => {
     },
   ]
 
+  const scoreboardResponsiveMobile = [
+    {
+      field: 'ranking',
+      header: t('rank'),
+      body: formatRank,
+      bodyClassName: 'text-center',
+    },
+    {
+      header: t('member'),
+      body: fullnameWithImageTemplate,
+    },
+    {
+      field: 'total_distance',
+      header: t('mobile_distance'),
+      bodyClassName: 'text-center',
+      body: formatNumberKm,
+    },
+    {
+      field: 'pace',
+      header: t('pace'),
+      body: formatPace,
+      bodyClassName: 'text-center',
+    },
+    {
+      field: 'organization',
+      header: t('mobile_org'),
+      bodyClassName: 'text-center',
+      body: formatOrganization,
+    },
+  ]
+
   return (
     <DataTable
       data={value}
       rows={4}
       loading={loading}
       columns={
-        isMobile
+        isMobile && isRankingUser
+          ? scoreboardResponsiveMobile
+          : isMobile && !isRankingUser
           ? memberResponsiveMobile
-          : isRankingUser
-          ? rankingUserColumns
+          : !isMobile && isRankingUser
+          ?  rankingUserColumns
           : memberColumns
       }
     />

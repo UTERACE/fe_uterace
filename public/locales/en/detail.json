@@ -65,5 +65,7 @@
     "minutes": "Minutes",
     "seconds": "Seconds",
     "from_day": "From day",
-    "join-date": "Join date"
+    "join-date": "Join date",
+    "mobile_activities": "Activities",
+    "mobile_members": "Members"
 }

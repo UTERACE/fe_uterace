@@ -397,29 +397,49 @@ const UserDetail = ({ user }) => {
               </div>
             </div>
           </div>
-          <div id='profile-chart-container'>
-            <div id='chart-container'>
-              <ChartDaily
-                labels={chartDateTime}
-                seriesData={chartDateDistance}
-                t={t}
-              />
+          {isMobile ? (
+            <div id='mobile-chart-container'>
+              <div>
+                <ChartDaily
+                  labels={chartDateTime}
+                  seriesData={chartDateDistance}
+                  t={t}
+                />
+              </div>
+              <div>
+                <ChartMonthly
+                  labels={chartMonthTime}
+                  seriesData={chartMonthDistance}
+                  t={t}
+                />
+              </div>
             </div>
-            <div id='chart-container'>
-              <ChartMonthly
-                labels={chartMonthTime}
-                seriesData={chartMonthDistance}
-                t={t}
-              />
+          ) : (
+            <div id='profile-chart-container'>
+              <div id='chart-container'>
+                <ChartDaily
+                  labels={chartDateTime}
+                  seriesData={chartDateDistance}
+                  t={t}
+                />
+              </div>
+              <div id='chart-container'>
+                <ChartMonthly
+                  labels={chartMonthTime}
+                  seriesData={chartMonthDistance}
+                  t={t}
+                />
+              </div>
             </div>
-          </div>
+          )}
+
           <div id='profile-activities-container'>
             <div id='profile-button-container'>
               <Button
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar'
-                label={t('joining-events')}
-                style={{ width: '25%' }}
+                label={isMobile ? t('joined') : t('joining-events')}
+                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(1)
                 }}
@@ -427,8 +447,8 @@ const UserDetail = ({ user }) => {
               <Button
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-plus'
-                label={t('recent-activities')}
-                style={{ width: '25%' }}
+                label={isMobile ? t('recent') : t('recent-activities')}
+                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(2)
                 }}
@@ -436,8 +456,8 @@ const UserDetail = ({ user }) => {
               <Button
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-minus'
-                label={t('completed-events')}
-                style={{ width: '25%' }}
+                label={isMobile ? t('completed') : t('completed-events')}
+                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(3)
                 }}
@@ -446,8 +466,8 @@ const UserDetail = ({ user }) => {
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-images'
                 // label={t('collection')}
-                label={t('clubs-created')}
-                style={{ width: '25%' }}
+                label={isMobile ? t('clubs') : t('clubs-created')}
+                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(4)
                 }}

@@ -78,7 +78,8 @@ const Scoreboard = () => {
           <Button
             id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-bar'
-            label={t('scoreboard-member')}
+            label={t('member')}
+            style={{ minWidth: '10rem' }}
             onClick={() => {
               setRanking('user')
               setActiveIndex(1)
@@ -88,7 +89,8 @@ const Scoreboard = () => {
           <Button
             id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
             icon='pi pi-chart-line'
-            label={t('scoreboard-club')}
+            label={t('club')}
+            style={{ minWidth: '10rem' }}
             onClick={() => {
               setRanking('club')
               setActiveIndex(2)

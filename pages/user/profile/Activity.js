@@ -130,8 +130,9 @@ const Activity = ({
             <a id='link-activities'>
               <i className='pi pi-chart-bar' aria-hidden='true'></i>{' '}
               {language === 'vi'
-                ? LocaleHelper.formatPace(item.activity_pace)
-                : LocaleHelper.formatMinutesKmToMilesKm(item.activity_pace)}
+                ? LocaleHelper.formatPace(item.activity_pace) + ' /km'
+                : LocaleHelper.formatMinutesKmToMilesKm(item.activity_pace) +
+                  ' /mi'}
             </a>
             <a id='link-activities'>
               <i className='pi pi-stopwatch' aria-hidden='true'></i>{' '}

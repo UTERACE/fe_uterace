@@ -37,7 +37,7 @@ function formatPace(pace, locale = defaultLocale) {
   const formattedPace = `${String(minutes).padStart(2, '0')}:${String(
     seconds
   ).padStart(2, '0')}`
-  return formattedPace + ' /km'
+  return formattedPace
 }
 
 function formatKm(distance, locale = defaultLocale) {
@@ -57,7 +57,7 @@ function formatMinutesKmToMilesKm(pace, locale = defaultLocale) {
   const formattedPace = `${String(minutes).padStart(2, '0')}:${String(
     seconds
   ).padStart(2, '0')}`
-  return formattedPace + ' /mi'
+  return formattedPace
 }
 
 export default {

@@ -66,6 +66,7 @@ const EventDetail = ({ event }) => {
   const [rankMember, setRankMember] = useState({})
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('detail')
 
@@ -83,6 +84,13 @@ const EventDetail = ({ event }) => {
       fetchActivities()
     }
   }, [current_page, per_page, search, activeIndex])
+
+  useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
+  }, [])
 
   const fetchRankMember = async () => {
     setLoading(true)
@@ -249,65 +257,113 @@ const EventDetail = ({ event }) => {
               }}
             />
           </div>
-          <div id='event-distance-container'>
-            <div id='event-distance-title-container'>
-              <div
-                id='distance-event'
-                style={{
-                  backgroundColor: '#ffffff',
-                  width: '70%',
-                  marginBottom: '1rem',
-                }}
-              >
-                {t('race-distances')}
+          {isMobile ? (
+            <div id='mobile-event-distance-container'>
+              <div id='event-distance-title-container'>
+                <div
+                  id='distance-event'
+                  style={{
+                    backgroundColor: '#ffffff',
+                    width: '70%',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  {t('race-distances')}
+                </div>
+                <div id='event-distance-detail'>
+                  {event.distance.map((item, index) => (
+                    <div id='distance-event' key={item.id}>
+                      <i className='pi pi-map-marker'></i>
+                      <h4>{item.name}</h4>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div id='event-distance-detail'>
-                {event.distance.map((item, index) => (
-                  <div id='distance-event' key={item.id}>
-                    <i className='pi pi-map-marker'></i>
-                    <h4>{item.name}</h4>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div id='event-distance-title-container'>
-              <div
-                id='distance-event'
-                style={{
-                  backgroundColor: '#ffffff',
-                  width: '70%',
-                  marginBottom: '1rem',
-                }}
-              >
-                {t('qualifying-activities')}
-              </div>
-              <div id='event-distance-detail'>
-                <div id='distance-event'>
-                  <i className='pi pi-map-marker'></i>
-                  <h4>{t('running')}</h4>
+              <div id='event-distance-title-container'>
+                <div
+                  id='distance-event'
+                  style={{
+                    backgroundColor: '#ffffff',
+                    width: '70%',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  {t('qualifying-activities')}
                 </div>
-                <div id='distance-event'>
-                  <i className='pi pi-map-marker'></i>
-                  <h4>{t('walking')}</h4>
+                <div id='event-distance-detail'>
+                  <div id='distance-event'>
+                    <i className='pi pi-map-marker'></i>
+                    <h4>{t('running')}</h4>
+                  </div>
+                  <div id='distance-event'>
+                    <i className='pi pi-map-marker'></i>
+                    <h4>{t('walking')}</h4>
+                  </div>
+                  <div></div>
                 </div>
-                <div></div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div id='event-distance-container'>
+              <div id='event-distance-title-container'>
+                <div
+                  id='distance-event'
+                  style={{
+                    backgroundColor: '#ffffff',
+                    width: '70%',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  {t('race-distances')}
+                </div>
+                <div id='event-distance-detail'>
+                  {event.distance.map((item, index) => (
+                    <div id='distance-event' key={item.id}>
+                      <i className='pi pi-map-marker'></i>
+                      <h4>{item.name}</h4>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div id='event-distance-title-container'>
+                <div
+                  id='distance-event'
+                  style={{
+                    backgroundColor: '#ffffff',
+                    width: '70%',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  {t('qualifying-activities')}
+                </div>
+                <div id='event-distance-detail'>
+                  <div id='distance-event'>
+                    <i className='pi pi-map-marker'></i>
+                    <h4>{t('running')}</h4>
+                  </div>
+                  <div id='distance-event'>
+                    <i className='pi pi-map-marker'></i>
+                    <h4>{t('walking')}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div id='event-info-detail'>
             <div id='statistic-event'>
               <Button
                 id='button-tab'
-                style={{ width: '35%' }}
+                style={{ width: 'auto', minWidth: '25%' }}
                 label={`${event.total_member} ${t('participants')}`}
                 onClick={() => {}}
               />
               <Button
                 id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label={t('view-statistic')}
-                style={{ width: '35%' }}
+                style={{ width: 'auto', minWidth: '25%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
                 onClick={() => {
@@ -323,8 +379,8 @@ const EventDetail = ({ event }) => {
                     <h4>{event.total_member}</h4>
                   </div>
                   <div id='detail-event-container'>
-                    <h4>{t('total-distance')}</h4>
-                    <h4>{event.total_distance}</h4>
+                    <h4>{t('athlete-completed')}</h4>
+                    <h4>{event.completed}</h4>
                   </div>
                   <div id='detail-event-container'>
                     <h4>{t('total-activities')}</h4>
@@ -341,8 +397,8 @@ const EventDetail = ({ event }) => {
                 </div>
                 <div id='info-event-detail'>
                   <div id='detail-event-container'>
-                    <h4>{t('athlete-completed')}</h4>
-                    <h4>{event.completed}</h4>
+                    <h4>{t('total-distance')}</h4>
+                    <h4>{LocaleHelper.formatNumber(event.total_distance)}</h4>
                   </div>
                   <div id='detail-event-container'>
                     <h4>{t('athlete-in-progress')}</h4>
@@ -368,7 +424,7 @@ const EventDetail = ({ event }) => {
             <div id='statistic-event'>
               <Button
                 id={activeIndex === 0 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '20%' }}
+                style={{ width: 'auto', minWidth: '18%' }}
                 icon='pi pi-tags'
                 label={t('detail')}
                 onClick={() => {
@@ -377,7 +433,7 @@ const EventDetail = ({ event }) => {
               />
               <Button
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '20%' }}
+                style={{ width: 'auto', minWidth: '18%' }}
                 icon='pi pi-calendar-plus'
                 label={t('rules')}
                 onClick={() => {
@@ -386,7 +442,7 @@ const EventDetail = ({ event }) => {
               />
               <Button
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '22%' }}
+                style={{ width: 'auto', minWidth: '18%' }}
                 icon='pi pi-calendar-plus'
                 label={t('awards')}
                 onClick={() => {
@@ -395,9 +451,9 @@ const EventDetail = ({ event }) => {
               />
               <Button
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '20%' }}
+                style={{ width: 'auto', minWidth: '18%' }}
                 icon='pi pi-chart-line'
-                label={t('scoreboard-member')}
+                label={isMobile ? t('mobile_members') : t('scoreboard-member')}
                 onClick={() => {
                   setActiveIndex(3)
                   setSearchName('')
@@ -405,9 +461,11 @@ const EventDetail = ({ event }) => {
               />
               <Button
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '20%' }}
+                style={{ width: 'auto', minWidth: '18%' }}
                 icon='pi pi-chart-line'
-                label={t('recent_activities')}
+                label={
+                  isMobile ? t('mobile_activities') : t('recent-activities')
+                }
                 onClick={() => {
                   setActiveIndex(4)
                   setSearchName('')
@@ -445,7 +503,7 @@ const EventDetail = ({ event }) => {
                 />
               </div>
             ) : activeIndex === 4 ? (
-              <div>
+              <div style={{ width: '95%' }}>
                 {/* <RankClub value={rankClub.items} /> */}
                 <div>
                   <AutoComplete

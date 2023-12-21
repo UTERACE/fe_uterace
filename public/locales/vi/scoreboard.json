@@ -1,8 +1,8 @@
 {
     "scoreboard-club":"Bảng xếp hạng câu lạc bộ",
-    "club":"Câu lạc bộ",
+    "club":"Xếp hạng câu lạc bộ",
     "scoreboard-member":"Bảng xếp hạng cá nhân",
-    "member":"Cá nhân",
+    "member":"Xếp hạng thành viên",
     "month":"Tháng",
     "total":"Tổng",
     "rank":"Hạng",
@@ -16,5 +16,7 @@
     "total-members":"Tổng thành viên",
     "search_club":"Tìm kiếm câu lạc bộ",
     "search_member":"Tìm kiếm thành viên",
-    "join-date": "Ngày tham gia"
+    "join-date": "Ngày tham gia",
+    "mobile_org": "Tổ chức",
+    "mobile_distance": "Quãng đường (km)"
 }

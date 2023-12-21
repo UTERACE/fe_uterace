@@ -29,6 +29,7 @@ const Topbar = () => {
   const [currentLanguage, setCurrentLanguage] = useState(router.locale)
   const [showNotification, setShowNotification] = useState(false)
   const [notifications, setNotifications] = useState([])
+  const [status, setStatus] = useState(false)
 
   const menu = useRef(null)
   const menuHeader = useRef(null)
@@ -282,7 +283,24 @@ const Topbar = () => {
     // return () => {
     //   socket.disconnect()
     // }
+    fetchStatus()
   }, [email, isAuthenticated])
+
+  const fetchStatus = async () => {
+    if (isAuthenticated) {
+      try {
+        const res = await apiInstance.get(`/strava/status`)
+        if (res.status === 200) {
+          const data = res.data
+          if (data.detail === 'Strava has been connected') {
+            setStatus(true)
+          }
+        }
+      } catch (e) {
+        router.push('/login')
+      }
+    }
+  }
 
   return (
     <div id='topbar'>
@@ -364,11 +382,14 @@ const Topbar = () => {
                 <i
                   className='pi pi-bell p-overlay-badge'
                   id='notification-button-container'
-                  onClick={toggleNotification}
+                  onClick={() => {
+                    toggleNotification()
+                  }}
                 >
-                  {notifications.length > 0 && (
+                  {!status ? <i id='notification-number'>1</i> : null}
+                  {/* {notifications.length > 0 && (
                     <i id='notification-number'>{notifications.length}</i>
-                  )}
+                  )} */}
                 </i>
                 {showNotification && (
                   <div id='notification-container'>
@@ -395,22 +416,34 @@ const Topbar = () => {
                           onClick={toggleNotification}
                         ></i>
                       </div>
-                      <div id='notification-user-container'>
-                        <div id='notification-user'>
-                          <div>
-                            <Image
-                              src='/default-avatar.png'
-                              width={50}
-                              height={50}
-                            />
-                          </div>
+                      {!status ? (
+                        <div
+                          id='notification-user-container'
+                          onClick={() => {
+                            setStatus(true)
+                          }}
+                        >
+                          <div id='notification-user'>
+                            <div>
+                              <Image
+                                src='/default-avatar.png'
+                                alt='avatar'
+                                width={50}
+                                height={50}
+                              />
+                            </div>
 
-                          <div>
-                            <h4>Nguyễn Văn A</h4>
+                            <div>
+                              <h4>{fullname}</h4>
+                            </div>
                           </div>
+                          <p>Bạn chưa kết nối với Strava, vui lòng kết nối!</p>
                         </div>
-                        <p>Đã tham gia sự kiện: Hà Nội Marathon 2021</p>
-                      </div>
+                      ) : (
+                        <div id='notification-user-container'>
+                          <p>Hiện tại không có thông báo nào!</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

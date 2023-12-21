@@ -72,6 +72,7 @@ const ManagementClubDetail = ({ club }) => {
   const [detailsNews, setDetailsNews] = useState({})
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('detail')
   const { t: tNews } = useTranslation('news')
@@ -91,6 +92,13 @@ const ManagementClubDetail = ({ club }) => {
   useEffect(() => {
     fetchData()
   }, [current_page, per_page, search, activeIndex])
+
+  useEffect(() => {
+    //responsive window
+    if (window.innerHeight > window.innerWidth) {
+      setIsMobile(true)
+    }
+  }, [])
 
   const fetchData = async () => {
     setLoading(true)
@@ -288,14 +296,14 @@ const ManagementClubDetail = ({ club }) => {
             <div id='statistic-club'>
               <Button
                 id='button-tab'
-                style={{ width: '35%' }}
+                style={{ width: 'auto', minWidth: '25%' }}
                 label={`${club.total_member} ${t('participants')}`}
                 onClick={() => {}}
               />
               <Button
                 id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label={t('view-statistic')}
-                style={{ width: '35%' }}
+                style={{ width: 'auto', minWidth: '25%' }}
                 iconPos='right'
                 icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
                 onClick={() => {
@@ -331,7 +339,11 @@ const ManagementClubDetail = ({ club }) => {
                   <div id='detail-club-container'>
                     <h4>{t('created-at')}</h4>
                     <h4>
-                      {LocaleHelper.formatDateTime(new Date(club.created_at))}
+                      {isMobile
+                        ? LocaleHelper.formatDate(new Date(club.created_at))
+                        : LocaleHelper.formatDateTime(
+                            new Date(club.created_at)
+                          )}
                     </h4>
                   </div>
                   <div id='detail-club-container'>
@@ -380,7 +392,7 @@ const ManagementClubDetail = ({ club }) => {
             <div id='statistic-club'>
               <Button
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '80%' }}
+                style={{ width: 'auto', minWidth: '30%' }}
                 icon='pi pi-calendar-plus'
                 label={t('detail')}
                 onClick={() => {
@@ -389,18 +401,20 @@ const ManagementClubDetail = ({ club }) => {
               />
               <Button
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '90%' }}
+                style={{ width: 'auto', minWidth: '30%' }}
                 icon='pi pi-calendar-plus'
-                label={t('recent-activities')}
+                label={
+                  isMobile ? t('mobile_activities') : t('recent-activities')
+                }
                 onClick={() => {
                   setActiveIndex(2)
                 }}
               />
               <Button
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: '100%' }}
+                style={{ width: 'auto', minWidth: '30%' }}
                 icon='pi pi-calendar'
-                label={t('scoreboard-member')}
+                label={isMobile ? t('mobile_members') : t('scoreboard-member')}
                 onClick={() => {
                   setActiveIndex(3)
                 }}

@@ -26,5 +26,9 @@
     "member-join":"Members",
     "club-join":"Clubs",
     "search_activity": "Search recent activity",
-    "search_event": "Search event"
+    "search_event": "Search event",
+    "joined": "Participating",
+    "recent": "Recent",
+    "completed": "Completed",
+    "clubs": "Clubs"
 }

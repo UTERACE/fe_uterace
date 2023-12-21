@@ -1,8 +1,8 @@
 {
     "scoreboard-club":"Scoreboard Club",
-    "club":"Club",
+    "club":"Scoreboard Club",
     "scoreboard-member":"Scoreboard Member",
-    "member":"Member",
+    "member":"Scoreboard Member",
     "month":"Month",
     "total":"Total",
     "rank":"Rank",
@@ -16,5 +16,7 @@
     "total-members":"Total Members",
     "search_club":"Search Club",
     "search_member":"Search Member",
-    "join-date":"Join Date"
+    "join-date":"Join Date",
+    "mobile_org":"Organization",
+    "mobile_distance":"Distance (km)"
 }
