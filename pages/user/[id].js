@@ -75,6 +75,7 @@ const UserDetail = ({ user }) => {
   const [clubs, setClubs] = useState([])
   const [avatarImage, setAvatarImage] = useState('')
   const [avatarLabel, setAvatarLabel] = useState('A')
+  const [search_name, setSearchName] = useState('')
   const [search_name_event, setSearch_NameEvent] = useState('')
   const [search_name_event_joined, setSearch_NameEventJoined] = useState('')
   const [search_name_club, setSearch_NameClub] = useState('')
@@ -126,7 +127,7 @@ const UserDetail = ({ user }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/user/recent-active/${user.user_id}?per_page=${per_page}&current_page=${current_page}&search_name=${search_name}&hour=${hour}`
+        `/user/recent-active/${user.user_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=${hour}`
       )
       if (res.status === 200) {
         setPerPage(res.data.per_page)
