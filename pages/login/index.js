@@ -306,7 +306,7 @@ const Login = () => {
                   </Field>
                 </div>
                 <div className='col-6' id='forgot-title'>
-                  <Link href='/landing'>{t('forgot_password')}</Link>
+                  <Link href='/forgot-password'>{t('forgot_password')}</Link>
                 </div>
               </div>
               <div className='grid-form'>

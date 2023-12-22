@@ -26,7 +26,7 @@ apiInstance.interceptors.request.use(
   function (config) {
     const state = store.getState()
     const token = state.auth.accessToken
-    if (token) {
+    if (token != null && token != '' && token != undefined) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
@@ -44,8 +44,8 @@ apiInstance.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
-      !error.config._retry
-      && error.response.data.message === 'JWT token is expired'
+      !error.config._retry &&
+      error.response.data.message === 'JWT token is expired'
     ) {
       console.log('Attempting token refresh...')
       error.config._retry = true

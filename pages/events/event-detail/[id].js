@@ -251,7 +251,7 @@ const EventDetail = ({ event }) => {
             <Button
               ref={buttonEl}
               id='button-join'
-              label={checkJoin ? t('leave_club') : t('join-now')}
+              label={checkJoin ? t('leave_event') : t('join-now')}
               onClick={() => {
                 setVisible(true)
               }}

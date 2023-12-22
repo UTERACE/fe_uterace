@@ -15,6 +15,7 @@
     "confirm_leave_event": "Bạn có chắc chắn muốn rời sự kiện này?",
     "join_event_success": "Tham gia sự kiện thành công",
     "join_event_fail": "Tham gia sự kiện thất bại",
+    "leave_event": "Rời sự kiện",
     "leave_event_success": "Rời sự kiện thành công",
     "leave_event_fail": "Rời sự kiện thất bại",
     "rejected": "Đã từ chối",

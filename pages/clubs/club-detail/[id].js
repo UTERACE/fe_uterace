@@ -160,7 +160,7 @@ const ClubDetail = ({ club }) => {
         if (res.status == 200) {
           showToast('success', t('join_club_success'), dataRes.message)
           setLoading(false)
-          setUpdateStatus(true)
+          setUpdateStatus(!updateStatus)
         }
       } catch (error) {
         showToast('error', t('join_club_fail'), error)
@@ -177,7 +177,7 @@ const ClubDetail = ({ club }) => {
       if (res.status == 200) {
         showToast('success', t('leave_club_success'), dataRes.message)
         setLoading(false)
-        setUpdateStatus(true)
+        setUpdateStatus(!updateStatus)
       }
     } catch (error) {
       showToast('error', t('leave_club_fail'), error)
