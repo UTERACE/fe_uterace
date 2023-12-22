@@ -58,13 +58,12 @@ const Profile = () => {
   const [search_name_event_joined, setSearch_NameEventJoined] = useState('')
   const [search_name_club, setSearch_NameClub] = useState('')
   const [hour, setHour] = useState(48)
-  const [clubs, setClubs] = useState([])
+  const [completed, setCompleted] = useState(false)
   const [data, setData] = useState({})
   const menu = useRef(null)
   const router = useRouter()
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
-  const [search, setSearch] = useState(false)
   const [searchClub, setSearchClub] = useState(false)
   const [searchEvent, setSearchEvent] = useState(false)
   const [searchEventJoined, setSearchEventJoined] = useState(false)
@@ -173,37 +172,14 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    fetchEventsJoined()
-  }, [current_page_event_joined, per_page_event_joined, searchEventJoined])
+    fetchEvents()
+  }, [completed, current_page_event, per_page_event, searchEvent])
 
-  const fetchEventsJoined = async () => {
+  const fetchEvents = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events/joined-event?current_page=${current_page_event_joined}&per_page=${per_page_event_joined}&search_name=${search_name_event_joined}`
-      )
-      if (res && res.status === 200) {
-        const data = res.data
-        setEventsJoined(data.events)
-        setPerPageEventJoined(data.per_page)
-        setTotalRecordsEventJoined(data.total_events)
-        setCurrentPageEventJoined(data.current_page)
-      }
-      setLoading(false)
-    } catch (e) {
-      showToast('error', 'Error')
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchEventCompleted()
-  }, [current_page_event, per_page_event, searchEvent])
-  const fetchEventCompleted = async () => {
-    setLoading(true)
-    try {
-      const res = await apiInstance.get(
-        `/events?current_page=${current_page_event}&per_page=${per_page_event}&ongoing=1&search_name=${search_name_event}`
+        `/user/event-completed?current_page=${current_page_event}&per_page=${per_page_event}&search_name=${search_name_event}&complete=${completed}`
       )
       if (res.status === 200) {
         const data = res.data
@@ -502,6 +478,7 @@ const Profile = () => {
                 style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(1)
+                  setCompleted(false)
                 }}
               />
               <Button
@@ -520,6 +497,7 @@ const Profile = () => {
                 style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(3)
+                  setCompleted(true)
                 }}
               />
               <Button
@@ -568,25 +546,20 @@ const Profile = () => {
               <div style={{ width: '95%' }}>
                 <div style={{ marginBottom: '1rem' }}>
                   <AutoComplete
-                    value={search_name_event_joined}
-                    onChange={(e) => setSearch_NameEventJoined(e.target.value)}
-                    completeMethod={(e) =>
-                      setSearchEventJoined(!searchEventJoined)
-                    }
+                    value={search_name_event}
+                    onChange={(e) => setSearch_NameEvent(e.target.value)}
+                    completeMethod={(e) => setSearchEvent(!searchEvent)}
                     placeholder={t('search_event')}
                   />
                 </div>
-                <DataView
-                  data={eventsJoined}
-                  itemTemplate={itemTemplateEvent}
-                />
+                <DataView data={event} itemTemplate={itemTemplateEvent} />
                 <Paginator
-                  first={firstEventJoined}
-                  rows={per_page_event_joined}
-                  totalRecords={totalRecordsEventJoined}
+                  first={firstEvent}
+                  rows={per_page_event}
+                  totalRecords={totalRecordsEvent}
                   rowsPerPageOptions={[3, 6, 9]}
-                  onPageChange={onPageChangeEventJoined}
-                  page={current_page_event_joined}
+                  onPageChange={onPageChangeEvent}
+                  page={current_page_event}
                 />
               </div>
             ) : activeIndex === 3 ? (

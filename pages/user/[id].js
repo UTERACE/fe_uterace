@@ -55,11 +55,6 @@ const UserDetail = ({ user }) => {
   const [totalRecordsEvent, setTotalRecordsEvent] = useState(1)
   const [firstEvent, setFirstEvent] = useState(0)
 
-  const [current_page_event_joined, setCurrentPageEventJoined] = useState(1)
-  const [per_page_event_joined, setPerPageEventJoined] = useState(3)
-  const [totalRecordsEventJoined, setTotalRecordsEventJoined] = useState(1)
-  const [firstEventJoined, setFirstEventJoined] = useState(0)
-
   const [current_page_club, setCurrentPageClub] = useState(1)
   const [per_page_club, setPerPageClub] = useState(3)
   const [totalRecordsClub, setTotalRecordsClub] = useState(1)
@@ -72,18 +67,13 @@ const UserDetail = ({ user }) => {
   const [chartMonthTime, setChartMonthTime] = useState([])
   const [chartMonthPace, setChartMonthPace] = useState([])
   const [chartMonthDistance, setChartMonthDistance] = useState([])
-  const [clubs, setClubs] = useState([])
-  const [avatarImage, setAvatarImage] = useState('')
-  const [avatarLabel, setAvatarLabel] = useState('A')
   const [search_name, setSearchName] = useState('')
   const [search_name_event, setSearch_NameEvent] = useState('')
-  const [search_name_event_joined, setSearch_NameEventJoined] = useState('')
   const [search_name_club, setSearch_NameClub] = useState('')
   const [hour, setHour] = useState(48)
-  const [search, setSearch] = useState(false)
+  const [completed, setCompleted] = useState(false)
   const [searchClub, setSearchClub] = useState(false)
   const [searchEvent, setSearchEvent] = useState(false)
-  const [searchEventJoined, setSearchEventJoined] = useState(false)
 
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
@@ -93,13 +83,11 @@ const UserDetail = ({ user }) => {
   const language = router.locale
   const [event, setEvents] = useState([])
   const [clubsCreated, setClubsCreated] = useState([])
-  const [eventsJoined, setEventsJoined] = useState([])
 
   const { t } = useTranslation('user')
   const { t: tClub } = useTranslation('club')
 
   useEffect(() => {
-    setAvatarImage(user.image)
     setChartDateTime(user.chart_date.map((time) => time.date_time))
     setChartDateDistance(
       user.chart_date.map((distance) => distance.date_distance)
@@ -143,37 +131,14 @@ const UserDetail = ({ user }) => {
   }
 
   useEffect(() => {
-    fetchEventsJoined()
-  }, [current_page_event_joined, per_page_event_joined, searchEventJoined])
+    fetchEvents()
+  }, [completed, current_page_event, per_page_event, searchEvent])
 
-  const fetchEventsJoined = async () => {
+  const fetchEvents = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events/joined-event/${user.user_id}?current_page=${current_page_event_joined}&per_page=${per_page_event_joined}&search_name=${search_name_event_joined}`
-      )
-      if (res && res.status === 200) {
-        const data = res.data
-        setEventsJoined(data.events)
-        setPerPageEventJoined(data.per_page)
-        setTotalRecordsEventJoined(data.total_events)
-        setCurrentPageEventJoined(data.current_page)
-      }
-      setLoading(false)
-    } catch (e) {
-      showToast('error', 'Error')
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchEventCompleted()
-  }, [current_page_event, per_page_event, searchEvent])
-  const fetchEventCompleted = async () => {
-    setLoading(true)
-    try {
-      const res = await apiInstance.get(
-        `/events?current_page=${current_page_event}&per_page=${per_page_event}&ongoing=1&search_name=${search_name_event}`
+        `/user/event-completed/${user.user_id}?current_page=${current_page_event}&per_page=${per_page_event}&search_name=${search_name_event}&complete=${completed}`
       )
       if (res.status === 200) {
         const data = res.data
@@ -223,12 +188,6 @@ const UserDetail = ({ user }) => {
     setFirstEvent(event.first)
     setCurrentPageEvent(event.page + 1)
     setPerPageEvent(event.rows)
-  }
-
-  const onPageChangeEventJoined = (event) => {
-    setFirstEventJoined(event.first)
-    setCurrentPageEventJoined(event.page + 1)
-    setPerPageEventJoined(event.rows)
   }
 
   const onPageChangeClub = (event) => {
@@ -443,6 +402,7 @@ const UserDetail = ({ user }) => {
                 style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(1)
+                  setCompleted(false)
                 }}
               />
               <Button
@@ -461,6 +421,7 @@ const UserDetail = ({ user }) => {
                 style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
                 onClick={() => {
                   setActiveIndex(3)
+                  setCompleted(true)
                 }}
               />
               <Button
@@ -510,24 +471,19 @@ const UserDetail = ({ user }) => {
                 <div style={{ marginBottom: '1rem' }}>
                   <AutoComplete
                     value={search_name_event}
-                    onChange={(e) => setSearch_NameEventJoined(e.target.value)}
-                    completeMethod={(e) =>
-                      setSearchEventJoined(!searchEventJoined)
-                    }
+                    onChange={(e) => setSearch_NameEvent(e.target.value)}
+                    completeMethod={(e) => setSearchEvent(!searchEvent)}
                     placeholder={t('search_event')}
                   />
                 </div>
-                <DataView
-                  data={eventsJoined}
-                  itemTemplate={itemTemplateEvent}
-                />
+                <DataView data={event} itemTemplate={itemTemplateEvent} />
                 <Paginator
-                  first={firstEventJoined}
-                  rows={per_page_event_joined}
-                  totalRecords={totalRecordsEventJoined}
+                  first={firstEvent}
+                  rows={per_page_event}
+                  totalRecords={totalRecordsEvent}
                   rowsPerPageOptions={[3, 6, 9]}
-                  onPageChange={onPageChangeEventJoined}
-                  page={current_page_event_joined}
+                  onPageChange={onPageChangeEvent}
+                  page={current_page_event}
                 />
               </div>
             ) : activeIndex === 3 ? (

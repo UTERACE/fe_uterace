@@ -15,6 +15,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import apiInstance from '@/api/apiInstance'
 import Image from 'next/image'
+import LocaleHelper from '@/components/locale/LocaleHelper'
 
 const ClubManagement = () => {
   const [clubs, setClubs] = useState([])
@@ -142,7 +143,7 @@ const ClubManagement = () => {
             </h4>
             <h4>
               <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
-              {item.total_distance} Km
+              {LocaleHelper.formatNumber(item.total_distance)} Km
             </h4>
           </div>
           <div id='name-dataview'>
