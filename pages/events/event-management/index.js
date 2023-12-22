@@ -171,6 +171,21 @@ const EventManagement = () => {
     fetchDetailEvent(event_id)
   }
 
+  const handleClickDelete = async (event_id) => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.delete(`/events/${event_id}`)
+      if (res.status === 200) {
+        showToast('success', t('delete_event_success'))
+        fetchEvents()
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', t('delete_event_fail'))
+      setLoading(false)
+    }
+  }
+
   const fetchDetailEvent = async (event_id) => {
     try {
       const res = await apiInstance.get(`/events/${event_id}`)
@@ -200,7 +215,9 @@ const EventManagement = () => {
     {
       label: 'Delete',
       icon: 'pi pi-trash',
-      command: () => {},
+      command: () => {
+        handleClickDelete(event_id)
+      },
     },
     {
       label: 'React Website',

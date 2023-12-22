@@ -29,6 +29,7 @@
     "to_date": "To date",
     "intro": "Introduce",
     "button_create": "Create event",
-    "button_update": "Update event"
-
+    "button_update": "Update event",
+    "delete_event_success": "Delete event success",
+    "delete_event_fail": "Delete event fail"
 }

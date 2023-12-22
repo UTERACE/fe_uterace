@@ -29,5 +29,7 @@
     "to_date": "Ngày kết thúc",
     "intro": "Giới thiệu",
     "button_create": "Tạo giải chạy cho mọi người",
-    "button_update": "Cập nhật sự kiện"
+    "button_update": "Cập nhật sự kiện",
+    "delete_event_success": "Xóa sự kiện thành công",
+    "delete_event_fail": "Xóa sự kiện thất bại"
 }
