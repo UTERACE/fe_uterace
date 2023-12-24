@@ -48,13 +48,14 @@ const HomePage = () => {
   const handleReInitialize = async (user_id) => {
     setLoading(true)
     try {
-      const res = await apiInstance.post(`/manage-user/initialize/${user_id}`)
+      const res = await apiInstance.post(`/re-initialize/${user_id}`)
       if (res.status === 200) {
         showToast('success', 'Đồng bộ thành công', res.data.message)
+        fetchUserInitialize()
         setLoading(false)
       }
     } catch (e) {
-      showToast('error', 'Error')
+      showToast('error', 'Error', e.response.data.message)
       setLoading(false)
     }
   }
@@ -62,9 +63,10 @@ const HomePage = () => {
   const handleReInitializeAll = async () => {
     setLoading(true)
     try {
-      const res = await apiInstance.post(`/manage-user/initialize`)
+      const res = await apiInstance.post(`/re-initialize`)
       if (res.status === 200) {
         showToast('success', 'Đồng bộ thành công', res.data.message)
+        fetchUserInitialize()
         setLoading(false)
       }
     } catch (e) {
@@ -110,17 +112,43 @@ const HomePage = () => {
     return 'Not available'
   }
   const handleInitUser = (rowData) => {
-    return (
-      <Button
-        id='button-reinitialize'
-        type='button'
-        onClick={() => {
-          fetchUserInitialize(rowData.user_id)
-        }}
-      >
-        Đồng bộ
-      </Button>
-    )
+    if (rowData.status === '0') {
+      return (
+        <Button
+          id='button-reinitialize'
+          type='button'
+          onClick={() => {
+            handleReInitialize(rowData.user_id)
+          }}
+        >
+          Đồng bộ
+        </Button>
+      )
+    } else {
+      return (
+        <Button
+          id='button-reinitialize'
+          type='button'
+          onClick={() => {
+            handleReInitialize(rowData.user_id)
+          }}
+        >
+          Đồng bộ lại
+        </Button>
+      )
+    }
+
+    // return (
+    //   <Button
+    //     id='button-reinitialize'
+    //     type='button'
+    //     onClick={() => {
+    //       fetchUserInitialize(rowData.user_id)
+    //     }}
+    //   >
+    //     Đồng bộ
+    //   </Button>
+    // )
   }
   const userInitColumns = [
     {
@@ -160,7 +188,13 @@ const HomePage = () => {
     <div id='initial-user-container'>
       <DataTable data={userInit} rows={4} columns={userInitColumns} />
       <div id='button-reinitialize-container'>
-        <Button label='Đồng bộ tất cả' id='button-reinitialize' />
+        <Button
+          label='Đồng bộ tất cả'
+          id='button-reinitialize'
+          onClick={() => {
+            handleReInitializeAll()
+          }}
+        />
       </div>
       <div>
         <AutoComplete
