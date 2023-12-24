@@ -68,7 +68,7 @@ const Activity = ({
   const fetchDataMap = async (activity_id) => {
     setLoading(true)
     try {
-      const res = await apiInstance.get(`/decode_polyline/${activity_id}`)
+      const res = await apiInstance.get(`/decode-polyline/${activity_id}`)
       if (res.status === 200) {
         setPolyline(res.data)
         setLoading(false)
