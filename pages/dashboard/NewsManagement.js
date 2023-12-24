@@ -331,7 +331,7 @@ const NewsManagement = () => {
   return (
     <div id='initial-user-container'>
       <Dialog
-        header='Lý do chặn sự kiện'
+        header='Lý do chặn tin tức'
         visible={visibleReason}
         position='top'
         style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
@@ -358,7 +358,7 @@ const NewsManagement = () => {
                   handleBlockNews(news_id)
                 }}
               >
-                Chặn sự kiện
+                Chặn tin tức
               </Button>
             </div>
           ) : (

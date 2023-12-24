@@ -329,7 +329,7 @@ const ClubManagement = () => {
   return (
     <div id='initial-user-container'>
       <Dialog
-        header='Lý do chặn sự kiện'
+        header='Lý do chặn câu lạc bộ'
         visible={visibleReason}
         position='top'
         style={{ width: '30%', height: 'auto', borderRadius: '20px' }}
@@ -356,7 +356,7 @@ const ClubManagement = () => {
                   handleBlockClub(club_id)
                 }}
               >
-                Chặn sự kiện
+                Chặn câu lạc bộ
               </Button>
             </div>
           ) : (
