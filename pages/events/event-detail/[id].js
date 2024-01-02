@@ -252,6 +252,12 @@ const EventDetail = ({ event }) => {
               ref={buttonEl}
               id='button-join'
               label={checkJoin ? t('leave_event') : t('join-now')}
+              disabled={
+                Date.now() > new Date(event.from_date).getTime() &&
+                Date.now() < new Date(event.to_date).getTime()
+                  ? false
+                  : true
+              }
               onClick={() => {
                 setVisible(true)
               }}
