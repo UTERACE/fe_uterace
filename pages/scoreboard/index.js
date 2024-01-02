@@ -27,6 +27,7 @@ const Scoreboard = () => {
 
   const currentDate = new Date()
   const currentMonth = currentDate.getMonth() + 1
+  const currentYear = currentDate.getFullYear()
 
   const { t } = useTranslation('scoreboard')
 
@@ -102,7 +103,7 @@ const Scoreboard = () => {
           <div>
             <div id='month-button-container'>
               <Button
-                id={month === 1 ? 'button-tab-month' : ''}
+                id={month === 0 ? 'button-tab-month' : ''}
                 icon='pi pi-chart-bar'
                 label={t('total')}
                 onClick={() => {
@@ -115,25 +116,42 @@ const Scoreboard = () => {
                 label={`${t('month')} ${currentMonth}`}
                 onClick={() => {
                   setMonth(currentMonth)
+                  setYear(currentYear)
                   console.log(month)
                 }}
               />
               <Button
-                id={month === currentMonth - 1 ? 'button-tab-month' : ''}
+                id={
+                  month === (currentMonth === 1 ? 12 : currentMonth - 1)
+                    ? 'button-tab-month'
+                    : ''
+                }
                 icon='pi pi-calendar-minus'
-                label={`${t('month')} ${currentMonth - 1}`}
+                label={`${t('month')} ${
+                  currentMonth === 1 ? 12 : currentMonth - 1
+                }`}
                 onClick={() => {
-                  setMonth(currentMonth - 1)
-                  console.log(month)
+                  if (currentMonth === 1) {
+                    setMonth(12)
+                    setYear(currentYear - 1)
+                  } else setMonth(currentMonth - 1)
                 }}
               />
               <Button
-                id={month === currentMonth - 2 ? 'button-tab-month' : ''}
+                id={
+                  month === (currentMonth === 1 ? 11 : currentMonth - 2)
+                    ? 'button-tab-month'
+                    : ''
+                }
                 icon='pi pi-calendar-times'
-                label={`${t('month')} ${currentMonth - 2}`}
+                label={`${t('month')} ${
+                  currentMonth === 1 ? 11 : currentMonth - 2
+                }`}
                 onClick={() => {
-                  setMonth(currentMonth - 2)
-                  console.log(month)
+                  if (currentMonth === 1) {
+                    setMonth(11)
+                    setYear(currentYear - 1)
+                  } else setMonth(currentMonth - 2)
                 }}
               />
             </div>
@@ -159,7 +177,7 @@ const Scoreboard = () => {
           <div>
             <div id='month-button-container'>
               <Button
-                id={month === 1 ? 'button-tab-month' : ''}
+                id={month === 0 ? 'button-tab-month' : ''}
                 icon='pi pi-chart-bar'
                 label={t('total')}
                 onClick={() => {
@@ -172,25 +190,42 @@ const Scoreboard = () => {
                 label={`${t('month')} ${currentMonth}`}
                 onClick={() => {
                   setMonth(currentMonth)
+                  setYear(currentYear)
                   console.log(month)
                 }}
               />
               <Button
-                id={month === currentMonth - 1 ? 'button-tab-month' : ''}
+                id={
+                  month === (currentMonth === 1 ? 12 : currentMonth - 1)
+                    ? 'button-tab-month'
+                    : ''
+                }
                 icon='pi pi-calendar-minus'
-                label={`${t('month')} ${currentMonth - 1}`}
+                label={`${t('month')} ${
+                  currentMonth === 1 ? 12 : currentMonth - 1
+                }`}
                 onClick={() => {
-                  setMonth(currentMonth - 1)
-                  console.log(month)
+                  if (currentMonth === 1) {
+                    setMonth(12)
+                    setYear(currentYear - 1)
+                  } else setMonth(currentMonth - 1)
                 }}
               />
               <Button
-                id={month === currentMonth - 2 ? 'button-tab-month' : ''}
+                id={
+                  month === (currentMonth === 1 ? 11 : currentMonth - 2)
+                    ? 'button-tab-month'
+                    : ''
+                }
                 icon='pi pi-calendar-times'
-                label={`${t('month')} ${currentMonth - 2}`}
+                label={`${t('month')} ${
+                  currentMonth === 1 ? 11 : currentMonth - 2
+                }`}
                 onClick={() => {
-                  setMonth(currentMonth - 2)
-                  console.log(month)
+                  if (currentMonth === 1) {
+                    setMonth(11)
+                    setYear(currentYear - 1)
+                  } else setMonth(currentMonth - 2)
                 }}
               />
             </div>

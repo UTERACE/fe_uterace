@@ -11,6 +11,8 @@ import apiInstance from '@/api/apiInstance'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import Image from 'next/image'
+import { Dialog } from 'primereact/dialog'
+import { Button } from 'primereact/button'
 
 const NewsPage = () => {
   const [news, setNews] = useState([])
@@ -50,6 +52,22 @@ const NewsPage = () => {
     }
   }
 
+  const [visible, setVisible] = useState(false)
+  const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('T')
+  const [image, setImage] = useState('')
+  const [caption, setCaption] = useState('')
+
+  const onClickShare = () => {
+    const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?caption=${encodeURIComponent(
+      caption
+    )}&description=${encodeURIComponent(caption)}&u=${encodeURIComponent(
+      url
+    )}&picture=${encodeURIComponent(image)}`
+
+    window.open(fbShareUrl, 'facebook-share-dialog', 'width=1080,height=720')
+  }
+
   const itemTemplate = (item) => {
     return (
       <Link
@@ -85,10 +103,21 @@ const NewsPage = () => {
                   {t('watch-now')}{' '}
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
-                <Link id='link-dataview' href='/share'>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setUrl(
+                      `https://fe-uterace.vercel.app/news/news-detail/${item.news_id}`
+                    )
+                    setCaption(item.name)
+                    setTitle(item.name)
+                    setImage(item.image)
+                    setVisible(true)
+                  }}
+                >
                   {t('share')}{' '}
                   <i className='pi pi-share-alt' aria-hidden='true'></i>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
@@ -105,6 +134,33 @@ const NewsPage = () => {
 
   return (
     <div className='centered-content-dataview'>
+      <Dialog visible={visible} onHide={() => setVisible(false)}>
+        <div id='share-facebook-container'>
+          <Button
+            label='Copy link chia sẻ'
+            icon='pi pi-copy'
+            id='button-detail'
+            onClick={() => {
+              navigator.clipboard.writeText(url)
+              setVisible(false)
+            }}
+          />
+          <Button
+            label='Chia sẻ lên Facebook'
+            icon='pi pi-facebook'
+            style={{
+              backgroundColor: '#3b5998',
+              color: 'white',
+              height: '3rem',
+              borderRadius: '3rem',
+            }}
+            onClick={() => {
+              onClickShare()
+              setVisible(false)
+            }}
+          />
+        </div>
+      </Dialog>
       <div id='search-container'>
         <AutoComplete
           value={search_name}

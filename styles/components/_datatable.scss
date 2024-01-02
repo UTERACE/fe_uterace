@@ -76,7 +76,7 @@
 }
 // custom row
 .p-datatable .p-datatable-tbody > tr {
-    background: transparent;
+    background: var(--secondary-color);
     color: var(--text-color);
     transition: box-shadow 0.2s;
 }
@@ -107,7 +107,7 @@
   }
 // custom color row odd
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
-    background: var(--secondary-color);
+    background: var(--primary-color);
 }
 // border row
 

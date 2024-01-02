@@ -127,7 +127,7 @@ const EventManagement = () => {
     return (
       <div id='info-detail-container'>
         <div id='info-image-container'>
-          <Image src={avatarImage} alt={rowData.name} width={20} height={20} />
+          <Image src={avatarImage} alt={rowData.name} width={100} height={100} />
         </div>
         <div id='info-name-container'>
           <Link href={`events/detail-event/${rowData.event_id}`}>
