@@ -337,15 +337,12 @@ const UserDetail = ({ user }) => {
                           : null
                       }
                       onClick={() => {
-                        window.open(
-                          user.strava_user_link !== null
-                            ? user.strava_user_link
-                            : null,
-                          '_blank'
-                        )
+                        user.strava_user_link !== null
+                          ? window.open(user.strava_user_link, '_blank')
+                          : null
                       }}
                     />
-                    <Link href='/user/profile/setting?connect=2'>
+                    <Link>
                       <h5 style={{ marginTop: '1rem' }}>
                         {user.strava_user_link !== null
                           ? t('connected-strava')
