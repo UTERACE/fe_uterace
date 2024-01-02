@@ -16,7 +16,7 @@ import React, { useContext, useEffect, useState } from 'react'
 const NewsManagement = () => {
   const [news, setNews] = useState([])
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(10)
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
 
@@ -379,7 +379,7 @@ const NewsManagement = () => {
         first={first}
         rows={per_page}
         totalRecords={totalRecords}
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[10, 15, 20]}
         onPageChange={onPageChange}
         page={current_page}
       />

@@ -123,6 +123,13 @@ const UserManagement = () => {
     return ''
   }
 
+  const formatOrganization = (rowData) => {
+    if (rowData.organization) {
+      return rowData.organization
+    }
+    return 'Cá nhân, tự do'
+  }
+
   const formatStatus = (rowData) => {
     if (rowData.status === '0') {
       return (
@@ -220,6 +227,7 @@ const UserManagement = () => {
       field: 'organization',
       header: 'Cơ quan, tổ chức',
       bodyClassName: 'text-center',
+      body: formatOrganization,
     },
     {
       field: 'gender',
