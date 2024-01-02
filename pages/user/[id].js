@@ -342,13 +342,11 @@ const UserDetail = ({ user }) => {
                           : null
                       }}
                     />
-                    <Link>
-                      <h5 style={{ marginTop: '1rem' }}>
-                        {user.strava_user_link !== null
-                          ? t('connected-strava')
-                          : t('not-connected-strava')}
-                      </h5>
-                    </Link>
+                    <h5 style={{ marginTop: '1rem', color: 'red' }}>
+                      {user.strava_user_link !== null
+                        ? t('connected-strava')
+                        : t('not-connected-strava')}
+                    </h5>
                   </div>
                 </div>
               </div>
