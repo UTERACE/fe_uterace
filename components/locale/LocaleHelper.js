@@ -24,6 +24,31 @@ function formatDateTime(date, locale = defaultLocale) {
   }
   return date
 }
+function formatDateComment(date, locale = defaultLocale) {
+  // 2024-04-21 20:02:42.774
+  if (date instanceof Date && !isNaN(date.getTime())) {
+    const nowTime = new Date()
+    const time = nowTime.getTime() - date.getTime()
+    const hours = Math.floor(time / 3600000)
+    const minutes = Math.floor((time % 3600000) / 60000)
+    const seconds = Math.floor((time % 60000) / 1000)
+    const day = (hours / 24).toFixed(0)
+    if (hours > 168) {
+      return `${date.getDate()} tháng ${date.getMonth() + 1}`
+    } else if (hours > 48) {
+      return `${day} ngày trước`
+    } else if (hours > 24) {
+      return 'Hôm qua'
+    } else if (hours > 0) {
+      return `${hours} giờ trước`
+    } else if (minutes > 0) {
+      return `${minutes} phút trước`
+    } else {
+      return `${seconds} giây trước`
+    }
+  }
+  return date
+}
 
 function formatMtoKm(distance, locale = defaultLocale) {
   const distanceInKm = (distance / 1000).toFixed(2)
@@ -69,4 +94,5 @@ export default {
   formatKm,
   formatKmToMiles,
   formatMinutesKmToMilesKm,
+  formatDateComment,
 }

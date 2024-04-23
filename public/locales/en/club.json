@@ -18,8 +18,8 @@
     "name_club_placeholder": "Nhập tên câu lạc bộ",
     "description_club": "Description Club",
     "description_club_placeholder": "Nhập mô tả câu lạc bộ",
-    "min_pace": "Min Pace",
-    "max_pace": "Max Pace",
+    "min_pace": "Min Pace (min/km)",
+    "max_pace": "Max Pace (min/km)",
     "intro_club": "Introduce Club",
     "create_club": "Create Club",
     "search": "Search club"

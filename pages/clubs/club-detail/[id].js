@@ -17,6 +17,7 @@ import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup'
 import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
+import Post from '../Post'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -69,6 +70,8 @@ const ClubDetail = ({ club }) => {
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [newFeed, setNewFeed] = useState([])
+  const [page, setPage] = useState(1)
 
   const { t } = useTranslation('detail')
 
@@ -76,9 +79,9 @@ const ClubDetail = ({ club }) => {
     checkJoinClub()
   }, [updateStatus])
 
-  useEffect(() => {
-    fetchData()
-  }, [current_page, per_page, search, activeIndex])
+  // useEffect(() => {
+  //   fetchData()
+  // }, [current_page, per_page, search, activeIndex])
 
   useEffect(() => {
     //responsive window
@@ -87,32 +90,38 @@ const ClubDetail = ({ club }) => {
     }
   }, [])
 
-  const fetchData = async () => {
-    setLoading(true)
+  const fetchRankMember = async () => {
     try {
-      let res
-      if (activeIndex === 3) {
-        res = await apiInstance.get(
-          `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-        )
-        if (res && res.status === 200) {
-          const data = res.data
-          setRankMember(data)
-          setCurrentPage(data.current_page)
-          setPerPage(data.per_page)
-          setTotalRecords(data.total_user)
-        }
-      } else if (activeIndex === 2) {
-        res = await apiInstance.get(
-          `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
-        )
-        if (res && res.status === 200) {
-          const data = res.data
-          setActivities(data)
-          setCurrentPage(data.current_page)
-          setPerPage(data.per_page)
-          setTotalRecords(data.total_activities)
-        }
+      setLoading(true)
+      const res = await apiInstance.get(
+        `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res && res.status === 200) {
+        const data = res.data
+        setRankMember(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_user)
+      }
+      setLoading(false)
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
+
+  const fetchRecentActivities = async () => {
+    try {
+      setLoading(true)
+      const res = await apiInstance.get(
+        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
+      )
+      if (res && res.status === 200) {
+        const data = res.data
+        setActivities(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_activities)
       }
       setLoading(false)
     } catch (error) {
@@ -145,6 +154,24 @@ const ClubDetail = ({ club }) => {
 
   const reject = () => {
     showToast('info', t('rejected'), t('you_are_rejected'))
+  }
+
+  const fetchPosts = async () => {
+    try {
+      const res = await apiInstance.get(`/news/club/${club.club_id}`, {
+        params: {
+          current_page: page,
+          per_page: 5,
+          search_name: '',
+        },
+      })
+      const data = res.data
+      if (res.status === 200) {
+        setNewFeed(data)
+      }
+    } catch (error) {
+      showToast('error', t('get_news_fail'), error)
+    }
   }
 
   const handleJoinClub = async () => {
@@ -315,7 +342,7 @@ const ClubDetail = ({ club }) => {
             <div id='statistic-club'>
               <Button
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '30%' }}
+                style={{ width: 'auto', minWidth: '22%' }}
                 icon='pi pi-calendar-plus'
                 label={t('detail')}
                 onClick={() => {
@@ -324,22 +351,34 @@ const ClubDetail = ({ club }) => {
               />
               <Button
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '30%' }}
+                style={{ width: 'auto', minWidth: '22%' }}
+                icon='pi pi-calendar-plus'
+                label={t('new_feed')}
+                onClick={() => {
+                  setActiveIndex(2)
+                  fetchPosts()
+                }}
+              />
+              <Button
+                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
+                style={{ width: 'auto', minWidth: '22%' }}
                 icon='pi pi-calendar-plus'
                 label={
                   isMobile ? t('mobile_activities') : t('recent-activities')
                 }
                 onClick={() => {
-                  setActiveIndex(2)
+                  setActiveIndex(3)
+                  fetchRecentActivities()
                 }}
               />
               <Button
-                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '30%' }}
+                id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
+                style={{ width: 'auto', minWidth: '22%' }}
                 icon='pi pi-calendar'
                 label={isMobile ? t('mobile_members') : t('scoreboard-member')}
                 onClick={() => {
-                  setActiveIndex(3)
+                  setActiveIndex(4)
+                  fetchRankMember()
                 }}
               />
             </div>
@@ -349,6 +388,46 @@ const ClubDetail = ({ club }) => {
                 dangerouslySetInnerHTML={{ __html: introduce }}
               ></div>
             ) : activeIndex === 2 ? (
+              <div style={{ width: '100%' }}>
+                <div>
+                  <AutoComplete
+                    value={search_name}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    completeMethod={(e) => setSearch(!search)}
+                    placeholder={t('search_members')}
+                  />
+                </div>
+                <div className='new-feed-container'>
+                  {newFeed.map((item, index) => (
+                    <Post
+                      key={index}
+                      post_id={item.post_id}
+                      post_title={item.post_title}
+                      post_content={item.post_content}
+                      post_description={item.post_description}
+                      post_date={item.post_date}
+                      post_image={item.post_image}
+                      count_likes={item.count_likes}
+                      count_comments={item.count_comments}
+                      is_liked={item._liked}
+                      user_id={item.user_id}
+                      user_name={item.user_name}
+                      user_avatar={item.user_avatar}
+                      user_role={item.user_role}
+                    />
+                  ))}
+                </div>
+
+                <Paginator
+                  first={first}
+                  rows={per_page}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[6, 12, 18]}
+                  onPageChange={onPageChange}
+                  page={current_page}
+                />
+              </div>
+            ) : activeIndex === 3 ? (
               <div style={{ width: '95%' }}>
                 <div>
                   <AutoComplete

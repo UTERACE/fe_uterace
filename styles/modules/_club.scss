@@ -1,0 +1,281 @@
+.new-feed-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 0 auto;
+}
+.new-feed {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--background-color-post);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+}
+.new-feed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+}
+.new-feed-header-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.new-feed-user-info {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: fit-content;
+}
+.new-feed-post-title {
+    font-size: $font-size-normal;
+    font-style: bold;
+    font-weight: 400;
+}
+.new-feed-username {
+    font-size: $font-size-medium;
+    font-style: bold;
+    font-weight: 600;
+}
+.new-feed-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.new-feed-header img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+.new-feed-user-role {
+    width: 3rem;
+    text-align: center;
+    font-size: $font-size-small;
+}
+.new-feed-header-right {
+    width: 15rem;
+}
+.new-feed-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+.new-feed-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.new-feed-content img {
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.new-feed-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.new-feed-footer-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color-post)
+}
+.new-feed-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color-post);
+}
+.new-feed-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    color: var(--text-color);
+    font-size: $font-size-medium;
+    font-weight: 600;
+    width: 100rem;
+    cursor: pointer;
+}
+.new-feed-button:hover {
+    background-color: var(--background-comment);
+}
+.new-feed-button i {
+    font-size: $primeIconFontSize;
+}
+.new-feed-comment-container {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0.2rem;
+    padding: 1rem 1rem 1rem 1rem;
+    width: 100%;
+}
+.new-feed-comment-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--background-comment);
+    border-radius: 1.5rem;
+    font-size: larger;
+}
+.new-feed-comment-input input {
+    padding: 0.5rem;
+    width: 100%;
+    border: none;
+    background-color: var(--background-comment);
+    font-size: $font-size-normal;
+}
+.new-feed-comment-input input:focus {
+    outline: none;
+    color: var(--text-color);
+}
+.new-feed-comment-input-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+.new-feed-comment-input-icon-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.liked {
+    color: var(--third-color);
+}
+.new-feed-comment-list a {
+    text-decoration: underline;
+}
+.new-feed-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 0 auto;
+}
+.new-feed-comment {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 1rem;
+    width: 100%;
+}
+.new-feed-comment-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    padding: 1rem;
+    background-color: var(--background-comment);
+    border-radius: 1rem;
+}
+.new-feed-comment-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.2rem;
+    width: auto;
+}
+.new-feed-comment-date {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 1rem;
+}
+.new-feed-comment-date label {
+    font-size: medium;
+    font-weight: 600;
+}
+.new-feed-comment-content-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+}
+.new-feed-comment-content-header span {
+    font-size:larger;
+    font-weight: 600;
+    color: var(--text-color);
+}
+.new-feed-comment-content-header label {
+    font-size:small;
+    font-weight: 600;
+    color: var(--text-color-header);
+}
+.new-feed-comment-reaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding-left: 1rem;
+}
+.selected {
+    color: var(--text-color);
+    font-weight: 600;
+}
+.comment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.reply-comment-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.2rem;
+    min-width: 20rem;
+    background-color: var(--background-comment);
+    border-radius: 1rem;
+}
+.new-feed-comment-reply label:hover {
+    text-decoration: underline;
+}
+.new-feed-comment-reply-content {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 0.2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+}

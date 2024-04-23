@@ -28,6 +28,7 @@ export const getServerSideProps = async ({ locale, params }) => {
       ...(await serverSideTranslations(locale, [
         'detail',
         'news',
+        'club',
         'scoreboard',
         'topbar',
       ])),
@@ -76,6 +77,7 @@ const ManagementClubDetail = ({ club }) => {
 
   const { t } = useTranslation('detail')
   const { t: tNews } = useTranslation('news')
+  const { t: tClub } = useTranslation('club')
 
   useEffect(() => {
     if (updateStatus) {
@@ -183,6 +185,7 @@ const ManagementClubDetail = ({ club }) => {
           showToast={showToast}
           setVisibleChange={setVisibleChange}
           setUpdate={setUpdateStatus}
+          t={tClub}
         />
       </Dialog>
       <Dialog
