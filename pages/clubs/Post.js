@@ -7,8 +7,10 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import { Dialog } from 'primereact/dialog'
 import Reply from './Reply'
+import { Button } from 'primereact/button'
 
 const Post = ({
+  club_id,
   post_id,
   post_title,
   post_content,
@@ -22,11 +24,18 @@ const Post = ({
   user_name,
   user_avatar,
   user_role,
+  checkJoin,
+  t,
+  showToast,
 }) => {
   const [isLiked, setIsLiked] = useState(is_liked)
   const [countLikes, setCountLikes] = useState(count_likes)
   const [countComments, setCountComments] = useState(count_comments)
   const [visibleDetail, setVisibleDetail] = useState(false)
+  const [visibleJoin, setVisibleJoin] = useState(false)
+  const [visibleAction, setVisibleAction] = useState(false)
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [commentId, setCommentId] = useState(null)
   const [comments, setComments] = useState([])
   const [replies, setReplies] = useState([])
   const [page, setPage] = useState(1)
@@ -37,7 +46,6 @@ const Post = ({
   const [replyTo, setReplyTo] = useState(null)
   const [replyName, setReplyName] = useState('')
   const setLoading = useContext(LoadingContext)
-  const showToast = useToast().showToast
 
   const handleLike = async () => {
     try {
@@ -47,8 +55,12 @@ const Post = ({
         reactionType: 'like',
       })
       if (res.status === 200) {
-        setIsLiked(true)
-        setCountLikes(countLikes + 1)
+        if (res.data.status === 200) {
+          setIsLiked(true)
+          setCountLikes(countLikes + 1)
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+        }
       }
       setLoading(false)
     } catch (error) {
@@ -112,13 +124,104 @@ const Post = ({
         replyTo: replyTo,
       })
       if (res.status === 200) {
-        fetchComments()
-        setLoading(false)
-        setComment('')
-        setCountComments(countComments + 1)
-        setReplyTo(null)
-        setReplyName('')
-        showToast('success', 'Bình luận thành công')
+        if (res.data.status === 200) {
+          fetchComments()
+          setLoading(false)
+          setComment('')
+          setCountComments(countComments + 1)
+          setReplyTo(null)
+          setReplyName('')
+          showToast('success', 'Bình luận thành công')
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+          setLoading(false)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const handelEditComment = async () => {
+    try {
+      setLoading(true)
+      const res = await apiInstance.put('/comment', {
+        id: commentId,
+        content: comment,
+        replyTo: replyTo,
+      })
+      if (res.status === 200) {
+        if (res.data.status === 200) {
+          showToast('success', 'Sửa bình luận thành công')
+          fetchComments()
+          setComment('')
+          setVisibleEdit(false)
+          setLoading(false)
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+          setLoading(false)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const handelDeleteComment = async (commentId) => {
+    try {
+      setLoading(true)
+      const res = await apiInstance.delete(`/comment/${commentId}`)
+      if (res.status === 200) {
+        if (res.data.status === 200) {
+          showToast('success', 'Xóa bình luận thành công')
+          fetchComments()
+          setLoading(false)
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+          setLoading(false)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const handleHideComment = async (commentId) => {
+    try {
+      setLoading(true)
+      const res = await apiInstance.put(`/comment/hide/${commentId}`)
+      if (res.status === 200) {
+        if (res.data.status === 200) {
+          showToast('success', 'Ẩn bình luận thành công')
+          fetchComments()
+          setLoading(false)
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+          setLoading(false)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const handleReportComment = async (commentId) => {
+    try {
+      setLoading(true)
+      const res = await apiInstance.post(`/comment/report/${commentId}`)
+      if (res.status === 200) {
+        if (res.data.status === 200) {
+          showToast('success', 'Báo cáo bình luận thành công')
+          fetchComments()
+          setLoading(false)
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+          setLoading(false)
+        }
       }
     } catch (error) {
       console.log(error)
@@ -161,7 +264,22 @@ const Post = ({
       setLoading(false)
     }
   }
-
+  const handleJoinClub = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.post(`/clubs/join-club/${club_id}`)
+      const dataRes = res.data
+      if (res.status == 200) {
+        showToast('success', t('join_club_success'), dataRes.message)
+        checkJoin(true)
+        setLoading(false)
+        setVisibleJoin(false)
+      }
+    } catch (error) {
+      showToast('error', t('join_club_fail'), error)
+      setLoading(false)
+    }
+  }
   return (
     <div className='new-feed'>
       <div className='new-feed-header'>
@@ -267,6 +385,7 @@ const Post = ({
         <div className='new-feed-comment-input'>
           <input
             type='text'
+            value={comment}
             placeholder='Viết bình luận...'
             onChange={(e) => setComment(e.target.value)}
           />
@@ -328,10 +447,9 @@ const Post = ({
                   <div
                     onClick={() => {
                       handleComment()
-                      setComment('')
                     }}
                   >
-                    <i className='fas fa-paper-plane'></i>
+                    <i className='fas fa-paper-plane send'></i>
                   </div>
                 </div>
               </div>
@@ -581,10 +699,152 @@ const Post = ({
                     </div>
                   ) : null}
                 </div>
+                <div className='container'>
+                  <div className='button-hover'>
+                    <div className='comment-action'>
+                      <button
+                        className='action-button'
+                        onClick={() => {
+                          setVisibleAction(!visibleAction)
+                        }}
+                      >
+                        <i className='pi pi-ellipsis-v'></i>
+                      </button>
+                    </div>
+                  </div>
+                  {comment.user_id === store.getState().auth.id &&
+                  visibleAction ? (
+                    <div className='comment-action-container'>
+                      <label
+                        className='edit-button'
+                        onClick={() => {
+                          setComment(comment.comment_content)
+                          setCommentId(comment.comment_id)
+                          setVisibleEdit(true)
+                        }}
+                      >
+                        <i className='fas fa-edit'></i> Chỉnh sửa
+                      </label>
+                      <label
+                        className='edit-button'
+                        onClick={() => {
+                          handelDeleteComment(comment.comment_id)
+                        }}
+                      >
+                        <i className='fas fa-trash'></i> Xóa
+                      </label>
+                    </div>
+                  ) : comment.user_role === 'member' && visibleAction ? (
+                    <div
+                      className='comment-action-container'
+                      onClick={() => {
+                        handleReportComment(comment.comment_id)
+                      }}
+                    >
+                      <label className='edit-button'>
+                        <i className='fas fa-exclamation-triangle'></i> Báo cáo
+                      </label>
+                    </div>
+                  ) : (comment.user_role === 'admin' ||
+                      comment.user_role === 'owner') &&
+                    visibleAction ? (
+                    <div
+                      className='comment-action-container'
+                      onClick={() => {
+                        handleHideComment(comment.comment_id)
+                      }}
+                    >
+                      <label className='edit-button'>
+                        <i className='fas fa-eye-slash'></i> Ẩn
+                      </label>
+                    </div>
+                  ) : null}
+                </div>
               </div>
             ))}
         </div>
       </Dialog>
+      <Dialog
+        header={t('notify_not_login_third')}
+        visible={visibleJoin}
+        onHide={() => setVisibleJoin(false)}
+        style={{ width: '30vw' }}
+      >
+        <div className='dialog-content-confirm'>
+          <p>{t('notify_not_join_club_first')}</p>
+          <p>{t('notify_not_join_club_second')}</p>
+          <p>{t('notify_not_join_club_third')}</p>
+
+          <div className='confirm-button-container'>
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              style={{ color: 'red' }}
+              icon='pi pi-times'
+              label={t('close')}
+              onClick={() => setVisibleJoin(false)}
+            />
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              icon='pi pi-sign-in'
+              label={t('join_club_now')}
+              onClick={() => {
+                handleJoinClub()
+              }}
+            />
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        visible={visibleEdit}
+        onHide={() => setVisibleEdit(false)}
+        header={`Chỉnh sửa bình luận của bạn`}
+        footer={
+          <div className='comment-container'>
+            <div className='new-feed-comment-container'>
+              <Image
+                style={{
+                  width: '3rem',
+                  height: '3rem',
+                }}
+                src={store.getState().auth.image}
+                alt='avatar'
+                width={24}
+                height={24}
+              />
+              <div className='new-feed-comment-input'>
+                <input
+                  type='text'
+                  value={comment}
+                  placeholder='Viết bình luận...'
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <div className='new-feed-comment-input-icon'>
+                  <div className='new-feed-comment-input-icon-left'>
+                    <i className='fas fa-camera'></i>
+                    <i className='fas fa-smile'></i>
+                  </div>
+                  <div
+                    onClick={() => {
+                      handelEditComment()
+                    }}
+                  >
+                    <i className='fas fa-paper-plane send'></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        style={{
+          width: '50%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+      ></Dialog>
     </div>
   )
 }

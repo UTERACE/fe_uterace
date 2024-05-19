@@ -80,6 +80,7 @@ const Login = () => {
       console.log(response.status)
       if (response.status === 200) {
         const {
+          id,
           accessToken,
           refreshToken,
           firstname,
@@ -90,6 +91,7 @@ const Login = () => {
         } = response.data
         store.dispatch(
           login({
+            id,
             accessToken,
             refreshToken,
             image,
@@ -153,6 +155,7 @@ const Login = () => {
         setVisibleThirdParty(true)
       } else {
         const {
+          id,
           accessToken,
           refreshToken,
           firstname,
@@ -163,6 +166,7 @@ const Login = () => {
         } = response.data
         store.dispatch(
           login({
+            id,
             accessToken,
             refreshToken,
             image,

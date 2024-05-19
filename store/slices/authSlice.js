@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+  id: null,
   accessToken: null,
   refreshToken: null,
   image: null,
@@ -19,6 +20,7 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken
     },
     login(state, action) {
+      state.id = action.payload.id
       state.accessToken = action.payload.accessToken
       state.refreshToken = action.payload.refreshToken
       state.image = action.payload.image
@@ -29,6 +31,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true
     },
     logout(state) {
+      state.id = null
       state.accessToken = null
       state.refreshToken = null
       state.image = null

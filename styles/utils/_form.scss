@@ -159,6 +159,7 @@
     height: 3rem;
     border-radius: 1rem;
     color: var(--text-color);
+    background-color: var(--background-color-header);
 }
 .p-inputtext:enabled:hover {
     border-color: var(--primary-color);
@@ -182,4 +183,12 @@
     gap: 1rem;
     margin: 0 1rem 1rem 1rem;
     transition: all 0.3s ease-in-out;
+}
+.p-dropdown {
+    background: var(--background-color-header);
+    border: 1px solid #ced4da;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.p-dropdown:not(.p-disabled):hover {
+    border-color: var(--primary-color)
 }

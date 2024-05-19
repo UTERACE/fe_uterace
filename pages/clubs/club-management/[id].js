@@ -20,6 +20,8 @@ import UpdateNews from './UpdateNews'
 import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
+import { InputText } from 'primereact/inputtext'
+import store from '@/store/store'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -63,8 +65,16 @@ const ManagementClubDetail = ({ club }) => {
   const [visibleAddNews, setVisibleAddNews] = useState(false)
   const [visibleUpdateNews, setVisibleUpdateNews] = useState(false)
   const [visibleInfo, setVisibleInfo] = useState(false)
+  const [visibleChangeManager, setVisibleChangeManager] = useState(false)
+  const [searchMember, setSearchMember] = useState('')
+  const [members, setMembers] = useState([])
   const [updateStatus, setUpdateStatus] = useState(false)
   const [updateNewsId, setUpdateNewsId] = useState(0)
+  const [selectedMemberId, setSelectedMemberId] = useState(null)
+
+  const handleMemberClick = (id) => {
+    setSelectedMemberId(id === store.getState().auth.id ? null : id)
+  }
 
   const [news, setNews] = useState(club.news)
   const [activities, setActivities] = useState({})
@@ -149,6 +159,42 @@ const ManagementClubDetail = ({ club }) => {
     } catch (error) {
       setLoading(false)
       showToast('error', t('get_info_news_fail'), error)
+    }
+  }
+
+  const handleSearchMember = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs/member/${club.club_id}?search=${searchMember}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setMembers(data)
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      showToast('error', t('search_member_fail'), error)
+    }
+  }
+
+  const handleChangeManager = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.put('/clubs/change-admin', {
+        club_id: club.club_id,
+        user_id: selectedMemberId,
+      })
+      if (res.status === 200) {
+        showToast('success', t('change_manager_success'))
+        setVisibleChangeManager(false)
+        setUpdateStatus(true)
+      }
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      showToast('error', t('change_manager_fail'), error)
     }
   }
 
@@ -302,6 +348,15 @@ const ManagementClubDetail = ({ club }) => {
                 style={{ width: 'auto', minWidth: '25%' }}
                 label={`${club.total_member} ${t('participants')}`}
                 onClick={() => {}}
+              />
+              <Button
+                id='button-tab'
+                label={t('change_manager')}
+                style={{ width: 'auto', minWidth: '25%' }}
+                disabled={club.manager_id !== store.getState().auth.id}
+                onClick={() => {
+                  setVisibleChangeManager(true)
+                }}
               />
               <Button
                 id={!isStatistic ? 'button-tab' : 'button-tab--active'}
@@ -483,6 +538,102 @@ const ManagementClubDetail = ({ club }) => {
           </div>
         </div>
       </div>
+      <Dialog
+        header={t('change_manager')}
+        visible={visibleChangeManager}
+        position='canter'
+        style={{
+          width: '50%',
+          borderRadius: '20px',
+        }}
+        onHide={() => setVisibleChangeManager(false)}
+      >
+        <div className='dialog-content-confirm'>
+          <p>{t('change_manager_first')}</p>
+          <p>{t('change_manager_second')}</p>
+          <p>{t('change_manager_third')}</p>
+          <div className='search-member-container'>
+            <InputText
+              style={{ minWidth: '80%' }}
+              value={searchMember}
+              onChange={(e) => setSearchMember(e.target.value)}
+            />
+            <Button
+              icon='pi pi-search'
+              severity='secondary'
+              raised
+              id='button-detail'
+              label={t('search')}
+              onClick={() => {
+                handleSearchMember()
+              }}
+            />
+          </div>
+          <div className='list-member-container'>
+            {members.length > 0 ? (
+              members.map((member) => (
+                <div
+                  key={member.userId}
+                  className={`member-item ${
+                    selectedMemberId === member.userId ? 'selected' : ''
+                  }`}
+                  onClick={() => handleMemberClick(member.userId)}
+                >
+                  <Image
+                    src={member.avatar}
+                    alt='avatar'
+                    width={50}
+                    height={50}
+                  />
+                  <div className='member-info'>
+                    <div>
+                      <h4>{member.lastName + ' ' + member.firstName}</h4>
+                      <h6>{member.email}</h6>
+                    </div>
+                    <div>
+                      <h6>
+                        Day of birth:{' '}
+                        {LocaleHelper.formatDate(new Date(member.dateOfBirth))}
+                      </h6>
+                      <h6>Gender: {member.gender}</h6>
+                    </div>
+                    <div>
+                      {selectedMemberId === member.userId && (
+                        <span className='selected-mark'>&#10003;</span> // Add checkmark when selected
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <label>{t('no_result')}</label>
+            )}
+          </div>
+
+          <div className='confirm-button-container'>
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              style={{ color: 'red' }}
+              icon='pi pi-times'
+              label={t('close')}
+              onClick={() => setVisibleChangeManager(false)}
+            />
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              icon='pi pi-sign-in'
+              label={t('change_manager')}
+              disabled={selectedMemberId === null}
+              onClick={() => {
+                handleChangeManager()
+              }}
+            />
+          </div>
+        </div>
+      </Dialog>
     </div>
   )
 }

@@ -18,6 +18,7 @@ import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
 import Post from '../Post'
+import { Dialog } from 'primereact/dialog'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -53,6 +54,8 @@ const ClubDetail = ({ club }) => {
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(1)
   const [visible, setVisible] = useState(false)
+  const [visibleLogin, setVisibleLogin] = useState(false)
+  const [visibleJoin, setVisibleJoin] = useState(false)
   const [checkJoin, setCheckJoin] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
   const buttonEl = useRef(null)
@@ -77,7 +80,7 @@ const ClubDetail = ({ club }) => {
 
   useEffect(() => {
     checkJoinClub()
-  }, [updateStatus])
+  }, [])
 
   // useEffect(() => {
   //   fetchData()
@@ -187,7 +190,8 @@ const ClubDetail = ({ club }) => {
         if (res.status == 200) {
           showToast('success', t('join_club_success'), dataRes.message)
           setLoading(false)
-          setUpdateStatus(!updateStatus)
+          setCheckJoin(true)
+          setVisibleJoin(false)
         }
       } catch (error) {
         showToast('error', t('join_club_fail'), error)
@@ -204,7 +208,8 @@ const ClubDetail = ({ club }) => {
       if (res.status == 200) {
         showToast('success', t('leave_club_success'), dataRes.message)
         setLoading(false)
-        setUpdateStatus(!updateStatus)
+        setCheckJoin(false)
+        setVisibleJoin(false)
       }
     } catch (error) {
       showToast('error', t('leave_club_fail'), error)
@@ -251,11 +256,11 @@ const ClubDetail = ({ club }) => {
               reject={reject}
             />
             <Button
-              ref={buttonEl}
               id='button-join'
               label={checkJoin ? t('leave_club') : t('join-now')}
               onClick={() => {
-                setVisible(true)
+                // setVisible(true)
+                setVisibleJoin(true)
               }}
             />
           </div>
@@ -356,7 +361,15 @@ const ClubDetail = ({ club }) => {
                 label={t('new_feed')}
                 onClick={() => {
                   setActiveIndex(2)
-                  fetchPosts()
+                  if (store.getState().auth.isAuthenticated) fetchPosts()
+                  else {
+                    showToast(
+                      'error',
+                      t('not_login'),
+                      t('notify_not_login_third')
+                    )
+                    setVisibleLogin(true)
+                  }
                 }}
               />
               <Button
@@ -401,6 +414,7 @@ const ClubDetail = ({ club }) => {
                   {newFeed.map((item, index) => (
                     <Post
                       key={index}
+                      club_id={club.club_id}
                       post_id={item.post_id}
                       post_title={item.post_title}
                       post_content={item.post_content}
@@ -414,6 +428,9 @@ const ClubDetail = ({ club }) => {
                       user_name={item.user_name}
                       user_avatar={item.user_avatar}
                       user_role={item.user_role}
+                      checkJoin={setCheckJoin}
+                      t={t}
+                      showToast={showToast}
                     />
                   ))}
                 </div>
@@ -475,6 +492,89 @@ const ClubDetail = ({ club }) => {
           </div>
         </div>
       </div>
+      <Dialog
+        header={t('notify_not_login_third')}
+        visible={visibleLogin}
+        onHide={() => setVisibleLogin(false)}
+        style={{ width: '30vw' }}
+      >
+        <div className='dialog-content-confirm'>
+          <p>{t('notify_not_login_first')}</p>
+          <p>{t('notify_not_login_second')}</p>
+          <p>{t('notify_not_login_third')}</p>
+          <div className='confirm-button-container'>
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              style={{ color: 'red' }}
+              icon='pi pi-times'
+              label={t('close')}
+              onClick={() => setVisibleLogin(false)}
+            />
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              icon='pi pi-sign-in'
+              label={t('login')}
+              onClick={() => router.push('/login')}
+            />
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        header={
+          checkJoin ? t('notify_leave_club_third') : t('notify_not_login_third')
+        }
+        visible={visibleJoin}
+        onHide={() => setVisibleJoin(false)}
+        style={{ width: '30vw' }}
+      >
+        <div className='dialog-content-confirm'>
+          <p>
+            {checkJoin
+              ? t('notify_leave_club_first')
+              : t('notify_not_join_club_first')}
+          </p>
+          <p>
+            {checkJoin
+              ? t('notify_leave_club_second')
+              : t('notify_not_join_club_second')}
+          </p>
+          <p>
+            {checkJoin
+              ? t('notify_leave_club_third')
+              : t('notify_not_join_club_third')}
+          </p>
+
+          <div className='confirm-button-container'>
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              style={{ color: 'red' }}
+              icon='pi pi-times'
+              label={t('close')}
+              onClick={() => setVisibleJoin(false)}
+            />
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              icon='pi pi-sign-in'
+              label={checkJoin ? t('leave_club_now') : t('join_club_now')}
+              onClick={() => {
+                if (checkJoin) {
+                  handleLeaveClub()
+                } else {
+                  handleJoinClub()
+                }
+              }}
+            />
+          </div>
+        </div>
+      </Dialog>
     </div>
   )
 }

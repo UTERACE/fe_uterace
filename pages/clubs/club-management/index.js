@@ -40,23 +40,36 @@ const ClubManagement = () => {
     if (index === 2) {
       fetchCreatedClubs()
     } else if (index === 3) {
+      fetchManageClubs
+    } else if (index === 4) {
       fetchJoinedClubs()
     }
-  }, [
-    current_page,
-    per_page,
-    index,
-    visibleChange,
-    visibleAdd,
-    updateStatus,
-    search,
-  ])
+  }, [current_page, per_page, visibleChange, visibleAdd, updateStatus, search])
 
   const fetchCreatedClubs = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
         `/clubs/created-club?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      const data = res.data
+      if (res.status === 200) {
+        setClubs(data.clubs)
+        setTotalRecords(data.total_clubs)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setLoading(false)
+      }
+    } catch (err) {
+      showToast('error', 'Lỗi', err)
+      setLoading(false)
+    }
+  }
+  const fetchManageClubs = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs/manage-club?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -314,17 +327,31 @@ const ClubManagement = () => {
             iconPos='right'
             onClick={() => {
               setIndex(2)
+              fetchCreatedClubs()
             }}
           />
           <Button
             id={index == 3 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}
-            label={t('joined-clubs')}
+            label={t('manage-clubs')}
             icon='pi pi-list'
             iconPos='right'
             onClick={() => {
               setIndex(3)
+              fetchManageClubs()
+            }}
+          />
+          <Button
+            id={index == 4 ? 'button-tab--active' : 'button-tab'}
+            type='button'
+            style={{ width: '100%' }}
+            label={t('joined-clubs')}
+            icon='pi pi-list'
+            iconPos='right'
+            onClick={() => {
+              setIndex(4)
+              fetchJoinedClubs()
             }}
           />
         </div>
