@@ -47,19 +47,25 @@ const ManagementNews = () => {
     if (!hasAdminRole) {
       router.push('/news')
     } else {
-      fetchDataBasedOnIndex(index, per_page, current_page, updateStatus, search);
+      fetchDataBasedOnIndex(index, per_page, current_page, updateStatus, search)
     }
-  }, [hasAdminRole, index, per_page, current_page, updateStatus, search]);
-  
+  }, [hasAdminRole, index, per_page, current_page, updateStatus, search])
+
   if (!hasAdminRole) {
-    return null;
+    return null
   }
-  
-  function fetchDataBasedOnIndex(index, perPage, currentPage, updateStatus, search) {
+
+  function fetchDataBasedOnIndex(
+    index,
+    perPage,
+    currentPage,
+    updateStatus,
+    search
+  ) {
     if (index === 1) {
-      fetchMyNews();
+      fetchMyNews()
     } else if (index === 2) {
-      fetchAllNews();
+      fetchAllNews()
     }
   }
 
@@ -145,7 +151,7 @@ const ManagementNews = () => {
                 {t('watch-now')}{' '}
                 <i className='pi pi-arrow-right' aria-hidden='true'></i>
               </Link>
-              <Link id='link-dataview' href='/share'>
+              <Link id='link-dataview' className='link-share' href='/share'>
                 {t('share')}{' '}
                 <i className='pi pi-share-alt' aria-hidden='true'></i>
               </Link>
@@ -310,7 +316,7 @@ const ManagementNews = () => {
             gap: '2rem',
           }}
         >
-          <Button 
+          <Button
             id={index == 0 ? 'button-tab--active' : 'button-tab'}
             type='button'
             style={{ width: '100%' }}

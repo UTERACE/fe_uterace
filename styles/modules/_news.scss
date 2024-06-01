@@ -48,19 +48,19 @@
     width: 90%;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
+    color: var(--text-color);
 }
 #link-news {
     font-size: 1rem;
     transition: color 0.3s ease;
     font-weight: 500;
-    color: $text-color;
     text-decoration: none;
 }
 #link-news a{
     font-size: 1rem;
     transition: color 0.3s ease;
     font-weight: 500;
-    color: $text-color;
+    color: var(--text-color-header);
     text-decoration: none;
 }
 #lock-news {

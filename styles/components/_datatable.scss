@@ -76,7 +76,7 @@
 }
 // custom row
 .p-datatable .p-datatable-tbody > tr {
-    background: var(--secondary-color);
+    background: var(--background-comment);
     color: var(--text-color);
     transition: box-shadow 0.2s;
 }
@@ -85,7 +85,7 @@
     text-align: center;
     border: 0px solid var(--background-color);
     border-width: 0 0 0 0;
-    padding: 0.2rem 0.2rem ;
+    padding: 0.2rem 0.2rem;
 }
 .p-datatable .p-datatable-tbody > tr > td a {
     text-decoration: none;
@@ -107,7 +107,7 @@
   }
 // custom color row odd
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
-    background: var(--primary-color);
+    background: var(--background-color-header);
 }
 // border row
 

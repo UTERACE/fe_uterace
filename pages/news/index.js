@@ -81,11 +81,11 @@ const NewsPage = () => {
           <div id='info-dataview'>
             <h4>
               {t('created-at')}:{' '}
-              {LocaleHelper.formatDateTime(new Date(item.created_at))}
+              {LocaleHelper.formatDate(new Date(item.created_at))}
             </h4>
             <h4>
               {t('updated-at')}:{' '}
-              {LocaleHelper.formatDateTime(new Date(item.updated_at))}
+              {LocaleHelper.formatDate(new Date(item.updated_at))}
             </h4>
           </div>
           <div id='info-title-dataview' title={item.name}>
@@ -104,6 +104,7 @@ const NewsPage = () => {
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <a
+                  className='link-share'
                   onClick={(e) => {
                     e.preventDefault()
                     setUrl(

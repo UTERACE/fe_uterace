@@ -22,6 +22,7 @@ import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
 import { InputText } from 'primereact/inputtext'
 import store from '@/store/store'
+import RankMemberClub from '@/pages/scoreboard/RankMemberClub'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -512,7 +513,7 @@ const ManagementClubDetail = ({ club }) => {
                     placeholder={t('search_members')}
                   />
                 </div>
-                <RankMember value={rankMember.ranking_user} />
+                <RankMemberClub value={rankMember.ranking_user} />
                 <Paginator
                   first={first}
                   rows={per_page}

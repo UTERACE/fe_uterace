@@ -40,6 +40,7 @@
     font-size: 0.7rem;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
+    color: var(--text-color-header);
 }
 .ml2-icon{
     margin-right: 0.4rem;
@@ -70,6 +71,7 @@
     display: flex;
     flex-direction: column;
     height: auto;
+    color: var(--text-color);
 }
 #share-register-container h4 {
     display: -webkit-box;
@@ -91,6 +93,7 @@
     margin: 0.1rem 0 0.1rem 0; 
     transition: color 0.3s ease;
     text-align: center;
+    color: var(--text-color);
 }
 #share-register-container  h6 {
     display: -webkit-box;
@@ -101,28 +104,41 @@
     font-size: 0.8rem;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
+    color: var(--text-color-header);
 }
 #share-register-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.2rem;
+    padding-top: 0.3rem;
     width: 100%;
     height: auto;
 }
 #link-dataview-container {
     text-decoration: none;
-    color: $text-color;
+    color: var(--text-color-header);
 }
 #link-dataview {
     font-size: 1rem;
     transition: color 0.3s ease;
     font-weight: 500;
-    color: $text-color;
+    color: var(--dialog-text-color);
     text-decoration: none;
 }
 #link-dataview:hover {
     color: var(--third-color);
+    font-weight: 550;
+    transition: color 0.3s ease 0.1s;
+}
+.link-share {
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    font-weight: 500;
+    color: var(--text-color-header);
+    text-decoration: none;
+}
+.link-share:hover {
+    color: var(--fourth-color);
     font-weight: 550;
     transition: color 0.3s ease 0.1s;
 }

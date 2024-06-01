@@ -26,7 +26,7 @@
 }
 
 #info-event h4 {
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin: 0.5rem 0 0.5rem 0; 
     transition: color 0.3s ease;
 }
@@ -41,7 +41,7 @@
     font-size: 1rem;
     transition: color 0.3s ease;
     font-weight: 500;
-    color: $text-color;
+    color: var(--text-color-header);
     text-decoration: none;
 }
 #link-event:hover {

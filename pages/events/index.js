@@ -107,6 +107,7 @@ const Events = () => {
                   <i className='pi pi-arrow-right' aria-hidden='true'></i>
                 </Link>
                 <a
+                  className='link-share'
                   onClick={(e) => {
                     e.preventDefault()
                     setUrl(
