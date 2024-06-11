@@ -10,7 +10,7 @@
 #background-club-container {
     width: 80%;
     height: 20rem;
-    background-color: $white-color;
+    background-color: var(--border-color-post);
     border-radius: 15px;
 }
 #background-club-container img {

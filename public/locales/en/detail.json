@@ -96,5 +96,8 @@
     "notify_leave_event_third": "Are you sure you want to leave the event now?",
     "change_manager_first": "After changing, the current manager will become a normal member.",
     "change_manager_second": "Do you want to change the club manager?",
-    "change_manager_third": "Enter the name or email of the member you want to transfer the management rights to."
+    "change_manager_third": "Enter the name or email of the member you want to transfer the management rights to.",
+    "no-data": "No data",
+    "my_post": "My post",
+    "search_for": "Search for "
 }

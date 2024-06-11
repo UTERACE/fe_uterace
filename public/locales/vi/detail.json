@@ -96,6 +96,8 @@
     "notify_leave_event_third": "Bạn có muốn rời sự kiện ngay không?",
     "change_manager_first": "Sau khi thay đổi, quản lý hiện tại sẽ trở thành thành viên bình thường.",
     "change_manager_second": "Bạn có muốn thay đổi quản lý câu lạc bộ không?",
-    "change_manager_third": "Nhập tên người dùng hoặc email của thành viên bạn muốn chuyển quyền quản lý."
-
+    "change_manager_third": "Nhập tên người dùng hoặc email của thành viên bạn muốn chuyển quyền quản lý.",
+    "no-data": "Không có dữ liệu",
+    "my_post": "Bài viết",
+    "search_for": "Tìm kiếm trên "
 }

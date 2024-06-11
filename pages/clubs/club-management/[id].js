@@ -103,8 +103,12 @@ const ManagementClubDetail = ({ club }) => {
   }, [updateNewsId])
 
   useEffect(() => {
-    fetchData()
-  }, [current_page, per_page, search, activeIndex])
+    if (activeIndex === 2) {
+      fetchActivities()
+    } else if (activeIndex === 3) {
+      fetchScoreboard()
+    }
+  }, [current_page, per_page, search])
 
   useEffect(() => {
     //responsive window
@@ -113,32 +117,38 @@ const ManagementClubDetail = ({ club }) => {
     }
   }, [])
 
-  const fetchData = async () => {
+  const fetchScoreboard = async () => {
     setLoading(true)
     try {
-      let res
-      if (activeIndex === 3) {
-        res = await apiInstance.get(
-          `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-        )
-        if (res && res.status === 200) {
-          const data = res.data
-          setRankMember(data)
-          setCurrentPage(data.current_page)
-          setPerPage(data.per_page)
-          setTotalRecords(data.total_user)
-        }
-      } else if (activeIndex === 2) {
-        res = await apiInstance.get(
-          `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
-        )
-        if (res && res.status === 200) {
-          const data = res.data
-          setActivities(data)
-          setCurrentPage(data.current_page)
-          setPerPage(data.per_page)
-          setTotalRecords(data.total_activities)
-        }
+      const res = await apiInstance.get(
+        `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res.status === 200) {
+        const data = res.data
+        setRankMember(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_user)
+      }
+      setLoading(false)
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
+
+  const fetchActivities = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
+      )
+      if (res.status === 200) {
+        const data = res.data
+        setActivities(data)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setTotalRecords(data.total_activities)
       }
       setLoading(false)
     } catch (error) {
@@ -467,6 +477,7 @@ const ManagementClubDetail = ({ club }) => {
                 }
                 onClick={() => {
                   setActiveIndex(2)
+                  fetchActivities()
                 }}
               />
               <Button
@@ -476,6 +487,7 @@ const ManagementClubDetail = ({ club }) => {
                 label={isMobile ? t('mobile_members') : t('scoreboard-member')}
                 onClick={() => {
                   setActiveIndex(3)
+                  fetchScoreboard()
                 }}
               />
             </div>
@@ -513,7 +525,12 @@ const ManagementClubDetail = ({ club }) => {
                     placeholder={t('search_members')}
                   />
                 </div>
-                <RankMemberClub value={rankMember.ranking_user} />
+                <RankMemberClub
+                  value={rankMember.ranking_user}
+                  clubId={club.club_id}
+                  fetchMembers={fetchScoreboard}
+                  showToast={showToast}
+                />
                 <Paginator
                   first={first}
                   rows={per_page}

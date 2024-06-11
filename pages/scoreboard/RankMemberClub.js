@@ -7,7 +7,13 @@ import Image from 'next/image'
 import { Button } from 'primereact/button'
 import apiInstance from '@/api/apiInstance'
 
-const RankMemberClub = ({ value, isRankingUser = false }) => {
+const RankMemberClub = ({
+  value,
+  isRankingUser = false,
+  clubId,
+  fetchMembers,
+  showToast,
+}) => {
   const [loading, setLoading] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -101,12 +107,15 @@ const RankMemberClub = ({ value, isRankingUser = false }) => {
   const handelDelete = async (rowData) => {
     setLoading(true)
     try {
-      const res = await apiInstance.delete(
-        `/clubs/${rowData.club_id}/members/${rowData.member_id}`
-      )
+      const res = await apiInstance.delete(`/clubs/delete-member`, {
+        data: {
+          club_id: clubId,
+          user_id: rowData.user_id,
+        },
+      })
       if (res.status === 200) {
         fetchMembers()
-        showToast('success', 'Xóa thành viên thành công')
+        showToast('success', 'Xóa thành viên thành công', res.data.message)
       }
     } catch (error) {
       showToast('error', 'Xóa thành viên thất bại', error)
@@ -118,7 +127,7 @@ const RankMemberClub = ({ value, isRankingUser = false }) => {
       <Button
         icon='pi pi-trash'
         className='p-button-danger'
-        onClick={() => onDelete(rowData)}
+        onClick={() => handelDelete(rowData)}
       />
     )
   }
@@ -200,7 +209,7 @@ const RankMemberClub = ({ value, isRankingUser = false }) => {
       body: formatDate,
     },
     {
-      field: 'member_id',
+      field: 'user_id',
       header: t('action'),
       bodyClassName: 'text-center',
       body: actionDelete,

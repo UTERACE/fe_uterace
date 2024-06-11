@@ -19,6 +19,7 @@ import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
 import Post from '../Post'
 import { Dialog } from 'primereact/dialog'
+import NewPost from './NewPost'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -57,7 +58,8 @@ const ClubDetail = ({ club }) => {
   const [visibleLogin, setVisibleLogin] = useState(false)
   const [visibleJoin, setVisibleJoin] = useState(false)
   const [checkJoin, setCheckJoin] = useState(false)
-  const [updateStatus, setUpdateStatus] = useState(false)
+  const [visibleAddNews, setVisibleAddNews] = useState(false)
+  const [isMyPost, setIsMyPost] = useState(false)
   const buttonEl = useRef(null)
 
   const setLoading = useContext(LoadingContext)
@@ -77,6 +79,7 @@ const ClubDetail = ({ club }) => {
   const [page, setPage] = useState(1)
 
   const { t } = useTranslation('detail')
+  const { t: tNews } = useTranslation('news')
 
   useEffect(() => {
     checkJoinClub()
@@ -160,6 +163,7 @@ const ClubDetail = ({ club }) => {
   }
 
   const fetchPosts = async () => {
+    setLoading(true)
     try {
       const res = await apiInstance.get(`/news/club/${club.club_id}`, {
         params: {
@@ -175,6 +179,27 @@ const ClubDetail = ({ club }) => {
     } catch (error) {
       showToast('error', t('get_news_fail'), error)
     }
+    setLoading(false)
+  }
+
+  const fetchMyPosts = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(`/news/my-news/${club.club_id}`, {
+        params: {
+          current_page: page,
+          per_page: 5,
+          search_name: '',
+        },
+      })
+      const data = res.data
+      if (res.status === 200) {
+        setNewFeed(data)
+      }
+    } catch (error) {
+      showToast('error', t('get_news_fail'), error)
+    }
+    setLoading(false)
   }
 
   const handleJoinClub = async () => {
@@ -361,6 +386,7 @@ const ClubDetail = ({ club }) => {
                 label={t('new_feed')}
                 onClick={() => {
                   setActiveIndex(2)
+                  setIsMyPost(false)
                   if (store.getState().auth.isAuthenticated) fetchPosts()
                   else {
                     showToast(
@@ -403,36 +429,70 @@ const ClubDetail = ({ club }) => {
             ) : activeIndex === 2 ? (
               <div style={{ width: '100%' }}>
                 <div>
-                  <AutoComplete
-                    value={search_name}
-                    onChange={(e) => setSearchName(e.target.value)}
-                    completeMethod={(e) => setSearch(!search)}
-                    placeholder={t('search_members')}
-                  />
-                </div>
-                <div className='new-feed-container'>
-                  {newFeed.map((item, index) => (
-                    <Post
-                      key={index}
-                      club_id={club.club_id}
-                      post_id={item.post_id}
-                      post_title={item.post_title}
-                      post_content={item.post_content}
-                      post_description={item.post_description}
-                      post_date={item.post_date}
-                      post_image={item.post_image}
-                      count_likes={item.count_likes}
-                      count_comments={item.count_comments}
-                      is_liked={item._liked}
-                      user_id={item.user_id}
-                      user_name={item.user_name}
-                      user_avatar={item.user_avatar}
-                      user_role={item.user_role}
-                      checkJoin={setCheckJoin}
-                      t={t}
-                      showToast={showToast}
-                    />
-                  ))}
+                  <div className='new-feed-menu'>
+                    <div className='new-feed-button-container'>
+                      <Button
+                        icon='pi pi-plus p-icon-large'
+                        style={{
+                          width: '3rem',
+                          height: '3rem',
+                          borderRadius: '50%',
+                        }}
+                        onClick={() => {
+                          setVisibleAddNews(true)
+                        }}
+                      />
+                    </div>
+
+                    <div className='new-feed-search '>
+                      <AutoComplete
+                        value={search_name}
+                        style={{ width: '70%' }}
+                        onChange={(e) => setSearchName(e.target.value)}
+                        completeMethod={(e) => setSearch(!search)}
+                        placeholder={t('search_for') + "'" + club.name + "'"}
+                      />
+                    </div>
+                    <div className='new-feed-button-container'>
+                      <Button
+                        label={t('my_post')}
+                        style={{
+                          height: '3rem',
+                          borderRadius: '1rem',
+                        }}
+                        onClick={() => {
+                          setIsMyPost(true)
+                          fetchMyPosts()
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className='new-feed-container'>
+                    {newFeed.map((item, index) => (
+                      <Post
+                        key={index}
+                        club_id={club.club_id}
+                        post_id={item.post_id}
+                        post_title={item.post_title}
+                        post_content={item.post_content}
+                        post_description={item.post_description}
+                        post_date={item.post_date}
+                        post_image={item.post_image}
+                        count_likes={item.count_likes}
+                        count_comments={item.count_comments}
+                        is_liked={item._liked}
+                        user_id={item.user_id}
+                        user_name={item.user_name}
+                        user_avatar={item.user_avatar}
+                        user_role={item.user_role}
+                        checkJoin={setCheckJoin}
+                        t={t}
+                        showToast={showToast}
+                        isMyPost={isMyPost}
+                        fetchMyPosts={fetchMyPosts}
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 <Paginator
@@ -492,6 +552,27 @@ const ClubDetail = ({ club }) => {
           </div>
         </div>
       </div>
+      <Dialog
+        header={tNews('add-news')}
+        visible={visibleAddNews}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleAddNews(false)}
+      >
+        <NewPost
+          club_id={club.club_id}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleAdd={setVisibleAddNews}
+          fetchPosts={fetchPosts}
+          t={tNews}
+        />
+      </Dialog>
       <Dialog
         header={t('notify_not_login_third')}
         visible={visibleLogin}

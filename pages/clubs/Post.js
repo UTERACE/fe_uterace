@@ -8,6 +8,7 @@ import { useToast } from '@/components/contexts/ToastContext'
 import { Dialog } from 'primereact/dialog'
 import Reply from './Reply'
 import { Button } from 'primereact/button'
+import UpdateNews from './club-detail/UpdateNews'
 
 const Post = ({
   club_id,
@@ -27,6 +28,8 @@ const Post = ({
   checkJoin,
   t,
   showToast,
+  isMyPost = false,
+  fetchMyPosts,
 }) => {
   const [isLiked, setIsLiked] = useState(is_liked)
   const [countLikes, setCountLikes] = useState(count_likes)
@@ -41,6 +44,7 @@ const Post = ({
   const [page, setPage] = useState(1)
   const [repliesPage, setRepliesPage] = useState(1)
   const [replyComment, setReplyComment] = useState(null)
+  const [visibleUpdateNews, setVisibleUpdateNews] = useState(false)
 
   const [comment, setComment] = useState('')
   const [replyTo, setReplyTo] = useState(null)
@@ -318,7 +322,13 @@ const Post = ({
         </div>
 
         <div className='new-feed-header-right'>
-          {LocaleHelper.formatDateTime(new Date(post_date))}
+          {LocaleHelper.formatDateComment(new Date(post_date))}
+          {isMyPost && (
+            <Button
+              icon='pi pi-pencil'
+              onClick={() => setVisibleUpdateNews(true)}
+            />
+          )}
         </div>
       </div>
       <div className='new-feed-content'>
@@ -404,6 +414,32 @@ const Post = ({
           </div>
         </div>
       </div>
+      <Dialog
+        header={t('update-news')}
+        visible={visibleUpdateNews}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleUpdateNews(false)}
+      >
+        <UpdateNews
+          club_id={club_id}
+          news_id={post_id}
+          title={post_title}
+          description={post_content}
+          image={post_image}
+          content={post_description}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleUpdateNews={setVisibleUpdateNews}
+          fetchMyPosts={fetchMyPosts}
+          t={t}
+        />
+      </Dialog>
       <Dialog
         header={`Bài viết của ${user_name}`}
         footer={
@@ -509,7 +545,7 @@ const Post = ({
             </div>
 
             <div className='new-feed-header-right'>
-              {LocaleHelper.formatDateTime(new Date(post_date))}
+              {LocaleHelper.formatDateComment(new Date(post_date))}
             </div>
           </div>
           <div className='new-feed-content'>

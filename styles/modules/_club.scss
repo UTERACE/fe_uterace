@@ -67,7 +67,12 @@
     font-size: $font-size-small;
 }
 .new-feed-header-right {
-    width: 15rem;
+    width: auto;
+    min-width: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 .new-feed-content {
     display: flex;
@@ -136,7 +141,6 @@
     align-items: start;
     justify-content: space-between;
     gap: 0.2rem;
-    padding: 1rem 1rem 1rem 1rem;
     width: 100%;
 }
 .new-feed-comment-input {
@@ -404,4 +408,26 @@
   margin-left: auto;
   font-size: 1.5rem;
   color: var(--third-color);
+}
+.new-feed-menu {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 3.8rem;
+    z-index: 1000; /* Đảm bảo nó nằm trên các thành phần khác */
+    display: flex;
+    justify-content: space-between;
+}
+.new-feed-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+}
+.new-feed-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10rem;
 }

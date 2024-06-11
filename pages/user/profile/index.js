@@ -475,7 +475,11 @@ const Profile = () => {
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar'
                 label={isMobile ? t('joined') : t('joining-events')}
-                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
+                style={
+                  isMobile
+                    ? { fontSize: '0.8rem' }
+                    : { width: 'auto', minWidth: '22%' }
+                }
                 onClick={() => {
                   setActiveIndex(1)
                   setCompleted(false)
@@ -485,7 +489,11 @@ const Profile = () => {
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-plus'
                 label={isMobile ? t('recent') : t('recent-activities')}
-                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
+                style={
+                  isMobile
+                    ? { fontSize: '0.8rem' }
+                    : { width: 'auto', minWidth: '22%' }
+                }
                 onClick={() => {
                   setActiveIndex(2)
                 }}
@@ -494,7 +502,11 @@ const Profile = () => {
                 id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-calendar-minus'
                 label={isMobile ? t('completed') : t('completed-events')}
-                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
+                style={
+                  isMobile
+                    ? { fontSize: '0.8rem' }
+                    : { width: 'auto', minWidth: '22%' }
+                }
                 onClick={() => {
                   setActiveIndex(3)
                   setCompleted(true)
@@ -505,7 +517,11 @@ const Profile = () => {
                 icon='pi pi-images'
                 // label={t('collection')}
                 label={isMobile ? t('clubs') : t('clubs-created')}
-                style={isMobile ? { fontSize: '0.8rem' } : { width: '25%' }}
+                style={
+                  isMobile
+                    ? { fontSize: '0.8rem' }
+                    : { width: 'auto', minWidth: '22%' }
+                }
                 onClick={() => {
                   setActiveIndex(4)
                 }}

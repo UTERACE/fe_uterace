@@ -239,6 +239,11 @@ const Topbar = () => {
           command: () => handleClick('/clubs/club-management'),
         },
         {
+          label: t('joined-clubs'),
+          icon: 'pi pi-fw pi-users',
+          command: () => handleClick('/clubs/joined'),
+        },
+        {
           label: t('my-clubs'),
           icon: 'pi pi-fw pi-users',
           command: () => handleClick('/clubs/club-management'),

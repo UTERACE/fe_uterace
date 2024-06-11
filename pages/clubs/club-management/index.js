@@ -85,26 +85,6 @@ const ClubManagement = () => {
     }
   }
 
-  const fetchJoinedClubs = async () => {
-    setLoading(true)
-    try {
-      const res = await apiInstance.get(
-        `/clubs/joined-club?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-      )
-      const data = res.data
-      if (res.status === 200) {
-        setClubs(data.clubs)
-        setTotalRecords(data.total_clubs)
-        setCurrentPage(data.current_page)
-        setPerPage(data.per_page)
-        setLoading(false)
-      }
-    } catch (err) {
-      showToast('error', 'Lỗi', err)
-      setLoading(false)
-    }
-  }
-
   const fetchDetailClub = async (club_id) => {
     setLoading(true)
     try {
@@ -246,7 +226,7 @@ const ClubManagement = () => {
       <Title
         title={
           index === 3
-            ? t('joined-clubs')
+            ? t('manage-clubs')
             : index === 2
             ? t('created-clubs')
             : null
@@ -342,25 +322,28 @@ const ClubManagement = () => {
               fetchManageClubs()
             }}
           />
-          <Button
-            id={index == 4 ? 'button-tab--active' : 'button-tab'}
-            type='button'
-            style={{ width: '100%' }}
-            label={t('joined-clubs')}
-            icon='pi pi-list'
-            iconPos='right'
-            onClick={() => {
-              setIndex(4)
-              fetchJoinedClubs()
-            }}
-          />
         </div>
       </div>
-      <DataView
-        data={clubs}
-        href='/clubs/club-management/'
-        itemTemplate={itemTemplate}
-      />
+      {clubs.length === 0 ? (
+        <div className='centered-content-layout'>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '2rem',
+            }}
+          >
+            <h2>{t('no-data')}</h2>
+          </div>
+        </div>
+      ) : (
+        <DataView
+          data={clubs}
+          href='/clubs/club-management/'
+          itemTemplate={itemTemplate}
+        />
+      )}
       <Paginator
         first={first}
         rows={per_page}

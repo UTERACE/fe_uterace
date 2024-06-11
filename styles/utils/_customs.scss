@@ -22,7 +22,7 @@
       border-left-color: $black-color;
     font-size: 1rem;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    border-radius: 15px;
+    border-radius: 1rem;
 }
 
 .p-button:enabled:hover, .p-button:not(button):not(a):not(.p-disabled):hover {
@@ -31,7 +31,7 @@
     border-color: transparent;
 }
 .p-dialog .p-dialog-content {
-    background: var(--background-color-post);
+    background: var(--background-comment);
     color: var(--dialog-text-color);
     padding: 0 0 0 0;
     width: 100%;
