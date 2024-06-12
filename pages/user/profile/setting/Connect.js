@@ -10,7 +10,6 @@ const Connect = ({ t, isMobile = false }) => {
   const showToast = useToast().showToast
   const setLoading = useContext(LoadingContext)
   const router = useRouter()
-  const [update, setUpdate] = useState(false)
 
   let strava_client_id = process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID,
     strava_response_type = process.env.NEXT_PUBLIC_STRAVA_REPONSE_TYPE,
@@ -24,25 +23,13 @@ const Connect = ({ t, isMobile = false }) => {
   const [stravaFullName, setStravaFullName] = useState('')
   const [stravaImage, setStravaImage] = useState('')
   const [status, setStatus] = useState(false)
+
+  // Hàm xử lý khi người dùng muốn kết nối với Strava
   const handleAuth = async () => {
     window.location = `https://www.strava.com/oauth/authorize?client_id=${strava_client_id}&response_type=${strava_response_type}&redirect_uri=${strava_redirect_uri}&approval_prompt=${strava_approval_prompt}&scope=${strava_scope},activity:${strava_activity}`
   }
-  const linkStrava = (rowData) => {
-    return (
-      <a
-        target='_blank'
-        href={`https://www.strava.com/activities/${rowData.activity_link_stava}`}
-      >
-        <Image
-          style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-          width={20}
-          height={20}
-          src='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/323_Strava_logo-512.png'
-        ></Image>
-      </a>
-    )
-  }
 
+  // Hàm xử lý khi người dùng đã có mã authorization từ Strava
   const handleConnectStrava = async (authorizationCode) => {
     setLoading(true)
     try {
@@ -61,7 +48,7 @@ const Connect = ({ t, isMobile = false }) => {
           return
         }
         showToast('success', t('connect_strava_success'), res.data.detail)
-        setUpdate(!update)
+        fetchStatus()
         setLoading(false)
       }
     } catch (e) {
@@ -70,13 +57,14 @@ const Connect = ({ t, isMobile = false }) => {
     }
   }
 
+  // Hàm xử lý khi người dùng muốn ngắt kết nối với Strava
   const handleDisconnectStrava = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.post(`/strava/disconnect`)
       if (res.status === 200) {
         showToast('success', t('disconnect_strava_success'), res.data.detail)
-        setUpdate(!update)
+        fetchStatus()
         setLoading(false)
       }
     } catch (e) {
@@ -85,30 +73,37 @@ const Connect = ({ t, isMobile = false }) => {
     }
   }
 
+  // useEffect để xử lý khi có mã authorization từ Strava
   useEffect(() => {
     const authorizationCode = router.query.code
-
     if (authorizationCode) {
-      // Gọi hàm xử lý authorization code
       handleConnectStrava(authorizationCode)
     }
   }, [router.query.code])
 
+  // useEffect để cập nhật trạng thái kết nối Strava
   useEffect(() => {
     fetchStatus()
-  }, [update])
+  }, [])
 
+  // Hàm lấy trạng thái kết nối Strava từ API
   const fetchStatus = async () => {
-    const res = await apiInstance.get(`/strava/status`)
-    if (res.status === 200) {
-      const data = res.data
-      setDetail(data.detail)
-      setStravaId(data.stravaId)
-      setStravaFullName(data.stravaFullname)
-      setStravaImage(data.stravaImage)
-      if (data.detail === 'Strava has been connected') {
-        setStatus(true)
+    try {
+      const res = await apiInstance.get(`/strava/status`)
+      if (res.status === 200) {
+        const data = res.data
+        setDetail(data.detail || '')
+        setStravaId(data.stravaId || '')
+        setStravaFullName(data.stravaFullname || '')
+        setStravaImage(data.stravaImage || '')
+        if (data.detail === 'Strava has been connected') {
+          setStatus(true)
+        } else {
+          setStatus(false)
+        }
       }
+    } catch (e) {
+      showToast('error', t('fetch_status_fail'), e.message)
     }
   }
 
@@ -124,8 +119,10 @@ const Connect = ({ t, isMobile = false }) => {
             height={20}
           />
         </div>
-        {status ? <i className='pi pi-link' aria-hidden='true'></i> : null}
-        {status ? (
+        {status && stravaImage ? (
+          <i className='pi pi-link' aria-hidden='true'></i>
+        ) : null}
+        {status && stravaImage ? (
           <div>
             <Image
               src={stravaImage}
@@ -146,7 +143,7 @@ const Connect = ({ t, isMobile = false }) => {
         style={isMobile ? { fontSize: '0.8rem' } : {}}
         href={`https://www.strava.com/athletes/${stravaId}`}
       >
-        {stravaId !== null ? `https://www.strava.com/athletes/${stravaId}` : ''}
+        {stravaId ? `https://www.strava.com/athletes/${stravaId}` : ''}
       </a>
       <Button
         id='button-detail'

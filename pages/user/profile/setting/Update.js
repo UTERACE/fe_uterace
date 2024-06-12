@@ -125,7 +125,8 @@ const Update = ({ t, isMobile = false }) => {
       '-' +
       date.getDate().toString().padStart(2, '0')
     data.birthday = strBirthday
-    data.telNumber = data.telNumber.replace(/[^0-9]/g, '')
+    if (data.telNumber === null) delete data.telNumber
+    else data.telNumber = data.telNumber.replace(/[^0-9]/g, '')
     data.image = ''
     console.log('data', data)
 
