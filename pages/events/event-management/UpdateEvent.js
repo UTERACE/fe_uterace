@@ -21,7 +21,7 @@ const Update = ({
   setLoading,
   showToast,
   setVisibleChange,
-  setUpdateStatus,
+  fetchEvents,
   t,
   tDetail,
 }) => {
@@ -66,7 +66,7 @@ const Update = ({
         showToast('success', t('update_event_success'), dataRes.message)
         setLoading(false)
         setVisibleChange(false)
-        setUpdateStatus(true)
+        fetchEvents()
       }
     } catch (error) {
       showToast('error', t('update_event_fail'), error)

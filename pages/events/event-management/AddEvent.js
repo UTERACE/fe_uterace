@@ -21,7 +21,7 @@ const AddEvent = ({
   setLoading,
   showToast,
   setVisibleAdd,
-  setUpdateStatus,
+  fetchEvents,
   t,
   tDetail,
 }) => {
@@ -66,7 +66,7 @@ const AddEvent = ({
         showToast('success', t('create_event_success'), dataRes.message)
         setLoading(false)
         setVisibleAdd(false)
-        setUpdateStatus(true)
+        fetchEvents()
       }
     } catch (error) {
       showToast('error', t('create_event_fail'), error)

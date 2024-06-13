@@ -41,10 +41,8 @@ const ClubManagement = () => {
       fetchCreatedClubs()
     } else if (index === 3) {
       fetchManageClubs
-    } else if (index === 4) {
-      fetchJoinedClubs()
     }
-  }, [current_page, per_page, visibleChange, visibleAdd, updateStatus, search])
+  }, [current_page, per_page, search])
 
   const fetchCreatedClubs = async () => {
     setLoading(true)
@@ -58,6 +56,7 @@ const ClubManagement = () => {
         setTotalRecords(data.total_clubs)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
+        setIndex(2)
         setLoading(false)
       }
     } catch (err) {
@@ -77,6 +76,7 @@ const ClubManagement = () => {
         setTotalRecords(data.total_clubs)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
+        setIndex(3)
         setLoading(false)
       }
     } catch (err) {
@@ -252,7 +252,7 @@ const ClubManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleChange={setVisibleChange}
-          setUpdate={setUpdateStatus}
+          fetchCreatedClubs={fetchCreatedClubs}
           t={t}
         />
       </Dialog>
@@ -272,7 +272,7 @@ const ClubManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleAdd={setVisibleAdd}
-          setUpdate={setUpdateStatus}
+          fetchCreatedClubs={fetchCreatedClubs}
           t={t}
         />
       </Dialog>
@@ -306,7 +306,6 @@ const ClubManagement = () => {
             icon='pi pi-list'
             iconPos='right'
             onClick={() => {
-              setIndex(2)
               fetchCreatedClubs()
             }}
           />
@@ -318,7 +317,6 @@ const ClubManagement = () => {
             icon='pi pi-list'
             iconPos='right'
             onClick={() => {
-              setIndex(3)
               fetchManageClubs()
             }}
           />

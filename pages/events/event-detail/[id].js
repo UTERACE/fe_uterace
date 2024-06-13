@@ -1,4 +1,3 @@
-import RankClub from '@/pages/landing/RankClub'
 import RankMember from '@/pages/scoreboard/RankMember'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
@@ -11,12 +10,12 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import { useRouter } from 'next/router'
 import store from '@/store/store'
-import { ConfirmPopup } from 'primereact/confirmpopup'
 import Image from 'next/image'
 import Activity from '@/pages/user/profile/Activity'
 import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import { Dialog } from 'primereact/dialog'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -52,6 +51,8 @@ const EventDetail = ({ event }) => {
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(2)
   const [visible, setVisible] = useState(false)
+  const [visibleJoin, setVisibleJoin] = useState(false)
+  const [visibleLogin, setVisibleLogin] = useState(false)
   const [checkJoin, setCheckJoin] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
   const buttonEl = useRef(null)
@@ -75,7 +76,7 @@ const EventDetail = ({ event }) => {
     // setRankMember(event.ranking_member)
     // setRankClub(event.ranking_club)
     checkJoinEvent()
-  }, [updateStatus])
+  }, [])
 
   useEffect(() => {
     if (activeIndex === 3) {
@@ -163,25 +164,18 @@ const EventDetail = ({ event }) => {
 
   const handleJoinEvent = async () => {
     setLoading(true)
-    if (!hasUserRole) {
-      router.push('/login')
-      setLoading(false)
-      showToast('error', t('leave_event_fail'), t('not_login'))
-    } else {
-      try {
-        const res = await apiInstance.post(
-          `/events/join-event/${event.event_id}`
-        )
-        const data = res.data
-        if (res.status === 200) {
-          showToast('success', t('join_event_success'), data.message)
-          setUpdateStatus(!updateStatus)
-          setLoading(false)
-        }
-      } catch (error) {
-        showToast('error', t('join_event_fail'))
+    try {
+      const res = await apiInstance.post(`/events/join-event/${event.event_id}`)
+      const data = res.data
+      if (res.status === 200) {
+        showToast('success', t('join_event_success'), data.message)
+        setCheckJoin(true)
+        setVisibleJoin(false)
         setLoading(false)
       }
+    } catch (error) {
+      showToast('error', t('join_event_fail'))
+      setLoading(false)
     }
   }
 
@@ -194,7 +188,8 @@ const EventDetail = ({ event }) => {
       const data = res.data
       if (res.status === 200) {
         showToast('success', t('leave_event_success'), data.message)
-        setUpdateStatus(!updateStatus)
+        setCheckJoin(false)
+        setVisibleJoin(false)
         setLoading(false)
       }
     } catch (error) {
@@ -237,19 +232,7 @@ const EventDetail = ({ event }) => {
                 t={t}
               />
             </div>
-            <ConfirmPopup
-              target={buttonEl.current}
-              visible={visible}
-              onHide={() => setVisible(false)}
-              message={
-                checkJoin ? t('confirm_leave_event') : t('confirm_join_event')
-              }
-              icon='pi pi-exclamation-triangle'
-              accept={checkJoin ? acceptLeave : acceptJoin}
-              reject={reject}
-            />
             <Button
-              ref={buttonEl}
               id='button-join'
               label={checkJoin ? t('leave_event') : t('join-now')}
               disabled={
@@ -259,7 +242,11 @@ const EventDetail = ({ event }) => {
                   : true
               }
               onClick={() => {
-                setVisible(true)
+                if (store.getState().auth.isAuthenticated) {
+                  setVisibleJoin(true)
+                } else {
+                  setVisibleLogin(true)
+                }
               }}
             />
           </div>
@@ -463,6 +450,7 @@ const EventDetail = ({ event }) => {
                 onClick={() => {
                   setActiveIndex(3)
                   setSearchName('')
+                  fetchRankMember()
                 }}
               />
               <Button
@@ -475,6 +463,7 @@ const EventDetail = ({ event }) => {
                 onClick={() => {
                   setActiveIndex(4)
                   setSearchName('')
+                  fetchActivities()
                 }}
               />
             </div>
@@ -542,6 +531,94 @@ const EventDetail = ({ event }) => {
           </div>
         </div>
       </div>
+      <Dialog
+        header={
+          checkJoin
+            ? t('notify_leave_event_third')
+            : t('notify_not_login_third')
+        }
+        visible={visibleJoin}
+        onHide={() => setVisibleJoin(false)}
+        style={{ width: '30vw' }}
+      >
+        <div className='dialog-content-confirm'>
+          <p>
+            {checkJoin
+              ? t('notify_leave_event_first')
+              : t('notify_not_join_event_first')}
+          </p>
+          <p>
+            {checkJoin
+              ? t('notify_leave_event_second')
+              : t('notify_not_join_event_second')}
+          </p>
+          <p>
+            {checkJoin
+              ? t('notify_leave_event_third')
+              : t('notify_not_join_event_third')}
+          </p>
+
+          <div className='confirm-button-container'>
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              style={{ color: 'red' }}
+              icon='pi pi-times'
+              label={t('close')}
+              onClick={() => {
+                router.push(`/events/payment/${event.event_id}`)
+                // setVisibleJoin(false)
+              }}
+            />
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              icon='pi pi-sign-in'
+              label={checkJoin ? t('leave_event_now') : t('join_event_now')}
+              onClick={() => {
+                if (checkJoin) {
+                  handleLeaveEvent()
+                } else {
+                  handleJoinEvent()
+                }
+              }}
+            />
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        header={t('notify_not_login_third')}
+        visible={visibleLogin}
+        onHide={() => setVisibleLogin(false)}
+        style={{ width: '30vw' }}
+      >
+        <div className='dialog-content-confirm'>
+          <p>{t('notify_not_login_first')}</p>
+          <p>{t('notify_not_login_second')}</p>
+          <p>{t('notify_not_login_third')}</p>
+          <div className='confirm-button-container'>
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              style={{ color: 'red' }}
+              icon='pi pi-times'
+              label={t('close')}
+              onClick={() => setVisibleLogin(false)}
+            />
+            <Button
+              severity='secondary'
+              raised
+              id='button-detail'
+              icon='pi pi-sign-in'
+              label={t('login_now')}
+              onClick={() => router.push('/login')}
+            />
+          </div>
+        </div>
+      </Dialog>
     </div>
   )
 }

@@ -5,13 +5,14 @@ import DataTable from '@/components/datatable/DataTable'
 import { Button } from 'primereact/button'
 import { ConfirmPopup } from 'primereact/confirmpopup'
 import { Dialog } from 'primereact/dialog'
+import { InputNumber } from 'primereact/inputnumber'
 import { InputText } from 'primereact/inputtext'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
 const DistanceManagement = () => {
   const [distance, setDistance] = useState([])
   const [name, setName] = useState('')
-  const [distanceValue, setDistanceValue] = useState('')
+  const [distanceValue, setDistanceValue] = useState()
   const [distanceID, setDistanceID] = useState()
 
   const [visible, setVisible] = useState(false)
@@ -20,11 +21,10 @@ const DistanceManagement = () => {
   const showToast = useToast().showToast
   const [visibleAddDistance, setVisibleAddDistance] = useState(false)
   const [visibleEditDistance, setVisibleEditDistance] = useState(false)
-  const [updateStatus, setUpdateStatus] = useState(false)
 
   useEffect(() => {
     fetchDistance()
-  }, [updateStatus])
+  }, [])
 
   const fetchDistance = async () => {
     setLoading(true)
@@ -65,7 +65,7 @@ const DistanceManagement = () => {
       })
       if (res.status === 200) {
         showToast('success', 'Thêm cự ly thành công', res.data.message)
-        setUpdateStatus(!updateStatus)
+        fetchDistance()
         setLoading(false)
       }
     } catch (err) {
@@ -83,10 +83,10 @@ const DistanceManagement = () => {
       })
       if (res.status === 200) {
         showToast('success', 'Cập nhật cự ly thành công', res.data.message)
-        setUpdateStatus(!updateStatus)
         setName('')
         setDistanceValue('')
         setDistanceID()
+        fetchDistance()
         setLoading(false)
       }
     } catch (err) {
@@ -109,7 +109,7 @@ const DistanceManagement = () => {
       const res = await apiInstance.delete(`/distance/${id}`)
       if (res.status === 200) {
         showToast('success', 'Xóa cự ly thành công', res.data.message)
-        setUpdateStatus(!updateStatus)
+        fetchDistance()
         setLoading(false)
       }
     } catch (err) {
@@ -170,75 +170,6 @@ const DistanceManagement = () => {
 
   return (
     <div id='initial-user-container'>
-      <Dialog
-        header='Thêm cự ly'
-        visible={visibleAddDistance}
-        position='top'
-        style={{ width: '50vw' }}
-        onHide={() => {
-          setVisibleAddDistance(false)
-        }}
-      >
-        <div id='distance-form-container'>
-          <InputText
-            placeholder='Tên cự ly'
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value)
-            }}
-          />
-          <InputText
-            placeholder='Khoảng cách'
-            value={distanceValue}
-            onChange={(e) => {
-              setDistanceValue(e.target.value)
-            }}
-          />
-          <Button
-            label='Thêm cự ly'
-            className='p-button-success'
-            icon='pi pi-plus'
-            onClick={() => {
-              addDistance()
-              setVisibleAddDistance(false)
-            }}
-          />
-        </div>
-      </Dialog>
-      <Dialog
-        header='Cập nhật cự ly'
-        visible={visibleEditDistance}
-        position='top'
-        style={{ width: '50vw' }}
-        onHide={() => {
-          setVisibleEditDistance(false)
-        }}
-      >
-        <div id='distance-form-container'>
-          <InputText
-            placeholder='Tên cự ly'
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value)
-            }}
-          />
-          <InputText
-            placeholder='Khoảng cách'
-            value={distanceValue}
-            onChange={(e) => {
-              setDistanceValue(e.target.value)
-            }}
-          />
-          <Button
-            label='Cập nhật cự ly'
-            className='p-button-warning'
-            onClick={() => {
-              editDistance()
-              setVisibleEditDistance(false)
-            }}
-          />
-        </div>
-      </Dialog>
       <DataTable data={distance} columns={distanceColumns} />
       <div>
         <Button
@@ -250,6 +181,110 @@ const DistanceManagement = () => {
           }}
         />
       </div>
+      <Dialog
+        header='Thêm cự ly'
+        visible={visibleAddDistance}
+        position='top'
+        style={{ width: '40vw' }}
+        onHide={() => {
+          setVisibleAddDistance(false)
+        }}
+        footer={
+          <div id='distance-form-footer'>
+            <Button
+              label='Hủy'
+              icon='pi pi-times'
+              className='p-button-danger'
+              onClick={() => {
+                setVisibleAddDistance(false)
+              }}
+            />
+            <Button
+              label='Thêm cự ly'
+              className='p-button-success'
+              icon='pi pi-plus'
+              onClick={() => {
+                addDistance()
+                setVisibleAddDistance(false)
+              }}
+            />
+          </div>
+        }
+      >
+        <div id='distance-form-container'>
+          <InputText
+            placeholder='Tên cự ly'
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value)
+            }}
+          />
+          <InputNumber
+            placeholder='Khoảng cách (km)'
+            value={distanceValue}
+            onChange={(e) => {
+              setDistanceValue(e.value)
+            }}
+            min={0}
+          />
+        </div>
+      </Dialog>
+      <Dialog
+        header='Cập nhật cự ly'
+        visible={visibleEditDistance}
+        position='top'
+        style={{ width: '50vw' }}
+        onHide={() => {
+          setVisibleEditDistance(false)
+        }}
+        footer={
+          <div id='distance-form-footer'>
+            <Button
+              label='Hủy'
+              icon='pi pi-times'
+              className='p-button-danger'
+              onClick={() => {
+                setVisibleEditDistance(false)
+              }}
+            />
+            <Button
+              label='Xóa cự ly'
+              icon='pi pi-trash'
+              className='p-button-danger'
+              onClick={() => {
+                setVisible(true)
+              }}
+            />
+            <Button
+              label='Cập nhật cự ly'
+              className='p-button-warning'
+              onClick={() => {
+                editDistance()
+                setVisibleEditDistance(false)
+              }}
+            />
+          </div>
+        }
+      >
+        <div id='distance-form-container'>
+          <InputText
+            placeholder='Tên cự ly'
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value)
+            }}
+          />
+          <InputNumber
+            placeholder='Khoảng cách (km)'
+            value={distanceValue}
+            onChange={(e) => {
+              setDistanceValue(e.value)
+            }}
+            suffix='km'
+            min={0}
+          />
+        </div>
+      </Dialog>
     </div>
   )
 }

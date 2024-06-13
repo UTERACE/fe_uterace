@@ -14,7 +14,7 @@ const Update = ({
   setLoading,
   showToast,
   setVisibleChange,
-  setUpdate,
+  fetchCreatedClubs,
   t,
 }) => {
   const [nameEvent, setNameEvent] = useState(name)
@@ -46,7 +46,7 @@ const Update = ({
         showToast('success', t('update_club_success'), dataRes.message)
         setLoading(false)
         setVisibleChange(false)
-        setUpdate(true)
+        fetchCreatedClubs()
       }
     } catch (error) {
       showToast('error', t('update_club_fail'), error)

@@ -597,7 +597,7 @@ const Post = ({
           </div>
           {comments &&
             comments.map((comment) => (
-              <div className='new-feed-comment'>
+              <div className='new-feed-comment' key={comment.comment_id}>
                 <Image
                   style={{
                     width: '3rem',
@@ -687,6 +687,7 @@ const Post = ({
                     {replies && replyComment === comment.comment_id
                       ? replies.map((reply) => (
                           <Reply
+                            key={reply.comment_id}
                             fetchCommentsReply={fetchCommentsReply}
                             user_id={reply.user_id}
                             user_name={reply.user_name}

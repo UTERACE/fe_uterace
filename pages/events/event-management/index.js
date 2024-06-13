@@ -31,7 +31,6 @@ const EventManagement = () => {
   const [index, setIndex] = useState(3)
   const [visibleChange, setVisibleChange] = useState(false)
   const [visibleAdd, setVisibleAdd] = useState(false)
-  const [updateStatus, setUpdateStatus] = useState(false)
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const router = useRouter()
@@ -43,40 +42,70 @@ const EventManagement = () => {
   const hasAdminRole = roles ? roles.some((role) => role.roleId === 1) : false
 
   useEffect(() => {
-    fetchEvents()
-  }, [
-    current_page,
-    per_page,
-    search,
-    index,
-    visibleAdd,
-    visibleChange,
-    updateStatus,
-  ])
+    if (index == 2) {
+      fetchEventsCreated()
+    } else if (index == 3) {
+      fetchEventsJoined()
+    } else if (index == 4) {
+      fetchEvents()
+    }
+  }, [current_page, per_page, search])
 
   const fetchEvents = async () => {
     setLoading(true)
     try {
-      let res
-      if (index === 4) {
-        res = await apiInstance.get(
-          `/events?current_page=${current_page}&per_page=${per_page}&ongoing=1&search_name=${search_name}`
-        )
-      } else if (index === 3) {
-        res = await apiInstance.get(
-          `/events/joined-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-        )
-      } else if (index === 2) {
-        res = await apiInstance.get(
-          `/events/created-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-        )
-      }
+      const res = await apiInstance.get(
+        `/events?current_page=${current_page}&per_page=${per_page}&ongoing=1&search_name=${search_name}`
+      )
       if (res && res.status === 200) {
         const data = res.data
         setEvents(data.events)
         setTotalRecords(data.total_events)
         setCurrentPage(data.current_page)
         setPerPage(data.per_page)
+        setIndex(4)
+      }
+      setLoading(false)
+    } catch (error) {
+      showToast('error', 'Lỗi', error)
+      setLoading(false)
+    }
+  }
+
+  const fetchEventsJoined = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/events/joined-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res && res.status === 200) {
+        const data = res.data
+        setEvents(data.events)
+        setTotalRecords(data.total_events)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setIndex(3)
+      }
+      setLoading(false)
+    } catch (error) {
+      showToast('error', 'Lỗi', error)
+      setLoading(false)
+    }
+  }
+
+  const fetchEventsCreated = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/events/created-event?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res && res.status === 200) {
+        const data = res.data
+        setEvents(data.events)
+        setTotalRecords(data.total_events)
+        setCurrentPage(data.current_page)
+        setPerPage(data.per_page)
+        setIndex(2)
       }
       setLoading(false)
     } catch (error) {
@@ -269,7 +298,7 @@ const EventManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleChange={setVisibleChange}
-          setUpdateStatus={setUpdateStatus}
+          fetchEvents={fetchEventsCreated}
           t={t}
           tDetail={tDetail}
         />
@@ -290,7 +319,7 @@ const EventManagement = () => {
           setLoading={setLoading}
           showToast={showToast}
           setVisibleAdd={setVisibleAdd}
-          setUpdateStatus={setUpdateStatus}
+          fetchEvents={fetchEventsCreated}
           t={t}
           tDetail={tDetail}
         />
@@ -326,7 +355,7 @@ const EventManagement = () => {
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(2)
+                fetchEventsCreated()
               }}
             />
             <Button
@@ -337,7 +366,7 @@ const EventManagement = () => {
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(3)
+                fetchEventsJoined()
               }}
             />
             <Button
@@ -348,7 +377,7 @@ const EventManagement = () => {
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(4)
+                fetchEvents()
               }}
             />
           </div>
@@ -371,7 +400,7 @@ const EventManagement = () => {
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(3)
+                fetchEventsJoined()
               }}
             />
             <Button
@@ -382,7 +411,7 @@ const EventManagement = () => {
               icon='pi pi-list'
               iconPos='right'
               onClick={() => {
-                setIndex(4)
+                fetchEvents()
               }}
             />
           </div>

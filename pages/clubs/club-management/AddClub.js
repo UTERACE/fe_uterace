@@ -14,7 +14,13 @@ const DynamicTinyMCE = dynamic(
   }
 )
 
-const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate, t }) => {
+const AddClub = ({
+  setLoading,
+  showToast,
+  setVisibleAdd,
+  fetchCreatedClubs,
+  t,
+}) => {
   const [nameClub, setNameClub] = useState('')
   const [descriptionClub, setDescriptionClub] = useState('')
   const [background, setBackground] = useState('')
@@ -47,7 +53,7 @@ const AddClub = ({ setLoading, showToast, setVisibleAdd, setUpdate, t }) => {
         showToast('success', t('create_club_success'), dataRes.message)
         setLoading(false)
         setVisibleAdd(false)
-        setUpdate(true)
+        fetchCreatedClubs()
       }
     } catch (error) {
       showToast('error', t('create_club_fail'), error)
