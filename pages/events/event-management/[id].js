@@ -21,6 +21,7 @@ import Activity from '@/pages/user/profile/Activity'
 import Head from 'next/head'
 import store from '@/store/store'
 import LocaleHelper from '@/components/locale/LocaleHelper'
+import { saveAs } from 'file-saver'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -99,9 +100,6 @@ const EventDetail = ({ event }) => {
   }, [hasAdminRole])
 
   useEffect(() => {
-    // setActivities(event.activities)
-    // setRankMember(event.ranking_member)
-    // setRankClub(event.ranking_club)
     if (updateStatus) {
       //wait 1s to update
       setTimeout(() => {
@@ -214,6 +212,29 @@ const EventDetail = ({ event }) => {
     } catch (error) {
       showToast('error', t('delete_distance_fail'))
       setLoading(false)
+    }
+  }
+
+  const handleExportExcel = async () => {
+    try {
+      const res = await apiInstance.get(
+        `/events/export-scoreboard/${event.event_id}`,
+        {
+          responseType: 'blob',
+        }
+      )
+      if (res.status === 200) {
+        const blob = new Blob([res.data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        })
+        saveAs(
+          blob,
+          `${event.name}_scoreboard_${new Date().toLocaleDateString()}.xlsx`
+        ) // Use file-saver to prompt download
+        showToast('success', t('export_excel_success'), res.data.message)
+      }
+    } catch (error) {
+      showToast('error', t('export_excel_fail'))
     }
   }
 
@@ -720,12 +741,19 @@ const EventDetail = ({ event }) => {
               </div>
             ) : activeIndex === 3 ? (
               <div style={{ width: '100%' }}>
-                <div>
+                <div id='search-excel-container'>
                   <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={t('search_members')}
+                  />
+                  <Button
+                    id='button-excel'
+                    label={t('excel')}
+                    onClick={() => {
+                      handleExportExcel()
+                    }}
                   />
                 </div>
                 <RankMember value={rankMember.ranking_user} />

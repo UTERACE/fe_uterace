@@ -89,6 +89,28 @@
     border: 0.13rem solid var(--third-color);
     cursor: pointer;
 }
+#button-excel {
+    background-color: var(--success-color);
+    color: $white-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border: 0.13rem solid $white-color;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    height: 3rem;
+    width: auto;
+    min-width: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0 0.5rem 0; 
+}
+#button-excel:hover {
+    background-color: $white-color;
+    color: var(--success-color);
+    border: 0.13rem solid var(--success-color);
+    cursor: pointer;
+}
 
 #button-reinitialize {
     width: auto;

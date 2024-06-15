@@ -85,6 +85,20 @@ function formatMinutesKmToMilesKm(pace, locale = defaultLocale) {
   return formattedPace
 }
 
+function formatCurrency(price, locale) {
+  if (locale === 'vi') {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'VND',
+    }).format(price)
+  }
+  const dollar_rate = 24000
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: 'USD',
+  }).format(price / dollar_rate)
+}
+
 export default {
   formatNumber,
   formatDate,
@@ -95,4 +109,5 @@ export default {
   formatKmToMiles,
   formatMinutesKmToMilesKm,
   formatDateComment,
+  formatCurrency,
 }

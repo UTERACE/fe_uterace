@@ -1,7 +1,7 @@
 import RankMember from '@/pages/scoreboard/RankMember'
 import { Button } from 'primereact/button'
 import { Paginator } from 'primereact/paginator'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Countdown from '../Countdown'
 import apiInstance from '@/api/apiInstance'
 import { useTranslation } from 'next-i18next'
@@ -50,19 +50,9 @@ const EventDetail = ({ event }) => {
   const [totalRecords, setTotalRecords] = useState(1)
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(2)
-  const [visible, setVisible] = useState(false)
   const [visibleJoin, setVisibleJoin] = useState(false)
   const [visibleLogin, setVisibleLogin] = useState(false)
   const [checkJoin, setCheckJoin] = useState(false)
-  const [updateStatus, setUpdateStatus] = useState(false)
-  const buttonEl = useRef(null)
-
-  const router = useRouter()
-  const roles = store.getState().auth.roles
-  const hasUserRole = roles ? roles.some((role) => role.roleId === 2) : false
-
-  const setLoading = useContext(LoadingContext)
-  const showToast = useToast().showToast
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
   const [search_name, setSearchName] = useState('')
@@ -70,13 +60,10 @@ const EventDetail = ({ event }) => {
   const [isMobile, setIsMobile] = useState(false)
 
   const { t } = useTranslation('detail')
-
-  useEffect(() => {
-    // setActivities(event.activities)
-    // setRankMember(event.ranking_member)
-    // setRankClub(event.ranking_club)
-    checkJoinEvent()
-  }, [])
+  const router = useRouter()
+  const language = router.locale
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
 
   useEffect(() => {
     if (activeIndex === 3) {
@@ -87,6 +74,7 @@ const EventDetail = ({ event }) => {
   }, [current_page, per_page, search, activeIndex])
 
   useEffect(() => {
+    checkJoinEvent()
     //responsive window
     if (window.innerHeight > window.innerWidth) {
       setIsMobile(true)
@@ -150,18 +138,6 @@ const EventDetail = ({ event }) => {
     }
   }
 
-  const acceptJoin = () => {
-    handleJoinEvent()
-  }
-
-  const acceptLeave = () => {
-    handleLeaveEvent()
-  }
-
-  const reject = () => {
-    showToast('info', t('rejected'), t('you_are_rejected'))
-  }
-
   const handleJoinEvent = async () => {
     setLoading(true)
     try {
@@ -198,6 +174,20 @@ const EventDetail = ({ event }) => {
     }
   }
 
+  const checkJoinAnLeave = () => {
+    if (checkJoin) {
+      if (
+        event.is_free &&
+        Date.now() > new Date(event.from_date).getTime() &&
+        Date.now() < new Date(event.to_date).getTime()
+      ) {
+        return false
+      }
+      return true
+    }
+    return false
+  }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
@@ -232,15 +222,24 @@ const EventDetail = ({ event }) => {
                 t={t}
               />
             </div>
+            {event.is_free ? (
+              <div id='event-price-detail'>
+                <h4>{t('free')}</h4>
+              </div>
+            ) : (
+              <div id='event-price-detail'>
+                <h4>
+                  {LocaleHelper.formatCurrency(
+                    event.registration_fee,
+                    language
+                  )}
+                </h4>
+              </div>
+            )}
             <Button
               id='button-join'
               label={checkJoin ? t('leave_event') : t('join-now')}
-              disabled={
-                Date.now() > new Date(event.from_date).getTime() &&
-                Date.now() < new Date(event.to_date).getTime()
-                  ? false
-                  : true
-              }
+              disabled={checkJoinAnLeave()}
               onClick={() => {
                 if (store.getState().auth.isAuthenticated) {
                   setVisibleJoin(true)
@@ -533,9 +532,13 @@ const EventDetail = ({ event }) => {
       </div>
       <Dialog
         header={
-          checkJoin
+          checkJoin && event.is_free
             ? t('notify_leave_event_third')
-            : t('notify_not_login_third')
+            : !checkJoin && event.is_free
+            ? t('notify_not_join_event_third')
+            : t('notify_not_join_event_fourth') +
+              ' ' +
+              LocaleHelper.formatCurrency(event.registration_fee, language)
         }
         visible={visibleJoin}
         onHide={() => setVisibleJoin(false)}
@@ -567,24 +570,36 @@ const EventDetail = ({ event }) => {
               icon='pi pi-times'
               label={t('close')}
               onClick={() => {
-                router.push(`/events/payment/${event.event_id}`)
-                // setVisibleJoin(false)
+                setVisibleJoin(false)
               }}
             />
-            <Button
-              severity='secondary'
-              raised
-              id='button-detail'
-              icon='pi pi-sign-in'
-              label={checkJoin ? t('leave_event_now') : t('join_event_now')}
-              onClick={() => {
-                if (checkJoin) {
-                  handleLeaveEvent()
-                } else {
-                  handleJoinEvent()
-                }
-              }}
-            />
+            {!event.is_free ? (
+              <Button
+                severity='secondary'
+                raised
+                id='button-detail'
+                icon='pi pi-sign-in'
+                label={t('payment')}
+                onClick={() => {
+                  router.push(`/events/payment/${event.event_id}`)
+                }}
+              />
+            ) : (
+              <Button
+                severity='secondary'
+                raised
+                id='button-detail'
+                icon='pi pi-sign-in'
+                label={checkJoin ? t('leave_event_now') : t('join_event_now')}
+                onClick={() => {
+                  if (checkJoin) {
+                    handleLeaveEvent()
+                  } else {
+                    handleJoinEvent()
+                  }
+                }}
+              />
+            )}
           </div>
         </div>
       </Dialog>
