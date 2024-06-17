@@ -1,17 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Chart } from 'primereact/chart'
+import { useToast } from '@/components/contexts/ToastContext'
+import { LoadingContext } from '@/components/contexts/LoadingContext'
+import apiInstance from '@/api/apiInstance'
+import { format, subMonths } from 'date-fns'
 
 const Dashboard = () => {
+  const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
+
   const [chartData, setChartData] = useState({})
   const [chartOptions, setChartOptions] = useState({})
 
+  const [data, setData] = useState({})
+  const [chartActiveUsers, setChartActiveUsers] = useState([])
+  const [chartEvents, setChartEvents] = useState([])
+  const [chartClubs, setChartClubs] = useState([])
+  const [chartPosts, setChartPosts] = useState([])
+  const [chartEventsStatus, setChartEventsStatus] = useState([])
+
   useEffect(() => {
     const data = {
-      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+      labels: getPastMonths(4),
       datasets: [
         {
-          label: 'Sales',
-          data: [540, 325, 702, 620],
+          label: 'Hoạt động người dùng',
+          data: chartActiveUsers,
           backgroundColor: [
             'rgba(255, 159, 64, 0.2)',
             'rgba(75, 192, 192, 0.2)',
@@ -38,7 +52,7 @@ const Dashboard = () => {
 
     setChartData(data)
     setChartOptions(options)
-  }, [])
+  }, [data])
 
   const [chartData1, setChartData1] = useState({})
   const [chartOptions1, setChartOptions1] = useState({})
@@ -51,25 +65,25 @@ const Dashboard = () => {
     )
     const surfaceBorder = documentStyle1.getPropertyValue('--surface-border')
     const data1 = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: getPastMonths(7),
       datasets: [
         {
           type: 'bar',
-          label: 'Dataset 1',
+          label: 'Sự kiện',
           backgroundColor: documentStyle1.getPropertyValue('--blue-500'),
-          data: [50, 25, 12, 48, 90, 76, 42],
+          data: chartEvents,
         },
         {
           type: 'bar',
-          label: 'Dataset 2',
+          label: 'Câu lạc bộ',
           backgroundColor: documentStyle1.getPropertyValue('--green-500'),
-          data: [21, 84, 24, 75, 37, 65, 34],
+          data: chartClubs,
         },
         {
           type: 'bar',
-          label: 'Dataset 3',
+          label: 'Bài viết',
           backgroundColor: documentStyle1.getPropertyValue('--yellow-500'),
-          data: [41, 52, 24, 74, 23, 21, 32],
+          data: chartPosts,
         },
       ],
     }
@@ -111,7 +125,7 @@ const Dashboard = () => {
 
     setChartData1(data1)
     setChartOptions1(options1)
-  }, [])
+  }, [data])
   const [chartData2, setChartData2] = useState({})
   const [chartOptions2, setChartOptions2] = useState({})
 
@@ -123,26 +137,26 @@ const Dashboard = () => {
     )
     const surfaceBorder = documentStyle2.getPropertyValue('--surface-border')
     const data2 = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: getPastMonths(7),
       datasets: [
         {
-          label: 'First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
+          label: 'Sự kiện',
+          data: chartEvents,
           fill: false,
           tension: 0.4,
           borderColor: documentStyle2.getPropertyValue('--blue-500'),
         },
         {
-          label: 'Second Dataset',
-          data: [28, 48, 40, 19, 86, 27, 90],
+          label: 'Câu lạc bộ',
+          data: chartClubs,
           fill: false,
           borderDash: [5, 5],
           tension: 0.4,
           borderColor: documentStyle2.getPropertyValue('--teal-500'),
         },
         {
-          label: 'Third Dataset',
-          data: [12, 51, 62, 33, 21, 62, 45],
+          label: 'Bài viết',
+          data: chartPosts,
           fill: true,
           borderColor: documentStyle2.getPropertyValue('--orange-500'),
           tension: 0.4,
@@ -182,7 +196,7 @@ const Dashboard = () => {
 
     setChartData2(data2)
     setChartOptions2(options2)
-  }, [])
+  }, [data])
   const [chartData3, setChartData3] = useState({})
   const [chartOptions3, setChartOptions3] = useState({})
 
@@ -193,7 +207,7 @@ const Dashboard = () => {
     const data3 = {
       datasets: [
         {
-          data: [11, 16, 7, 3, 14],
+          data: chartEventsStatus,
           backgroundColor: [
             documentStyle3.getPropertyValue('--red-500'),
             documentStyle3.getPropertyValue('--green-500'),
@@ -201,10 +215,16 @@ const Dashboard = () => {
             documentStyle3.getPropertyValue('--bluegray-500'),
             documentStyle3.getPropertyValue('--blue-500'),
           ],
-          label: 'My dataset',
+          label: 'Tổng sự kiện',
         },
       ],
-      labels: ['Red', 'Green', 'Yellow', 'Grey', 'Blue'],
+      labels: [
+        'Sự kiện đang diễn ra',
+        'Sự kiện đã kết thúc',
+        'Sự kiện sắp diễn ra',
+        'Sự kiện nổi bật',
+        'Sự kiện bị khóa',
+      ],
     }
     const options3 = {
       plugins: {
@@ -225,8 +245,29 @@ const Dashboard = () => {
 
     setChartData3(data3)
     setChartOptions3(options3)
-  }, [])
+  }, [data])
+
+  const fetchDashboard = async () => {
+    setLoading(true)
+    try {
+      const response = await apiInstance.get('/dashboard')
+      if (response.status === 200) {
+        setData(response.data)
+        setChartActiveUsers(response.data.chart_active_users)
+        setChartEvents(response.data.chart_events)
+        setChartClubs(response.data.chart_clubs)
+        setChartPosts(response.data.chart_news)
+        setChartEventsStatus(response.data.chart_events_status)
+        showToast('success', 'Dashboard data fetched successfully')
+      }
+    } catch (error) {
+      showToast('error', 'Failed to fetch dashboard data')
+    }
+    setLoading(false)
+  }
+
   useEffect(() => {
+    fetchDashboard()
     const width = window.innerWidth
     if (width <= 1024) {
       const carouselElement = document.getElementsByClassName(
@@ -240,6 +281,22 @@ const Dashboard = () => {
       }
     }
   }, [])
+
+  // Function lấy danh sách các tháng trước đó
+  const getPastMonths = (numMonths) => {
+    const currentDate = new Date()
+    const months = []
+
+    // Lặp qua từng tháng để tính toán và định dạng ngày tháng
+    for (let i = 0; i < numMonths; i++) {
+      const month = subMonths(currentDate, i)
+      const formattedMonth = format(month, 'MMM yyyy') // Định dạng tháng và năm, ví dụ Jan 2024, Feb 2024, ...
+      months.unshift(formattedMonth) // Đưa vào đầu mảng để thứ tự từ gần nhất đến xa nhất
+    }
+
+    return months
+  }
+
   return (
     <div id='dashboard-content-container'>
       <div className='dashboard-content'>
@@ -247,7 +304,7 @@ const Dashboard = () => {
           <div id='dashboard-content-header-child'>
             <div>
               <span>Tổng số giải chạy</span>
-              <p>152</p>
+              <p>{data.total_events}</p>
             </div>
             <div
               id='dashboard-content-header-icon'
@@ -257,7 +314,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div style={{ paddingBottom: '1rem' }}>
-            <span id='span-new'>24 new </span>
+            <span id='span-new'>{data.new_events} new </span>
             <span>since last visit</span>
           </div>
         </div>
@@ -265,7 +322,7 @@ const Dashboard = () => {
           <div id='dashboard-content-header-child'>
             <div>
               <span>Tổng số câu lạc bộ</span>
-              <p>15</p>
+              <p>{data.total_clubs}</p>
             </div>
             <div
               id='dashboard-content-header-icon'
@@ -277,7 +334,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div style={{ paddingBottom: '1rem' }}>
-            <span id='span-new'>2 new </span>
+            <span id='span-new'>{data.new_clubs} new </span>
             <span>since last visit</span>
           </div>
         </div>
@@ -285,7 +342,7 @@ const Dashboard = () => {
           <div id='dashboard-content-header-child'>
             <div>
               <span>Tổng số bài viết</span>
-              <p>12</p>
+              <p>{data.total_news}</p>
             </div>
             <div
               id='dashboard-content-header-icon'
@@ -297,7 +354,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div style={{ paddingBottom: '1rem' }}>
-            <span id='span-new'>4 new </span>
+            <span id='span-new'>{data.new_news} new </span>
             <span>since last visit</span>
           </div>
         </div>
@@ -305,7 +362,7 @@ const Dashboard = () => {
           <div id='dashboard-content-header-child'>
             <div>
               <span>Tổng số người dùng</span>
-              <p>1532</p>
+              <p>{data.total_users}</p>
             </div>
             <div
               id='dashboard-content-header-icon'
@@ -317,7 +374,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div style={{ paddingBottom: '1rem' }}>
-            <span id='span-new'>242 new </span>
+            <span id='span-new'>{data.new_users} new </span>
             <span>since last visit</span>
           </div>
         </div>
