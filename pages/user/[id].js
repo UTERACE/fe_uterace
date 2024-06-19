@@ -205,7 +205,7 @@ const UserDetail = ({ user }) => {
         <div id='dataview-container'>
           <div id='image-container-dataview'>
             <Image
-              src={item.image ? item.image : '/logo.png'}
+              src={item.image ? item.image : '/logoclub.png'}
               alt={item.name}
               width={800}
               height={500}

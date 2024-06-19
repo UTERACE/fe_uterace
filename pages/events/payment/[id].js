@@ -3,7 +3,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import store from '@/store/store'
 import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -41,13 +41,13 @@ async function getEvent(id) {
 
 const Payment = ({ event }) => {
   const [isMobile, setIsMobile] = useState(false)
-  const { user } = store.getState().auth.id
   const router = useRouter()
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const { t } = useTranslation('detail')
-  const [paymentMethod, setPaymentMethod] = useState('momo')
   const [initialValues, setInitialValues] = useState({})
+  const hiddenSubmitButtonRef = useRef(null)
+  const paymentMethodRef = useRef('momo')
 
   useEffect(() => {
     fetchUser()
@@ -61,11 +61,9 @@ const Payment = ({ event }) => {
     try {
       const response = await apiInstance.get('/user')
       const data = response.data
-      console.log('data', data)
       setInitialValues({
         email: data.email,
-        telNumber: data.telNumber,
-        gender: data.gender,
+        phone_number: data.telNumber,
         address: data.address_name,
       })
     } catch (error) {
@@ -73,30 +71,25 @@ const Payment = ({ event }) => {
     }
   }
 
-  const onSubmit = async (data) => {
-    if (!user) {
-      router.push('/login')
-      return
+  const onSubmit = async (formData) => {
+    formData.event_id = event.event_id
+    formData.redirect_url = `${window.location.origin}/events/payment/success/${event.event_id}`
+    const dataPayment = JSON.stringify(formData)
+    if (paymentMethodRef.current === 'momo') {
+      handlePaymentMoMo(dataPayment)
     }
-    if (paymentMethod === 'momo') {
-      handlePaymentMoMo(data.gender, data.size)
-    }
-    if (paymentMethod === 'vnpay') {
-      handlePaymentVNPay(data.gender, data.size)
+    if (paymentMethodRef.current === 'vnpay') {
+      handlePaymentVNPay(dataPayment)
     }
   }
 
-  const handlePaymentMoMo = async (gender, size) => {
+  const handlePaymentMoMo = async (paymentData) => {
     try {
       setLoading(true)
-      const response = await apiInstance.post('/payment/momo', {
-        eventId: event.id,
-        gender,
-        size,
-      })
-      const data = await response.data
-      if (data.resultCode === 0) {
-        router.push(data.payUrl)
+      const response = await apiInstance.post('/payment/momo', paymentData)
+      const responseData = await response.data
+      if (responseData.resultCode === 0) {
+        router.push(responseData.payUrl)
       }
     } catch (error) {
       console.error('Error fetching event details:', error)
@@ -106,14 +99,10 @@ const Payment = ({ event }) => {
     }
   }
 
-  const handlePaymentVNPay = async (gender, size) => {
+  const handlePaymentVNPay = async (paymentData) => {
     try {
       setLoading(true)
-      const response = await apiInstance.post('/payment/vnpay', {
-        eventId: event.id,
-        gender,
-        size,
-      })
+      const response = await apiInstance.post('/payment/vnpay', paymentData)
       const data = await response.data
       if (data.status === 200) {
         router.push(data.message)
@@ -126,20 +115,21 @@ const Payment = ({ event }) => {
     }
   }
 
-  const gender = [
-    { label: 'Nam', value: 'Nam' },
-    { label: 'Nữ', value: 'Nu' },
-  ]
+  const handlePaymentClick = (method) => {
+    paymentMethodRef.current = method
+    hiddenSubmitButtonRef.current.click()
+  }
 
   const size = [
-    { label: 'XS', value: 'XS' },
-    { label: 'S', value: 'S' },
-    { label: 'M', value: 'M' },
-    { label: 'L', value: 'L' },
-    { label: 'XL', value: 'XL' },
-    { label: '2XL', value: '2XL' },
-    { label: '3XL', value: '3XL' },
+    { label: 'XS', value: 1 },
+    { label: 'S', value: 2 },
+    { label: 'M', value: 3 },
+    { label: 'L', value: 4 },
+    { label: 'XL', value: 5 },
+    { label: '2XL', value: 6 },
+    { label: '3XL', value: 7 },
   ]
+
   return (
     <div id='payment-container'>
       <div id='payment-method'>
@@ -153,19 +143,13 @@ const Payment = ({ event }) => {
               id='form-payment-setting'
               style={isMobile ? { width: 'auto' } : null}
             >
-              <Field name='gender' label={t('sex')} required>
-                <Dropdown
-                  options={gender}
-                  style={{ width: '100%', borderRadius: '10px' }}
-                ></Dropdown>
-              </Field>
-              <Field name='size' label={t('size')} required>
+              <Field name='size_id' label={t('size')} required>
                 <Dropdown
                   options={size}
                   style={{ width: '100%', borderRadius: '10px' }}
                 ></Dropdown>
               </Field>
-              <Field name='telNumber' label={t('phone')} required>
+              <Field name='phone_number' label={t('phone')} required>
                 <InputMask
                   mask='(999) 999-9999'
                   placeholder='(999) 999-9999'
@@ -178,6 +162,13 @@ const Payment = ({ event }) => {
               <Field name='email' label={t('email')}>
                 <InputText type='text' style={{ width: '100%' }} />
               </Field>
+              <button
+                type='submit'
+                ref={hiddenSubmitButtonRef}
+                style={{ display: 'none' }}
+              >
+                Submit
+              </button>
             </div>
           </Form>
         </div>
@@ -194,23 +185,11 @@ const Payment = ({ event }) => {
           </div>
           <h5>{t('payment_method')}</h5>
           <div id='payment-button-container'>
-            <div
-              id='payment-momo'
-              onClick={() => {
-                setPaymentMethod('momo')
-                handlePaymentMoMo('Nam', 'M')
-              }}
-            >
+            <div id='payment-momo' onClick={() => handlePaymentClick('momo')}>
               <Image src='/momo.png' alt='momo' width={50} height={50} />
               <h5>{t('payment')} Momo</h5>
             </div>
-            <div
-              id='payment-vnpay'
-              onClick={() => {
-                setPaymentMethod('vnpay')
-                handlePaymentVNPay('Nam', 'M')
-              }}
-            >
+            <div id='payment-vnpay' onClick={() => handlePaymentClick('vnpay')}>
               <Image src='/vnpay.png' alt='paypal' width={50} height={50} />
               <h5>{t('payment')} VNPay</h5>
             </div>

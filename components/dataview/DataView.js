@@ -119,10 +119,10 @@ const DataView = ({
               <div id='dataview-container'>
                 <div id='image-container-dataview'>
                   <Image
-                    src={item.image ? item.image : '/logo.png'}
+                    src={item.image ? item.image : '/logoclub.png'}
                     alt={item.name}
                     width={800}
-                    height={800}
+                    height={500}
                   />
                 </div>
                 <div id='info-dataview'>
@@ -130,10 +130,21 @@ const DataView = ({
                     <i className='pi pi-users ml2-icon' aria-hidden='true'></i>
                     {item.total_member} {t('member-join')}
                   </h4>
-                  <h4>
-                    <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
-                    {LocaleHelper.formatNumber(item.total_distance)} Km
-                  </h4>
+                  <div id='distance-like-container'>
+                    <h4>
+                      <i className='pi pi-map ml2-icon' aria-hidden='true'></i>
+                      {LocaleHelper.formatNumber(item.total_distance)} Km
+                    </h4>
+                    {item.total_like && (
+                      <h4>
+                        <i
+                          className='pi pi-thumbs-up ml2-icon'
+                          aria-hidden='true'
+                        ></i>
+                        {item.total_like} {t('like')}
+                      </h4>
+                    )}
+                  </div>
                 </div>
                 <div id='name-dataview'>
                   <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>

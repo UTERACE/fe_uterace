@@ -13,7 +13,7 @@ import { LoadingContext } from '@/components/contexts/LoadingContext'
 import { useToast } from '@/components/contexts/ToastContext'
 import { useRouter } from 'next/router'
 import store from '@/store/store'
-import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup'
+import { ConfirmPopup } from 'primereact/confirmpopup'
 import Image from 'next/image'
 import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
@@ -77,6 +77,8 @@ const ClubDetail = ({ club }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [newFeed, setNewFeed] = useState([])
   const [page, setPage] = useState(1)
+  const [isLiked, setIsLiked] = useState(false)
+  const [countLikes, setCountLikes] = useState(0)
 
   const { t } = useTranslation('detail')
   const { t: tNews } = useTranslation('news')
@@ -204,7 +206,7 @@ const ClubDetail = ({ club }) => {
 
   const handleJoinClub = async () => {
     setLoading(true)
-    if (!hasUserRole) {
+    if (!store.getState().auth.isAuthenticated) {
       router.push('/login')
       setLoading(false)
       showToast('error', t('join_club_fail'), t('not_login'))
@@ -239,6 +241,70 @@ const ClubDetail = ({ club }) => {
     } catch (error) {
       showToast('error', t('leave_club_fail'), error)
       setLoading(false)
+    }
+  }
+
+  const handleLike = async () => {
+    setLoading(true)
+    try {
+      if (!store.getState().auth.isAuthenticated) {
+        router.push('/login')
+        setLoading(false)
+        showToast('error', t('like_fail'), t('not_login'))
+      } else {
+        const res = await apiInstance.post(`/reaction/club`, {
+          id: club.club_id,
+          reactionType: 'like',
+        })
+        const dataRes = res.data
+        if (res.status == 200) {
+          showToast('success', t('like_success'), dataRes.message)
+          setLoading(false)
+          fetchLikeStatus()
+        }
+      }
+    } catch (error) {
+      showToast('error', t('like_fail'), error)
+      setLoading(false)
+    }
+  }
+
+  const handelDislike = async () => {
+    setLoading(true)
+    try {
+      if (!store.getState().auth.isAuthenticated) {
+        router.push('/login')
+        setLoading(false)
+        showToast('error', t('like_fail'), t('not_login'))
+      } else {
+        const res = await apiInstance.delete(`/reaction/club/${club.club_id}`)
+        const dataRes = res.data
+        if (res.status == 200) {
+          showToast('success', t('dislike_success'), dataRes.message)
+          setLoading(false)
+          fetchLikeStatus()
+        }
+      }
+    } catch (error) {
+      showToast('error', t('dislike_fail'), error)
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (store.getState().auth.isAuthenticated) fetchLikeStatus()
+  }, [])
+
+  const fetchLikeStatus = async () => {
+    try {
+      const res = await apiInstance.get(`/reaction/club/${club.club_id}`)
+      const data = res.data
+      if (res.status === 200) {
+        setIsLiked(data.liked)
+        setCountLikes(data.likes)
+      }
+    } catch (error) {
+      showToast('error', t('get_info_fail'), error)
     }
   }
 
@@ -298,6 +364,27 @@ const ClubDetail = ({ club }) => {
                 label={`${club.total_member} ${t('participants')}`}
                 onClick={() => {}}
               />
+              <div id='like-club-container'>
+                <div
+                  id='like-club-button'
+                  onClick={() => {
+                    isLiked ? handelDislike() : handleLike()
+                  }}
+                >
+                  {isLiked ? (
+                    <i className='fas fa-heart liked-club p-icon-large'></i>
+                  ) : (
+                    <i className='far fa-heart p-icon-large'></i>
+                  )}
+                  <a>{isLiked ? t('liked') : t('like')}</a>
+                </div>
+                <span>
+                  {isLiked ? t('you_and') : ''}
+                  {countLikes}
+                  {t('other')}
+                </span>
+              </div>
+
               <Button
                 id={!isStatistic ? 'button-tab' : 'button-tab--active'}
                 label={t('view-statistic')}

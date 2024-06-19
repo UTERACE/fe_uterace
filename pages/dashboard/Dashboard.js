@@ -315,7 +315,7 @@ const Dashboard = () => {
           </div>
           <div style={{ paddingBottom: '1rem' }}>
             <span id='span-new'>{data.new_events} new </span>
-            <span>since last visit</span>
+            <span>since last week</span>
           </div>
         </div>
         <div id='dashboard-content-header'>
@@ -335,7 +335,7 @@ const Dashboard = () => {
           </div>
           <div style={{ paddingBottom: '1rem' }}>
             <span id='span-new'>{data.new_clubs} new </span>
-            <span>since last visit</span>
+            <span>since last week</span>
           </div>
         </div>
         <div id='dashboard-content-header'>
@@ -355,7 +355,7 @@ const Dashboard = () => {
           </div>
           <div style={{ paddingBottom: '1rem' }}>
             <span id='span-new'>{data.new_news} new </span>
-            <span>since last visit</span>
+            <span>since last week</span>
           </div>
         </div>
         <div id='dashboard-content-header'>
@@ -375,7 +375,7 @@ const Dashboard = () => {
           </div>
           <div style={{ paddingBottom: '1rem' }}>
             <span id='span-new'>{data.new_users} new </span>
-            <span>since last visit</span>
+            <span>since last week</span>
           </div>
         </div>
       </div>

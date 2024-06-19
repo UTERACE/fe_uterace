@@ -120,5 +120,12 @@
     "confirm": "Confirm",
     "excel": "Export excel",
     "export_excel_success": "Export excel success",
-    "export_excel_fail": "Export excel fail"
+    "export_excel_fail": "Export excel fail",
+    "like": "Like",
+    "liked": "Liked",
+    "you_and": "You and ",
+    "other": " other people like this club",
+    "like_success": "Like club success",
+    "like_fail": "Like club fail",
+    "dislike_success": "Dislike club success"
 }

@@ -268,6 +268,47 @@
     font-weight: 800;
     margin: 0.3rem 0.5rem 0 0;
 }
+#like-club-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    height: auto;
+}
+#like-club-container span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+#like-club-button a {
+    font-size: 1rem;
+    font-weight: 600;
+}
+#like-club-button {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+    width: auto;
+    min-width: 8rem;
+    padding: 1rem;
+    background-color: var(--background-color);
+    color: var(--third-color);
+    border-radius: 2rem;
+    border: 0.2rem solid var(--third-color);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+#like-club-button:hover {
+    background-color: #ffbebe;
+    color: var(--background-color);
+    border: 0.2rem solid var(--third-color);
+}
+.liked-club {
+    color: var(--third-color);
+}
 // management detail
 #search-excel-container {
     display: flex;

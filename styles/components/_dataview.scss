@@ -142,3 +142,9 @@
     font-weight: 550;
     transition: color 0.3s ease 0.1s;
 }
+#distance-like-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+}

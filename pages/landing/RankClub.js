@@ -47,7 +47,7 @@ const RankClub = ({ value, isMobile = false }) => {
       <Link href={`clubs/club-detail/${rowData.club_id}`}>
         <div id='member-info'>
           <Image
-            src={rowData.image ? rowData.image : '/logo.png'}
+            src={rowData.image ? rowData.image : '/logoclub.png'}
             width={isMobile ? 50 : 80}
             height={isMobile ? 50 : 80}
             alt='avatar'

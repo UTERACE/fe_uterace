@@ -78,7 +78,7 @@ const Events = () => {
         <div id='dataview-container'>
           <div id='image-container-dataview'>
             <Image
-              src={item.image ? item.image : '/logo.png'}
+              src={item.image ? item.image : '/logoevent.png'}
               alt={item.name}
               width={800}
               height={500}
