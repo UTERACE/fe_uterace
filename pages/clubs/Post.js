@@ -51,6 +51,12 @@ const Post = ({
   const [replyName, setReplyName] = useState('')
   const setLoading = useContext(LoadingContext)
 
+  useEffect(() => {
+    setIsLiked(is_liked)
+    setCountLikes(count_likes)
+    setCountComments(count_comments)
+  }, [post_id])
+
   const handleLike = async () => {
     try {
       setLoading(true)

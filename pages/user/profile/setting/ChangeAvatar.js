@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { Button } from 'primereact/button'
 import apiInstance from '@/api/apiInstance'
 import Image from 'next/image'
+import { login } from '@/store/slices/authSlice'
 
 const ChangeAvatar = ({ setLoading, showToast, setVisibleChange }) => {
   const [background, setBackground] = useState('/bg1.png')
@@ -46,21 +47,11 @@ const ChangeAvatar = ({ setLoading, showToast, setVisibleChange }) => {
         )
         setLoading(false)
         setVisibleChange(false)
+        setAvatar(dataRes.image)
       }
     } catch (error) {
       showToast('error', 'Cập nhật ảnh đại diện thất bại', error)
       setLoading(false)
-    }
-  }
-
-  const customBase64UploaderAvatar = async (event) => {
-    const file = event.files[0]
-    const reader = new FileReader()
-    let blob = await fetch(file.objectURL).then((r) => r.blob())
-    reader.readAsDataURL(blob)
-    reader.onloadend = function () {
-      const base64data = reader.result
-      setAvatar(base64data)
     }
   }
 
