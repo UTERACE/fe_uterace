@@ -297,8 +297,8 @@ const Post = ({
               }}
               src={user_avatar ? user_avatar : '/default-avatar.png'}
               alt='avatar'
-              width={3}
-              height={3}
+              width={50}
+              height={50}
             />
             <div className='new-feed-user-info'>
               <span className='new-feed-username'>
@@ -389,8 +389,8 @@ const Post = ({
           }}
           src={store.getState().auth.image}
           alt='avatar'
-          width={24}
-          height={24}
+          width={50}
+          height={50}
         />
         <div className='new-feed-comment-input'>
           <input
@@ -465,8 +465,8 @@ const Post = ({
                 }}
                 src={store.getState().auth.image}
                 alt='avatar'
-                width={24}
-                height={24}
+                width={50}
+                height={50}
               />
               <div className='new-feed-comment-input'>
                 <input
@@ -520,8 +520,8 @@ const Post = ({
                   }}
                   src={user_avatar ? user_avatar : '/default-avatar.png'}
                   alt='avatar'
-                  width={3}
-                  height={3}
+                  width={50}
+                  height={50}
                 />
                 <div className='new-feed-user-info'>
                   <span className='new-feed-username'>
@@ -609,8 +609,8 @@ const Post = ({
                       : '/default-avatar.png'
                   }
                   alt='avatar'
-                  width={24}
-                  height={24}
+                  width={50}
+                  height={50}
                 />
                 <div className='new-feed-comment-content-container'>
                   <div className='new-feed-comment-content'>
