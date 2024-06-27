@@ -89,7 +89,7 @@ const Payment = ({ event }) => {
       const response = await apiInstance.post('/payment/momo', paymentData)
       const responseData = await response.data
       if (responseData.resultCode === 0) {
-        router.push(responseData.payUrl)
+        router.push(responseData.message)
       }
     } catch (error) {
       console.error('Error fetching event details:', error)
