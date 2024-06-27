@@ -17,10 +17,8 @@ const ChangePassword = ({ t, isMobile = false }) => {
   const handleResetPassword = async (data) => {
     setLoading(true)
     let { confirmPassword, ...rest } = data
-    console.log('data', rest)
     try {
       const res = await apiInstance.put('/user/change-password', rest)
-      console.log('res', res.data)
       if (res.data.status === 200) {
         showToast('success', t('change_password_success'), res.data.message)
       } else {

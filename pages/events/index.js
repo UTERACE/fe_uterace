@@ -22,7 +22,6 @@ const Events = () => {
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
 
-  const [onGoing, setOnGoing] = useState('1')
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const [activeIndex, setActiveIndex] = useState(1)
@@ -31,13 +30,15 @@ const Events = () => {
 
   useEffect(() => {
     fetchEvents()
-  }, [onGoing, current_page, per_page, search])
+  }, [activeIndex, current_page, per_page, search])
 
   const fetchEvents = async () => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events?current_page=${current_page}&per_page=${per_page}&ongoing=${onGoing}&search_name=${search_name}`
+        `/events?current_page=${current_page}&per_page=${per_page}&ongoing=${
+          activeIndex === 1 ? '1' : activeIndex === 2 ? '-1' : '0'
+        }&search_name=${search_name}`
       )
       if (res.status === 200) {
         const data = res.data
@@ -74,6 +75,7 @@ const Events = () => {
       <Link
         id='link-dataview-container'
         href={`/events/event-detail/${item.event_id}`}
+        key={item.event_id}
       >
         <div id='dataview-container'>
           <div id='image-container-dataview'>
@@ -95,7 +97,7 @@ const Events = () => {
             </h4>
           </div>
           <div id='name-dataview'>
-            <i class='fa fa-running icon-run' aria-hidden='true'></i>
+            <i className='fa fa-running icon-run' aria-hidden='true'></i>
             <div id='share-register-container'>
               <h4>{item.name}</h4>
               <div id='share-register-content'>
@@ -187,7 +189,6 @@ const Events = () => {
             label={t('on-going-event')}
             onClick={() => {
               setActiveIndex(1)
-              setOnGoing('1')
             }}
           />
           <Button
@@ -196,7 +197,6 @@ const Events = () => {
             label={t('upcoming-event')}
             onClick={() => {
               setActiveIndex(2)
-              setOnGoing('-1')
             }}
           />
           <Button
@@ -205,7 +205,6 @@ const Events = () => {
             label={t('finished-event')}
             onClick={() => {
               setActiveIndex(3)
-              setOnGoing('0')
             }}
           />
         </div>

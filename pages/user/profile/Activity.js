@@ -71,6 +71,7 @@ const Activity = ({
       const res = await apiInstance.get(`/decode-polyline/${activity_id}`)
       if (res.status === 200) {
         setPolyline(res.data)
+        setVisibleMap(true)
         setLoading(false)
       }
     } catch (e) {
@@ -91,7 +92,7 @@ const Activity = ({
           </div>
           <div id='name-activities'>
             <div>
-              <i class='fa fa-running icon-run' aria-hidden='true'></i>
+              <i className='fa fa-running icon-run' aria-hidden='true'></i>
             </div>
             <div>
               <h4>{item.activity_name}</h4>
@@ -102,7 +103,6 @@ const Activity = ({
                 alt='avatar'
                 onClick={() => {
                   fetchDataMap(item.activity_id)
-                  setVisibleMap(true)
                 }}
                 title='Xem bản đồ'
                 width={50}

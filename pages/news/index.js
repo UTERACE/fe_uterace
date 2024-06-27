@@ -73,6 +73,7 @@ const NewsPage = () => {
       <Link
         id='link-dataview-container'
         href={`/news/news-detail/${item.news_id}`}
+        key={item.news_id}
       >
         <div id='dataview-container'>
           <div id='image-container-dataview'>
@@ -92,7 +93,7 @@ const NewsPage = () => {
             <h4>{item.name}</h4>
           </div>
           <div id='name-dataview'>
-            <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
+            <i className='fa fa-newspaper icon-run' aria-hidden='true'></i>
             <div id='share-register-container'>
               <h6>{item.description}</h6>
               <div id='share-register-content'>

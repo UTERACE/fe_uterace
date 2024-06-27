@@ -202,6 +202,7 @@ const Topbar = () => {
                   src={avatarImage ? avatarImage : '/default-avatar.png'}
                   width={50}
                   height={50}
+                  alt='avatar'
                 />
               </div>
               <div id='topbar-profile-info'>
@@ -431,7 +432,7 @@ const Topbar = () => {
                           <div id='notification-user'>
                             <div>
                               <Image
-                                src='/default-avatar.png'
+                                src={avatarImage ? avatarImage : '/default-avatar.png'}
                                 alt='avatar'
                                 width={50}
                                 height={50}
@@ -457,7 +458,8 @@ const Topbar = () => {
                   src={avatarImage ? avatarImage : '/default-avatar.png'}
                   width={50}
                   height={50}
-                  onClick={(event) => menu.current.toggle(event)}
+                    onClick={(event) => menu.current.toggle(event)}
+                    alt='avatar'
                 />
                 <Menu ref={menu} model={end_items} popup></Menu>
               </div>

@@ -140,7 +140,7 @@ const ManagementNews = () => {
           <h4>{item.name}</h4>
         </div>
         <div id='name-dataview'>
-          <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
+          <i className='fa fa-newspaper icon-run' aria-hidden='true'></i>
           <div id='share-register-container'>
             <h6>{item.description}</h6>
             <div id='share-register-content'>

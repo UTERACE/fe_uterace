@@ -95,6 +95,7 @@ const News = ({
       <div
         id='link-news'
         title={news.deleted ? 'Bài viết này đã bị quản trị viên khóa' : null}
+        key={news.news_id}
       >
         <div id={news.deleted ? 'news-container-hide' : 'news-container'}>
           <Link href={`/news/news-detail/${news.news_id}`}>
@@ -133,7 +134,7 @@ const News = ({
           </Link>
           <Link href={`/news/news-detail/${news.news_id}`}>
             <div id='share-register-content'>
-              <i class='fa fa-newspaper icon-run' aria-hidden='true'></i>
+              <i className='fa fa-newspaper icon-run' aria-hidden='true'></i>
               <div id='description-news' title={news.description}>
                 <h5>{news.description}</h5>
               </div>

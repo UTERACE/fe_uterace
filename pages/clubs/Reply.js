@@ -1,8 +1,8 @@
 import apiInstance from '@/api/apiInstance'
-import { LoadingContext } from '@/components/contexts/LoadingContext'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import Image from 'next/image'
-import React, { useContext, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 const Reply = ({
   fetchCommentsReply,
@@ -18,12 +18,14 @@ const Reply = ({
   _liked,
   setReplyTo,
   setReplyName,
+  setLoading,
+  showToast,
 }) => {
-  const setLoading = useContext(LoadingContext)
   const [isLiked, setIsLiked] = useState(_liked)
   const [countLikes, setCountLikes] = useState(count_likes)
   const [replies, setReplies] = useState([])
   const [repliesPage, setRepliesPage] = useState(1)
+  const router = useRouter()
 
   useEffect(() => {
     setIsLiked(_liked)
@@ -42,7 +44,7 @@ const Reply = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -57,7 +59,7 @@ const Reply = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -74,7 +76,7 @@ const Reply = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -85,16 +87,15 @@ const Reply = ({
           style={{
             width: '2rem',
             height: '2rem',
+            borderRadius: '50%',
           }}
-          src={
-            '/default-avatar.png'
-            // reply.user_avatar
-            //   ? reply.user_avatar
-            //   : '/default-avatar.png'
-          }
+          src={user_avatar ? user_avatar : '/default-avatar.png'}
           alt='avatar'
-          width={24}
-          height={24}
+          width={50}
+          height={50}
+          onClick={() => {
+            router.push(`/user/${user_id}`)
+          }}
         />
         <div className='new-feed-comment-content-container'>
           <div className='new-feed-comment-content'>

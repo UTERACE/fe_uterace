@@ -53,7 +53,6 @@ const AddEvent = ({
     data.from_date = new Date(start).toISOString()
     data.to_date = new Date(end).toISOString()
     data.distance = selectedCities
-    console.log('data', data)
     handleCreateEvent(data)
   }
 

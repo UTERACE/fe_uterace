@@ -140,7 +140,7 @@ const ClubManagement = () => {
             </h4>
           </div>
           <div id='name-dataview'>
-            <i class='fa fa-briefcase icon-run' aria-hidden='true'></i>
+            <i className='fa fa-briefcase icon-run' aria-hidden='true'></i>
             <div id='share-register-container'>
               <h4>{item.name}</h4>
               <div id='share-register-content'>

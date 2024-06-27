@@ -56,7 +56,7 @@ const Event = ({ event }) => {
             </h4>
           </div>
           <div id='name-event'>
-            <i class='fa fa-running icon-run' aria-hidden='true'></i>
+            <i className='fa fa-running icon-run' aria-hidden='true'></i>
             <div id='share-register-container' title={event.name}>
               <h4>{event.name}</h4>
               <div id='share-register-content'>

@@ -42,7 +42,6 @@ const Update = ({ t, isMobile = false }) => {
     try {
       const response = await apiInstance.get('/user')
       const data = response.data
-      console.log('data', data)
       setDataProvince(data.province)
       setDataDistrict(data.district)
       setDataOrganization(data.organization)
@@ -128,11 +127,9 @@ const Update = ({ t, isMobile = false }) => {
     if (data.telNumber === null) delete data.telNumber
     else data.telNumber = data.telNumber.replace(/[^0-9]/g, '')
     data.image = ''
-    console.log('data', data)
 
     try {
       const res = await apiInstance.put('/user/update', data)
-      console.log('res', res.data)
       if (res.data.status === 200) {
         showToast('success', t('update_success'), res.data.message)
       } else {

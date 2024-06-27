@@ -1,15 +1,15 @@
-import React from "react";
-import { DataTable as DT } from "primereact/datatable";
-import { Column } from "primereact/column";
+import React from 'react'
+import { DataTable as DT } from 'primereact/datatable'
+import { Column } from 'primereact/column'
 
 const DataTable = (props) => {
   let {
     data = [],
     rows = 5,
-    className = "",
+    className = '',
     columns = [],
     loading = false,
-  } = props;
+  } = props
   return (
     <DT
       value={data}
@@ -19,13 +19,13 @@ const DataTable = (props) => {
       rows={rows}
       className={className}
       stripedRows
-      emptyMessage="Không tìm thấy thông tin."
+      emptyMessage='Không tìm thấy thông tin.'
     >
       {columns.map((column) => (
-        <Column {...column} key={column.field} />
+        <Column {...column} key={`${column.field}-${column.header}`} />
       ))}
     </DT>
-  );
-};
+  )
+}
 
-export default DataTable;
+export default DataTable

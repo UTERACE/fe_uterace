@@ -27,7 +27,6 @@ const UpdateInfo = ({
     data.club_id = parseInt(club_id)
     data.image = image
     data.details = descriptionEvent
-    console.log('data', data)
     handleUpdateClub(data)
   }
 

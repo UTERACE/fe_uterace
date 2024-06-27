@@ -9,6 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { LoadingContext } from '@/components/contexts/LoadingContext'
 import apiInstance from '@/api/apiInstance'
 import { AutoComplete } from 'primereact/autocomplete'
+import { useToast } from '@/components/contexts/ToastContext'
 
 const Scoreboard = () => {
   const [scoreboard, setScoreboard] = useState([])
@@ -18,12 +19,12 @@ const Scoreboard = () => {
   const [first, setFirst] = useState(0)
   const [activeIndex, setActiveIndex] = useState(1)
   const [month, setMonth] = useState(0)
-  const [year, setYear] = useState(2023)
+  const [year, setYear] = useState(2024)
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
-  const [ranking, setRanking] = useState('user')
 
   const setLoading = useContext(LoadingContext)
+  const showToast = useToast().showToast
 
   const currentDate = new Date()
   const currentMonth = currentDate.getMonth() + 1
@@ -32,31 +33,47 @@ const Scoreboard = () => {
   const { t } = useTranslation('scoreboard')
 
   useEffect(() => {
-    fetchRanking()
-  }, [month, year, search, ranking, current_page, per_page])
+    if (activeIndex === 1) {
+      fetchSearchRankingUser()
+    } else {
+      fetchSearchRankingClub()
+    }
+  }, [month, year, search, activeIndex, current_page, per_page])
 
-  const fetchRanking = async () => {
+  const fetchSearchRankingUser = async () => {
     setLoading(true)
     try {
-      activeIndex === 1 ? setRanking('user') : setRanking('club')
       const res = await apiInstance.get(
-        `/scoreboard?ranking=${ranking}&month=${month}&year=${year}&current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+        `/scoreboard?ranking=user&month=${month}&year=${year}&current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
       )
       if (res.status === 200) {
         setCurrentPage(res.data.current_page)
         setPerPage(res.data.per_page)
-        activeIndex === 1
-          ? setTotalRecords(res.data.total_user)
-          : setTotalRecords(res.data.total_club)
-        if (activeIndex === 1) {
-          setScoreboard(res.data.ranking_user)
-        } else {
-          setScoreboard(res.data.ranking_club)
-        }
+        setTotalRecords(res.data.total_user)
+        setScoreboard(res.data.ranking_user)
         setLoading(false)
       }
     } catch (err) {
-      console.log(err)
+      showToast('error', err)
+      setLoading(false)
+    }
+  }
+
+  const fetchSearchRankingClub = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(
+        `/scoreboard?ranking=club&month=${month}&year=${year}&current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
+      )
+      if (res.status === 200) {
+        setCurrentPage(res.data.current_page)
+        setPerPage(res.data.per_page)
+        setTotalRecords(res.data.total_club)
+        setScoreboard(res.data.ranking_club)
+        setLoading(false)
+      }
+    } catch (err) {
+      showToast('error', err)
       setLoading(false)
     }
   }
@@ -82,9 +99,8 @@ const Scoreboard = () => {
             label={t('member')}
             style={{ minWidth: '10rem' }}
             onClick={() => {
-              setRanking('user')
+              setSearchName('')
               setActiveIndex(1)
-              setMonth(0)
             }}
           />
           <Button
@@ -93,9 +109,8 @@ const Scoreboard = () => {
             label={t('club')}
             style={{ minWidth: '10rem' }}
             onClick={() => {
-              setRanking('club')
+              setSearchName('')
               setActiveIndex(2)
-              setMonth(0)
             }}
           />
         </div>
@@ -117,7 +132,6 @@ const Scoreboard = () => {
                 onClick={() => {
                   setMonth(currentMonth)
                   setYear(currentYear)
-                  console.log(month)
                 }}
               />
               <Button
@@ -191,7 +205,6 @@ const Scoreboard = () => {
                 onClick={() => {
                   setMonth(currentMonth)
                   setYear(currentYear)
-                  console.log(month)
                 }}
               />
               <Button

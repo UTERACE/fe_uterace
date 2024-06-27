@@ -65,8 +65,6 @@ const ClubDetail = ({ club }) => {
   const setLoading = useContext(LoadingContext)
   const showToast = useToast().showToast
   const router = useRouter()
-  const roles = store.getState().auth.roles
-  const hasUserRole = roles ? roles.some((role) => role.roleId === 2) : false
 
   const [introduce, setIntroduce] = useState(club.details)
   const [news, setNews] = useState(club.news)
@@ -78,7 +76,7 @@ const ClubDetail = ({ club }) => {
   const [newFeed, setNewFeed] = useState([])
   const [page, setPage] = useState(1)
   const [isLiked, setIsLiked] = useState(false)
-  const [countLikes, setCountLikes] = useState(0)
+  const [countLikes, setCountLikes] = useState(0)                                                                                     
 
   const { t } = useTranslation('detail')
   const { t: tNews } = useTranslation('news')

@@ -35,7 +35,6 @@ const ChangeAvatar = ({ setLoading, showToast, setVisibleChange }) => {
     const data = {
       image: avatar,
     }
-    console.log('data', data)
     try {
       const res = await apiInstance.put('/user/update', data)
       const dataRes = res.data

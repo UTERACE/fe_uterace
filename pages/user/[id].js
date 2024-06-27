@@ -201,6 +201,7 @@ const UserDetail = ({ user }) => {
       <Link
         id='link-dataview-container'
         href={`/events/event-detail/${item.event_id}`}
+        key={item.event_id}
       >
         <div id='dataview-container'>
           <div id='image-container-dataview'>
@@ -316,7 +317,6 @@ const UserDetail = ({ user }) => {
                         width={20}
                         height={20}
                       />
-                      <i className='fas icon-large fa-edit'></i>
                     </div>
                   )}
                   <div>
@@ -401,6 +401,7 @@ const UserDetail = ({ user }) => {
                 }
                 onClick={() => {
                   setActiveIndex(1)
+                  setSearch_NameEvent('')
                   setCompleted(false)
                 }}
               />
@@ -428,13 +429,13 @@ const UserDetail = ({ user }) => {
                 }
                 onClick={() => {
                   setActiveIndex(3)
+                  setSearch_NameEvent('')
                   setCompleted(true)
                 }}
               />
               <Button
                 id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
                 icon='pi pi-images'
-                // label={t('collection')}
                 label={isMobile ? t('clubs') : t('clubs-created')}
                 style={
                   isMobile
@@ -455,14 +456,6 @@ const UserDetail = ({ user }) => {
                   setLoading={setLoading}
                   showToast={showToast}
                 />
-                {/* <div>
-                  <AutoComplete
-                    value={search_name}
-                    onChange={(e) => setSearchName(e.target.value)}
-                    completeMethod={(e) => setSearch(!search)}
-                    placeholder={'Tìm kiếm hoạt động'}
-                  />
-                </div> */}
                 <InputNumber
                   value={hour}
                   onValueChange={(e) => setHour(e.value)}

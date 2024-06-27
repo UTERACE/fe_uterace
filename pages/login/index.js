@@ -77,7 +77,6 @@ const Login = () => {
       }
       let { remember, ...rest } = data
       const response = await apiInstance.post('/auth/login', rest)
-      console.log(response.status)
       if (response.status === 200) {
         const {
           id,

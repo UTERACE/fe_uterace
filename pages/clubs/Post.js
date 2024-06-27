@@ -9,6 +9,7 @@ import { Dialog } from 'primereact/dialog'
 import Reply from './Reply'
 import { Button } from 'primereact/button'
 import UpdateNews from './club-detail/UpdateNews'
+import { useRouter } from 'next/router'
 
 const Post = ({
   club_id,
@@ -50,6 +51,7 @@ const Post = ({
   const [replyTo, setReplyTo] = useState(null)
   const [replyName, setReplyName] = useState('')
   const setLoading = useContext(LoadingContext)
+  const router = useRouter()
 
   useEffect(() => {
     setIsLiked(is_liked)
@@ -74,7 +76,7 @@ const Post = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -91,7 +93,7 @@ const Post = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -106,7 +108,7 @@ const Post = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -120,7 +122,7 @@ const Post = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -148,7 +150,7 @@ const Post = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -174,7 +176,7 @@ const Post = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -194,7 +196,7 @@ const Post = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -214,7 +216,7 @@ const Post = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -234,7 +236,7 @@ const Post = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -249,10 +251,11 @@ const Post = ({
       })
       if (res.status === 200) {
         setComments(res.data)
+        setVisibleDetail(true)
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -270,7 +273,7 @@ const Post = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      showToast('error', error)
       setLoading(false)
     }
   }
@@ -305,6 +308,9 @@ const Post = ({
               alt='avatar'
               width={50}
               height={50}
+              onClick={() => {
+                router.push(`/user/${user_id}`)
+              }}
             />
             <div className='new-feed-user-info'>
               <span className='new-feed-username'>
@@ -349,11 +355,16 @@ const Post = ({
       </div>
       <div className='new-feed-footer'>
         <div className='new-feed-footer-top'>
-          <div className='new-feed-like'>
-            <i className='fas fa-heart'></i>
+          <div className='new-feed-actions'>
+            <i className='fas fa-heart liked'></i>
             <span>{` ${countLikes} lượt thích`}</span>
           </div>
-          <div onClick={() => setVisibleDetail(true)}>
+          <div
+            className='new-feed-actions'
+            onClick={() => {
+              fetchComments()
+            }}
+          >
             <span>{` ${countComments} bình luận`}</span>
           </div>
         </div>
@@ -374,7 +385,6 @@ const Post = ({
           <div
             className='new-feed-button'
             onClick={() => {
-              setVisibleDetail(true)
               fetchComments()
             }}
           >
@@ -528,6 +538,9 @@ const Post = ({
                   alt='avatar'
                   width={50}
                   height={50}
+                  onClick={() => {
+                    router.push(`/user/${user_id}`)
+                  }}
                 />
                 <div className='new-feed-user-info'>
                   <span className='new-feed-username'>
@@ -608,6 +621,7 @@ const Post = ({
                   style={{
                     width: '3rem',
                     height: '3rem',
+                    borderRadius: '50%',
                   }}
                   src={
                     comment.user_avatar
@@ -617,6 +631,9 @@ const Post = ({
                   alt='avatar'
                   width={50}
                   height={50}
+                  onClick={() => {
+                    router.push(`/user/${comment.user_id}`)
+                  }}
                 />
                 <div className='new-feed-comment-content-container'>
                   <div className='new-feed-comment-content'>
@@ -709,6 +726,8 @@ const Post = ({
                             _liked={reply._liked}
                             setReplyTo={setReplyTo}
                             setReplyName={setReplyName}
+                            setLoading={setLoading}
+                            showToast={showToast}
                           />
                         ))
                       : null}

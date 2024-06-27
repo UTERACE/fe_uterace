@@ -1,25 +1,16 @@
+import { API_HEADERS, API_TIMEOUT, API_URL } from '@/config/constants'
 import store from '@/store/store'
 import axios from 'axios'
 const apiInstance = axios.create({
-  baseURL: 'https://be-uterace.onrender.com/api',
-  // baseURL: 'http://localhost:8080/api',
-  // baseURL: 'http://192.168.1.3:8080/api',
-  timeout: 15000,
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  baseURL: API_URL,
+  timeout: API_TIMEOUT,
+  headers: API_HEADERS,
 })
 
 const refreshTokenInstance = axios.create({
-  baseURL: 'https://be-uterace.onrender.com/api',
-  // baseURL: 'http://localhost:8080/api',
-  // baseURL: 'http://192.168.1.3:8080/api',
-  timeout: 15000,
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  baseURL: API_URL,
+  timeout: API_TIMEOUT,
+  headers: API_HEADERS,
 })
 
 apiInstance.interceptors.request.use(
@@ -47,7 +38,6 @@ apiInstance.interceptors.response.use(
       !error.config._retry &&
       error.response.data.message === 'JWT token is expired'
     ) {
-      console.log('Attempting token refresh...')
       error.config._retry = true
       const state = store.getState()
       const refreshToken = state.auth.refreshToken
@@ -66,16 +56,14 @@ apiInstance.interceptors.response.use(
                 refreshToken: res.data.refreshToken,
               },
             })
-            console.log('Access token refreshed!')
             return apiInstance.request(error.config)
           }
         })
         .catch((err) => {
-          console.log('Refresh token failed!')
           store.dispatch({
             type: 'auth/logout',
           })
-          return Promise.reject(error)
+          return Promise.reject(err)
         })
     }
     return Promise.reject(error)
