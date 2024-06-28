@@ -88,7 +88,7 @@ const Payment = ({ event }) => {
       setLoading(true)
       const response = await apiInstance.post('/payment/momo', paymentData)
       const responseData = await response.data
-      if (responseData.resultCode === 0) {
+      if (responseData.status === 200) {
         router.push(responseData.message)
       }
     } catch (error) {
