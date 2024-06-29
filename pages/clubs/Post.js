@@ -19,6 +19,7 @@ const Post = ({
   post_description,
   post_date,
   post_image,
+  post_status = '1', // '1' is 'active', '0' is 'inactive
   count_likes,
   count_comments,
   is_liked,
@@ -293,6 +294,27 @@ const Post = ({
       setLoading(false)
     }
   }
+
+  const handleDeletePost = async () => {
+    try {
+      setLoading(true)
+      const res = await apiInstance.delete(`/news/${post_id}`)
+      if (res.status === 200) {
+        if (res.data.status === 200) {
+          showToast('success', 'Xóa bài viết thành công')
+          fetchMyPosts()
+          setLoading(false)
+        } else if (res.data.status === 401) {
+          setVisibleJoin(true)
+          setLoading(false)
+        }
+      }
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
+
   return (
     <div className='new-feed'>
       <div className='new-feed-header'>
@@ -336,10 +358,23 @@ const Post = ({
         <div className='new-feed-header-right'>
           {LocaleHelper.formatDateComment(new Date(post_date))}
           {isMyPost && (
-            <Button
-              icon='pi pi-pencil'
-              onClick={() => setVisibleUpdateNews(true)}
-            />
+            <div>
+              <Button
+                icon='pi pi-pencil'
+                onClick={() => setVisibleUpdateNews(true)}
+              />
+              <Button
+                icon='pi pi-trash'
+                onClick={() => {
+                  handleDeletePost()
+                }}
+              />
+            </div>
+          )}
+          {post_status === '0' && (
+            <div>
+              <label className='status-inactive'>{t('inactive')}</label>
+            </div>
           )}
         </div>
       </div>
@@ -350,7 +385,7 @@ const Post = ({
           dangerouslySetInnerHTML={{ __html: post_description }}
         ></div>
         <div className='new-feed-image'>
-          <img src={post_image} alt='post' />
+          <Image src={post_image} alt='post' width={500} height={500} />
         </div>
       </div>
       <div className='new-feed-footer'>

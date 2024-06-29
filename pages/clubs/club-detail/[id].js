@@ -348,7 +348,6 @@ const ClubDetail = ({ club }) => {
               id='button-join'
               label={checkJoin ? t('leave_club') : t('join-now')}
               onClick={() => {
-                // setVisible(true)
                 setVisibleJoin(true)
               }}
             />
@@ -563,6 +562,7 @@ const ClubDetail = ({ club }) => {
                         post_description={item.post_description}
                         post_date={item.post_date}
                         post_image={item.post_image}
+                        post_status={item.post_status}
                         count_likes={item.count_likes}
                         count_comments={item.count_comments}
                         is_liked={item._liked}

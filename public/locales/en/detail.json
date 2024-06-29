@@ -127,5 +127,8 @@
     "other": " other people like this club",
     "like_success": "Like club success",
     "like_fail": "Like club fail",
-    "dislike_success": "Dislike club success"
+    "dislike_success": "Dislike club success",
+    "inactive": "Inactive",
+    "active": "Active",
+    "active_news": "Active news"
 }

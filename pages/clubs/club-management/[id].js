@@ -23,6 +23,7 @@ import Head from 'next/head'
 import { InputText } from 'primereact/inputtext'
 import store from '@/store/store'
 import RankMemberClub from '@/pages/scoreboard/RankMemberClub'
+import Post from './Post'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -72,6 +73,8 @@ const ManagementClubDetail = ({ club }) => {
   const [updateStatus, setUpdateStatus] = useState(false)
   const [updateNewsId, setUpdateNewsId] = useState(0)
   const [selectedMemberId, setSelectedMemberId] = useState(null)
+  const [newFeed, setNewFeed] = useState([])
+  const [page, setPage] = useState(1)
 
   const handleMemberClick = (id) => {
     setSelectedMemberId(id === store.getState().auth.id ? null : id)
@@ -209,6 +212,26 @@ const ManagementClubDetail = ({ club }) => {
     }
   }
 
+  const fetchPosts = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(`/news/active-news/${club.club_id}`, {
+        params: {
+          current_page: page,
+          per_page: 5,
+          search_name: '',
+        },
+      })
+      const data = res.data
+      if (res.status === 200) {
+        setNewFeed(data)
+      }
+    } catch (error) {
+      showToast('error', t('get_news_fail'), error)
+    }
+    setLoading(false)
+  }
+
   const onPageChange = (event) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
@@ -221,100 +244,6 @@ const ManagementClubDetail = ({ club }) => {
         <title>{club.name}</title>
         <meta name='description' content={club.description} />
       </Head>
-      <Dialog
-        header={t('update-info-club')}
-        visible={visibleChange}
-        position='top'
-        style={{
-          width: '60%',
-          height: '100%',
-          borderRadius: '20px',
-          textAlign: 'center',
-        }}
-        onHide={() => setVisibleChange(false)}
-      >
-        <Update
-          club_id={club.club_id}
-          image={club.image}
-          name={club.name}
-          description={club.description}
-          setLoading={setLoading}
-          showToast={showToast}
-          setVisibleChange={setVisibleChange}
-          setUpdate={setUpdateStatus}
-          t={tClub}
-        />
-      </Dialog>
-      <Dialog
-        header={t('update-info-detail')}
-        visible={visibleInfo}
-        position='top'
-        style={{
-          width: '60%',
-          height: '100%',
-          borderRadius: '20px',
-          textAlign: 'center',
-        }}
-        onHide={() => setVisibleInfo(false)}
-      >
-        <UpdateInfo
-          club_id={club.club_id}
-          image={club.image}
-          description={introduce}
-          setLoading={setLoading}
-          showToast={showToast}
-          setVisibleInfo={setVisibleInfo}
-          setUpdate={setUpdateStatus}
-          t={t}
-        />
-      </Dialog>
-      <Dialog
-        header={tNews('add-news')}
-        visible={visibleAddNews}
-        position='top'
-        style={{
-          width: '60%',
-          height: '100%',
-          borderRadius: '20px',
-          textAlign: 'center',
-        }}
-        onHide={() => setVisibleAddNews(false)}
-      >
-        <NewNews
-          club_id={club.club_id}
-          setLoading={setLoading}
-          showToast={showToast}
-          setVisibleAdd={setVisibleAddNews}
-          setUpdate={setUpdateStatus}
-          t={tNews}
-        />
-      </Dialog>
-      <Dialog
-        header={tNews('update-news')}
-        visible={visibleUpdateNews}
-        position='top'
-        style={{
-          width: '60%',
-          height: '100%',
-          borderRadius: '20px',
-          textAlign: 'center',
-        }}
-        onHide={() => setVisibleUpdateNews(false)}
-      >
-        <UpdateNews
-          club_id={club.club_id}
-          news_id={detailsNews.news_id}
-          title={detailsNews.name}
-          description={detailsNews.description}
-          image={detailsNews.image}
-          content={detailsNews.content}
-          setLoading={setLoading}
-          showToast={showToast}
-          setVisibleUpdateNews={setVisibleUpdateNews}
-          setUpdate={setUpdateStatus}
-          t={tNews}
-        />
-      </Dialog>
       <div className='centered-content-layout'>
         <div id='detail-container'>
           <div id='image-container-detail'>
@@ -461,7 +390,7 @@ const ManagementClubDetail = ({ club }) => {
             <div id='statistic-club'>
               <Button
                 id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '30%' }}
+                style={{ width: 'auto', minWidth: '22%' }}
                 icon='pi pi-calendar-plus'
                 label={t('detail')}
                 onClick={() => {
@@ -470,28 +399,38 @@ const ManagementClubDetail = ({ club }) => {
               />
               <Button
                 id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '30%' }}
+                style={{ width: 'auto', minWidth: '22%' }}
+                icon='pi pi-calendar'
+                label={t('active_news')}
+                onClick={() => {
+                  setActiveIndex(2)
+                  fetchPosts()
+                }}
+              />
+              <Button
+                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
+                style={{ width: 'auto', minWidth: '22%' }}
                 icon='pi pi-calendar-plus'
                 label={
                   isMobile ? t('mobile_activities') : t('recent-activities')
                 }
                 onClick={() => {
-                  setActiveIndex(2)
+                  setActiveIndex(3)
                   fetchActivities()
                 }}
               />
               <Button
-                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '30%' }}
+                id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
+                style={{ width: 'auto', minWidth: '22%' }}
                 icon='pi pi-calendar'
                 label={isMobile ? t('mobile_members') : t('scoreboard-member')}
                 onClick={() => {
-                  setActiveIndex(3)
+                  setActiveIndex(4)
                   fetchScoreboard()
                 }}
               />
             </div>
-            {activeIndex === 2 ? (
+            {activeIndex === 3 ? (
               <div style={{ width: '95%' }}>
                 <div>
                   <AutoComplete
@@ -515,7 +454,7 @@ const ManagementClubDetail = ({ club }) => {
                   page={current_page}
                 />
               </div>
-            ) : activeIndex === 3 ? (
+            ) : activeIndex === 4 ? (
               <div style={{ width: '100%' }}>
                 <div>
                   <AutoComplete
@@ -539,6 +478,32 @@ const ManagementClubDetail = ({ club }) => {
                   onPageChange={onPageChange}
                   page={current_page}
                 />
+              </div>
+            ) : activeIndex === 2 ? (
+              <div className='active-post-container'>
+                {newFeed.map((item, index) => (
+                  <Post
+                    key={index}
+                    club_id={club.club_id}
+                    post_id={item.post_id}
+                    post_title={item.post_title}
+                    post_content={item.post_content}
+                    post_description={item.post_description}
+                    post_date={item.post_date}
+                    post_image={item.post_image}
+                    post_status={item.post_status}
+                    count_likes={item.count_likes}
+                    count_comments={item.count_comments}
+                    is_liked={item._liked}
+                    user_id={item.user_id}
+                    user_name={item.user_name}
+                    user_avatar={item.user_avatar}
+                    user_role={item.user_role}
+                    t={t}
+                    showToast={showToast}
+                    fetchMyPosts={fetchPosts}
+                  />
+                ))}
               </div>
             ) : (
               <div style={{ width: '100%' }}>
@@ -651,6 +616,100 @@ const ManagementClubDetail = ({ club }) => {
             />
           </div>
         </div>
+      </Dialog>
+      <Dialog
+        header={t('update-info-club')}
+        visible={visibleChange}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleChange(false)}
+      >
+        <Update
+          club_id={club.club_id}
+          image={club.image}
+          name={club.name}
+          description={club.description}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleChange={setVisibleChange}
+          setUpdate={setUpdateStatus}
+          t={tClub}
+        />
+      </Dialog>
+      <Dialog
+        header={t('update-info-detail')}
+        visible={visibleInfo}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleInfo(false)}
+      >
+        <UpdateInfo
+          club_id={club.club_id}
+          image={club.image}
+          description={introduce}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleInfo={setVisibleInfo}
+          setUpdate={setUpdateStatus}
+          t={t}
+        />
+      </Dialog>
+      <Dialog
+        header={tNews('add-news')}
+        visible={visibleAddNews}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleAddNews(false)}
+      >
+        <NewNews
+          club_id={club.club_id}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleAdd={setVisibleAddNews}
+          setUpdate={setUpdateStatus}
+          t={tNews}
+        />
+      </Dialog>
+      <Dialog
+        header={tNews('update-news')}
+        visible={visibleUpdateNews}
+        position='top'
+        style={{
+          width: '60%',
+          height: '100%',
+          borderRadius: '20px',
+          textAlign: 'center',
+        }}
+        onHide={() => setVisibleUpdateNews(false)}
+      >
+        <UpdateNews
+          club_id={club.club_id}
+          news_id={detailsNews.news_id}
+          title={detailsNews.name}
+          description={detailsNews.description}
+          image={detailsNews.image}
+          content={detailsNews.content}
+          setLoading={setLoading}
+          showToast={showToast}
+          setVisibleUpdateNews={setVisibleUpdateNews}
+          setUpdate={setUpdateStatus}
+          t={tNews}
+        />
       </Dialog>
     </div>
   )

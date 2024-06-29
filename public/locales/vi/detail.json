@@ -127,5 +127,8 @@
     "other": " người khác đã thích câu lạc bộ này",
     "like_success": "Thích câu lạc bộ thành công",
     "like_fail": "Thích câu lạc bộ thất bại",
-    "dislike_success": "Bỏ thích câu lạc bộ thành công"
+    "dislike_success": "Bỏ thích câu lạc bộ thành công",
+    "inactive": "Đang chờ duyệt",
+    "active": "Duyệt",
+    "active_news": "Duyệt bài viết"
 }
