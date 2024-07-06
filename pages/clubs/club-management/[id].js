@@ -24,6 +24,7 @@ import { InputText } from 'primereact/inputtext'
 import store from '@/store/store'
 import RankMemberClub from '@/pages/scoreboard/RankMemberClub'
 import Post from './Post'
+import { Dropdown } from 'primereact/dropdown'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const club = await getClub(params.id)
@@ -55,8 +56,11 @@ async function getClub(id) {
 const ManagementClubDetail = ({ club }) => {
   const [isStatistic, setIsStatistic] = useState(false)
   const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(5)
+  const [per_page, setPerPage] = useState(6)
   const [totalRecords, setTotalRecords] = useState(1)
+  const [current_page_activity, setCurrentPageActivity] = useState(1)
+  const [per_page_activity, setPerPageActivity] = useState(6)
+  const [totalRecordsActivity, setTotalRecordsActivity] = useState(1)
   const [first, setFirst] = useState(0)
 
   const setLoading = useContext(LoadingContext)
@@ -75,6 +79,7 @@ const ManagementClubDetail = ({ club }) => {
   const [selectedMemberId, setSelectedMemberId] = useState(null)
   const [newFeed, setNewFeed] = useState([])
   const [page, setPage] = useState(1)
+  const [hour, setHour] = useState(720)
 
   const handleMemberClick = (id) => {
     setSelectedMemberId(id === store.getState().auth.id ? null : id)
@@ -120,6 +125,10 @@ const ManagementClubDetail = ({ club }) => {
     }
   }, [])
 
+  useEffect(() => {
+    fetchActivities()
+  }, [hour, current_page_activity, per_page_activity, totalRecordsActivity])
+
   const fetchScoreboard = async () => {
     setLoading(true)
     try {
@@ -144,14 +153,14 @@ const ManagementClubDetail = ({ club }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/clubs/recent-active/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
+        `/clubs/recent-active/${club.club_id}?current_page=${current_page_activity}&per_page=${per_page_activity}&search_name=${search_name}&hour=${hour}`
       )
       if (res.status === 200) {
         const data = res.data
         setActivities(data)
-        setCurrentPage(data.current_page)
-        setPerPage(data.per_page)
-        setTotalRecords(data.total_activities)
+        setCurrentPageActivity(data.current_page)
+        setPerPageActivity(data.per_page)
+        setTotalRecordsActivity(data.total_activities)
       }
       setLoading(false)
     } catch (error) {
@@ -236,6 +245,12 @@ const ManagementClubDetail = ({ club }) => {
     setFirst(event.first)
     setCurrentPage(event.page + 1)
     setPerPage(event.rows)
+  }
+
+  const onPageChangeActivity = (event) => {
+    setFirst(event.first)
+    setCurrentPageActivity(event.page + 1)
+    setPerPageActivity(event.rows)
   }
 
   return (
@@ -433,11 +448,27 @@ const ManagementClubDetail = ({ club }) => {
             {activeIndex === 3 ? (
               <div style={{ width: '95%' }}>
                 <div>
-                  <AutoComplete
+                  {/* <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={t('search_activities')}
+                  /> */}
+                  <Title title={t('recent-activities')} />
+                  <Dropdown
+                    value={hour}
+                    options={[
+                      { label: '48 giờ qua', value: 48 },
+                      { label: '7 ngày qua', value: 168 },
+                      { label: '30 ngày qua', value: 720 },
+                      { label: '3 tháng qua', value: 2160 },
+                      { label: '6 tháng qua', value: 4320 },
+                      { label: '1 năm qua', value: 8760 },
+                    ]}
+                    onChange={(e) => setHour(e.value)}
+                    optionLabel='label'
+                    placeholder={t('select-hour')}
+                    style={{ height: '2.2rem' }}
                   />
                 </div>
                 <Activity
@@ -447,16 +478,17 @@ const ManagementClubDetail = ({ club }) => {
                 />
                 <Paginator
                   first={first}
-                  rows={per_page}
-                  totalRecords={totalRecords}
+                  rows={per_page_activity}
+                  totalRecords={totalRecordsActivity}
                   rowsPerPageOptions={[6, 12, 18]}
-                  onPageChange={onPageChange}
-                  page={current_page}
+                  onPageChange={onPageChangeActivity}
+                  page={current_page_activity}
                 />
               </div>
             ) : activeIndex === 4 ? (
               <div style={{ width: '100%' }}>
                 <div>
+                  <Title title={t('scoreboard-member')} />
                   <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
@@ -511,6 +543,7 @@ const ManagementClubDetail = ({ club }) => {
                   icon='pi pi-pencil'
                   id='button-join'
                   label={t('update-info-detail')}
+                  style={{ width: 'auto', height: '3rem' }}
                   onClick={() => {
                     setVisibleInfo(true)
                   }}

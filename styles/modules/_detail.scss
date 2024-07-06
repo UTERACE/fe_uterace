@@ -21,7 +21,7 @@
 #info-detail {
     background-color: var(--background-color);
     padding: 1rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
     border-radius: 2rem;
     width: 100%;
     height: auto;
@@ -121,8 +121,8 @@
 }
 #event-info-detail {
     background-color: $border-color;
-    padding: 2rem 1rem 1rem 1rem;
     margin-top: 2rem;
+    padding: 1rem;
     border-radius: 2rem;
     width: 100%;
     height: auto;
@@ -160,8 +160,6 @@
 #statistic-event {
     width: 100%;
     height: auto;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -180,8 +178,8 @@
 }
 #info-event-detail {
     background-color: var(--background-color);
-    padding: 2rem 1rem 1rem 1rem;
-    margin-top: 2rem;
+    padding: 2rem;
+    margin-top: 1rem;
     border-radius: 2rem;
     width: 100%;
     height: auto;
@@ -314,12 +312,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
     width: 100%;
     height: auto;
-    padding: 1rem;
+    padding: 0 1rem 0 1rem;
     background-color: var(--background-color);
-    border-radius: 2rem;
     transition: transform 0.3s ease;
 }
 

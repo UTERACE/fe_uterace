@@ -17,6 +17,7 @@ import LocaleHelper from '@/components/locale/LocaleHelper'
 import DataView from '@/components/dataview/DataView'
 import { useRouter } from 'next/router'
 import { InputNumber } from 'primereact/inputnumber'
+import { Dropdown } from 'primereact/dropdown'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const user = await getUser(params.id)
@@ -70,7 +71,7 @@ const UserDetail = ({ user }) => {
   const [search_name, setSearchName] = useState('')
   const [search_name_event, setSearch_NameEvent] = useState('')
   const [search_name_club, setSearch_NameClub] = useState('')
-  const [hour, setHour] = useState(48)
+  const [hour, setHour] = useState(720)
   const [completed, setCompleted] = useState(false)
   const [searchClub, setSearchClub] = useState(false)
   const [searchEvent, setSearchEvent] = useState(false)
@@ -456,10 +457,25 @@ const UserDetail = ({ user }) => {
                   setLoading={setLoading}
                   showToast={showToast}
                 />
-                <InputNumber
+                {/* <InputNumber
                   value={hour}
                   onValueChange={(e) => setHour(e.value)}
                   prefix='Hour '
+                /> */}
+                <Dropdown
+                  value={hour}
+                  options={[
+                    { label: '48 giờ qua', value: 48 },
+                    { label: '7 ngày qua', value: 168 },
+                    { label: '30 ngày qua', value: 720 },
+                    { label: '3 tháng qua', value: 2160 },
+                    { label: '6 tháng qua', value: 4320 },
+                    { label: '1 năm qua', value: 8760 },
+                  ]}
+                  onChange={(e) => setHour(e.value)}
+                  optionLabel='label'
+                  placeholder={t('select-hour')}
+                  style={{ height: '2.2rem' }}
                 />
                 <Paginator
                   first={first}

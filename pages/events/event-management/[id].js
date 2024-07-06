@@ -22,6 +22,8 @@ import Head from 'next/head'
 import store from '@/store/store'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { saveAs } from 'file-saver'
+import Title from '@/components/landing/Title'
+import { Dropdown } from 'primereact/dropdown'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -76,6 +78,7 @@ const EventDetail = ({ event }) => {
   const [distances, setDistances] = useState([])
   const [selectedCities, setSelectedCities] = useState(null)
   const [visibleAddDistance, setVisibleAddDistance] = useState(false)
+  const [hour, setHour] = useState(720)
 
   const [activities, setActivities] = useState({})
   const [rankMember, setRankMember] = useState({})
@@ -148,7 +151,7 @@ const EventDetail = ({ event }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
+        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=${hour}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -718,7 +721,7 @@ const EventDetail = ({ event }) => {
                 <Button
                   icon='pi pi-pencil'
                   id='button-join'
-                  style={{ width: '30%' }}
+                  style={{ width: 'auto', height: '3rem' }}
                   label={t('update-info-rules')}
                   onClick={() => {
                     setVisibleRole(true)
@@ -731,7 +734,7 @@ const EventDetail = ({ event }) => {
                 <Button
                   icon='pi pi-pencil'
                   id='button-join'
-                  style={{ width: '40%' }}
+                  style={{ width: 'auto', height: '3rem' }}
                   label={t('update-info-award')}
                   onClick={() => {
                     setVisiblePrize(true)
@@ -742,12 +745,14 @@ const EventDetail = ({ event }) => {
             ) : activeIndex === 3 ? (
               <div style={{ width: '100%' }}>
                 <div id='search-excel-container'>
-                  <AutoComplete
+                      <AutoComplete
+                        style={{ width: '20%' }}
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={t('search_members')}
                   />
+                  <Title title={t('scoreboard-member')} />
                   <Button
                     id='button-excel'
                     label={t('excel')}
@@ -769,11 +774,27 @@ const EventDetail = ({ event }) => {
             ) : activeIndex === 4 ? (
               <div style={{ width: '95%' }}>
                 <div>
-                  <AutoComplete
+                  {/* <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={t('search_activities')}
+                  /> */}
+                  <Title title={t('recent-activities')} />
+                  <Dropdown
+                    value={hour}
+                    options={[
+                      { label: '48 giờ qua', value: 48 },
+                      { label: '7 ngày qua', value: 168 },
+                      { label: '30 ngày qua', value: 720 },
+                      { label: '3 tháng qua', value: 2160 },
+                      { label: '6 tháng qua', value: 4320 },
+                      { label: '1 năm qua', value: 8760 },
+                    ]}
+                    onChange={(e) => setHour(e.value)}
+                    optionLabel='label'
+                    placeholder={t('select-hour')}
+                    style={{ height: '2.2rem' }}
                   />
                 </div>
                 <Activity
@@ -791,11 +812,11 @@ const EventDetail = ({ event }) => {
                 />
               </div>
             ) : (
-              <div>
+              <div style={{ width: '100%' }}>
                 <Button
                   icon='pi pi-pencil'
                   id='button-join'
-                  style={{ width: '30%' }}
+                  style={{ width: 'auto', height: '3rem' }}
                   label={t('update-info-detail')}
                   onClick={() => {
                     setVisibleIntroduce(true)

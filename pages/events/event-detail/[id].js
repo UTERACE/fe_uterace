@@ -16,6 +16,8 @@ import { AutoComplete } from 'primereact/autocomplete'
 import Head from 'next/head'
 import LocaleHelper from '@/components/locale/LocaleHelper'
 import { Dialog } from 'primereact/dialog'
+import { Dropdown } from 'primereact/dropdown'
+import Title from '@/components/landing/Title'
 
 export const getServerSideProps = async ({ locale, params }) => {
   const event = await getEvent(params.id)
@@ -58,6 +60,7 @@ const EventDetail = ({ event }) => {
   const [search_name, setSearchName] = useState('')
   const [search, setSearch] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [hour, setHour] = useState(720)
 
   const { t } = useTranslation('detail')
   const router = useRouter()
@@ -105,7 +108,7 @@ const EventDetail = ({ event }) => {
     setLoading(true)
     try {
       const res = await apiInstance.get(
-        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=48`
+        `/events/recent-active/${event.event_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}&hour=${hour}`
       )
       const data = res.data
       if (res.status === 200) {
@@ -479,6 +482,7 @@ const EventDetail = ({ event }) => {
             ) : activeIndex === 3 ? (
               <div style={{ width: '100%' }}>
                 <div>
+                  <Title title={t('scoreboard-member')} />
                   <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
@@ -500,11 +504,27 @@ const EventDetail = ({ event }) => {
               <div style={{ width: '95%' }}>
                 {/* <RankClub value={rankClub.items} /> */}
                 <div>
-                  <AutoComplete
+                  {/* <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={t('search_activities')}
+                  /> */}
+                  <Title title={t('recent-activities')} />
+                  <Dropdown
+                    value={hour}
+                    options={[
+                      { label: '48 giờ qua', value: 48 },
+                      { label: '7 ngày qua', value: 168 },
+                      { label: '30 ngày qua', value: 720 },
+                      { label: '3 tháng qua', value: 2160 },
+                      { label: '6 tháng qua', value: 4320 },
+                      { label: '1 năm qua', value: 8760 },
+                    ]}
+                    onChange={(e) => setHour(e.value)}
+                    optionLabel='label'
+                    placeholder={t('select-hour')}
+                    style={{ height: '2.2rem' }}
                   />
                 </div>
                 <Activity
