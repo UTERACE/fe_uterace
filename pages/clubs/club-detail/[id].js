@@ -1,94 +1,96 @@
-import Title from '@/components/landing/Title'
-import News from '@/pages/landing/News'
-import Activity from '@/pages/user/profile/Activity'
-import RankMember from '@/pages/scoreboard/RankMember'
-import { Button } from 'primereact/button'
-import { Paginator } from 'primereact/paginator'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import LocaleHelper from '@/components/locale/LocaleHelper'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import apiInstance from '@/api/apiInstance'
-import { LoadingContext } from '@/components/contexts/LoadingContext'
-import { useToast } from '@/components/contexts/ToastContext'
-import { useRouter } from 'next/router'
-import store from '@/store/store'
-import { ConfirmPopup } from 'primereact/confirmpopup'
-import Image from 'next/image'
-import { AutoComplete } from 'primereact/autocomplete'
-import Head from 'next/head'
-import Post from '../Post'
-import { Dialog } from 'primereact/dialog'
-import NewPost from './NewPost'
-import { Dropdown } from 'primereact/dropdown'
+import Title from "@/components/landing/Title";
+import News from "@/pages/landing/News";
+import Activity from "@/pages/user/profile/Activity";
+import RankMember from "@/pages/scoreboard/RankMember";
+import { Button } from "primereact/button";
+import { Paginator } from "primereact/paginator";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import LocaleHelper from "@/components/locale/LocaleHelper";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import apiInstance from "@/api/apiInstance";
+import { LoadingContext } from "@/components/contexts/LoadingContext";
+import { useToast } from "@/components/contexts/ToastContext";
+import { useRouter } from "next/router";
+import store from "@/store/store";
+import { ConfirmPopup } from "primereact/confirmpopup";
+import Image from "next/image";
+import { AutoComplete } from "primereact/autocomplete";
+import Head from "next/head";
+import Post from "../Post";
+import { Dialog } from "primereact/dialog";
+import NewPost from "./NewPost";
+import { Dropdown } from "primereact/dropdown";
 
 export const getServerSideProps = async ({ locale, params }) => {
-  const club = await getClub(params.id)
+  const club = await getClub(params.id);
   return {
     props: {
       ...(await serverSideTranslations(locale, [
-        'detail',
-        'news',
-        'scoreboard',
-        'topbar',
+        "detail",
+        "news",
+        "scoreboard",
+        "topbar",
       ])),
       club,
     },
-  }
-}
+  };
+};
 
 async function getClub(id) {
   try {
-    const response = await apiInstance.get(`/clubs/${id}`)
-    const data = await response.data
-    return data
+    const response = await apiInstance.get(`/clubs/${id}`);
+    const data = await response.data;
+    return data;
   } catch (error) {
-    console.error('Error fetching club details:', error)
-    return null
+    console.error("Error fetching club details:", error);
+    return null;
   }
 }
 
 const ClubDetail = ({ club }) => {
-  const [isStatistic, setIsStatistic] = useState(false)
-  const [current_page, setCurrentPage] = useState(1)
-  const [per_page, setPerPage] = useState(6)
-  const [totalRecords, setTotalRecords] = useState(1)
-  const [current_page_activity, setCurrentPageActivity] = useState(1)
-  const [per_page_activity, setPerPageActivity] = useState(6)
-  const [totalRecordsActivity, setTotalRecordsActivity] = useState(1)
-  const [first, setFirst] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(1)
-  const [visible, setVisible] = useState(false)
-  const [visibleLogin, setVisibleLogin] = useState(false)
-  const [visibleJoin, setVisibleJoin] = useState(false)
-  const [checkJoin, setCheckJoin] = useState(false)
-  const [visibleAddNews, setVisibleAddNews] = useState(false)
-  const [isMyPost, setIsMyPost] = useState(false)
-  const buttonEl = useRef(null)
-  const [hour, setHour] = useState(720)
+  const [isStatistic, setIsStatistic] = useState(false);
+  const [current_page, setCurrentPage] = useState(1);
+  const [per_page, setPerPage] = useState(6);
+  const [totalRecords, setTotalRecords] = useState(1);
+  const [current_page_activity, setCurrentPageActivity] = useState(1);
+  const [per_page_activity, setPerPageActivity] = useState(6);
+  const [totalRecordsActivity, setTotalRecordsActivity] = useState(1);
+  const [first, setFirst] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [visibleLogin, setVisibleLogin] = useState(false);
+  const [visibleJoin, setVisibleJoin] = useState(false);
+  const [checkJoin, setCheckJoin] = useState(false);
+  const [visibleAddNews, setVisibleAddNews] = useState(false);
+  const [isMyPost, setIsMyPost] = useState(false);
+  const buttonEl = useRef(null);
+  const [hour, setHour] = useState(720);
 
-  const setLoading = useContext(LoadingContext)
-  const showToast = useToast().showToast
-  const router = useRouter()
+  const setLoading = useContext(LoadingContext);
+  const showToast = useToast().showToast;
+  const router = useRouter();
 
-  const [introduce, setIntroduce] = useState(club.details)
-  const [news, setNews] = useState(club.news)
-  const [activities, setActivities] = useState({})
-  const [rankMember, setRankMember] = useState({})
-  const [search_name, setSearchName] = useState('')
-  const [search, setSearch] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-  const [newFeed, setNewFeed] = useState([])
-  const [page, setPage] = useState(1)
-  const [isLiked, setIsLiked] = useState(false)
-  const [countLikes, setCountLikes] = useState(0)
+  const [introduce, setIntroduce] = useState(club.details);
+  const [news, setNews] = useState(club.news);
+  const [activities, setActivities] = useState({});
+  const [rankMember, setRankMember] = useState({});
+  const [search_name, setSearchName] = useState("");
+  const [search_posts, setSearchPosts] = useState("");
+  const [search, setSearch] = useState(false);
+  const [searchPost, setSearchPost] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [newFeed, setNewFeed] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLiked, setIsLiked] = useState(false);
+  const [countLikes, setCountLikes] = useState(0);
 
-  const { t } = useTranslation('detail')
-  const { t: tNews } = useTranslation('news')
+  const { t } = useTranslation("detail");
+  const { t: tNews } = useTranslation("news");
 
   useEffect(() => {
-    checkJoinClub()
-  }, [])
+    checkJoinClub();
+  }, []);
 
   // useEffect(() => {
   //   fetchData()
@@ -97,252 +99,254 @@ const ClubDetail = ({ club }) => {
   useEffect(() => {
     //responsive window
     if (window.innerHeight > window.innerWidth) {
-      setIsMobile(true)
+      setIsMobile(true);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    fetchRecentActivities()
-  }, [hour, current_page_activity, per_page_activity, totalRecordsActivity])
+    fetchRecentActivities();
+  }, [hour, current_page_activity, per_page_activity, totalRecordsActivity]);
 
   const fetchRankMember = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const res = await apiInstance.get(
         `/clubs/rank-member/${club.club_id}?current_page=${current_page}&per_page=${per_page}&search_name=${search_name}`
-      )
+      );
       if (res && res.status === 200) {
-        const data = res.data
-        setRankMember(data)
-        setCurrentPage(data.current_page)
-        setPerPage(data.per_page)
-        setTotalRecords(data.total_user)
+        const data = res.data;
+        setRankMember(data);
+        setCurrentPage(data.current_page);
+        setPerPage(data.per_page);
+        setTotalRecords(data.total_user);
       }
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      showToast('error', error)
-      setLoading(false)
+      showToast("error", error);
+      setLoading(false);
     }
-  }
+  };
 
   const fetchRecentActivities = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const res = await apiInstance.get(
-        `/clubs/recent-active/${club.club_id}?current_page=${current_page_activity}&per_page=${per_page_activity}&search_name=${search_name}&hour=${hour}`
-      )
+        `/clubs/recent-active/${
+          club.club_id
+        }?current_page=${current_page_activity}&per_page=${per_page_activity}&search_name=${``}&hour=${hour}`
+      );
       if (res && res.status === 200) {
-        const data = res.data
-        setActivities(data)
-        setCurrentPageActivity(data.current_page)
-        setPerPageActivity(data.per_page)
-        setTotalRecordsActivity(data.total_activities)
+        const data = res.data;
+        setActivities(data);
+        setCurrentPageActivity(data.current_page);
+        setPerPageActivity(data.per_page);
+        setTotalRecordsActivity(data.total_activities);
       }
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      showToast('error', error)
-      setLoading(false)
+      showToast("error", error);
+      setLoading(false);
     }
-  }
+  };
 
   const checkJoinClub = async () => {
     try {
       const res = await apiInstance.get(
         `/clubs/check-join-club/${club.club_id}`
-      )
-      const data = res.data
+      );
+      const data = res.data;
       if (res.status === 200) {
-        setCheckJoin(data)
+        setCheckJoin(data);
       }
     } catch (error) {
-      showToast('error', t('get_info_fail'), error)
+      showToast("error", t("get_info_fail"), error);
     }
-  }
+  };
 
   const acceptJoin = () => {
-    handleJoinClub()
-  }
+    handleJoinClub();
+  };
 
   const acceptLeave = () => {
-    handleLeaveClub()
-  }
+    handleLeaveClub();
+  };
 
   const reject = () => {
-    showToast('info', t('rejected'), t('you_are_rejected'))
-  }
+    showToast("info", t("rejected"), t("you_are_rejected"));
+  };
 
   const fetchPosts = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await apiInstance.get(`/news/club/${club.club_id}`, {
         params: {
           current_page: page,
           per_page: 5,
-          search_name: '',
+          search_name: search_posts,
         },
-      })
-      const data = res.data
+      });
+      const data = res.data;
       if (res.status === 200) {
-        setNewFeed(data)
+        setNewFeed(data);
       }
     } catch (error) {
-      showToast('error', t('get_news_fail'), error)
+      showToast("error", t("get_news_fail"), error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const fetchMyPosts = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await apiInstance.get(`/news/my-news/${club.club_id}`, {
         params: {
           current_page: page,
           per_page: 5,
-          search_name: '',
+          search_name: "",
         },
-      })
-      const data = res.data
+      });
+      const data = res.data;
       if (res.status === 200) {
-        setNewFeed(data)
+        setNewFeed(data);
       }
     } catch (error) {
-      showToast('error', t('get_news_fail'), error)
+      showToast("error", t("get_news_fail"), error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const handleJoinClub = async () => {
-    setLoading(true)
+    setLoading(true);
     if (!store.getState().auth.isAuthenticated) {
-      router.push('/login')
-      setLoading(false)
-      showToast('error', t('join_club_fail'), t('not_login'))
+      router.push("/login");
+      setLoading(false);
+      showToast("error", t("join_club_fail"), t("not_login"));
     } else {
       try {
-        const res = await apiInstance.post(`/clubs/join-club/${club.club_id}`)
-        const dataRes = res.data
+        const res = await apiInstance.post(`/clubs/join-club/${club.club_id}`);
+        const dataRes = res.data;
         if (res.status == 200) {
-          showToast('success', t('join_club_success'), dataRes.message)
-          setLoading(false)
-          setCheckJoin(true)
-          setVisibleJoin(false)
+          showToast("success", t("join_club_success"), dataRes.message);
+          setLoading(false);
+          setCheckJoin(true);
+          setVisibleJoin(false);
         }
       } catch (error) {
-        showToast('error', t('join_club_fail'), error)
-        setLoading(false)
+        showToast("error", t("join_club_fail"), error);
+        setLoading(false);
       }
     }
-  }
+  };
 
   const handleLeaveClub = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await apiInstance.delete(`/clubs/leave-club/${club.club_id}`)
-      const dataRes = res.data
+      const res = await apiInstance.delete(`/clubs/leave-club/${club.club_id}`);
+      const dataRes = res.data;
       if (res.status == 200) {
-        showToast('success', t('leave_club_success'), dataRes.message)
-        setLoading(false)
-        setCheckJoin(false)
-        setVisibleJoin(false)
+        showToast("success", t("leave_club_success"), dataRes.message);
+        setLoading(false);
+        setCheckJoin(false);
+        setVisibleJoin(false);
       }
     } catch (error) {
-      showToast('error', t('leave_club_fail'), error)
-      setLoading(false)
+      showToast("error", t("leave_club_fail"), error);
+      setLoading(false);
     }
-  }
+  };
 
   const handleLike = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       if (!store.getState().auth.isAuthenticated) {
-        router.push('/login')
-        setLoading(false)
-        showToast('error', t('like_fail'), t('not_login'))
+        router.push("/login");
+        setLoading(false);
+        showToast("error", t("like_fail"), t("not_login"));
       } else {
         const res = await apiInstance.post(`/reaction/club`, {
           id: club.club_id,
-          reactionType: 'like',
-        })
-        const dataRes = res.data
+          reactionType: "like",
+        });
+        const dataRes = res.data;
         if (res.status == 200) {
-          showToast('success', t('like_success'), dataRes.message)
-          setLoading(false)
-          fetchLikeStatus()
+          showToast("success", t("like_success"), dataRes.message);
+          setLoading(false);
+          fetchLikeStatus();
         }
       }
     } catch (error) {
-      showToast('error', t('like_fail'), error)
-      setLoading(false)
+      showToast("error", t("like_fail"), error);
+      setLoading(false);
     }
-  }
+  };
 
   const handelDislike = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       if (!store.getState().auth.isAuthenticated) {
-        router.push('/login')
-        setLoading(false)
-        showToast('error', t('like_fail'), t('not_login'))
+        router.push("/login");
+        setLoading(false);
+        showToast("error", t("like_fail"), t("not_login"));
       } else {
-        const res = await apiInstance.delete(`/reaction/club/${club.club_id}`)
-        const dataRes = res.data
+        const res = await apiInstance.delete(`/reaction/club/${club.club_id}`);
+        const dataRes = res.data;
         if (res.status == 200) {
-          showToast('success', t('dislike_success'), dataRes.message)
-          setLoading(false)
-          fetchLikeStatus()
+          showToast("success", t("dislike_success"), dataRes.message);
+          setLoading(false);
+          fetchLikeStatus();
         }
       }
     } catch (error) {
-      showToast('error', t('dislike_fail'), error)
-      setLoading(false)
+      showToast("error", t("dislike_fail"), error);
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (store.getState().auth.isAuthenticated) fetchLikeStatus()
-  }, [])
+    if (store.getState().auth.isAuthenticated) fetchLikeStatus();
+  }, []);
 
   const fetchLikeStatus = async () => {
     try {
-      const res = await apiInstance.get(`/reaction/club/${club.club_id}`)
-      const data = res.data
+      const res = await apiInstance.get(`/reaction/club/${club.club_id}`);
+      const data = res.data;
       if (res.status === 200) {
-        setIsLiked(data.liked)
-        setCountLikes(data.likes)
+        setIsLiked(data.liked);
+        setCountLikes(data.likes);
       }
     } catch (error) {
-      showToast('error', t('get_info_fail'), error)
+      showToast("error", t("get_info_fail"), error);
     }
-  }
+  };
 
   const onPageChange = (event) => {
-    setFirst(event.first)
-    setCurrentPage(event.page + 1)
-    setPerPage(event.rows)
-  }
+    setFirst(event.first);
+    setCurrentPage(event.page + 1);
+    setPerPage(event.rows);
+  };
 
   const onPageChangeActivity = (event) => {
-    setFirst(event.first)
-    setCurrentPageActivity(event.page + 1)
-    setPerPageActivity(event.rows)
-  }
+    setFirst(event.first);
+    setCurrentPageActivity(event.page + 1);
+    setPerPageActivity(event.rows);
+  };
 
   return (
-    <div className='centered-content-detailpage'>
+    <div className="centered-content-detailpage">
       <Head>
         <title>{club.name}</title>
-        <meta name='description' content={club.description} />
+        <meta name="description" content={club.description} />
       </Head>
-      <div className='centered-content-layout'>
-        <div id='detail-container'>
-          <div id='image-container-detail'>
-            <Image src={club.image} alt='club' width={1080} height={780} />
+      <div className="centered-content-layout">
+        <div id="detail-container">
+          <div id="image-container-detail">
+            <Image src={club.image} alt="club" width={1080} height={780} />
           </div>
-          <div id='info-detail'>
+          <div id="info-detail">
             <Image
-              id='info-detail-img'
+              id="info-detail-img"
               src={club.image}
-              alt='logo'
+              alt="logo"
               width={200}
               height={200}
             />
@@ -353,88 +357,88 @@ const ClubDetail = ({ club }) => {
               visible={visible}
               onHide={() => setVisible(false)}
               message={
-                checkJoin ? t('confirm_leave_club') : t('confirm_join_club')
+                checkJoin ? t("confirm_leave_club") : t("confirm_join_club")
               }
-              icon='pi pi-exclamation-triangle'
+              icon="pi pi-exclamation-triangle"
               accept={checkJoin ? acceptLeave : acceptJoin}
               reject={reject}
             />
             <Button
-              id='button-join'
-              label={checkJoin ? t('leave_club') : t('join-now')}
+              id="button-join"
+              label={checkJoin ? t("leave_club") : t("join-now")}
               onClick={() => {
-                setVisibleJoin(true)
+                setVisibleJoin(true);
               }}
             />
           </div>
 
-          <div id='info-detail'>
-            <div id='statistic-club'>
+          <div id="info-detail">
+            <div id="statistic-club">
               <Button
-                id='button-tab'
-                style={{ width: 'auto', minWidth: '25%' }}
-                label={`${club.total_member} ${t('participants')}`}
+                id="button-tab"
+                style={{ width: "auto", minWidth: "25%" }}
+                label={`${club.total_member} ${t("participants")}`}
                 onClick={() => {}}
               />
-              <div id='like-club-container'>
+              <div id="like-club-container">
                 <div
-                  id='like-club-button'
+                  id="like-club-button"
                   onClick={() => {
-                    isLiked ? handelDislike() : handleLike()
+                    isLiked ? handelDislike() : handleLike();
                   }}
                 >
                   {isLiked ? (
-                    <i className='fas fa-heart liked-club p-icon-large'></i>
+                    <i className="fas fa-heart liked-club p-icon-large"></i>
                   ) : (
-                    <i className='far fa-heart p-icon-large'></i>
+                    <i className="far fa-heart p-icon-large"></i>
                   )}
-                  <a>{isLiked ? t('liked') : t('like')}</a>
+                  <a>{isLiked ? t("liked") : t("like")}</a>
                 </div>
                 <span>
-                  {isLiked ? t('you_and') : ''}
+                  {isLiked ? t("you_and") : ""}
                   {countLikes}
-                  {t('other')}
+                  {t("other")}
                 </span>
               </div>
 
               <Button
-                id={!isStatistic ? 'button-tab' : 'button-tab--active'}
-                label={t('view-statistic')}
-                style={{ width: 'auto', minWidth: '25%' }}
-                iconPos='right'
-                icon={!isStatistic ? 'pi pi-angle-down' : 'pi pi-angle-up'}
+                id={!isStatistic ? "button-tab" : "button-tab--active"}
+                label={t("view-statistic")}
+                style={{ width: "auto", minWidth: "25%" }}
+                iconPos="right"
+                icon={!isStatistic ? "pi pi-angle-down" : "pi pi-angle-up"}
                 onClick={() => {
-                  setIsStatistic(!isStatistic)
+                  setIsStatistic(!isStatistic);
                 }}
               />
             </div>
             {isStatistic ? (
-              <div id='info-club-container'>
-                <div id='info-club-detail'>
-                  <div id='detail-club-container'>
-                    <h4>{t('total-member-join')}</h4>
+              <div id="info-club-container">
+                <div id="info-club-detail">
+                  <div id="detail-club-container">
+                    <h4>{t("total-member-join")}</h4>
                     <h4>{club.total_member}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('total-distance')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("total-distance")}</h4>
                     <h4>{LocaleHelper.formatNumber(club.total_distance)}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('total-activities')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("total-activities")}</h4>
                     <h4>{club.total_activities}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('total-news')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("total-news")}</h4>
                     <h4>{club.total_news}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('min-pace')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("min-pace")}</h4>
                     <h4>{LocaleHelper.formatPace(club.min_pace)}</h4>
                   </div>
                 </div>
-                <div id='info-club-detail'>
-                  <div id='detail-club-container'>
-                    <h4>{t('created-at')}</h4>
+                <div id="info-club-detail">
+                  <div id="detail-club-container">
+                    <h4>{t("created-at")}</h4>
                     <h4>
                       {isMobile
                         ? LocaleHelper.formatDate(new Date(club.created_at))
@@ -443,130 +447,133 @@ const ClubDetail = ({ club }) => {
                           )}
                     </h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('manager')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("manager")}</h4>
                     <h4>{club.manager}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('athlete-male')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("athlete-male")}</h4>
                     <h4>{club.male}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('athlete-female')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("athlete-female")}</h4>
                     <h4>{club.female}</h4>
                   </div>
-                  <div id='detail-club-container'>
-                    <h4>{t('max-pace')}</h4>
+                  <div id="detail-club-container">
+                    <h4>{t("max-pace")}</h4>
                     <h4>{LocaleHelper.formatPace(club.max_pace)}</h4>
                   </div>
                 </div>
               </div>
             ) : null}
           </div>
-          <div id='info-detail'>
-            <Title title={t('post-clubs')} />
+          <div id="info-detail">
+            <Title title={t("post-clubs")} />
             <News data={news} />
           </div>
-          <div id='info-detail'>
-            <div id='statistic-club'>
+          <div id="info-detail">
+            <div id="statistic-club">
               <Button
-                id={activeIndex === 1 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '22%' }}
-                icon='pi pi-calendar-plus'
-                label={t('detail')}
+                id={activeIndex === 1 ? "button-tab--active" : "button-tab"}
+                style={{ width: "auto", minWidth: "22%" }}
+                icon="pi pi-calendar-plus"
+                label={t("detail")}
                 onClick={() => {
-                  setActiveIndex(1)
+                  setActiveIndex(1);
                 }}
               />
               <Button
-                id={activeIndex === 2 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '22%' }}
-                icon='pi pi-calendar-plus'
-                label={t('new_feed')}
+                id={activeIndex === 2 ? "button-tab--active" : "button-tab"}
+                style={{ width: "auto", minWidth: "22%" }}
+                icon="pi pi-calendar-plus"
+                label={t("new_feed")}
                 onClick={() => {
-                  setActiveIndex(2)
-                  setIsMyPost(false)
-                  if (store.getState().auth.isAuthenticated) fetchPosts()
+                  setActiveIndex(2);
+                  setIsMyPost(false);
+                  if (store.getState().auth.isAuthenticated) fetchPosts();
                   else {
                     showToast(
-                      'error',
-                      t('not_login'),
-                      t('notify_not_login_third')
-                    )
-                    setVisibleLogin(true)
+                      "error",
+                      t("not_login"),
+                      t("notify_not_login_third")
+                    );
+                    setVisibleLogin(true);
                   }
                 }}
               />
               <Button
-                id={activeIndex === 3 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '22%' }}
-                icon='pi pi-calendar-plus'
+                id={activeIndex === 3 ? "button-tab--active" : "button-tab"}
+                style={{ width: "auto", minWidth: "22%" }}
+                icon="pi pi-calendar-plus"
                 label={
-                  isMobile ? t('mobile_activities') : t('recent-activities')
+                  isMobile ? t("mobile_activities") : t("recent-activities")
                 }
                 onClick={() => {
-                  setActiveIndex(3)
-                  fetchRecentActivities()
+                  setActiveIndex(3);
+                  fetchRecentActivities();
                 }}
               />
               <Button
-                id={activeIndex === 4 ? 'button-tab--active' : 'button-tab'}
-                style={{ width: 'auto', minWidth: '22%' }}
-                icon='pi pi-calendar'
-                label={isMobile ? t('mobile_members') : t('scoreboard-member')}
+                id={activeIndex === 4 ? "button-tab--active" : "button-tab"}
+                style={{ width: "auto", minWidth: "22%" }}
+                icon="pi pi-calendar"
+                label={isMobile ? t("mobile_members") : t("scoreboard-member")}
                 onClick={() => {
-                  setActiveIndex(4)
-                  fetchRankMember()
+                  setActiveIndex(4);
+                  fetchRankMember();
                 }}
               />
             </div>
             {activeIndex === 1 ? (
               <div
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 dangerouslySetInnerHTML={{ __html: introduce }}
               ></div>
             ) : activeIndex === 2 ? (
-              <div style={{ width: '100%' }}>
+              <div style={{ width: "100%" }}>
                 <div>
-                  <div className='new-feed-menu'>
-                    <div className='new-feed-button-container'>
+                  <div className="new-feed-menu">
+                    <div className="new-feed-button-container">
                       <Button
-                        icon='pi pi-plus p-icon-large'
+                        icon="pi pi-plus p-icon-large"
                         style={{
-                          width: '3rem',
-                          height: '3rem',
-                          borderRadius: '50%',
+                          width: "3rem",
+                          height: "3rem",
+                          borderRadius: "50%",
                         }}
                         onClick={() => {
-                          setVisibleAddNews(true)
+                          setVisibleAddNews(true);
                         }}
                       />
                     </div>
 
-                    <div className='new-feed-search '>
+                    <div className="new-feed-search ">
                       <AutoComplete
-                        value={search_name}
-                        style={{ width: '70%' }}
-                        onChange={(e) => setSearchName(e.target.value)}
-                        completeMethod={(e) => setSearch(!search)}
-                        placeholder={t('search_for') + "'" + club.name + "'"}
+                        value={search_posts}
+                        style={{ width: "70%" }}
+                        onChange={(e) => setSearchPosts(e.target.value)}
+                        completeMethod={(e) => {
+                          setSearchPost(!search_posts);
+                          fetchPosts();
+                        }}
+                        placeholder={t("search_for") + "'" + club.name + "'"}
                       />
                     </div>
-                    <div className='new-feed-button-container'>
+                    <div className="new-feed-button-container">
                       <Button
-                        label={t('my_post')}
+                        label={t("my_post")}
                         style={{
-                          height: '3rem',
-                          borderRadius: '1rem',
+                          height: "3rem",
+                          borderRadius: "1rem",
                         }}
                         onClick={() => {
-                          setIsMyPost(true)
-                          fetchMyPosts()
+                          setIsMyPost(true);
+                          fetchMyPosts();
                         }}
                       />
                     </div>
                   </div>
-                  <div className='new-feed-container'>
+                  <div className="new-feed-container">
                     {newFeed.map((item, index) => (
                       <Post
                         key={index}
@@ -605,7 +612,7 @@ const ClubDetail = ({ club }) => {
                 />
               </div>
             ) : activeIndex === 3 ? (
-              <div style={{ width: '95%' }}>
+              <div style={{ width: "95%" }}>
                 <div>
                   {/* <AutoComplete
                     value={search_name}
@@ -613,21 +620,21 @@ const ClubDetail = ({ club }) => {
                     completeMethod={(e) => setSearch(!search)}
                     placeholder={t('search_activities')}
                   /> */}
-                  <Title title={t('recent-activities')} />
+                  <Title title={t("recent-activities")} />
                   <Dropdown
                     value={hour}
                     options={[
-                      { label: '48 giờ qua', value: 48 },
-                      { label: '7 ngày qua', value: 168 },
-                      { label: '30 ngày qua', value: 720 },
-                      { label: '3 tháng qua', value: 2160 },
-                      { label: '6 tháng qua', value: 4320 },
-                      { label: '1 năm qua', value: 8760 },
+                      { label: "48 giờ qua", value: 48 },
+                      { label: "7 ngày qua", value: 168 },
+                      { label: "30 ngày qua", value: 720 },
+                      { label: "3 tháng qua", value: 2160 },
+                      { label: "6 tháng qua", value: 4320 },
+                      { label: "1 năm qua", value: 8760 },
                     ]}
                     onChange={(e) => setHour(e.value)}
-                    optionLabel='label'
-                    placeholder={t('select-hour')}
-                    style={{ height: '2.2rem' }}
+                    optionLabel="label"
+                    placeholder={t("select-hour")}
+                    style={{ height: "2.2rem" }}
                   />
                 </div>
                 <Activity
@@ -645,14 +652,17 @@ const ClubDetail = ({ club }) => {
                 />
               </div>
             ) : (
-              <div style={{ width: '100%' }}>
+              <div style={{ width: "100%" }}>
                 <div>
-                  <Title title={t('scoreboard-member')} />
+                  <Title title={t("scoreboard-member")} />
                   <AutoComplete
                     value={search_name}
                     onChange={(e) => setSearchName(e.target.value)}
-                    completeMethod={(e) => setSearch(!search)}
-                    placeholder={t('search_members')}
+                    completeMethod={(e) => {
+                      setSearch(!search);
+                      fetchRankMember();
+                    }}
+                    placeholder={t("search_members")}
                   />
                 </div>
                 <RankMember value={rankMember.ranking_user} />
@@ -670,14 +680,14 @@ const ClubDetail = ({ club }) => {
         </div>
       </div>
       <Dialog
-        header={tNews('add-news')}
+        header={tNews("add-news")}
         visible={visibleAddNews}
-        position='top'
+        position="top"
         style={{
-          width: '60%',
-          height: '100%',
-          borderRadius: '20px',
-          textAlign: 'center',
+          width: "60%",
+          height: "100%",
+          borderRadius: "20px",
+          textAlign: "center",
         }}
         onHide={() => setVisibleAddNews(false)}
       >
@@ -691,82 +701,82 @@ const ClubDetail = ({ club }) => {
         />
       </Dialog>
       <Dialog
-        header={t('notify_not_login_third')}
+        header={t("notify_not_login_third")}
         visible={visibleLogin}
         onHide={() => setVisibleLogin(false)}
-        style={{ width: '30vw' }}
+        style={{ width: "30vw" }}
       >
-        <div className='dialog-content-confirm'>
-          <p>{t('notify_not_login_first')}</p>
-          <p>{t('notify_not_login_second')}</p>
-          <p>{t('notify_not_login_third')}</p>
-          <div className='confirm-button-container'>
+        <div className="dialog-content-confirm">
+          <p>{t("notify_not_login_first")}</p>
+          <p>{t("notify_not_login_second")}</p>
+          <p>{t("notify_not_login_third")}</p>
+          <div className="confirm-button-container">
             <Button
-              severity='secondary'
+              severity="secondary"
               raised
-              id='button-detail'
-              style={{ color: 'red' }}
-              icon='pi pi-times'
-              label={t('close')}
+              id="button-detail"
+              style={{ color: "red" }}
+              icon="pi pi-times"
+              label={t("close")}
               onClick={() => setVisibleLogin(false)}
             />
             <Button
-              severity='secondary'
+              severity="secondary"
               raised
-              id='button-detail'
-              icon='pi pi-sign-in'
-              label={t('login')}
-              onClick={() => router.push('/login')}
+              id="button-detail"
+              icon="pi pi-sign-in"
+              label={t("login")}
+              onClick={() => router.push("/login")}
             />
           </div>
         </div>
       </Dialog>
       <Dialog
         header={
-          checkJoin ? t('notify_leave_club_third') : t('notify_not_login_third')
+          checkJoin ? t("notify_leave_club_third") : t("notify_not_login_third")
         }
         visible={visibleJoin}
         onHide={() => setVisibleJoin(false)}
-        style={{ width: '30vw' }}
+        style={{ width: "30vw" }}
       >
-        <div className='dialog-content-confirm'>
+        <div className="dialog-content-confirm">
           <p>
             {checkJoin
-              ? t('notify_leave_club_first')
-              : t('notify_not_join_club_first')}
+              ? t("notify_leave_club_first")
+              : t("notify_not_join_club_first")}
           </p>
           <p>
             {checkJoin
-              ? t('notify_leave_club_second')
-              : t('notify_not_join_club_second')}
+              ? t("notify_leave_club_second")
+              : t("notify_not_join_club_second")}
           </p>
           <p>
             {checkJoin
-              ? t('notify_leave_club_third')
-              : t('notify_not_join_club_third')}
+              ? t("notify_leave_club_third")
+              : t("notify_not_join_club_third")}
           </p>
 
-          <div className='confirm-button-container'>
+          <div className="confirm-button-container">
             <Button
-              severity='secondary'
+              severity="secondary"
               raised
-              id='button-detail'
-              style={{ color: 'red' }}
-              icon='pi pi-times'
-              label={t('close')}
+              id="button-detail"
+              style={{ color: "red" }}
+              icon="pi pi-times"
+              label={t("close")}
               onClick={() => setVisibleJoin(false)}
             />
             <Button
-              severity='secondary'
+              severity="secondary"
               raised
-              id='button-detail'
-              icon='pi pi-sign-in'
-              label={checkJoin ? t('leave_club_now') : t('join_club_now')}
+              id="button-detail"
+              icon="pi pi-sign-in"
+              label={checkJoin ? t("leave_club_now") : t("join_club_now")}
               onClick={() => {
                 if (checkJoin) {
-                  handleLeaveClub()
+                  handleLeaveClub();
                 } else {
-                  handleJoinClub()
+                  handleJoinClub();
                 }
               }}
             />
@@ -774,7 +784,7 @@ const ClubDetail = ({ club }) => {
         </div>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default ClubDetail
+export default ClubDetail;

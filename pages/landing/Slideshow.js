@@ -25,8 +25,8 @@ const Slideshow = ({ data, interval = 3000 }) => {
           <Image
             src={slide.image}
             alt={slide.title}
-            width={100}
-            height={100}
+            width={500}
+            height={500}
           />
           <div id='slide-caption-content'>
             <div id='slide-name'>

@@ -384,9 +384,11 @@ const Post = ({
           style={{ width: '100%' }}
           dangerouslySetInnerHTML={{ __html: post_description }}
         ></div>
-        <div className='new-feed-image'>
-          <Image src={post_image} alt='post' width={500} height={500} />
-        </div>
+        {post_image.length > 0 ? (
+          <div className='new-feed-image'>
+            <Image src={post_image} alt='post' width={500} height={500} />
+          </div>
+        ) : null}
       </div>
       <div className='new-feed-footer'>
         <div className='new-feed-footer-top'>
@@ -608,9 +610,11 @@ const Post = ({
               style={{ width: '100%' }}
               dangerouslySetInnerHTML={{ __html: post_description }}
             ></div>
-            <div className='new-feed-image'>
-              <img src={post_image} alt='post' />
-            </div>
+            {post_image.length > 0 ? (
+              <div className='new-feed-image'>
+                <Image src={post_image} alt='post' width={500} height={500} />
+              </div>
+            ) : null}
           </div>
           <div className='new-feed-footer'>
             <div className='new-feed-footer-top'>
