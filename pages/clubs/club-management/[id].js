@@ -596,7 +596,13 @@ const ManagementClubDetail = ({ club }) => {
                   onClick={() => handleMemberClick(member.userId)}
                 >
                   <Image
-                    src={member.avatar}
+                    style={{
+                      border: '1px solid #ffffff',
+                      width: '3rem',
+                      height: '3rem',
+                      borderRadius: '50%',
+                    }}
+                    src={member.avatar ? member.avatar : '/default-avatar.png'}
                     alt='avatar'
                     width={50}
                     height={50}
