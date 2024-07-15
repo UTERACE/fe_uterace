@@ -25,10 +25,10 @@ const Slideshow = ({ data, interval = 3000 }) => {
           <Image
             src={slide.image}
             alt={slide.title}
-            width={500}
-            height={500}
+            width={1920}
+            height={1040}
           />
-          <div id='slide-caption-content'>
+          {/* <div id='slide-caption-content'>
             <div id='slide-name'>
               <h1>{slide.title}</h1>
             </div>
@@ -49,7 +49,7 @@ const Slideshow = ({ data, interval = 3000 }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <Button
             id='prev'
             onClick={() =>
