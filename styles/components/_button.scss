@@ -1,20 +1,21 @@
 #button-tab {
     background-color: $white-color;
-    color: $black-color;
+    color: $primary-color;
     font-size: 1.2rem;
     font-weight: 700;
-    border: 0.13rem solid $black-color;
+    border: 0.13rem solid $white-color;
     border-radius: 1.5rem;
     padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0.5rem 0 0.5rem 0;
-    transition: transform 0.3s ease;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
 #button-tab:hover {
-    background-color: $black-color;
+    background-color: $primary-color;
     color: $white-color;
     font-size: 1.2rem;
     font-weight: 700;
@@ -28,7 +29,7 @@
     transform: scale(1.02);
 }
 #button-tab--active {
-    background-color: $black-color;
+    background-color: $primary-color;
     color: $white-color;
     font-size: 1.2rem;
     font-weight: 700;
