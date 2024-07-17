@@ -61,6 +61,7 @@ const EventDetail = ({ event }) => {
   const [search, setSearch] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [hour, setHour] = useState(720)
+  const [bib, setBib] = useState('')
 
   const { t } = useTranslation('detail')
   const router = useRouter()
@@ -83,6 +84,21 @@ const EventDetail = ({ event }) => {
       setIsMobile(true)
     }
   }, [])
+
+  const fetchBIBCode = async () => {
+    setLoading(true)
+    try {
+      const res = await apiInstance.get(`/events/entry-code/${event.event_id}`)
+      const data = res.data
+      if (res.status === 200) {
+        setBib(data.entry_code)
+        setLoading(false)
+      }
+    } catch (error) {
+      showToast('error', error)
+      setLoading(false)
+    }
+  }
 
   const fetchRankMember = async () => {
     setLoading(true)
@@ -133,6 +149,9 @@ const EventDetail = ({ event }) => {
       const data = res.data
       if (res.status === 200) {
         setCheckJoin(data)
+        if (data) {
+          fetchBIBCode()
+        }
         setLoading(false)
       }
     } catch (error) {
@@ -251,6 +270,11 @@ const EventDetail = ({ event }) => {
                 }
               }}
             />
+            {bib && checkJoin ? (
+              <div id='event-bib-detail'>
+                <h4>{'Race BIB: ' + bib}</h4>
+              </div>
+            ) : null}
           </div>
           {isMobile ? (
             <div id='mobile-event-distance-container'>
