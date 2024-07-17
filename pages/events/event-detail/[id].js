@@ -74,7 +74,7 @@ const EventDetail = ({ event }) => {
     } else if (activeIndex === 4) {
       fetchActivities()
     }
-  }, [current_page, per_page, search, activeIndex])
+  }, [current_page, per_page, search, activeIndex, hour])
 
   useEffect(() => {
     checkJoinEvent()

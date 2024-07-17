@@ -1,5 +1,6 @@
 import Detail from '@/components/landing/Detail'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from 'primereact/button'
 import React, { useEffect, useState } from 'react'
 
@@ -22,12 +23,15 @@ const Slideshow = ({ data, interval = 3000 }) => {
           id='slide'
           style={{ display: index === currentSlide ? 'block' : 'none' }}
         >
-          <Image
-            src={slide.image}
-            alt={slide.title}
-            width={1920}
-            height={1040}
-          />
+          <Link href={`/events/event-detail/${slide.event_id}`} >
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              width={1920}
+              height={1040}
+            />
+          </Link>
+          
           {/* <div id='slide-caption-content'>
             <div id='slide-name'>
               <h1>{slide.title}</h1>
