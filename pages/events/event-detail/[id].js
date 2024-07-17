@@ -251,10 +251,12 @@ const EventDetail = ({ event }) => {
             ) : (
               <div id='event-price-detail'>
                 <h4>
-                  {LocaleHelper.formatCurrency(
-                    event.registration_fee,
-                    language
-                  )}
+                  {checkJoin ? t('joined') : 
+                    (LocaleHelper.formatCurrency(
+                      event.registration_fee,
+                      language
+                    ))
+                  }
                 </h4>
               </div>
             )}
